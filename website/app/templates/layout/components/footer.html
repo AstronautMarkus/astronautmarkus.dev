@@ -1,10 +1,21 @@
-<footer class="footer">
-    <img class="footer-clownfish" src="{{ url_for('static', filename='/img/assets/clownfish.webp')}}" alt="Clownfish" aria-hidden="true">
-    <span class="footer-copy"></span>
-    <img class="footer-sticker" src="{{ url_for('static', filename='/img/assets/turn_off.png')}}" alt="Turn Off Sticker">
+<footer class="footer" aria-label="Site footer">
+    <div class="footer-shell">
+        <div class="footer-top-glow" aria-hidden="true"></div>
+
+        <div class="footer-content">
+            <p class="footer-copy"></p>
+        </div>
+    </div>
 </footer>
 
 <script>
-    const year = new Date().getFullYear();
-    document.querySelector('.footer span').textContent = `© ${year} AstronautMarkusDev. All rights reserved.`;
+    (function () {
+        const year = new Date().getFullYear();
+        const footerCopy = document.querySelector('.footer-copy');
+
+        if (footerCopy) {
+            footerCopy.textContent = `© ${year} AstronautMarkusDev. All rights reserved.`;
+        }
+
+    })();
 </script>
