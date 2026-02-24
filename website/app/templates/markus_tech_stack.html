@@ -1,0 +1,33 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<div>
+    <h1>Markus Tech Stack</h1>
+    <i>The Stack that I use for development, hosting and learning</i>
+</div>
+
+<div class="container">
+    {% for tech_type, items in techstack_by_type.items() %}
+    <h2 class="tech-type-title">{{ tech_type }}</h2>
+    <table class="tech-table">
+        <thead>
+            <tr>
+                <th>Technology</th>
+                <th>Tech Type</th>
+                <th>Opinion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tech in items %}
+            <tr>
+                <td>{{ tech.name }}</td>
+                <td>{{ tech.tech_type }}</td>
+                <td>{{ tech.opinion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+</div>
+
+{% endblock %}
