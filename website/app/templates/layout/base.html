@@ -31,7 +31,7 @@
 
         const staticRoutes = [
             { path: '/', label: 'Home' },
-            { path: '/post-note', label: 'Post Note' }
+            { path: '/about', label: 'About Website' }
         ];
 
         const buttonsWrapper = document.createElement('div');
@@ -47,7 +47,7 @@
         } else {
             const homeLink = document.createElement('a');
             homeLink.href = '/';
-            homeLink.textContent = 'Back to Home';
+            homeLink.textContent = 'Back Home';
             homeLink.className = 'route-button';
             buttonsWrapper.appendChild(homeLink);
         }
