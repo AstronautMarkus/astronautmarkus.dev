@@ -1,5 +1,7 @@
+{% set is_spanish = request.path == '/es' or request.path.startswith('/es/') %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ 'es' if is_spanish else 'en' }}">
 
 <head>
     <meta charset="UTF-8">
