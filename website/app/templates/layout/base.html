@@ -39,42 +39,7 @@
         <p>Optimized for Netscape Navigator</p>
     </div>
 
-    <script>
-        const footerText = document.getElementById('footer-text');
-        const routePathContainer = document.getElementById('route-path');
-        const currentYear = new Date().getFullYear();
-        footerText.textContent = `© 2003 / ${currentYear} Marcos Reyes / Lain Iwakura. All rights reserved.`;
-
-        const route = "{{ request.path }}";
-
-        const staticRoutes = [
-            { path: '/', label: 'Home' },
-            { path: '/about', label: 'About Website' },
-            { path: '/markus-tech-stack', label: 'Markus Tech Stack' },
-            { path: '/portfolio', label: 'Portfolio' }
-        ];
-
-        const buttonsWrapper = document.createElement('div');
-
-        if (route === '/') {
-            staticRoutes.forEach((item) => {
-                const link = document.createElement('a');
-                link.href = item.path;
-                link.textContent = item.label;
-                link.className = 'route-button';
-                buttonsWrapper.appendChild(link);
-            });
-        } else {
-            const homeLink = document.createElement('a');
-            homeLink.href = '/';
-            homeLink.textContent = 'Back Home';
-            homeLink.className = 'route-button';
-            buttonsWrapper.appendChild(homeLink);
-        }
-
-        routePathContainer.appendChild(buttonsWrapper);
-
-    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
 </html>
