@@ -1,9 +1,16 @@
 const footerText = document.getElementById('footer-text');
+const endingText = document.getElementById('ending-text');
+
 const routePathContainer = document.getElementById('route-path');
 const localeToggleButton = document.getElementById('locale-toggle-button');
 const localeToggleImage = document.getElementById('locale-toggle-image');
 const currentYear = new Date().getFullYear();
-footerText.textContent = `© 16-03-2003 / ${currentYear} Marcos Reyes / AstronautMarkusDev. All rights reserved.`;
+
+const footer_text = `© 16-03-2003 / ${currentYear} Marcos Reyes / AstronautMarkusDev. All rights reserved.`;
+const ending_text = 'This website is not optimized for responsive design. And will never be.';
+
+const spanish_footer_text = `© 16-03-2003 / ${currentYear} Marcos Reyes / AstronautMarkusDev. Todos los derechos reservados.`;
+const spanish_ending_text = 'Este sitio web no está optimizado para diseño responsivo. Y nunca lo estará.';
 
 const normalizePath = (path) => {
     if (!path) {
@@ -48,6 +55,14 @@ const getRouteContext = (pathname) => {
 const routeContext = getRouteContext(window.location.pathname);
 const route = routeContext.route;
 const isSpanish = routeContext.locale === 'es';
+
+if (footerText) {
+    footerText.textContent = isSpanish ? spanish_footer_text : footer_text;
+}
+
+if (endingText) {
+    endingText.textContent = isSpanish ? spanish_ending_text : ending_text;
+}
 
 const getLocaleToggleTargetPath = () => {
     if (isSpanish) {
