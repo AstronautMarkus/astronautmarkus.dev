@@ -129,6 +129,10 @@ const staticRoutes = [
     {
         path: '/portfolio',
         label: isSpanish ? 'Portafolio' : 'Portfolio'
+    },
+    {
+        path: '/work-and-experience',
+        label: isSpanish ? 'Trabajo y experiencia' : 'Work and Experience'
     }
 ];
 

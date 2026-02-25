@@ -1,0 +1,21 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Trabajo y Experiencia - Marcos Reyes{% endblock %}
+{% block description %}Descubre la experiencia laboral y proyectos de Marcos Reyes, un desarrollador apasionado. Explora su trayectoria, habilidades y contribuciones al mundo de la tecnología.{% endblock %}
+{% block keywords %}experiencia laboral, proyectos, Marcos Reyes, trayectoria de desarrollador, habilidades, contribuciones{% endblock %}
+
+{% block content %}
+<h1>Trabajo y Experiencia</h1>
+<p>Detalles sobre mi experiencia laboral y proyectos.</p>
+
+<div class="container">
+    <p>Selecciona una opción</p>
+
+    <div>
+        <a href="" class="route-button">Datos de Experiencia Laboral</a>
+        <a href="{{ url_for('home.cv_and_documents_es') }}" class="route-button">CV y Documentos</a>
+    </div>
+
+</div>
+
+{% endblock %}

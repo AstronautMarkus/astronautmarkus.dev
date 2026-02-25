@@ -1,0 +1,24 @@
+{% extends "layout/base.html" %}
+
+{% block title %}CV and Documents - Marcos Reyes{% endblock %}
+{% block description %}Access the CV and professional documents of Marcos Reyes. Download my resume, certifications, and
+project portfolios.{% endblock %}
+{% block keywords %}CV, resume, documents, Marcos Reyes, certifications, portfolio, professional{% endblock %}
+
+{% block content %}
+<h1>CV and Documents</h1>
+<p>Access my professional documents and credentials.</p>
+
+<div class="container">
+    <p>Select a document to download / view:</p>
+
+    <div>
+        <a href="{{ url_for('static', filename='files/resume.pdf' )}}" target="_blank" class="route-button">Download
+            CV</a>
+        <a target="_blank" class="route-button">Download Certifications</a>
+        <a href="{{ url_for('home.work_and_experience')}}" class="route-button">Go Back</a>
+    </div>
+
+</div>
+
+{% endblock %}

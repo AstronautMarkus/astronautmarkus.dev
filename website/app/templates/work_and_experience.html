@@ -1,0 +1,21 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Work And Experience - Marcos Reyes{% endblock %}
+{% block description %}Discover the work experience and projects of Marcos Reyes, a passionate developer. Explore his journey, skills, and contributions to the tech world.{% endblock %}
+{% block keywords %}work experience, projects, Marcos Reyes, developer journey, skills, contributions{% endblock %}
+
+{% block content %}
+<h1>Work And Experience</h1>
+<p>Details about my work experience and projects.</p>
+
+<div class="container">
+    <p>Select an option</p>
+
+    <div>
+        <a href="" class="route-button">Working Experience data</a>
+        <a href="{{ url_for('home.cv_and_documents') }}" class="route-button">CV and Documents</a>
+    </div>
+
+</div>
+
+{% endblock %}

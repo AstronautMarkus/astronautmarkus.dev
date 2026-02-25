@@ -1,0 +1,24 @@
+{% extends "layout/base.html" %}
+
+{% block title %}CV y Documentos - Marcos Reyes{% endblock %}
+{% block description %}Accede al CV y documentos profesionales de Marcos Reyes. Descarga mi currículum, certificaciones
+y portafolios de proyectos.{% endblock %}
+{% block keywords %}CV, currículum, documentos, Marcos Reyes, certificaciones, portafolio, profesional{% endblock %}
+
+{% block content %}
+<h1>CV y Documentos</h1>
+<p>Accede a mis documentos y credenciales profesionales.</p>
+
+<div class="container">
+    <p>Selecciona un documento para descargar / ver:</p>
+
+    <div>
+        <a href="{{ url_for('static', filename='files/spanish_resume.pdf' )}}" target="_blank"
+            class="route-button">Descargar CV</a>
+        <a target="_blank" class="route-button">Descargar Certificaciones</a>
+        <a href="{{ url_for('home.work_and_experience_es')}}" class="route-button">Regresar</a>
+    </div>
+
+</div>
+
+{% endblock %}
