@@ -1,13 +1,31 @@
 {% extends "layout/base.html" %}
 
-{% block title %}404 - Page Not Found | Marcos Reyes{% endblock %}
-{% block description %}The page you requested could not be found on Marcos Reyes personal website. Return to the homepage to continue browsing.{% endblock %}
-{% block keywords %}404, page not found, Marcos Reyes, website error, missing page{% endblock %}
+{% set is_spanish = request.path == '/es' or request.path.startswith('/es/') %}
+
+{% set page_title = '404 - Página no encontrada | Marcos Reyes' if is_spanish else '404 - Page Not Found | Marcos Reyes'
+%}
+{% set page_description = 'La página que solicitaste no se pudo encontrar en el sitio personal de Marcos Reyes. Vuelve
+al inicio para seguir navegando.' if is_spanish else 'The page you requested could not be found on Marcos Reyes personal
+website. Return to the homepage to continue browsing.' %}
+{% set page_keywords = '404, página no encontrada, Marcos Reyes, error del sitio web, página faltante' if is_spanish
+else '404, page not found, Marcos Reyes, website error, missing page' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block description %}{{ page_description }}{% endblock %}
+{% block keywords %}{{ page_keywords }}{% endblock %}
 
 {% block content %}
 <div class="container">
+    {% if is_spanish %}
+    <h1>Error 404</h1>
+    <p>La página que estás buscando no existe. Puede que haya sido movida o eliminada.</p>
+    <img src="{{ url_for('static', filename='img/lain-serial-experiments-lain.gif') }}" style="width: 150px;"
+        alt="Lain de Serial Experiments Lain">
+    {% else %}
     <h1>Error 404</h1>
     <p>The page you are looking for does not exist. It may have been moved or deleted.</p>
-    <img src="{{ url_for('static', filename='img/lain-serial-experiments-lain.gif') }}" style="width: 150px;" alt="Lain Serial Experiments Lain">
+    <img src="{{ url_for('static', filename='img/lain-serial-experiments-lain.gif') }}" style="width: 150px;"
+        alt="Lain Serial Experiments Lain">
+    {% endif %}
 </div>
 {% endblock %}
