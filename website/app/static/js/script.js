@@ -1,6 +1,8 @@
 const footerText = document.getElementById('footer-text');
 const endingText = document.getElementById('ending-text');
 
+const endingImagePath = '/static/img/smilleys/laugh3.gif';
+
 const routePathContainer = document.getElementById('route-path');
 const localeToggleButton = document.getElementById('locale-toggle-button');
 const localeToggleImage = document.getElementById('locale-toggle-image');
@@ -61,7 +63,17 @@ if (footerText) {
 }
 
 if (endingText) {
-    endingText.textContent = isSpanish ? spanish_ending_text : ending_text;
+    endingText.textContent = '';
+
+    const endingTextNode = document.createElement('span');
+    endingTextNode.textContent = isSpanish ? spanish_ending_text : ending_text;
+    endingText.appendChild(endingTextNode);
+
+    const endingImage = document.createElement('img');
+    endingImage.src = endingImagePath;
+    endingImage.alt = 'Laugh Smilley';
+    endingImage.style.marginLeft = '8px';
+    endingText.appendChild(endingImage);
 }
 
 const getLocaleToggleTargetPath = () => {
