@@ -15,10 +15,10 @@
     },
     {
         "title": "FumoIndex",
-        "description": "Smoke indexer with React, TypeScript, Laravel, MySQL and Tailwind CSS.",
-        "spanish_description": "Indexador de humo con React, TypeScript, Laravel, MySQL y Tailwind CSS.",
+        "description": "Touhou Fumo Wiki-style website with Laravel, MySQL and Tailwind CSS.",
+        "spanish_description": "Sitio web estilo wiki de Touhou Fumo con Laravel, MySQL, Livewire y Tailwind CSS.",
         "project_url": "https://github.com/astronautmarkus/fumoindex",
-        "tags": ["React", "TypeScript", "Laravel", "MySQL", "Tailwind CSS"]
+        "tags": ["Laravel", "MySQL", "Tailwind CSS", "Livewire"]
     },
     {
         "title": "AbbyBot Project",
