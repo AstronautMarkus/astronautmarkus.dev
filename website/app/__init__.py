@@ -22,6 +22,9 @@ def create_app():
 	from app.routes.home import home_bp
 	app.register_blueprint(home_bp)
 
+	from app.routes.utils import utils_bp
+	app.register_blueprint(utils_bp)
+
 	@app.errorhandler(404)
 	def not_found(error):
 		return render_template('404.html'), 404

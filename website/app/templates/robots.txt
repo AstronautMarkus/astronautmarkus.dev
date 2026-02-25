@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /es/
+
+Allow: /
+Sitemap: https://astronautmarkus.dev/sitemap.xml
