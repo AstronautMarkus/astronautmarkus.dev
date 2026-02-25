@@ -4,8 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}Marcos Reyes - Personal website and tech portfolio{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}Marcos Reyes, developer, portfolio, tech{% endblock %}">
+    <meta name="author" content="Marcos Reyes">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ self.title() | striptags | trim }}">
+    <meta property="og:description" content="{{ self.description() | striptags | trim }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='img/og-image.jpg', _external=True) }}">
+    <meta property="og:image:width" content="640">
+    <meta property="og:image:height" content="480">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ self.title() | striptags | trim }}">
+    <meta name="twitter:description" content="{{ self.description() | striptags | trim }}">
+    <meta name="twitter:image" content="{{ url_for('static', filename='img/og-image.jpg', _external=True) }}">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Document</title>
+    <title>{% block title %}Marcos Reyes - Personal Website{% endblock %}</title>
 </head>
 
 <body>
@@ -27,7 +44,6 @@
         footerText.textContent = `© 2003 / ${currentYear} Marcos Reyes / Lain Iwakura. All rights reserved.`;
 
         const route = "{{ request.path }}";
-        console.log("Current route:", route);
 
         const staticRoutes = [
             { path: '/', label: 'Home' },
