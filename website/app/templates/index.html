@@ -1,8 +1,10 @@
 {% extends "layout/base.html" %}
 
 {% block title %}Marcos Reyes - Full Stack Developer & Systems Administrator{% endblock %}
-{% block description %}Personal website of Marcos Reyes, a full stack developer and systems administrator focused on scalable, secure, and high-performance software solutions.{% endblock %}
-{% block keywords %}Marcos Reyes, full stack developer, systems administrator, portfolio, Python, Laravel, React, Docker{% endblock %}
+{% block description %}Personal website of Marcos Reyes, a full stack developer and systems administrator focused on
+scalable, secure, and high-performance software solutions.{% endblock %}
+{% block keywords %}Marcos Reyes, full stack developer, systems administrator, portfolio, Python, Laravel, React,
+Docker{% endblock %}
 
 {% block content %}
 <div>
@@ -28,12 +30,25 @@
   <i>I was born on {{ born_day }} and I am {{ age }} years old.</i> <br>
 
   <p>
-    My favorite video game is <a class="payday-game-a" href="https://store.steampowered.com/agecheck/app/218620/" target="_blank">PAYDAY2</a>. I never get bored of its simple and repetitive gameplay, the music is great.
+    My favorite video game is <a class="payday-game-a" href="https://store.steampowered.com/agecheck/app/218620/"
+      target="_blank">PAYDAY2</a>. I never get bored of its simple and repetitive gameplay, the music is great.
   </p>
 
   <a href="https://github.com/astronautmarkus" target="_blank">
     <img src="{{ url_for('static', filename='img/88x31_buttons/github-check.gif') }}" alt="GitHub">
   </a>
+
+  <p>
+    BTW, this is me when the code works on the first try:
+  </p>
+
+  <img src="{{ url_for('static', filename='img/smilleys/yahoo.gif' )}}" alt="Yahoo Smiley">
+
+  <p>
+    And this is me when it doesn't work on the first try:
+  </p>
+
+  <img src="{{ url_for('static', filename='img/smilleys/aggressive.gif' )}}" alt="Aggressive Smiley">
 
 
 </div>

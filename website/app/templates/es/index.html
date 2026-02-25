@@ -1,8 +1,10 @@
 {% extends "layout/base.html" %}
 
 {% block title %}Marcos Reyes - Desarrollador Full Stack & Administrador de Sistemas{% endblock %}
-{% block description %}Sitio web personal de Marcos Reyes, desarrollador full stack y administrador de sistemas enfocado en soluciones de software escalables, seguras y de alto rendimiento.{% endblock %}
-{% block keywords %}Marcos Reyes, desarrollador full stack, administrador de sistemas, portafolio, Python, Laravel, React, Docker{% endblock %}
+{% block description %}Sitio web personal de Marcos Reyes, desarrollador full stack y administrador de sistemas enfocado
+en soluciones de software escalables, seguras y de alto rendimiento.{% endblock %}
+{% block keywords %}Marcos Reyes, desarrollador full stack, administrador de sistemas, portafolio, Python, Laravel,
+React, Docker{% endblock %}
 
 {% block content %}
 <div>
@@ -10,8 +12,7 @@
     <i>AstronautMarkus.Dev</i>
 </div>
 
-<img
-    src="https://count.getloli.com/@astronautmarkusdev?name=astronautmarkusdev&theme=booru-jaypee&padding=4&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"
+<img src="https://count.getloli.com/@astronautmarkusdev?name=astronautmarkusdev&theme=booru-jaypee&padding=4&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"
     alt="Contador de Visitantes">
 
 <marquee class="marquee">{{ quote }}</marquee>
@@ -28,18 +29,32 @@
     <i>Nací el {{ born_day }} y tengo {{ age }} años de edad.</i> <br>
 
     <p>
-        Mi videojuego favorito es <a class="payday-game-a" href="https://store.steampowered.com/agecheck/app/218620/" target="_blank">PAYDAY2</a>. Nunca me aburro de su jugabilidad simple y repetitiva, la música es excelente.
+        Mi videojuego favorito es <a class="payday-game-a" href="https://store.steampowered.com/agecheck/app/218620/"
+            target="_blank">PAYDAY2</a>. Nunca me aburro de su jugabilidad simple y repetitiva, la música es excelente.
     </p>
 
     <a href="https://github.com/astronautmarkus" target="_blank">
         <img src="{{ url_for('static', filename='img/88x31_buttons/github-check.gif') }}" alt="GitHub">
     </a>
+
+    <p>
+        Por cierto, así es como me veo cuando el código funciona a la primera:
+    </p>
+
+    <img src="{{ url_for('static', filename='img/smilleys/yahoo.gif' )}}" alt="Yahoo Smiley">
+
+    <p>
+        Y así es como me veo cuando no funciona a la primera:
+    </p>
+
+    <img src="{{ url_for('static', filename='img/smilleys/aggressive.gif' )}}" alt="Aggressive Smiley">
 </div>
 
 <div class="container">
     <h2>LO QUE HAGO</h2>
     <p>
-        Me especializo en construir aplicaciones web de alto rendimiento e infraestructura escalable. Mi experiencia incluye:
+        Me especializo en construir aplicaciones web de alto rendimiento e infraestructura escalable. Mi experiencia
+        incluye:
     <ul style="list-style-type: square;">
         <li>Desarrollo Full Stack: React, Laravel, Python</li>
         <li>Administración de Sistemas: Linux, Docker, Nginx, Apache</li>
