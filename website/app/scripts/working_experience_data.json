@@ -25,5 +25,86 @@
                 "name": "JavaScript"
             }
         ]
+    },
+    {
+        "name": "Multi Stock Sync",
+        "spanish_name": "Multi Stock Sync",
+        "description": "In my professional practice, me and a team of 5 developers in my charge, we developed a web application that allows users to synchronize their inventory across multiple e-commerce platforms. The application uses the Mercado Libre API to fetch product data and update stock levels in real-time. The project was built using Laravel for the backend and React for the frontend, ensuring a seamless user experience.",
+        "spanish_description": "En mi práctica profesional, yo y un equipo de 5 desarrolladores a mi cargo, desarrollamos una aplicación web que permite a los usuarios sincronizar su inventario en múltiples plataformas de comercio electrónico. La aplicación utiliza la API de Mercado Libre para obtener datos de productos y actualizar los niveles de stock en tiempo real. El proyecto se construyó utilizando Laravel para el backend y React para el frontend, asegurando una experiencia de usuario fluida.",
+        "type_of_project": "Web Application for Inventory Synchronization across E-commerce Platforms.",
+        "spanish_type_of_project": "Aplicación web para la sincronización de inventario en plataformas de comercio electrónico.",
+        "role_that_i_had": "Project Leader, Scrum Master, and Full Stack Developer and System administrator.",
+        "spanish_role_that_i_had": "Líder de Proyecto, Scrum Master, Desarrollador Full Stack y Administrador de Sistemas.",
+        "technologies_used": [
+            {
+                "name": "Laravel 10"
+            },
+            {
+                "name": "React"
+            },
+            {
+                "name": "MySQL"
+            },
+            {
+                "name": "PHP"
+            },
+            {
+                "name": "Bootstrap"
+            },
+            {
+                "name": "TypeScript"
+            }
+        ]
+    },
+    {
+        "name": "ReyesHosting",
+        "spanish_name": "ReyesHosting",
+        "description": "I developed a web hosting control panel for my Minecraft Hosting company, ReyesHosting. The control panel allows users to manage their hosting accounts, including creating and managing Minecraft servers, monitoring server performance, and handling billing and support tickets. The project was built using Laravel for the backend, simple blade templates for the frontend, and MySQL for the database. For more complex views, I used Livewire to create dynamic and interactive components. The control panel also integrates with third-party pterodactyl service to manage the Minecraft servers efficiently.",
+        "spanish_description": "Desarrollé un panel de control de hosting web para mi empresa de hosting de Minecraft, ReyesHosting. El panel de control permite a los usuarios gestionar sus cuentas de hosting, incluyendo la creación y gestión de servidores de Minecraft, monitoreo del rendimiento del servidor y manejo de facturación y tickets de soporte. El proyecto se construyó utilizando Laravel para el backend y plantillas blade simples para el frontend, y MySQL para la base de datos. Para vistas más complejas, utilicé Livewire para crear componentes dinámicos e interactivos. El panel de control también se integra con el servicio de terceros pterodactyl para gestionar los servidores de Minecraft de manera eficiente.",
+        "type_of_project": "Web Hosting Control Panel for Minecraft Hosting Company.",
+        "spanish_type_of_project": "Panel de Control de Hosting Web para Empresa de Hosting de Minecraft.",
+        "role_that_i_had": "Full Stack Developer and System administrator.",
+        "spanish_role_that_i_had": "Desarrollador Full Stack y Administrador de Sistemas.",
+        "technologies_used": [
+            {
+                "name": "Laravel 12"
+            },
+            {
+                "name": "Livewire"
+            },
+            {
+                "name": "MySQL"
+            },
+            {
+                "name": "PHP"
+            },
+            {
+                "name": "Tailwind CSS"
+            }
+        ]
+    },
+    {
+        "name": "ReyesAndFriends App",
+        "spanish_name": "ReyesAndFriends App",
+        "description": "My company website, Reyes&Friends. The website serves as a portfolio and contact point for my company work, showcasing our projects and services. It was built using Laravel for the backend and simple blade templates for the frontend, with MySQL as the database. The website features a clean and modern design, highlighting our expertise in web development and hosting services.",
+        "spanish_description": "El sitio web de mi empresa, Reyes&Friends. El sitio web sirve como un portafolio y punto de contacto para el trabajo de mi empresa, mostrando nuestros proyectos y servicios. Fue construido utilizando Laravel para el backend y plantillas blade simples para el frontend, con MySQL como la base de datos. El sitio web presenta un diseño limpio y moderno, destacando nuestra experiencia en desarrollo web y servicios de hosting.",
+        "type_of_project": "Company Website for Web Development and Hosting Services.",
+        "spanish_type_of_project": "Sitio Web de la Empresa para Servicios de Desarrollo Web y Hosting.",
+        "role_that_i_had": "Full Stack Developer and System administrator.",
+        "spanish_role_that_i_had": "Desarrollador Full Stack y Administrador de Sistemas.",
+        "technologies_used": [
+            {
+                "name": "Laravel 12"
+            },
+            {
+                "name": "MySQL"
+            },
+            {
+                "name": "PHP"
+            },
+            {
+                "name": "Tailwind CSS"
+            }
+        ]
     }
 ]

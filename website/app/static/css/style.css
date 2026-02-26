@@ -196,7 +196,6 @@ table thead th:last-child {
 table tbody td {
   padding: 10px 8px;
   text-align: left;
-  vertical-align: top;
   font-size: 13px;
   color: #e7e7ff;
   border-right: 1px solid #343456;
