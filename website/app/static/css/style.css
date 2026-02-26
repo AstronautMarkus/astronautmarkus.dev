@@ -342,3 +342,23 @@ select:focus {
   color: #721c24;
   border: 2px solid #f5c6cb;
 }
+
+.playlist-embed {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.playlist-embed iframe {
+  display: block;
+  width: calc(50% - 8px);
+  max-width: calc(50% - 8px);
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border: 0;
+}

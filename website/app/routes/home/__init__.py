@@ -11,5 +11,6 @@ from . import (
     cv_and_documents,
     working_experience_data,
     external_links,
-    contact
+    contact,
+    extras
 )

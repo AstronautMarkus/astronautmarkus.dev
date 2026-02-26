@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Extras - Marcos Reyes - Full Stack Developer & Systems Administrator{% endblock %}
+{% block description %}Explore the Extra content of my website, including music playlists and other media.{% endblock %}
+{% block keywords %}Marcos Reyes, extras, full stack developer, systems administrator{% endblock %}
+
+{% block content %}
+<h1>Extras</h1>
+<p>Check out these extra content related to Marcos Reyes and my homies!</p>
+
+<div class="container">
+    <h3>Youtube Songs</h3>
+    {% for playlist in playlists %}
+        <div class="playlist-embed">
+            {{ playlist.iframe | safe }}
+        </div>
+    {% endfor %}
+</div>
+
+<div class="container">
+    <h3>Underground Videos</h3>
+    {% for video in underground_videos %}
+        <div class="video-embed">
+            {{ video.iframe | safe }}
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

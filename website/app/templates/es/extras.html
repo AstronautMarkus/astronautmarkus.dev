@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Extras - Marcos Reyes - Desarrollador Full Stack & Administrador de Sistemas{% endblock %}
+{% block description %}Explora el contenido Extra de mi sitio web, incluyendo listas de reproducción de música y otros medios.{% endblock %}
+{% block keywords %}Marcos Reyes, extras, desarrollador full stack, administrador de sistemas{% endblock %}
+
+{% block content %}
+<h1>Extras</h1>
+<p>¡Echa un vistazo a este contenido extra relacionado con Marcos Reyes y mis colegas!</p>
+
+<div class="container">
+    <h3>Canciones de Youtube</h3>
+    {% for playlist in playlists %}
+        <div class="playlist-embed">
+            {{ playlist.iframe | safe }}
+        </div>
+    {% endfor %}
+</div>
+
+<div class="container">
+    <h3>Videos Underground</h3>
+    {% for video in underground_videos %}
+        <div class="video-embed">
+            {{ video.iframe | safe }}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
