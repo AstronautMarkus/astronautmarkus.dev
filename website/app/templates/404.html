@@ -18,14 +18,26 @@ else '404, page not found, Marcos Reyes, website error, missing page' %}
 <div class="container">
     {% if is_spanish %}
     <h1>Error 404</h1>
-    <p>La página que estás buscando no existe. Puede que haya sido movida o eliminada.</p>
-    <img src="{{ url_for('static', filename='img/lain-serial-experiments-lain.gif') }}" style="width: 150px;"
-        alt="Lain de Serial Experiments Lain">
+    <p>La página que estás buscando no existe. <br> Puede que haya sido movida o eliminada. Una disculpa de antemano.
+    </p>
+    <div class="error-content">
+        <img src="{{ url_for('static', filename='img/di-gi-charat-dejiko.gif') }}" alt="Di Gi Charat Dejiko">
+        <div class="error-text">
+            <h3>¿Necesitas ayuda?</h3>
+            <p>Regresa a la página principal o utiliza el menú de navegación para encontrar lo que buscas.</p>
+        </div>
+    </div>
     {% else %}
     <h1>Error 404</h1>
-    <p>The page you are looking for does not exist. It may have been moved or deleted.</p>
-    <img src="{{ url_for('static', filename='img/lain-serial-experiments-lain.gif') }}" style="width: 150px;"
-        alt="Lain Serial Experiments Lain">
+    <p>The page you are looking for does not exist. It may have been moved or deleted. <br> We apologize for the
+        inconvenience.</p>
+    <div class="error-content">
+        <img src="{{ url_for('static', filename='img/di-gi-charat-dejiko.gif') }}" alt="Di Gi Charat Dejiko">
+        <div class="error-text">
+            <h3>Need help?</h3>
+            <p>Return to the homepage or use the navigation menu to find what you're looking for.</p>
+        </div>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
