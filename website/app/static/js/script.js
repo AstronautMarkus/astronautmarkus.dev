@@ -134,6 +134,10 @@ const staticRoutes = [
     {
         path: '/work-and-experience',
         label: isSpanish ? 'Trabajo y experiencia' : 'Work and Experience'
+    },
+    {
+        path: '/external-links',
+        label: isSpanish ? 'Enlaces externos' : 'External Links'
     }
 ];
 

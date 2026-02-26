@@ -1,0 +1,22 @@
+{% extends "layout/base.html" %}
+
+{% block title %}External Links - Marcos Reyes - Full Stack Developer & Systems Administrator{% endblock %}
+{% block description %}Explore external links related to Marcos Reyes, a full stack developer and systems
+administrator.{% endblock %}
+{% block keywords %}Marcos Reyes, external links, full stack developer, systems administrator{% endblock %}
+
+{% block content %}
+<h1>External Links</h1>
+<p>Check out these external links related to Marcos Reyes and my homies!</p>
+
+<div class="container">
+    <h2>Check my neighbors / allies Sites!</h2>
+    <a href="https://blog.astronautmarkus.dev" target="_blank" rel="noopener noreferrer">
+        <img src="{{ url_for('static', filename='img/88x31_buttons/english_blog.gif' )}}" alt="Blog AstronautMarkus">
+    </a>
+    <a href="https://reyesandfriends.cl" target="_blank" rel="noopener noreferrer">
+        <img src="{{ url_for('static', filename='img/88x31_buttons/reyesandfriends.gif' )}}" alt="Reyes&Friends">
+    </a>
+</div>
+
+{% endblock %}
