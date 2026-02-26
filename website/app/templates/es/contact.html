@@ -14,15 +14,15 @@ correo electrónico o redes sociales.{% endblock %}
     <h3>Mensaje Directo</h3>
     <p>Rellena este formulario y pronto te responderé.</p>
 
-    {% if request.args.get('status') == 'success' %}
-    <div class="alert alert-success">
-        <p>¡Gracias! Tu mensaje fue enviado correctamente.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, text in messages %}
+    <div class="alert alert-{{ category }}">
+        <p>{{ text }}</p>
     </div>
-    {% elif request.args.get('status') == 'error' %}
-    <div class="alert alert-error">
-        <p>Hubo un problema al enviar tu mensaje. Revisa los datos e inténtalo de nuevo.</p>
-    </div>
+    {% endfor %}
     {% endif %}
+    {% endwith %}
 
     <form action="{{ url_for('home.submit_contact_message') }}" method="POST">
         <input type="hidden" name="locale" value="es">

@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from sqlalchemy.exc import SQLAlchemyError
 from app import db
 from app.models.models import ContactMessage
@@ -24,12 +24,16 @@ def submit_contact_message():
         locale = 'en'
 
     redirect_endpoint = 'home.contact_es' if locale == 'es' else 'home.contact'
+    success_message = '¡Gracias! Tu mensaje fue enviado correctamente.' if locale == 'es' else 'Thank you! Your message was sent successfully.'
+    error_message = 'Hubo un problema al enviar tu mensaje. Revisa los datos e inténtalo de nuevo.' if locale == 'es' else 'There was a problem sending your message. Please check your information and try again.'
 
     if not name or not email or not message:
-        return redirect(url_for(redirect_endpoint, status='error'))
+        flash(error_message, 'error')
+        return redirect(url_for(redirect_endpoint))
 
     if len(name) > 100 or len(email) > 120 or len(message) > 1000:
-        return redirect(url_for(redirect_endpoint, status='error'))
+        flash(error_message, 'error')
+        return redirect(url_for(redirect_endpoint))
 
     try:
         contact_message = ContactMessage(name=name, email=email, message=message)
@@ -37,6 +41,8 @@ def submit_contact_message():
         db.session.commit()
     except SQLAlchemyError:
         db.session.rollback()
-        return redirect(url_for(redirect_endpoint, status='error'))
+        flash(error_message, 'error')
+        return redirect(url_for(redirect_endpoint))
 
-    return redirect(url_for(redirect_endpoint, status='success'))
+    flash(success_message, 'success')
+    return redirect(url_for(redirect_endpoint))
