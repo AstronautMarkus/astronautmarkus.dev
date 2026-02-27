@@ -2,13 +2,6 @@ from flask import render_template
 from . import home_bp
 from datetime import datetime
 import random
-from app.models.models import Visit
-
-
-def _format_visitor_counter(total_visits: int) -> str:
-    if total_visits <= 9999:
-        return f"{total_visits:04d}"
-    return str(total_visits)
 
 
 def _calculate_current_age(birth_date_str: str, date_format: str = '%Y-%m-%d') -> int:
@@ -23,10 +16,6 @@ def _calculate_current_age(birth_date_str: str, date_format: str = '%Y-%m-%d') -
 
 @home_bp.route('/')
 def index():
-
-    visitor_counter = Visit.query.count()
-    visitor_counter_formatted = _format_visitor_counter(visitor_counter)
-
     born_day = 'March 16, 2003'
 
     current_age = _calculate_current_age('2003-03-16')
@@ -49,16 +38,11 @@ def index():
         '/home/index.html',
         age=current_age,
         born_day=born_day,
-        quote=random_quote,
-        visitor_counter=visitor_counter_formatted
+        quote=random_quote
     )
 
 @home_bp.route('/es')
 def index_es():
-
-    visitor_counter = Visit.query.count()
-    visitor_counter_formatted = _format_visitor_counter(visitor_counter)
-
     born_day = '16 de marzo de 2003'
 
     current_age = _calculate_current_age('2003-03-16')
@@ -79,6 +63,5 @@ def index_es():
         '/home/es/index.html',
         age=current_age,
         born_day=born_day,
-        quote=random_quote,
-        visitor_counter=visitor_counter_formatted
+        quote=random_quote
     )

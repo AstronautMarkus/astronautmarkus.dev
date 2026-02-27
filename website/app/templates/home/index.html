@@ -13,9 +13,7 @@ Docker{% endblock %}
 </div>
 
 <div>
-  {% for digit in visitor_counter %}
-  <img src="{{ url_for('static', filename='img/booru-jaypee/' ~ digit ~ '.gif') }}" alt="{{ digit }}">
-  {% endfor %}
+  <img src="{{ url_for('utils.visitor_counter') }}" alt="Visitor Counter">
 </div>
 
 <marquee class="marquee">{{ quote }}</marquee>
