@@ -33,7 +33,7 @@ def create_app():
 
 	@app.errorhandler(404)
 	def not_found(error):
-		return render_template('404.html'), 404
+		return render_template('/errors/404.html'), 404
 
 	@app.context_processor
 	def inject_current_year():
