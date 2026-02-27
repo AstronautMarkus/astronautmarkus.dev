@@ -1,7 +1,7 @@
-from datetime import datetime
 from flask import render_template, request, redirect, url_for, flash, current_app
 from flask_mail import Message
 from sqlalchemy.exc import SQLAlchemyError
+from datetime import datetime
 from app import db, mail
 from app.models.models import ContactMessage
 from . import home_bp
@@ -46,45 +46,56 @@ def submit_contact_message():
         flash(error_message, 'error')
         return redirect(url_for(redirect_endpoint))
 
+    mailbox = (current_app.config.get('MAIL_USERNAME') or '').strip()
+    if not mailbox:
+        current_app.logger.warning('Contact email skipped: MAIL_USERNAME is not configured')
+        flash(error_message, 'error')
+        return redirect(url_for(redirect_endpoint))
+
+    subject = 'Nuevo mensaje de contacto' if locale == 'es' else 'New contact message'
+    body = (
+        f'Nombre: {name}\n'
+        f'Email: {email}\n\n'
+        f'Mensaje:\n{message}'
+    )
+
     try:
-        send_contact_autoreply(email=email, name=name, locale=locale)
+        email_message = Message(
+            subject=subject,
+            sender=mailbox,
+            recipients=[mailbox],
+            body=body,
+            reply_to=email,
+        )
+        mail.send(email_message)
+
+        current_year = datetime.now().year
+        confirmation_title = 'Mensaje recibido' if locale == 'es' else 'Message received'
+        confirmation_description = (
+            '¡Gracias por escribirme! Revisaré tu mensaje y te responderé pronto.'
+            if locale == 'es'
+            else 'Thanks for reaching out! I will review your message and get back to you soon.'
+        )
+
+        confirmation_html = render_template(
+            'emails/email_response_template.html',
+            title=confirmation_title,
+            description=confirmation_description,
+            year=current_year,
+        )
+
+        user_subject = 'Confirmación de contacto' if locale == 'es' else 'Contact confirmation'
+        user_email_message = Message(
+            subject=user_subject,
+            sender=mailbox,
+            recipients=[email],
+            html=confirmation_html,
+        )
+        mail.send(user_email_message)
     except Exception:
-        current_app.logger.exception('Failed to send contact auto-reply email')
+        current_app.logger.exception('Failed to send contact email')
+        flash(error_message, 'error')
+        return redirect(url_for(redirect_endpoint))
 
     flash(success_message, 'success')
     return redirect(url_for(redirect_endpoint))
-
-
-def send_contact_autoreply(email: str, name: str, locale: str = 'en') -> None:
-    locale_code = 'es' if locale == 'es' else 'en'
-
-    subject = 'Gracias por tu mensaje' if locale_code == 'es' else 'Thanks for your message'
-    title = 'Mensaje recibido' if locale_code == 'es' else 'Message received'
-    description = (
-        f'Hola {name}, gracias por escribirme. Recibí tu mensaje y te responderé pronto.'
-        if locale_code == 'es'
-        else f'Hi {name}, thanks for reaching out. I received your message and will reply soon.'
-    )
-
-    html_body = render_template(
-        'emails/email_response_template.html',
-        title=title,
-        description=description,
-        year=datetime.now().year,
-    )
-
-    sender = (
-        (current_app.config.get('MAIL_SENDER') or '').strip()
-        or (current_app.config.get('MAIL_USERNAME') or '').strip()
-    )
-    if not sender:
-        current_app.logger.warning('Auto-reply email skipped: MAIL_SENDER/MAIL_USERNAME is not configured')
-        return
-
-    message = Message(
-        subject=subject,
-        sender=sender,
-        recipients=[email],
-        html=html_body,
-    )
-    mail.send(message)
