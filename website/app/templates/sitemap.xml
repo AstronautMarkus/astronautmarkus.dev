@@ -2,44 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://astronautmarkus.dev/</loc>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/about</loc>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/markus-tech-stack</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/portfolio</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/working-experience-data</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/cv-and-documents</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/external-links</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/contact</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/extras</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/philosophy</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/why-static</loc>
+    <priority>0.6</priority>
+    <changefreq>yearly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/why-not-frameworks</loc>
+    <priority>0.6</priority>
+    <changefreq>yearly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
   <url>
     <loc>https://astronautmarkus.dev/work-and-experience/why-i-build</loc>
+    <priority>0.6</priority>
+    <changefreq>yearly</changefreq>
+    <lastmod>2026-02-27</lastmod>
   </url>
 </urlset>
