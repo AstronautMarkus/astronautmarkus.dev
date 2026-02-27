@@ -10,6 +10,17 @@ def _format_visitor_counter(total_visits: int) -> str:
         return f"{total_visits:04d}"
     return str(total_visits)
 
+
+def _calculate_current_age(birth_date_str: str, date_format: str = '%Y-%m-%d') -> int:
+    today = datetime.now().date()
+    birth_date = datetime.strptime(birth_date_str, date_format).date()
+    age = today.year - birth_date.year
+
+    if (today.month, today.day) < (birth_date.month, birth_date.day):
+        age -= 1
+
+    return age
+
 @home_bp.route('/')
 def index():
 
@@ -18,10 +29,7 @@ def index():
 
     born_day = 'March 16, 2003'
 
-    current_year = datetime.now().year
-    born_year = datetime.strptime('2003-03-16', '%Y-%m-%d').year
-
-    current_age = current_year - born_year
+    current_age = _calculate_current_age('2003-03-16')
 
     quotes = [
         "IF THE CODE WORKS, DON'T TOUCH IT!! - 2003, CREATED BY A HUMAN, FOR HUMANS",
@@ -53,10 +61,7 @@ def index_es():
 
     born_day = '16 de marzo de 2003'
 
-    current_year = datetime.now().year
-    born_year = datetime.strptime('2003-03-16', '%Y-%m-%d').year
-
-    current_age = current_year - born_year
+    current_age = _calculate_current_age('2003-03-16')
 
     quotes = [
         "SI EL CÓDIGO FUNCIONA, ¡NO LO TOQUES! - 2003, CREADO POR UN HUMANO, PARA HUMANOS",
