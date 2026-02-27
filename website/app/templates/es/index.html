@@ -12,8 +12,11 @@ React, Docker{% endblock %}
     <i>AstronautMarkus.Dev</i>
 </div>
 
-<img src="https://count.getloli.com/@astronautmarkusdev?name=astronautmarkusdev&theme=booru-jaypee&padding=4&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"
-    alt="Contador de Visitantes">
+<div>
+    {% for digit in visitor_counter %}
+    <img src="{{ url_for('static', filename='img/booru-jaypee/' ~ digit ~ '.gif') }}" alt="{{ digit }}">
+    {% endfor %}
+</div>
 
 <marquee class="marquee">{{ quote }}</marquee>
 

@@ -2,9 +2,19 @@ from flask import render_template
 from . import home_bp
 from datetime import datetime
 import random
+from app.models.models import Visit
+
+
+def _format_visitor_counter(total_visits: int) -> str:
+    if total_visits <= 9999:
+        return f"{total_visits:04d}"
+    return str(total_visits)
 
 @home_bp.route('/')
 def index():
+
+    visitor_counter = Visit.query.count()
+    visitor_counter_formatted = _format_visitor_counter(visitor_counter)
 
     born_day = 'March 16, 2003'
 
@@ -27,10 +37,19 @@ def index():
 
     random_quote = random.choice(quotes)
 
-    return render_template('index.html', age=current_age, born_day=born_day, quote=random_quote)
+    return render_template(
+        'index.html',
+        age=current_age,
+        born_day=born_day,
+        quote=random_quote,
+        visitor_counter=visitor_counter_formatted
+    )
 
 @home_bp.route('/es')
 def index_es():
+
+    visitor_counter = Visit.query.count()
+    visitor_counter_formatted = _format_visitor_counter(visitor_counter)
 
     born_day = '16 de marzo de 2003'
 
@@ -51,4 +70,10 @@ def index_es():
 
     random_quote = random.choice(quotes)
 
-    return render_template('/es/index.html', age=current_age, born_day=born_day, quote=random_quote)
+    return render_template(
+        '/es/index.html',
+        age=current_age,
+        born_day=born_day,
+        quote=random_quote,
+        visitor_counter=visitor_counter_formatted
+    )
