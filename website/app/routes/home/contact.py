@@ -10,11 +10,46 @@ from app.models.models import ContactMessage
 from . import home_bp
 
 
+def _turnstile_verify_request(payload):
+    data = urlparse.urlencode(payload).encode('utf-8')
+    verification_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+    http_request = urlrequest.Request(verification_url, data=data, method='POST')
+    http_request.add_header('Content-Type', 'application/x-www-form-urlencoded')
+
+    try:
+        with urlrequest.urlopen(http_request, timeout=8) as response:
+            return True, response.status, json.loads(response.read().decode('utf-8'))
+    except HTTPError as error:
+        error_body = ''
+        try:
+            error_body = error.read().decode('utf-8')
+        except Exception:
+            pass
+
+        error_payload = {}
+        if error_body:
+            try:
+                error_payload = json.loads(error_body)
+            except ValueError:
+                error_payload = {'raw': error_body}
+
+        return False, error.code, error_payload
+    except (URLError, TimeoutError, ValueError):
+        current_app.logger.exception('Turnstile verification request failed')
+        return False, None, {}
+
+
 def verify_turnstile_token(token, remote_ip=None):
     secret_key = (current_app.config.get('TURNSTILE_SECRET_KEY') or '').strip()
     if not secret_key:
         current_app.logger.warning('Turnstile verification skipped: TURNSTILE_SECRET_KEY is not configured')
         return False
+
+    if not token:
+        return False
+
+    if remote_ip and ',' in remote_ip:
+        remote_ip = remote_ip.split(',', 1)[0].strip()
 
     payload = {
         'secret': secret_key,
@@ -23,19 +58,28 @@ def verify_turnstile_token(token, remote_ip=None):
     if remote_ip:
         payload['remoteip'] = remote_ip
 
-    data = urlparse.urlencode(payload).encode('utf-8')
-    verification_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
-    http_request = urlrequest.Request(verification_url, data=data, method='POST')
-    http_request.add_header('Content-Type', 'application/x-www-form-urlencoded')
+    request_ok, status_code, verification_result = _turnstile_verify_request(payload)
 
-    try:
-        with urlrequest.urlopen(http_request, timeout=8) as response:
-            verification_result = json.loads(response.read().decode('utf-8'))
-    except (HTTPError, URLError, TimeoutError, ValueError):
-        current_app.logger.exception('Turnstile verification failed')
+    if not request_ok and status_code == 400 and 'remoteip' in payload:
+        current_app.logger.warning('Turnstile returned HTTP 400 with remoteip, retrying without remoteip')
+        payload.pop('remoteip', None)
+        request_ok, status_code, verification_result = _turnstile_verify_request(payload)
+
+    if not request_ok:
+        error_codes = verification_result.get('error-codes') if isinstance(verification_result, dict) else None
+        if isinstance(error_codes, list) and 'invalid-input-secret' in error_codes:
+            current_app.logger.error(
+                'Turnstile secret key is invalid. Verify TURNSTILE_SECRET_KEY (use Secret key, not Site key, for the same widget/environment).'
+            )
+        current_app.logger.warning('Turnstile verification failed with HTTP %s (error-codes=%s)', status_code, error_codes)
         return False
 
-    return bool(verification_result.get('success'))
+    is_success = bool(verification_result.get('success'))
+    if not is_success:
+        error_codes = verification_result.get('error-codes')
+        current_app.logger.info('Turnstile token rejected (error-codes=%s)', error_codes)
+
+    return is_success
 
 @home_bp.route('/contact')
 def contact():
@@ -77,7 +121,7 @@ def submit_contact_message():
         return redirect(url_for(redirect_endpoint))
 
     try:
-        contact_message = ContactMessage(name=name, email=email, message=message)
+        contact_message = ContactMessage(name=name, email=email, message=message, language=locale)
         db.session.add(contact_message)
         db.session.commit()
     except SQLAlchemyError:

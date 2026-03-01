@@ -11,6 +11,17 @@ def to_bool(value, default=False):
         return default
     return str(value).strip().lower() in {'1', 'true', 'yes', 'on'}
 
+
+def clean_env(value, default=''):
+    if value is None:
+        return default
+
+    cleaned = str(value).strip()
+    if len(cleaned) >= 2 and cleaned[0] == cleaned[-1] and cleaned[0] in {'"', "'", '`'}:
+        cleaned = cleaned[1:-1].strip()
+
+    return cleaned
+
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'mysecretkey')
     DB_HOST = os.getenv('DB_HOST', 'localhost')
@@ -35,8 +46,8 @@ class Config:
         MAIL_USE_TLS = True
         MAIL_USE_SSL = False
 
-    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
-    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    MAIL_USERNAME = clean_env(os.getenv('MAIL_USERNAME'), '')
+    MAIL_PASSWORD = clean_env(os.getenv('MAIL_PASSWORD'), '')
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
-    TURNSTILE_SITE_KEY = os.getenv('TURNSTILE_SITE_KEY', '')
-    TURNSTILE_SECRET_KEY = os.getenv('TURNSTILE_SECRET_KEY', '')
+    TURNSTILE_SITE_KEY = clean_env(os.getenv('TURNSTILE_SITE_KEY', ''), '')
+    TURNSTILE_SECRET_KEY = clean_env(os.getenv('TURNSTILE_SECRET_KEY', ''), '')

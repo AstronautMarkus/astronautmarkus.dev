@@ -4,8 +4,9 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
     username = db.Column(db.String(20), nullable=False)
-    color = db.Column(db.Enum('red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'gray'), nullable=False, default='gray')
+    color = db.Column(db.Enum('hotpink', 'cyan', 'lime', 'gold', 'orchid', 'skyblue', 'khaki', 'plum', 'lightcoral', 'palegreen'), nullable=False, default='hotpink')
     ip_address = db.Column(db.String(45), nullable=False)
+    language = db.Column(db.String(10), nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 class ContactMessage(db.Model):
@@ -13,6 +14,7 @@ class ContactMessage(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     message = db.Column(db.String(1000), nullable=False)
+    language = db.Column(db.String(10), nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 class TechStack(db.Model):
