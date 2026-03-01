@@ -42,7 +42,7 @@ def _get_notes_messages(locale='en'):
     if locale == 'es':
         return {
             'empty_content': 'El contenido no puede estar vacío.',
-            'long_content': 'El contenido debe tener máximo 200 caracteres.',
+            'long_content': 'El contenido debe tener máximo 100 caracteres.',
             'long_username': 'El nombre debe tener máximo 20 caracteres.',
             'missing_ip': 'No fue posible detectar tu IP. Intenta de nuevo.',
             'captcha_error': 'Completa la verificación de seguridad para continuar.',
@@ -52,7 +52,7 @@ def _get_notes_messages(locale='en'):
 
     return {
         'empty_content': 'Note content cannot be empty.',
-        'long_content': 'Note content must be 200 characters or less.',
+        'long_content': 'Note content must be 100 characters or less.',
         'long_username': 'Username must be 20 characters or less.',
         'missing_ip': 'Unable to detect your IP address. Please try again.',
         'captcha_error': 'Please complete the security verification to continue.',
@@ -180,7 +180,7 @@ def _notes_handler(locale='en'):
             flash(messages['empty_content'], 'danger')
             return redirect(url_for(redirect_endpoint))
 
-        if len(content) > 200:
+        if len(content) > 100:
             flash(messages['long_content'], 'danger')
             return redirect(url_for(redirect_endpoint))
 

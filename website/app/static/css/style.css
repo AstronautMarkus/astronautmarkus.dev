@@ -597,7 +597,7 @@ input[type="radio"] {
   padding: 0;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 46px 1fr;
+  grid-template-columns: 46px minmax(0, 1fr);
   align-items: start;
 }
 
@@ -633,6 +633,9 @@ input[type="radio"] {
   line-height: 1.4;
   white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
 }
 
 .note-card-date {
