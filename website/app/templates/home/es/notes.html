@@ -1,0 +1,68 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Notas - Marcos Reyes{% endblock %}
+{% block description %}¡Déjame una nota! Ya sea retroalimentación, una pregunta o un mensaje amistoso, me encantaría
+leerte. Tus notas se mostrarán aquí para que todos las vean.{% endblock %}
+{% block keywords %}notas, retroalimentación, mensajes, Marcos Reyes{% endblock %}
+
+{% block content %}
+<h1>Notas</h1>
+<p>Diviértete dejando una nota de lo que quieras. <br> Se asume que no hay un algoritmo que valide lo que escribes,
+    por lo tanto, <br> si escribes algo fuerte o sugerente, será asunto tuyo.</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}">
+    <p>{{ message }}</p>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="container">
+    <section>
+        <h3>Notas recientes</h3>
+
+        {% if notes %}
+        <ul class="notes-grid">
+            {% for note in notes %}
+            <li class="note-card">
+                <div class="note-card-header">
+                    <strong>Nota</strong>
+                </div>
+                <span class="note-card-title" style="color: {{ note.color }}; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">{{ note.username }} Dice:</span>
+                <p class="note-card-content">{{ note.content }}</p>
+                <small class="note-card-date">{{ note.created_at }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Aún no hay notas.</p>
+        {% endif %}
+    </section>
+</div>
+
+<div class="container">
+    <form method="POST" action="{{ url_for('home.es_notes') }}">
+        <div>
+            <label for="username">Nombre (opcional):</label>
+            <input type="text" id="username" name="username" maxlength="20" placeholder="Tu nombre">
+        </div>
+
+        <div>
+            <label for="content">Mensaje:</label>
+            <textarea id="content" name="content" maxlength="200" required placeholder="Escribe lo que quieras..."></textarea>
+        </div>
+
+        <div class="notes-form-actions">
+            <label for="anonymous" class="inline-checkbox">
+                <input type="checkbox" id="anonymous" name="anonymous" value="true" checked>
+                Publicar como anónimo
+            </label>
+            <button type="submit">Publicar</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

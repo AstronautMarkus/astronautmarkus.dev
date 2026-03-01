@@ -12,5 +12,6 @@ from . import (
     working_experience_data,
     external_links,
     contact,
-    extras
+    extras,
+    notes,
 )

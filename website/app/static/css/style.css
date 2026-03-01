@@ -185,6 +185,26 @@ a {
   transform: scale(1.05);
 }
 
+.notes-button {
+  background: linear-gradient(135deg, #2d5016, #52b788);
+  color: #ffffff;
+  border: 2px solid #2d5016;
+  border-top-color: #52b788;
+  border-left-color: #52b788;
+  border-right-color: #2d5016;
+  border-bottom-color: #2d5016;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000000;
+}
+
+.notes-button:hover {
+  background: linear-gradient(135deg, #52b788, #2d5016);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 0 15px rgba(82, 183, 136, 0.8), 0 0 8px rgba(45, 80, 22, 0.65);
+  transform: scale(1.05);
+}
+
 .social-media-button {
   color: #ffffff;
   font-weight: bold;
@@ -381,7 +401,7 @@ label {
   color: #e7e7ff;
 }
 
-input,
+input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
   width: 100%;
@@ -417,6 +437,28 @@ select:focus {
   border-right-color: #595968;
   border-bottom-color: #595968;
   color: black;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.notes-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.inline-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
 }
 
 .alert {
@@ -531,4 +573,59 @@ select:focus {
 .ascii-code-block::-webkit-scrollbar-thumb {
   background: #5a5a81;
   border: 1px solid #8f8fa8;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+  padding: 0;
+}
+
+.note-card {
+  list-style: none;
+  text-align: left;
+  background: #c0c0c0;
+  color: #000;
+  border: 2px solid #808080;
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-right-color: #404040;
+  border-bottom-color: #404040;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #606060;
+  padding: 0;
+  overflow: hidden;
+}
+
+.note-card-title {
+  display: block;
+  padding: 8px 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.note-card-header {
+  padding: 6px 8px;
+  background: linear-gradient(90deg, #663399 0%, #9370db 100%);
+  color: #fff;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.note-card-content {
+  margin: 0;
+  padding: 12px 10px 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.note-card-date {
+  display: block;
+  padding: 0 10px 12px;
+  font-size: 11px;
+  color: #2a2a2a;
 }
