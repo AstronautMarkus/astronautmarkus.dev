@@ -31,7 +31,9 @@ social networks.{% endblock %}
         <input type="email" id="email" name="_replyto" placeholder="your@email.com" required><br><br>
         <label for="message">Message:</label><br>
         <textarea id="message" name="message" rows="5" placeholder="Your message here..." required></textarea><br><br>
+        <div class="cf-turnstile" style="display: flex; justify-content: center;" data-sitekey="{{ turnstile_site_key }}" data-language="en"></div><br>
         <input type="submit" class="route-button" value="Send">
     </form>
 </div>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endblock %}

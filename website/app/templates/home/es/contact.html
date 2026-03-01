@@ -32,7 +32,9 @@ correo electrónico o redes sociales.{% endblock %}
         <input type="email" id="email" name="_replyto" placeholder="tu@email.com" required><br><br>
         <label for="message">Mensaje:</label><br>
         <textarea id="message" name="message" rows="5" placeholder="Tu mensaje aquí..." required></textarea><br><br>
+        <div class="cf-turnstile" style="display: flex; justify-content: center;" data-sitekey="{{ turnstile_site_key }}" data-language="es"></div><br>
         <input type="submit" class="route-button" value="Enviar">
     </form>
 </div>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endblock %}
