@@ -379,6 +379,18 @@ table tbody tr:hover {
   z-index: -1;
 }
 
+
+.halo-image {
+  position: absolute;
+  bottom: 10px;
+  left: 50px;
+  width: 100px;
+  height: 100px;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: -1;
+}
+
 form {
   margin: 25px auto;
   padding: 18px;
