@@ -385,11 +385,23 @@ table tbody tr:hover {
   bottom: 10px;
   left: 50px;
   width: 100px;
-  height: 100px;
+  height: auto;
   opacity: 0.6;
   pointer-events: none;
   z-index: -1;
 }
+
+.death-star-image {
+  position: absolute;
+  top: 400px;
+  right: 150px;
+  width: 20px;
+  height: auto;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
+}
+
 
 form {
   margin: 25px auto;
