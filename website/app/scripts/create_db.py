@@ -68,7 +68,8 @@ def init_database():
                 title=project['title'],
                 description=project['description'],
                 spanish_description=project['spanish_description'],
-                project_url=project['project_url']
+                project_url=project['project_url'],
+                image_url=project.get('image_url')
             )
             db.session.add(p)
             db.session.flush()

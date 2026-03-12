@@ -662,6 +662,49 @@ input[type="radio"] {
   min-width: 0;
 }
 
+.portfolio-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  text-align: left;
+}
+
+.portfolio-img {
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.portfolio-img img {
+  width: 200px;
+  height: auto;
+  border: 2px solid #8f8fa8;
+  border-top-color: #dedee8;
+  border-left-color: #dedee8;
+  border-right-color: #595968;
+  border-bottom-color: #595968;
+  display: block;
+}
+
+.portfolio-info {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .portfolio-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .portfolio-img,
+  .portfolio-img img {
+    width: 100%;
+    height: auto;
+  }
+}
+
 .note-card-date {
   display: block;
   padding: 0 10px 12px;

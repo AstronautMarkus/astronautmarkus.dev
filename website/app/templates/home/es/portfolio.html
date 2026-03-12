@@ -9,21 +9,32 @@
 <p>Un registro constantemente actualizado de todos mis repositorios de GitHub.</p>
 
 {% for project in projects %}
-<div class="container">
-    <h2>{{ project.title }}</h2>
-    <p>{{ project.spanish_description }}</p>
-    <p><strong>Tecnologías utilizadas:</strong>
-        {% for tag in project.tech_tags %}
-        {{ tag.name }}{% if not loop.last %}, {% endif %}
-        {% endfor %}
-    </p>
-    {% if project.project_url %}
-    <a href="{{ project.project_url }}" target="_blank">
-        <img src="{{ url_for('static', filename='img/88x31_buttons/github-check.gif')}}" alt="Repositorio de Github">
-    </a>
-    {% else %}
-    <img src="{{  url_for('static', filename='img/88x31_buttons/tohell.gif')}}" alt="No hay repositorio disponible">
-    {% endif %}
+<div class="container portfolio-card">
+    <div class="portfolio-img">
+        {% if project.image_url %}
+        <img src="{{ project.image_url }}" alt="{{ project.title }} vista previa">
+        {% else %}
+        <img src="{{ url_for('static', filename='img/No_Image_Available.jpg') }}" alt="Imagen no disponible">
+        {% endif %}
+    </div>
+    <div class="portfolio-info">
+        <h2 style="text-align: center;">{{ project.title }}</h2>
+        <p>{{ project.description }}</p>
+        <p><strong>Stack Tecnológico:</strong>
+            {% for tag in project.tech_tags %}
+            {{ tag.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        {% if project.project_url %}
+        <a href="{{ project.project_url }}" target="_blank">
+            <button class="btn btn-primary">Ver Repositorio en GitHub</button>
+        </a>
+
+        {% else %}
+        <p><em>No hay repositorio de GitHub disponible. ¡Qué pena!</em></p>
+
+        {% endif %}
+    </div>
 </div>
 {% endfor %}
 {% endblock %}

@@ -33,6 +33,7 @@ class PortfolioProject (db.Model):
     spanish_description = db.Column(db.String(500), nullable=False)
     project_url = db.Column(db.String(200), nullable=True)
     tech_tags = db.relationship('TechTag', secondary='project_tech_tag', backref='projects')
+    image_url = db.Column(db.String(200), nullable=True)
 
 class TechTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
