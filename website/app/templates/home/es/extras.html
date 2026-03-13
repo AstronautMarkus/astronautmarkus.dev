@@ -10,20 +10,20 @@
 
 <div class="container">
     <h3>Canciones de Youtube</h3>
-    <div class="playlist-embed">
-        {% for playlist in playlists %}
-            {{ playlist.iframe | safe }}
+    <div>
+        {% for song in youtube_songs %}
+            <a href="{{ song.youtube_url }}" target="_blank">{{ song.title }} <br><br></a>
         {% endfor %}
     </div>
 </div>
 
 <div class="container">
-    <h3>Videos Underground</h3>
-    {% for video in underground_videos %}
-        <div class="video-embed">
-            {{ video.iframe | safe }}
-        </div>
-    {% endfor %}
+    <h3>Videos Underground de Youtube</h3>
+    <div>
+        {% for video in youtube_videos %}
+            <a href="{{ video.youtube_url }}" target="_blank">{{ video.title }} <br><br></a>
+        {% endfor %}
+    </div>
 </div>
 
 <div class="container">

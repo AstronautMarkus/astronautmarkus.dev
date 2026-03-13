@@ -70,3 +70,13 @@ class Visit(db.Model):
     ip_address = db.Column(db.String(45), nullable=False)
     user_agent = db.Column(db.String(200), nullable=True)
     visited_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+class ExtraYoutubeSong(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    youtube_url = db.Column(db.String(200), nullable=False)
+
+class ExtraYoutubeVideo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    youtube_url = db.Column(db.String(200), nullable=False)

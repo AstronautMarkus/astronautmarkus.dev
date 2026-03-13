@@ -15,6 +15,8 @@ from app.models.models import (
     WorkExperience,
     ExperienceTechnology,
     WorkExperienceTechnology,
+    ExtraYoutubeSong,
+    ExtraYoutubeVideo,
 )
 
 def load_techstack_data():
@@ -29,6 +31,11 @@ def load_portfolio_data():
 
 def load_working_experience_data():
     json_path = os.path.join(os.path.dirname(__file__), 'working_experience_data.json')
+    with open(json_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+def load_extras_data():
+    json_path = os.path.join(os.path.dirname(__file__), 'extras.json')
     with open(json_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
@@ -128,6 +135,38 @@ def init_database():
 
         db.session.commit()
         print("Working experience data inserted.")
+
+        # Insert extras songs and videos
+        extras_data = load_extras_data()
+
+        for song in extras_data.get('youtube_songs', []):
+            title = (song.get('title') or '').strip()
+            youtube_url = (song.get('youtube_url') or '').strip()
+            if not title or not youtube_url:
+                continue
+
+            exists = ExtraYoutubeSong.query.filter_by(
+                title=title,
+                youtube_url=youtube_url
+            ).first()
+            if not exists:
+                db.session.add(ExtraYoutubeSong(title=title, youtube_url=youtube_url))
+
+        for video in extras_data.get('youtube_videos', []):
+            title = (video.get('title') or '').strip()
+            youtube_url = (video.get('youtube_url') or '').strip()
+            if not title or not youtube_url:
+                continue
+
+            exists = ExtraYoutubeVideo.query.filter_by(
+                title=title,
+                youtube_url=youtube_url
+            ).first()
+            if not exists:
+                db.session.add(ExtraYoutubeVideo(title=title, youtube_url=youtube_url))
+
+        db.session.commit()
+        print("Extras songs and videos inserted.")
 
 def reset_database():
     """Delete all tables and recreate them."""
