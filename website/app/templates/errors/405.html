@@ -15,7 +15,7 @@ else '405, method not allowed, Marcos Reyes, website error' %}
 {% block content %}
 <div class="container">
 	{% if is_spanish %}
-	<h1>Error 405</h1>
+	<h1><img src="{{ url_for('static', filename='img/icons/w2k_stop.ico')}}" alt="Error" class="icon"> Error 405</h1>
 	<p>El método que intentaste usar no está permitido para esta página. <br> Por favor, vuelve e inténtalo de otra forma.</p>
 	<div class="error-content">
 		<img src="{{ url_for('static', filename='img/di-gi-charat-dejiko.gif') }}" alt="Di Gi Charat Dejiko">
@@ -25,7 +25,7 @@ else '405, method not allowed, Marcos Reyes, website error' %}
 		</div>
 	</div>
 	{% else %}
-	<h1>Error 405</h1>
+	<h1><img src="{{ url_for('static', filename='img/icons/w2k_stop.ico')}}" alt="Error" class="icon"> Error 405</h1>
 	<p>The method you tried to use is not allowed for this page. <br> Please go back and try a different action.</p>
 	<div class="error-content">
 		<img src="{{ url_for('static', filename='img/di-gi-charat-dejiko.gif') }}" alt="Di Gi Charat Dejiko">

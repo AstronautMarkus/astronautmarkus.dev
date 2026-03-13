@@ -17,7 +17,7 @@ else '404, page not found, Marcos Reyes, website error, missing page' %}
 {% block content %}
 <div class="container">
     {% if is_spanish %}
-    <h1>Error 404</h1>
+    <h1><img src="{{ url_for('static', filename='img/icons/w2k_stop.ico')}}" alt="Error" class="icon"> Error 404</h1>
     <p>La página que estás buscando no existe. <br> Puede que haya sido movida o eliminada. Una disculpa de antemano.
     </p>
     <div class="error-content">
@@ -28,7 +28,7 @@ else '404, page not found, Marcos Reyes, website error, missing page' %}
         </div>
     </div>
     {% else %}
-    <h1>Error 404</h1>
+    <h1><img src="{{ url_for('static', filename='img/icons/w2k_stop.ico')}}" alt="Error" class="icon"> Error 404</h1>
     <p>The page you are looking for does not exist. It may have been moved or deleted. <br> We apologize for the
         inconvenience.</p>
     <div class="error-content">
