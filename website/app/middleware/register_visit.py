@@ -16,6 +16,31 @@ def _is_valid_request_for_visit_register() -> bool:
 	return True
 
 
+def _extract_utm_source_and_presence() -> tuple[str | None, bool]:
+	utm_params = {}
+
+	for key, value in request.args.items():
+		if key.startswith('utm_'):
+			cleaned_value = (value or '').strip()
+			if cleaned_value:
+				utm_params[key] = cleaned_value
+
+	legacy_utm_source = request.args.get('utm', type=str)
+	if legacy_utm_source and legacy_utm_source.strip():
+		utm_params.setdefault('utm_source', legacy_utm_source.strip())
+
+	has_utm_params = bool(utm_params)
+	utm_source = utm_params.get('utm_source')
+
+	if not utm_source and has_utm_params:
+		utm_source = '|'.join(f'{key}:{value}' for key, value in sorted(utm_params.items()))
+
+	if utm_source:
+		utm_source = utm_source[:100]
+
+	return utm_source, has_utm_params
+
+
 def register_visit_middleware() -> None:
 	if not _is_valid_request_for_visit_register():
 		return
@@ -25,6 +50,7 @@ def register_visit_middleware() -> None:
 		return
 
 	user_agent = request.headers.get('User-Agent')
+	utm_source, has_utm_params = _extract_utm_source_and_presence()
 
 	last_visit = (
 		Visit.query
@@ -40,7 +66,7 @@ def register_visit_middleware() -> None:
 			return
 
 	try:
-		visit = Visit(ip_address=ip_address, user_agent=user_agent)
+		visit = Visit(ip_address=ip_address, user_agent=user_agent, utm_source=utm_source)
 		db.session.add(visit)
 		db.session.commit()
 	except Exception:

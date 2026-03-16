@@ -69,6 +69,7 @@ class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ip_address = db.Column(db.String(45), nullable=False)
     user_agent = db.Column(db.String(200), nullable=True)
+    utm_source = db.Column(db.String(100), nullable=True)
     visited_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 class ExtraYoutubeSong(db.Model):
