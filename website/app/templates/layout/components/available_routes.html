@@ -71,6 +71,12 @@
         <img src="{{ url_for('static', filename='img/icons/w98_note.ico')}}" alt="{{ 'Notas' if is_spanish else 'Notes' }}" class="route-icon">
         {{ 'Notas' if is_spanish else 'Notes' }}
     </a>
+
+    <a href="{{ url_for('home.cv_and_documents_es' if is_spanish else 'home.cv_and_documents') }}" class="route-button cv-documents-button">
+        <img src="{{ url_for('static', filename='img/icons/w98_certificate_seal.ico')}}" alt="{{ 'CV y Documentos' if is_spanish else 'CV and Documents' }}" class="route-icon">
+        {{ 'CV y Documentos' if is_spanish else 'CV and Documents' }}
+    </a>
+
     {% else %}
     <a href="{{ url_for('home.index_es' if is_spanish else 'home.index') }}" class="route-button">
         <img src="{{ url_for('static', filename='img/icons/w98_homepage.ico')}}" alt="{{ 'Volver al inicio' if is_spanish else 'Back Home' }}" class="route-icon">
