@@ -52,9 +52,14 @@ def init_database():
         # Insert tech stack data
         techstack_data = load_techstack_data()
         for item in techstack_data:
-            exists = TechStack.query.filter_by(name=item['name'], type=item['type']).first()
+            name = (item.get('name') or '').strip()
+            tech_type = (item.get('type') or '').strip()
+            if not name or not tech_type:
+                continue
+
+            exists = TechStack.query.filter_by(name=name, type=tech_type).first()
             if not exists:
-                db.session.add(TechStack(**item))
+                db.session.add(TechStack(name=name, type=tech_type))
         db.session.commit()
         print("Tech stack data inserted.")
         # Insert portfolio projects and tags

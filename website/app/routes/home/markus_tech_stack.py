@@ -7,45 +7,29 @@ from collections import defaultdict
 
 def type_priority(type_name):
     normalized = (type_name or '').strip().lower()
-    if 'front' in normalized:
+    if normalized == 'front end':
         return 0
-    if 'back' in normalized:
+    if normalized == 'back end':
         return 1
-    if 'database' in normalized or 'base de datos' in normalized:
+    if normalized == 'database / cache':
         return 2
-    if 'devops' in normalized:
+    if normalized == 'devops':
         return 3
     return 99
 
 
-def build_techstack_by_type(use_spanish=False):
+def get_techstack_by_type():
     techstack = TechStack.query.all()
-    techstack.sort(
-        key=lambda tech: (
-            type_priority(tech.spanish_type if use_spanish else tech.type),
-            ((tech.spanish_type if use_spanish else tech.type) or '').lower(),
-            (tech.name or '').lower()
-        )
-    )
-
-    techstack_by_type = defaultdict(list)
+    techstack.sort(key=lambda tech: (type_priority(tech.type), (tech.type or '').lower(), (tech.name or '').lower()))
+    grouped = defaultdict(list)
     for tech in techstack:
-        group_type = tech.spanish_type if use_spanish else tech.type
-        if use_spanish:
-            techstack_by_type[group_type].append({
-                'name': tech.name,
-                'tech_type': tech.tech_type,
-                'opinion': tech.spanish_opinion,
-            })
-        else:
-            techstack_by_type[group_type].append(tech)
-
-    return dict(techstack_by_type)
+        grouped[tech.type].append(tech)
+    return dict(grouped)
 
 @home_bp.route('/markus-tech-stack')
 def markus_tech_stack():
-    return render_template('/home/markus_tech_stack.html', techstack_by_type=build_techstack_by_type())
+    return render_template('/home/markus_tech_stack.html', techstack_by_type=get_techstack_by_type())
 
 @home_bp.route('/es/markus-tech-stack')
 def markus_tech_stack_es():
-    return render_template('/home/es/markus_tech_stack.html', techstack_by_type=build_techstack_by_type(use_spanish=True))
+    return render_template('/home/es/markus_tech_stack.html', techstack_by_type=get_techstack_by_type())

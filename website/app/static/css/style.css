@@ -386,6 +386,27 @@ table tbody tr:hover {
   font-size: 18px;
 }
 
+.tech-stack-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.tech-stack-section {
+  width: 100%;
+}
+
+.tech-stack-section .tech-type-title {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .tech-stack-container {
+    grid-template-columns: 1fr;
+  }
+}
+
 .error-content {
   display: flex;
   align-items: center;

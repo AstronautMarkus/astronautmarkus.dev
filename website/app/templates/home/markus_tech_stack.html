@@ -10,27 +10,25 @@
     <i>The Stack that I use for development, hosting and learning</i>
 </div>
 
-<div class="container">
+<div class="container tech-stack-container">
     {% for tech_type, items in techstack_by_type.items() %}
-    <h2 class="tech-type-title">{{ tech_type }}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Technology</th>
-                <th>Tech Type</th>
-                <th>Opinion</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for tech in items %}
-            <tr>
-                <td>{{ tech.name }}</td>
-                <td>{{ tech.tech_type }}</td>
-                <td>{{ tech.opinion }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <section class="tech-stack-section">
+        <h2 class="tech-type-title">{{ tech_type }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Technology</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tech in items %}
+                <tr>
+                    <td>{{ tech.name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
     {% endfor %}
 </div>
 
