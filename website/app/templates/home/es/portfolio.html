@@ -35,16 +35,27 @@
                     {{ tag.name }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </p>
+
+                
+
                 {% if project.github_url %}
                 <a href="{{ project.github_url }}" target="_blank">
-                    <button class="btn btn-primary">Ver Repositorio en GitHub</button>
+                    <button>
+                        <img src="{{ url_for('static', filename='img/icons/github.svg') }}" alt="About website" class="route-icon"> Ver Repositorio en GitHub
+                    </button>
                 </a>
-
-                {% else %}
-                <p><em>No hay repositorio de GitHub disponible.</em></p>
 
                 {% endif %}
             </div>
+
+            {% if project.project_url %}
+            <a href="{{ project.project_url }}" target="_blank">
+                <button>
+                    <img src="{{ url_for('static', filename='img/icons/w98_directory_net_web.ico') }}" alt="Visitar Sitio Web" class="route-icon"> Visitar Sitio Web
+                </button>
+            </a>
+            {% endif %}
+
         </div>
         {% endfor %}
     {% endif %}

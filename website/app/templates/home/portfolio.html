@@ -8,48 +8,61 @@ endblock %}
 open-source contributions{% endblock %}
 
 {% block content %}
-<h1><img src="{{ url_for('static', filename='img/icons/w98_directory_open_cabinet_fc.ico')}}" alt="Portfolio" class="icon"> Portfolio</h1>
+<h1><img src="{{ url_for('static', filename='img/icons/w98_directory_open_cabinet_fc.ico')}}" alt="Portfolio"
+        class="icon"> Portfolio</h1>
 <p>Explore my digital experience developing for my clients and personal projects.</p>
 
 {% set group_labels = {
-    'professional': 'Professional Projects',
-    'college': 'College Projects',
-    'personal': 'Personal Projects',
-    'community': 'Community Projects'
+'professional': 'Professional Projects',
+'college': 'College Projects',
+'personal': 'Personal Projects',
+'community': 'Community Projects'
 } %}
 
 {% for group_type in ['professional', 'college', 'personal', 'community'] %}
-    {% if grouped_projects[group_type] %}
-    <h2>{{ group_labels[group_type] }}</h2>
-        {% for project in grouped_projects[group_type] %}
-        <div class="container portfolio-card">
-            <div class="portfolio-img">
-                {% if project.image_url %}
-                <a href="{{ project.image_url }}" target="_blank"><img src="{{ project.image_url }}" alt="{{ project.title }} preview"></a>
-                {% else %}
-                <img src="{{ url_for('static', filename='img/No_Image_Available.jpg') }}" alt="No image available">
-                {% endif %}
-            </div>
-            <div class="portfolio-info">
-                <h2 style="text-align: center;">{{ project.title }}</h2>
-                <p>{{ project.description }}</p>
-                <p><strong>Tech Stack:</strong>
-                    {% for tag in project.tech_tags %}
-                    {{ tag.name }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
-                {% if project.github_url %}
-                <a href="{{ project.project_url }}" target="_blank">
-                    <button class="btn btn-primary">View Repository on GitHub</button>
-                </a>
+{% if grouped_projects[group_type] %}
+<h2>{{ group_labels[group_type] }}</h2>
+{% for project in grouped_projects[group_type] %}
+<div class="container portfolio-card">
+    <div class="portfolio-img">
+        {% if project.image_url %}
+        <a href="{{ project.image_url }}" target="_blank"><img src="{{ project.image_url }}"
+                alt="{{ project.title }} preview"></a>
+        {% else %}
+        <img src="{{ url_for('static', filename='img/No_Image_Available.jpg') }}" alt="No image available">
+        {% endif %}
+    </div>
+    <div class="portfolio-info">
+        <h2 style="text-align: center;">{{ project.title }}</h2>
+        <p>{{ project.description }}</p>
+        <p><strong>Tech Stack:</strong>
+            {% for tag in project.tech_tags %}
+            {{ tag.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
 
-                {% else %}
-                <p><em>No GitHub repository available.</em></p>
+        {% if project.github_url %}
+        <a href="{{ project.github_url }}" target="_blank">
+            <button>
+                <img src="{{ url_for('static', filename='img/icons/github.svg') }}" alt="About website"
+                    class="route-icon"> View Repository on GitHub
+            </button>
+        </a>
 
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
+        {% endif %}
+    </div>
+
+    {% if project.project_url %}
+    <a href="{{ project.project_url }}" target="_blank">
+        <button>
+            <img src="{{ url_for('static', filename='img/icons/w98_directory_net_web.ico') }}" alt="Visit Website"
+                class="route-icon"> Visit Website
+        </button>
+    </a>
     {% endif %}
+
+</div>
+{% endfor %}
+{% endif %}
 {% endfor %}
 {% endblock %}

@@ -201,6 +201,7 @@
     {
         "title": "Reyes&Friends App",
         "project_type": "professional",
+        "project_url": "https://reyesandfriends.cl",
         "description": "This application was developed to support Reyes&Friends operations with a centralized and efficient digital workflow. The product was shaped around daily team needs, aiming to improve internal coordination, reduce repetitive tasks, and provide a stable foundation for long-term growth.",
         "spanish_description": "Esta aplicación fue desarrollada para apoyar la operación de Reyes&Friends con un flujo digital centralizado y eficiente. El producto fue construido en torno a necesidades reales del equipo, buscando mejorar la coordinación interna, reducir tareas repetitivas y ofrecer una base estable para crecimiento a largo plazo.",
         "github_url": "https://github.com/reyesandfriends/reyesandfriends-app",
@@ -216,6 +217,7 @@
     {
         "title": "ReyesHosting",
         "project_type": "professional",
+        "project_url": "https://reyeshosting.cl",
         "description": "ReyesHosting was created as a platform for selling Minecraft hosting and related gaming services. The system provides an experience for both customers and the administrative team, aiming to facilitate service management, improve communication, and offer a solid foundation for future growth.",
         "spanish_description": "ReyesHosting fue creado como una plataforma para la venta de Hosting de Minecraft y videojuegos relacionados. El sistema contiene una experiencia tanto para clientes como para el equipo de administración, con el objetivo de facilitar la gestión de servicios, mejorar la comunicación y ofrecer una base sólida para el crecimiento futuro.",
         "tags": [
