@@ -6,35 +6,47 @@
 
 {% block content %}
 <h1><img src="{{ url_for('static', filename='img/icons/w98_directory_open_cabinet_fc.ico')}}" alt="Portafolio" class="icon"> Portafolio</h1>
-<p>Un registro constantemente actualizado de todos mis repositorios de GitHub.</p>
+<p>Visita mi experiencia digital desarrollando para mis clientes o proyectos personales.</p>
 
-{% for project in projects %}
-<div class="container portfolio-card">
-    <div class="portfolio-img">
-        {% if project.image_url %}
-        <img src="{{ project.image_url }}" alt="{{ project.title }} vista previa">
-        {% else %}
-        <img src="{{ url_for('static', filename='img/No_Image_Available.jpg') }}" alt="Imagen no disponible">
-        {% endif %}
-    </div>
-    <div class="portfolio-info">
-        <h2 style="text-align: center;">{{ project.title }}</h2>
-        <p>{{ project.spanish_description }}</p>
-        <p><strong>Stack Tecnológico:</strong>
-            {% for tag in project.tech_tags %}
-            {{ tag.name }}{% if not loop.last %}, {% endif %}
-            {% endfor %}
-        </p>
-        {% if project.project_url %}
-        <a href="{{ project.project_url }}" target="_blank">
-            <button class="btn btn-primary">Ver Repositorio en GitHub</button>
-        </a>
+{% set group_labels = {
+    'professional': 'Proyectos Profesionales',
+    'college': 'Proyectos Universitarios',
+    'personal': 'Proyectos Personales',
+    'community': 'Proyectos Comunitarios'
+} %}
 
-        {% else %}
-        <p><em>No hay repositorio de GitHub disponible. ¡Qué pena!</em></p>
+{% for group_type in ['professional', 'college', 'personal', 'community'] %}
+    {% if grouped_projects[group_type] %}
+    <h2>{{ group_labels[group_type] }}</h2>
+        {% for project in grouped_projects[group_type] %}
+        <div class="container portfolio-card">
+            <div class="portfolio-img">
+                {% if project.image_url %}
+                <a href="{{ project.image_url }}" target="_blank"><img src="{{ project.image_url }}" alt="{{ project.title }} preview"></a>
+                {% else %}
+                <img src="{{ url_for('static', filename='img/No_Image_Available.jpg') }}" alt="Imagen no disponible">
+                {% endif %}
+            </div>
+            <div class="portfolio-info">
+                <h2 style="text-align: center;">{{ project.title }}</h2>
+                <p>{{ project.spanish_description }}</p>
+                <p><strong>Stack Tecnológico:</strong>
+                    {% for tag in project.tech_tags %}
+                    {{ tag.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                {% if project.project_url %}
+                <a href="{{ project.project_url }}" target="_blank">
+                    <button class="btn btn-primary">Ver Repositorio en GitHub</button>
+                </a>
 
-        {% endif %}
-    </div>
-</div>
+                {% else %}
+                <p><em>No hay repositorio de GitHub disponible.</em></p>
+
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
 {% endfor %}
 {% endblock %}

@@ -1,154 +1,231 @@
 [
     {
         "title": "ESP8266 Labs",
+        "project_type": "college",
         "description": "Project with ESP8266, Arduino and C++.",
         "spanish_description": "Proyecto con ESP8266, Arduino y C++.",
         "project_url": "https://github.com/AstronautMarkus/ESP8266-Labs",
-        "tags": ["Arduino", "C++"],
+        "tags": [
+            "Arduino",
+            "C++"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fesp8266-labs.png"
     },
     {
         "title": "TurnoMaster",
+        "project_type": "college",
         "description": "Shift management system with React, TailwindCSS, Laravel, MySQL, Chart.js and Axios.",
         "spanish_description": "Sistema de gestión de turnos con React, TailwindCSS, Laravel, MySQL, Chart.js y Axios.",
         "project_url": null,
-        "tags": ["React", "TailwindCSS", "Laravel", "MySQL", "Chart.js", "Axios"],
+        "tags": [
+            "React",
+            "TailwindCSS",
+            "Laravel",
+            "MySQL",
+            "Chart.js",
+            "Axios"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fturnomaster.png"
     },
     {
         "title": "FumoIndex",
+        "project_type": "community",
         "description": "Touhou Fumo Wiki-style website with Laravel, MySQL and Tailwind CSS.",
         "spanish_description": "Sitio web estilo wiki de Touhou Fumo con Laravel, MySQL, Livewire y Tailwind CSS.",
         "project_url": "https://github.com/astronautmarkus/fumoindex",
-        "tags": ["Laravel", "MySQL", "Tailwind CSS", "Livewire"],
+        "tags": [
+            "Laravel",
+            "MySQL",
+            "Tailwind CSS",
+            "Livewire"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Ffumoindex.png"
     },
     {
-        "title": "AbbyBot Project",
-        "description": "Discord bot in Python and MySQL.",
-        "spanish_description": "Bot de Discord en Python y MySQL.",
-        "project_url": "https://github.com/AbbyBot/Discord-AbbyBot",
-        "tags": ["Discord.py", "Python", "MySQL"],
-        "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fabbybot-project.png"
-    },
-    {
         "title": "Blog AstronautMarkus",
+        "project_type": "personal",
         "description": "Personal blog with Laravel, Blade, Tailwind CSS, MySQL and PHP.",
         "spanish_description": "Blog personal con Laravel, Blade, Tailwind CSS, MySQL y PHP.",
         "project_url": "https://github.com/AstronautMarkus/blog.astronautmarkus.dev",
-        "tags": ["Laravel", "Blade", "Tailwind CSS", "MySQL", "PHP"],
+        "tags": [
+            "Laravel",
+            "Blade",
+            "Tailwind CSS",
+            "MySQL",
+            "PHP"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fblog-astronautmarkus.png"
     },
     {
-        "title": "AbbyBot Project Website",
-        "description": "Website for AbbyBot using Flask, Python, Bootstrap, MySQL, Gunicorn and Docker.",
-        "spanish_description": "Sitio web para AbbyBot usando Flask, Python, Bootstrap, MySQL, Gunicorn y Docker.",
-        "project_url": "https://github.com/AbbyBot/AbbyBot-Website",
-        "tags": ["Flask", "Python", "Bootstrap", "MySQL", "Gunicorn", "Docker"],
-        "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fabbybot-project-website.jpg"
-    },
-    {
         "title": "Multi Stock Sync",
+        "project_type": "professional",
         "description": "Stock synchronization with React, Node.js, Bootstrap, Chart.js and Axios.",
         "spanish_description": "Sincronización de stock con React, Node.js, Bootstrap, Chart.js y Axios.",
         "project_url": "https://github.com/AstronautMarkus/Multi-Stock-Sync",
-        "tags": ["React", "Node.js", "Bootstrap", "Chart.js", "Axios"],
+        "tags": [
+            "React",
+            "Node.js",
+            "Bootstrap",
+            "Chart.js",
+            "Axios"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmulti-stock-sync.png"
     },
     {
         "title": "Multi Stock Sync Back",
+        "project_type": "professional",
         "description": "Backend for Multi Stock Sync with Laravel, Sanctum, MySQL and PHP.",
         "spanish_description": "Backend para Multi Stock Sync con Laravel, Sanctum, MySQL y PHP.",
         "project_url": "https://github.com/AstronautMarkus/Multi-Stock-Sync-Back",
-        "tags": ["Laravel", "Sanctum", "MySQL", "PHP"],
+        "tags": [
+            "Laravel",
+            "Sanctum",
+            "MySQL",
+            "PHP"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmulti-stock-sync-back.png"
     },
     {
         "title": "Multi Stock Sync API Viewer",
+        "project_type": "professional",
         "description": "API viewer for Multi Stock Sync using Laravel and Swagger.",
         "spanish_description": "Visor de API para Multi Stock Sync usando Laravel y Swagger.",
         "project_url": "https://github.com/AstronautMarkus/Multi-Stock-API-Viewer",
-        "tags": ["Laravel", "Swagger"],
+        "tags": [
+            "Laravel",
+            "Swagger"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmulti-stock-sync-api-viewer.png"
     },
     {
         "title": "MofuStore",
+        "project_type": "college",
         "description": "Online store with Python, Django, Bootstrap and MySQL.",
         "spanish_description": "Tienda en línea con Python, Django, Bootstrap y MySQL.",
         "project_url": null,
-        "tags": ["Python", "Django", "Bootstrap", "MySQL"],
+        "tags": [
+            "Python",
+            "Django",
+            "Bootstrap",
+            "MySQL"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmofustore.jpg"
     },
     {
         "title": "CamellosFood Repartidor",
+        "project_type": "college",
         "description": "Delivery driver app with Ionic, Angular and Django.",
         "spanish_description": "App para repartidores con Ionic, Angular y Django.",
         "project_url": "https://github.com/AstronautMarkus/CamellosFood-Repartidor-3.0",
-        "tags": ["Ionic", "Angular", "Django"],
+        "tags": [
+            "Ionic",
+            "Angular",
+            "Django"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fcamellosfood-repartidor.jpg"
     },
     {
         "title": "Constru MIC",
+        "project_type": "college",
         "description": "Construction management system with Django, Bootstrap and MySQL.",
         "spanish_description": "Sistema de gestión de construcción con Django, Bootstrap y MySQL.",
         "project_url": "https://github.com/MarcosKingsDuoc/CONSTRU_MIC",
-        "tags": ["Django", "Bootstrap", "MySQL"],
+        "tags": [
+            "Django",
+            "Bootstrap",
+            "MySQL"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fconstru-mic.jpg"
     },
     {
         "title": "MofuLunches Web",
+        "project_type": "college",
         "description": "Website for MofuLunches using Flask and Bootstrap.",
         "spanish_description": "Sitio web para MofuLunches usando Flask y Bootstrap.",
         "project_url": "https://github.com/AstronautMarkus/MofuLunches-Web",
-        "tags": ["Flask", "Bootstrap"],
+        "tags": [
+            "Flask",
+            "Bootstrap"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmofu-lunches-web.jpg"
     },
     {
         "title": "MofuLunches API",
+        "project_type": "college",
         "description": "API for MofuLunches with Python, Flask and MongoDB.",
         "spanish_description": "API para MofuLunches con Python, Flask y MongoDB.",
         "project_url": "https://github.com/AstronautMarkus/MofuLunches-API",
-        "tags": ["Python", "Flask", "MongoDB"],
+        "tags": [
+            "Python",
+            "Flask",
+            "MongoDB"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmofulunches-api.jpg"
     },
     {
         "title": "MofuLunches Totem",
+        "project_type": "college",
         "description": "Interactive kiosk for MofuLunches using Electron, Arduino and React.",
         "spanish_description": "Tótem interactivo para MofuLunches usando Electron, Arduino y React.",
         "project_url": "https://github.com/AstronautMarkus/MofuLunches-Totem",
-        "tags": ["Electron", "Arduino", "React"],
+        "tags": [
+            "Electron",
+            "Arduino",
+            "React"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmofulunches-totem.jpg"
     },
     {
         "title": "MofuLunches ElDimon",
+        "project_type": "college",
         "description": "ElDimon project with Arduino and C++.",
         "spanish_description": "Proyecto ElDimon con Arduino y C++.",
         "project_url": "https://github.com/AstronautMarkus/MofuLunches-ElDimon",
-        "tags": ["Arduino", "C++"],
+        "tags": [
+            "Arduino",
+            "C++"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmofulunches-eldimon.jpg"
     },
     {
         "title": "MofuLunches ElDimon Listener",
+        "project_type": "college",
         "description": "Listener for ElDimon using Python and PyQt5.",
         "spanish_description": "Listener para ElDimon usando Python y PyQt5.",
         "project_url": "https://github.com/AstronautMarkus/MofuLunches-ElDimon_Listener",
-        "tags": ["Python", "PyQt5"],
+        "tags": [
+            "Python",
+            "PyQt5"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fmofulunches-eldimon-listener.jpg"
     },
     {
-        "title": "ReyesAndFriends App",
-        "description": "App for ReyesAndFriends with React, Tailwind CSS, Flask, Docker and MySQL.",
-        "spanish_description": "App para ReyesAndFriends con React, Tailwind CSS, Flask, Docker y MySQL.",
+        "title": "Reyes&Friends App",
+        "project_type": "professional",
+        "description": "App for Reyes&Friends with React, Tailwind CSS, Flask, Docker and MySQL.",
+        "spanish_description": "App para Reyes&Friends con React, Tailwind CSS, Flask, Docker y MySQL.",
         "project_url": "https://github.com/reyesandfriends/reyesandfriends-app",
-        "tags": ["React", "Tailwind CSS", "Flask", "Docker", "MySQL"],
+        "tags": [
+            "React",
+            "Tailwind CSS",
+            "Flask",
+            "Docker",
+            "MySQL"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Freyesandfriends-app.jpg"
     },
     {
         "title": "ReyesHosting",
+        "project_type": "professional",
         "description": "Hosting platform with Laravel, Tailwind CSS, Livewire and MySQL.",
         "spanish_description": "Plataforma de hosting con Laravel, Tailwind CSS, Livewire y MySQL.",
         "project_url": null,
-        "tags": ["Laravel", "Tailwind CSS", "Livewire", "MySQL"],
+        "tags": [
+            "Laravel",
+            "Tailwind CSS",
+            "Livewire",
+            "MySQL"
+        ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Freyeshosting.jpg"
     }
 ]

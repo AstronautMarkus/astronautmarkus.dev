@@ -26,6 +26,7 @@ class TechStack(db.Model):
 class PortfolioProject (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
+    project_type = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(500), nullable=False)
     spanish_description = db.Column(db.String(500), nullable=False)
     project_url = db.Column(db.String(200), nullable=True)

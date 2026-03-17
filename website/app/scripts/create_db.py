@@ -89,6 +89,7 @@ def init_database():
             db.session.flush()
             p = PortfolioProject(
                 title=project['title'],
+                project_type=project['project_type'],
                 description=project['description'],
                 spanish_description=project['spanish_description'],
                 project_url=project['project_url'],
