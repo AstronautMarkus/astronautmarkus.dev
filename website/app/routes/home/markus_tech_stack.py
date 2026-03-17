@@ -15,6 +15,14 @@ def type_priority(type_name):
         return 2
     if normalized == 'devops':
         return 3
+    if normalized == 'cloud / infrastructure':
+        return 4
+    if normalized == 'operating systems':
+        return 5
+    if normalized == 'developer tools':
+        return 6
+    if normalized == 'design / media':
+        return 7
     return 99
 
 

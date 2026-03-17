@@ -21,6 +21,7 @@ class TechStack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     type = db.Column(db.String(50), nullable=False)
+    image_url = db.Column(db.String(300), nullable=True)
 
 class PortfolioProject (db.Model):
     id = db.Column(db.Integer, primary_key=True)

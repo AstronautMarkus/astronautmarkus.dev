@@ -401,10 +401,18 @@ table tbody tr:hover {
   margin-top: 0;
 }
 
-@media (max-width: 760px) {
-  .tech-stack-container {
-    grid-template-columns: 1fr;
-  }
+.tech-name-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tech-icon-small {
+  width: 32px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .error-content {

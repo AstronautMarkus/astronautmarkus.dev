@@ -23,7 +23,14 @@
             <tbody>
                 {% for tech in items %}
                 <tr>
-                    <td>{{ tech.name }}</td>
+                    <td>
+                        <div class="tech-name-with-icon">
+                            {% if tech.image_url %}
+                            <img src="{{ tech.image_url }}" alt="Icono de {{ tech.name }}" class="tech-icon-small" loading="lazy" decoding="async">
+                            {% endif %}
+                            <span>{{ tech.name }}</span>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
