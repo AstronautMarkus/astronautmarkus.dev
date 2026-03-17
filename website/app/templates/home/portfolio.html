@@ -9,19 +9,19 @@ open-source contributions{% endblock %}
 
 {% block content %}
 <h1><img src="{{ url_for('static', filename='img/icons/w98_directory_open_cabinet_fc.ico')}}" alt="Portfolio" class="icon"> Portfolio</h1>
-<p>A list of projects completed for my clients and personal projects.</p>
+<p>A constantly updated record of all my GitHub repositories.</p>
 
 {% for project in projects %}
 <div class="container portfolio-card">
-    <h2 class="portfolio-title">{{ project.title }}</h2>
     <div class="portfolio-img">
         {% if project.image_url %}
-        <a href="{{ project.image_url }}" target="_blank"><img src="{{ project.image_url }}" alt="{{ project.title }} preview"></a>
+        <img src="{{ project.image_url }}" alt="{{ project.title }} preview">
         {% else %}
         <img src="{{ url_for('static', filename='img/No_Image_Available.jpg') }}" alt="No image available">
         {% endif %}
     </div>
     <div class="portfolio-info">
+        <h2 style="text-align: center;">{{ project.title }}</h2>
         <p>{{ project.description }}</p>
         <p><strong>Tech Stack:</strong>
             {% for tag in project.tech_tags %}
@@ -30,11 +30,11 @@ open-source contributions{% endblock %}
         </p>
         {% if project.project_url %}
         <a href="{{ project.project_url }}" target="_blank">
-            <button class="btn btn-primary">Source code on github</button>
+            <button class="btn btn-primary">View Repository on GitHub</button>
         </a>
 
         {% else %}
-        <p><em>No project URL available.</em></p>
+        <p><em>No GitHub repository available. What a pity!</em></p>
 
         {% endif %}
     </div>
