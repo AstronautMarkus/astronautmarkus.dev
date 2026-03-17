@@ -35,8 +35,8 @@
                     {{ tag.name }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </p>
-                {% if project.project_url %}
-                <a href="{{ project.project_url }}" target="_blank">
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank">
                     <button class="btn btn-primary">Ver Repositorio en GitHub</button>
                 </a>
 

@@ -38,7 +38,7 @@ open-source contributions{% endblock %}
                     {{ tag.name }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </p>
-                {% if project.project_url %}
+                {% if project.github_url %}
                 <a href="{{ project.project_url }}" target="_blank">
                     <button class="btn btn-primary">View Repository on GitHub</button>
                 </a>

@@ -2,9 +2,9 @@
     {
         "title": "ESP8266 Labs",
         "project_type": "college",
-        "description": "Project with ESP8266, Arduino and C++.",
-        "spanish_description": "Proyecto con ESP8266, Arduino y C++.",
-        "project_url": "https://github.com/AstronautMarkus/ESP8266-Labs",
+        "description": "This project was my first serious step into understanding how small connected devices can solve real-world problems. I focused on learning how hardware and software communicate, how to structure reliable logic, and how to transform simple electronic components into useful tools that react to the environment in meaningful ways.",
+        "spanish_description": "Este proyecto fue mi primer paso serio para comprender cómo los dispositivos conectados de bajo costo pueden resolver problemas reales. Me enfoqué en aprender cómo se comunican el hardware y el software, cómo estructurar lógica confiable y cómo transformar componentes electrónicos simples en herramientas útiles que reaccionan al entorno de forma significativa.",
+        "github_url": "https://github.com/AstronautMarkus/ESP8266-Labs",
         "tags": [
             "Arduino",
             "C++"
@@ -14,12 +14,11 @@
     {
         "title": "TurnoMaster",
         "project_type": "college",
-        "description": "Shift management system with React, TailwindCSS, Laravel, MySQL, Chart.js and Axios.",
-        "spanish_description": "Sistema de gestión de turnos con React, TailwindCSS, Laravel, MySQL, Chart.js y Axios.",
-        "project_url": null,
+        "description": "TurnoMaster was designed to reduce the stress of organizing people, schedules, and responsibilities in daily operations. Beyond assigning shifts, the goal was to provide clarity for teams, improve communication, and give decision-makers a clear view of workload distribution through an interface that feels practical, simple, and supportive.",
+        "spanish_description": "TurnoMaster fue diseñado para reducir el estrés de organizar personas, horarios y responsabilidades en la operación diaria. Más allá de asignar turnos, el objetivo fue entregar claridad a los equipos, mejorar la comunicación y ofrecer a quienes toman decisiones una visión clara de la carga de trabajo mediante una interfaz práctica, simple y de apoyo.",
         "tags": [
             "React",
-            "TailwindCSS",
+            "Tailwind CSS",
             "Laravel",
             "MySQL",
             "Chart.js",
@@ -30,9 +29,9 @@
     {
         "title": "FumoIndex",
         "project_type": "community",
-        "description": "Touhou Fumo Wiki-style website with Laravel, MySQL and Tailwind CSS.",
-        "spanish_description": "Sitio web estilo wiki de Touhou Fumo con Laravel, MySQL, Livewire y Tailwind CSS.",
-        "project_url": "https://github.com/astronautmarkus/fumoindex",
+        "description": "FumoIndex was born out of a real need in the community: to document and store FumoFumo products from the Touhou Project Saga and related. With the constant growth of the community, it became evident that there was a need for a shared space where fans could discover, organize, and preserve collective knowledge. The project emphasizes accessibility, clear navigation, and friendly collaboration, turning scattered information into a living reference that is easy to explore and enjoyable to contribute to.",
+        "spanish_description": "FumoIndex nació desde una necesidad real de la comunidad: Documentar y almacenar los productos FumoFumo de la Saga Touhou Project y relacionadas. Con el constante crecimiento de la comunidad, se hizo evidente la necesidad de un espacio compartido donde los fans pudieran descubrir, organizar y preservar el conocimiento colectivo. El proyecto enfatiza la accesibilidad, navegación clara y colaboración amigable, convirtiendo la información dispersa en una referencia viva que es fácil de explorar y agradable de contribuir.",
+        "github_url": "https://github.com/astronautmarkus/fumoindex",
         "tags": [
             "Laravel",
             "MySQL",
@@ -44,24 +43,24 @@
     {
         "title": "Blog AstronautMarkus",
         "project_type": "personal",
-        "description": "Personal blog with Laravel, Blade, Tailwind CSS, MySQL and PHP.",
-        "spanish_description": "Blog personal con Laravel, Blade, Tailwind CSS, MySQL y PHP.",
-        "project_url": "https://github.com/AstronautMarkus/blog.astronautmarkus.dev",
+        "description": "This personal blog is my space to document lessons learned, practical tutorials, and reflections from real development experiences. Every article is written to be useful and honest, with the intention of helping others grow faster, avoid common mistakes, and feel accompanied in their own learning journey.",
+        "spanish_description": "Este blog personal es mi espacio para documentar aprendizajes, tutoriales prácticos y reflexiones basadas en experiencias reales de desarrollo. Cada artículo está escrito para ser útil y honesto, con la intención de ayudar a otras personas a avanzar más rápido, evitar errores comunes y sentirse acompañadas en su propio proceso de aprendizaje.",
+        "github_url": "https://github.com/AstronautMarkus/blog.astronautmarkus.dev",
+        "project_url": "https://blog.astronautmarkus.dev",
         "tags": [
-            "Laravel",
-            "Blade",
+            "Astro",
             "Tailwind CSS",
-            "MySQL",
-            "PHP"
+            "Node.js",
+            "Markdown"
         ],
         "image_url": "https://objectstorage.sa-valparaiso-1.oraclecloud.com/n/axm3vdh15xem/b/astronautmarkus-dev/o/personal-website%2Fproject_photos%2Fblog-astronautmarkus.png"
     },
     {
         "title": "Multi Stock Sync",
         "project_type": "professional",
-        "description": "Stock synchronization with React, Node.js, Bootstrap, Chart.js and Axios.",
-        "spanish_description": "Sincronización de stock con React, Node.js, Bootstrap, Chart.js y Axios.",
-        "project_url": "https://github.com/AstronautMarkus/Multi-Stock-Sync",
+        "description": "Multi Stock Sync was created to solve a critical operational challenge: maintaining inventory consistency across multiple digital stores (E-commerce). The platform uses a connection with MercadoLibre, to help synchronize Stock between E-commerce and the management system, helping teams trust their numbers, react quickly to changes, and reduce costly errors caused by outdated or fragmented stock information.",
+        "spanish_description": "Multi Stock Sync fue creado para resolver un desafío operativo crítico: mantener consistencia en el inventario entre múltiples tiendas digitales (E-commerce). La plataforma utiliza una conexión con MercadoLibre, para ayudar a sincronizar el Stock entre los E-commerce y el sistema de gestión, ayudando a los equipos a confiar en sus números, reaccionar rápidamente a los cambios y reducir errores costosos causados por información de stock desactualizada o fragmentada.",
+        "github_url": "https://github.com/AstronautMarkus/Multi-Stock-Sync",
         "tags": [
             "React",
             "Node.js",
@@ -74,9 +73,9 @@
     {
         "title": "Multi Stock Sync Back",
         "project_type": "professional",
-        "description": "Backend for Multi Stock Sync with Laravel, Sanctum, MySQL and PHP.",
-        "spanish_description": "Backend para Multi Stock Sync con Laravel, Sanctum, MySQL y PHP.",
-        "project_url": "https://github.com/AstronautMarkus/Multi-Stock-Sync-Back",
+        "description": "This backend powers the core business logic behind inventory synchronization, ensuring secure data flow, reliable processing, and stable integrations between services. It was built with a strong focus on maintainability and consistency so the entire ecosystem can scale without losing control or accuracy.",
+        "spanish_description": "Este backend impulsa la lógica de negocio central detrás de la sincronización de inventario, asegurando flujo de datos seguro, procesamiento confiable e integraciones estables entre servicios. Fue construido con un enfoque sólido en mantenibilidad y consistencia para que todo el ecosistema pueda escalar sin perder control ni precisión.",
+        "github_url": "https://github.com/AstronautMarkus/Multi-Stock-Sync-Back",
         "tags": [
             "Laravel",
             "Sanctum",
@@ -88,9 +87,9 @@
     {
         "title": "Multi Stock Sync API Viewer",
         "project_type": "professional",
-        "description": "API viewer for Multi Stock Sync using Laravel and Swagger.",
-        "spanish_description": "Visor de API para Multi Stock Sync usando Laravel y Swagger.",
-        "project_url": "https://github.com/AstronautMarkus/Multi-Stock-API-Viewer",
+        "description": "The API Viewer was developed to make technical communication easier between development teams and stakeholders. It transforms complex service endpoints into clear, navigable documentation, helping people understand available operations, expected inputs, and integration possibilities without confusion.",
+        "spanish_description": "El API Viewer fue desarrollado para facilitar la comunicación técnica entre equipos de desarrollo y partes interesadas. Convierte endpoints complejos en documentación clara y navegable, ayudando a comprender operaciones disponibles, entradas esperadas y posibilidades de integración sin confusiones.",
+        "github_url": "https://github.com/AstronautMarkus/Multi-Stock-API-Viewer",
         "tags": [
             "Laravel",
             "Swagger"
@@ -100,9 +99,8 @@
     {
         "title": "MofuStore",
         "project_type": "college",
-        "description": "Online store with Python, Django, Bootstrap and MySQL.",
-        "spanish_description": "Tienda en línea con Python, Django, Bootstrap y MySQL.",
-        "project_url": null,
+        "description": "MofuStore was an academic project focused on understanding the complete flow of a digital commerce experience, from product discovery to purchase completion. It helped me learn how to design a process that feels intuitive for users while also covering inventory control, order handling, and administrative needs.",
+        "spanish_description": "MofuStore fue un proyecto académico enfocado en comprender el flujo completo de una experiencia de comercio digital, desde el descubrimiento de productos hasta la finalización de la compra. Me permitió aprender a diseñar un proceso intuitivo para usuarios, cubriendo también control de inventario, gestión de pedidos y necesidades administrativas.",
         "tags": [
             "Python",
             "Django",
@@ -114,9 +112,9 @@
     {
         "title": "CamellosFood Repartidor",
         "project_type": "college",
-        "description": "Delivery driver app with Ionic, Angular and Django.",
-        "spanish_description": "App para repartidores con Ionic, Angular y Django.",
-        "project_url": "https://github.com/AstronautMarkus/CamellosFood-Repartidor-3.0",
+        "description": "This mobile delivery project aimed to improve how drivers receive, manage, and complete orders in real time. The main priority was creating a smooth operational flow that minimizes friction on the street, improves response time, and gives drivers the information they need exactly when they need it.",
+        "spanish_description": "Este proyecto de reparto móvil buscó mejorar cómo los conductores reciben, gestionan y completan pedidos en tiempo real. La prioridad principal fue crear un flujo operativo fluido que reduzca fricción en terreno, mejore los tiempos de respuesta y entregue la información necesaria en el momento correcto.",
+        "github_url": "https://github.com/AstronautMarkus/CamellosFood-Repartidor-3.0",
         "tags": [
             "Ionic",
             "Angular",
@@ -127,9 +125,10 @@
     {
         "title": "Constru MIC",
         "project_type": "college",
-        "description": "Construction management system with Django, Bootstrap and MySQL.",
-        "spanish_description": "Sistema de gestión de construcción con Django, Bootstrap y MySQL.",
-        "project_url": "https://github.com/MarcosKingsDuoc/CONSTRU_MIC",
+        "description": "Constru MIC was conceived to support project coordination in construction environments, where planning, deadlines, and resource control must remain aligned. The system centralizes operational information so teams can make better decisions, monitor progress clearly, and reduce communication gaps between field and management.",
+        "spanish_description": "Constru MIC fue concebido para apoyar la coordinación de proyectos en entornos de construcción, donde planificación, plazos y control de recursos deben mantenerse alineados. El sistema centraliza información operativa para que los equipos puedan tomar mejores decisiones, monitorear avances con claridad y reducir brechas de comunicación entre terreno y administración.",
+        "project_url": null,
+        "github_url": "https://github.com/MarcosKingsDuoc/CONSTRU_MIC",
         "tags": [
             "Django",
             "Bootstrap",
@@ -140,9 +139,9 @@
     {
         "title": "MofuLunches Web",
         "project_type": "college",
-        "description": "Website for MofuLunches using Flask and Bootstrap.",
-        "spanish_description": "Sitio web para MofuLunches usando Flask y Bootstrap.",
-        "project_url": "https://github.com/AstronautMarkus/MofuLunches-Web",
+        "description": "This website was created to present the MofuLunches service in a clear and welcoming way, helping users quickly understand what is offered and how to interact with the platform. It was an exercise in balancing visual simplicity with practical information architecture to improve user confidence.",
+        "spanish_description": "Este sitio web fue creado para presentar el servicio de MofuLunches de forma clara y cercana, ayudando a las personas a entender rápidamente qué se ofrece y cómo interactuar con la plataforma. Fue un ejercicio de equilibrio entre simplicidad visual y arquitectura de información práctica para mejorar la confianza del usuario.",
+        "github_url": "https://github.com/AstronautMarkus/MofuLunches-Web",
         "tags": [
             "Flask",
             "Bootstrap"
@@ -152,9 +151,9 @@
     {
         "title": "MofuLunches API",
         "project_type": "college",
-        "description": "API for MofuLunches with Python, Flask and MongoDB.",
-        "spanish_description": "API para MofuLunches con Python, Flask y MongoDB.",
-        "project_url": "https://github.com/AstronautMarkus/MofuLunches-API",
+        "description": "The MofuLunches API was designed as the communication backbone between interfaces and business operations. It organizes data exchange in a structured and reliable way, enabling external clients and internal modules to interact consistently while preserving order accuracy and service continuity.",
+        "spanish_description": "La API de MofuLunches fue diseñada como la base de comunicación entre interfaces y operaciones de negocio. Organiza el intercambio de datos de forma estructurada y confiable, permitiendo que clientes externos y módulos internos interactúen con consistencia mientras se conserva la precisión de pedidos y la continuidad del servicio.",
+        "github_url": "https://github.com/AstronautMarkus/MofuLunches-API",
         "tags": [
             "Python",
             "Flask",
@@ -165,9 +164,9 @@
     {
         "title": "MofuLunches Totem",
         "project_type": "college",
-        "description": "Interactive kiosk for MofuLunches using Electron, Arduino and React.",
-        "spanish_description": "Tótem interactivo para MofuLunches usando Electron, Arduino y React.",
-        "project_url": "https://github.com/AstronautMarkus/MofuLunches-Totem",
+        "description": "This project is an interactive kiosk for employees, aiming to facilitate quick and intuitive food ordering in physical locations. Internally it works with Serial to communicate with an RFID reader, leveraging Electron's Main IPC, Preload API, and Renderer to create a smooth and reliable experience. The goal was to reduce wait times, simplify customer interaction, and create a guided flow where people can complete actions confidently even without prior familiarity.",
+        "spanish_description": "Este proyecto es un kiosco interactivo para empleados, con el objetivo de realizar pedidos de comida de forma rápida e intuitiva en ubicaciones físicas. Internamente funciona con Serial para comunicarse con un lector RFID, aprovechando el Main IPC, API Preload y Renderer de Electron para crear una experiencia fluida y confiable. El objetivo era reducir tiempos de espera, simplificar la interacción del cliente y crear un flujo guiado donde las personas puedan completar acciones con confianza incluso sin familiaridad previa.",
+        "github_url": "https://github.com/AstronautMarkus/MofuLunches-Totem",
         "tags": [
             "Electron",
             "Arduino",
@@ -178,9 +177,9 @@
     {
         "title": "MofuLunches ElDimon",
         "project_type": "college",
-        "description": "ElDimon project with Arduino and C++.",
-        "spanish_description": "Proyecto ElDimon con Arduino y C++.",
-        "project_url": "https://github.com/AstronautMarkus/MofuLunches-ElDimon",
+        "description": "ElDimon is a code created in Python to scan RFID cards through a USB interface, and then display the information through serial so it can be read by the MofuLunches Totem. This project helped me deepen my understanding of how digital instructions can generate tangible results in real-world environments, where reliability and immediate response are essential.",
+        "spanish_description": "ElDimon es un código creado en Python para escanear tarjetas RFID a través de una interfaz USB, y luego mostrar la información a través de serial para que pueda ser leída por el Tótem de MofuLunches. Este proyecto me ayudó a profundizar mi comprensión de cómo las instrucciones digitales pueden generar resultados tangibles en entornos reales, donde la confiabilidad y la respuesta inmediata son esenciales.",
+        "github_url": "https://github.com/AstronautMarkus/MofuLunches-ElDimon",
         "tags": [
             "Arduino",
             "C++"
@@ -190,9 +189,9 @@
     {
         "title": "MofuLunches ElDimon Listener",
         "project_type": "college",
-        "description": "Listener for ElDimon using Python and PyQt5.",
-        "spanish_description": "Listener para ElDimon usando Python y PyQt5.",
-        "project_url": "https://github.com/AstronautMarkus/MofuLunches-ElDimon_Listener",
+        "description": "This application was a companion to its sister project ElDimon, providing an interface for scanning RFID cards and easily copying the information into a format the system can understand. Its goal was to make work easier for employees if the scanning process failed on its Totem digital counterpart, ensuring that workflow can continue without interruptions even in unforeseen situations.",
+        "spanish_description": "Esta aplicación es un complemento para su proyecto hermano ElDimon, proporcionando una interfaz para escanear tarjetas RFID y copiar fácilmente la información a un formato que el sistema pueda entender. Su objetivo era facilitarle el trabajo a los empleados si es que el proceso de escaneo fallaba en su contraparte Tótem digital, asegurando que el flujo de trabajo pueda continuar sin interrupciones incluso en situaciones imprevistas.",
+        "github_url": "https://github.com/AstronautMarkus/MofuLunches-ElDimon_Listener",
         "tags": [
             "Python",
             "PyQt5"
@@ -202,9 +201,9 @@
     {
         "title": "Reyes&Friends App",
         "project_type": "professional",
-        "description": "App for Reyes&Friends with React, Tailwind CSS, Flask, Docker and MySQL.",
-        "spanish_description": "App para Reyes&Friends con React, Tailwind CSS, Flask, Docker y MySQL.",
-        "project_url": "https://github.com/reyesandfriends/reyesandfriends-app",
+        "description": "This application was developed to support Reyes&Friends operations with a centralized and efficient digital workflow. The product was shaped around daily team needs, aiming to improve internal coordination, reduce repetitive tasks, and provide a stable foundation for long-term growth.",
+        "spanish_description": "Esta aplicación fue desarrollada para apoyar la operación de Reyes&Friends con un flujo digital centralizado y eficiente. El producto fue construido en torno a necesidades reales del equipo, buscando mejorar la coordinación interna, reducir tareas repetitivas y ofrecer una base estable para crecimiento a largo plazo.",
+        "github_url": "https://github.com/reyesandfriends/reyesandfriends-app",
         "tags": [
             "React",
             "Tailwind CSS",
@@ -217,9 +216,8 @@
     {
         "title": "ReyesHosting",
         "project_type": "professional",
-        "description": "Hosting platform with Laravel, Tailwind CSS, Livewire and MySQL.",
-        "spanish_description": "Plataforma de hosting con Laravel, Tailwind CSS, Livewire y MySQL.",
-        "project_url": null,
+        "description": "ReyesHosting was created as a platform for selling Minecraft hosting and related gaming services. The system provides an experience for both customers and the administrative team, aiming to facilitate service management, improve communication, and offer a solid foundation for future growth.",
+        "spanish_description": "ReyesHosting fue creado como una plataforma para la venta de Hosting de Minecraft y videojuegos relacionados. El sistema contiene una experiencia tanto para clientes como para el equipo de administración, con el objetivo de facilitar la gestión de servicios, mejorar la comunicación y ofrecer una base sólida para el crecimiento futuro.",
         "tags": [
             "Laravel",
             "Tailwind CSS",

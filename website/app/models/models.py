@@ -27,9 +27,10 @@ class PortfolioProject (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     project_type = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(500), nullable=False)
-    spanish_description = db.Column(db.String(500), nullable=False)
+    description = db.Column(db.String(2000), nullable=False)
+    spanish_description = db.Column(db.String(2000), nullable=False)
     project_url = db.Column(db.String(200), nullable=True)
+    github_url = db.Column(db.String(200), nullable=True)
     tech_tags = db.relationship('TechTag', secondary='project_tech_tag', backref='projects')
     image_url = db.Column(db.String(200), nullable=True)
 

@@ -92,7 +92,8 @@ def init_database():
                 project_type=project['project_type'],
                 description=project['description'],
                 spanish_description=project['spanish_description'],
-                project_url=project['project_url'],
+                project_url=project.get('project_url') or None,
+                github_url=project.get('github_url') or None,
                 image_url=project.get('image_url')
             )
             db.session.add(p)
