@@ -709,19 +709,25 @@ input[type="radio"] {
 
 .portfolio-card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   gap: 20px;
   text-align: left;
 }
 
+.portfolio-title {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
 .portfolio-img {
-  flex-shrink: 0;
-  width: 200px;
+  width: 100%;
+  max-width: 640px;
 }
 
 .portfolio-img img {
-  width: 200px;
+  width: 100%;
   height: auto;
   border: 2px solid #8f8fa8;
   border-top-color: #dedee8;
@@ -731,9 +737,15 @@ input[type="radio"] {
   display: block;
 }
 
+.portfolio-img img:hover {
+  border-color: #ae00ff;
+  box-shadow: 0 0 10px #b700ffaa;
+}
+
 .portfolio-info {
-  flex: 1;
+  width: 100%;
   min-width: 0;
+  text-align: center;
 }
 
 .note-card-date {
