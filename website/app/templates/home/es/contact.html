@@ -6,7 +6,8 @@ correo electrónico o redes sociales.{% endblock %}
 {% block keywords %}contacto, correo electrónico, redes sociales, comunicación, Marcos Reyes{% endblock %}
 
 {% block content %}
-<h1><img src="{{ url_for('static', filename='img/icons/w98_mailbox_world.ico')}}" alt="Contacto" class="icon"> Contacto</h1>
+<h1><img src="{{ url_for('static', filename='img/icons/w98_mailbox_world.ico')}}" alt="Contacto" class="icon"> Contacto
+</h1>
 <p>¿Quieres contactarme? Aquí puedes encontrar formas de comunicarte conmigo, ya sea a través de correo electrónico o
     redes sociales.</p>
 
@@ -23,18 +24,20 @@ correo electrónico o redes sociales.{% endblock %}
     {% endfor %}
     {% endif %}
     {% endwith %}
-
-    <form action="{{ url_for('home.submit_contact_message') }}" method="POST">
-        <input type="hidden" name="locale" value="es">
-        <label for="name">Nombre:</label><br>
-        <input type="text" id="name" name="name" placeholder="Tu nombre" required><br><br>
-        <label for="email">Correo Electrónico:</label><br>
-        <input type="email" id="email" name="_replyto" placeholder="tu@email.com" required><br><br>
-        <label for="message">Mensaje:</label><br>
-        <textarea id="message" name="message" rows="5" placeholder="Tu mensaje aquí..." required></textarea><br><br>
-        <div class="cf-turnstile" style="display: flex; justify-content: center;" data-sitekey="{{ turnstile_site_key }}" data-language="es"></div><br>
-        <input type="submit" class="route-button" value="Enviar">
-    </form>
 </div>
+
+<form action="{{ url_for('home.submit_contact_message') }}" method="POST" class="container">
+    <input type="hidden" name="locale" value="es">
+    <label for="name">Nombre:</label><br>
+    <input type="text" id="name" name="name" placeholder="Tu nombre" required><br><br>
+    <label for="email">Correo Electrónico:</label><br>
+    <input type="email" id="email" name="_replyto" placeholder="tu@email.com" required><br><br>
+    <label for="message">Mensaje:</label><br>
+    <textarea id="message" name="message" rows="5" placeholder="Tu mensaje aquí..." required></textarea><br><br>
+    <div class="cf-turnstile" style="display: flex; justify-content: center;" data-sitekey="{{ turnstile_site_key }}"
+        data-language="es"></div><br>
+    <input type="submit" class="route-button" value="Enviar">
+</form>
+
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endblock %}

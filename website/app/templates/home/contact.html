@@ -6,7 +6,8 @@ social networks.{% endblock %}
 {% block keywords %}contact, email, social networks, communication, Marcos Reyes{% endblock %}
 
 {% block content %}
-<h1><img src="{{ url_for('static', filename='img/icons/w98_mailbox_world.ico')}}" alt="Contact" class="icon"> Contact</h1>
+<h1><img src="{{ url_for('static', filename='img/icons/w98_mailbox_world.ico')}}" alt="Contact" class="icon"> Contact
+</h1>
 <p>Want to contact me? Here you can find ways to communicate with me, whether through email or social networks.</p>
 
 <div class="container">
@@ -22,18 +23,20 @@ social networks.{% endblock %}
     {% endfor %}
     {% endif %}
     {% endwith %}
-
-    <form action="{{ url_for('home.submit_contact_message') }}" method="POST">
-        <input type="hidden" name="locale" value="en">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" placeholder="Your name" required><br><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="_replyto" placeholder="your@email.com" required><br><br>
-        <label for="message">Message:</label><br>
-        <textarea id="message" name="message" rows="5" placeholder="Your message here..." required></textarea><br><br>
-        <div class="cf-turnstile" style="display: flex; justify-content: center;" data-sitekey="{{ turnstile_site_key }}" data-language="en"></div><br>
-        <input type="submit" class="route-button" value="Send">
-    </form>
 </div>
+
+<form action="{{ url_for('home.submit_contact_message') }}" method="POST" class="container">
+    <input type="hidden" name="locale" value="en">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" placeholder="Your name" required><br><br>
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="_replyto" placeholder="your@email.com" required><br><br>
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="5" placeholder="Your message here..." required></textarea><br><br>
+    <div class="cf-turnstile" style="display: flex; justify-content: center;" data-sitekey="{{ turnstile_site_key }}"
+        data-language="en"></div><br>
+    <input type="submit" class="route-button" value="Send">
+</form>
+
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endblock %}
