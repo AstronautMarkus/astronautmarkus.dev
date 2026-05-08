@@ -1,3 +1,9 @@
+:root {
+  --frame-width: min(96vw, calc((100vh - 32px) * 4 / 3));
+  --page-gap: 16px;
+  --sidebar-flex-basis: 240px;
+}
+
 body {
   background-color: #000014;
   color: #e7e7ff;
@@ -23,6 +29,34 @@ body {
   background-repeat: repeat;
   margin: 0;
   padding: 16px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+.page-frame {
+  width: var(--frame-width);
+  margin: 0 auto;
+}
+
+.page-shell {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--page-gap);
+  width: 100%;
+}
+
+.page-content {
+  flex: 1 1 560px;
+  min-width: 0;
 }
 
 h1 {
@@ -45,9 +79,29 @@ ul li {
   border-bottom-color: #595968;
   padding: 20px;
   margin: 25px auto;
-  width: min(850px, 94vw);
+  width: min(100%, 850px);
   background: #202038;
   box-shadow: inset 1px 1px 0 #ffffff33, inset -1px -1px 0 #00000066;
+}
+
+.available-routes-sidebar {
+  position: relative;
+  flex: 0 1 var(--sidebar-flex-basis);
+  width: min(100%, 260px);
+  margin: 25px 0;
+  padding: 14px;
+  text-align: left;
+}
+
+.available-routes-sidebar h4 {
+  margin: 0 0 10px;
+  text-align: left;
+}
+
+.available-routes-sidebar .route-button {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
 }
 
 button {
@@ -102,7 +156,7 @@ button:active {
 }
 
 .marquee {
-  width: min(850px, 94vw);
+  width: min(100%, 850px);
   margin: 14px auto 0;
   padding: 8px 0;
   overflow: hidden;

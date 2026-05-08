@@ -43,13 +43,20 @@
         <img id="locale-toggle-image" src="{{ url_for('static', filename='img/88x31_buttons/espanol.gif') }}"
             alt="Cambiar idioma">
     </button>
-    {% block content %}{% endblock %}
+
+    <div class="page-frame">
+        <div class="page-shell">
+            {% include 'layout/components/available_routes.html' %}
+
+            <main class="page-content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+
+        {% include 'layout/components/footer.html' %}
+    </div>
 
     {% block scripts %}{% endblock %}
-
-    {% include 'layout/components/available_routes.html' %}
-
-    {% include 'layout/components/footer.html' %}
 
     <img src="{{ url_for('static', filename='img/halo.webp')}}" alt="Halo" class="halo-image">
     <img src="{{ url_for('static', filename='img/death-star.webp')}}" alt="Death Star" class="death-star-image">
