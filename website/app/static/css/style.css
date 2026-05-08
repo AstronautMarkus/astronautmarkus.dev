@@ -193,18 +193,84 @@ button:active {
   }
 }
 
-.profile-picture {
-  width: 150px;
-  height: 150px;
+.profile-cube-scene {
+  --profile-cube-size: 150px;
+  width: var(--profile-cube-size);
+  height: var(--profile-cube-size);
+  margin: 0 auto 20px;
+  perspective: 900px;
   border: 2px solid #9f9fb5;
   border-top-color: #ffffff;
   border-left-color: #ffffff;
   border-right-color: #5d5d6f;
   border-bottom-color: #5d5d6f;
-  margin-bottom: 20px;
-  pointer-events: none;
+  background: linear-gradient(135deg, #151528, #090912);
+  box-shadow: inset 1px 1px 0 #ffffff22, inset -1px -1px 0 #00000088;
+}
+
+.profile-cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(var(--profile-cube-size) / -2));
+  animation: profile-cube-sway 24s ease-in-out infinite;
+  will-change: transform;
+}
+
+.profile-cube-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+
+.profile-cube-face-front {
+  transform: translateZ(calc(var(--profile-cube-size) / 2));
+}
+
+.profile-cube-face-right {
+  transform: rotateY(90deg) translateZ(calc(var(--profile-cube-size) / 2));
+}
+
+.profile-cube-face-left {
+  transform: rotateY(-90deg) translateZ(calc(var(--profile-cube-size) / 2));
+}
+
+@keyframes profile-cube-sway {
+  0%,
+  20.833% {
+    transform: translateZ(calc(var(--profile-cube-size) / -2)) rotateY(0deg);
+  }
+
+  25%,
+  45.833% {
+    transform: translateZ(calc(var(--profile-cube-size) / -2)) rotateY(-90deg);
+  }
+
+  50%,
+  70.833% {
+    transform: translateZ(calc(var(--profile-cube-size) / -2)) rotateY(0deg);
+  }
+
+  75%,
+  95.833% {
+    transform: translateZ(calc(var(--profile-cube-size) / -2)) rotateY(90deg);
+  }
+
+  100% {
+    transform: translateZ(calc(var(--profile-cube-size) / -2)) rotateY(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-cube {
+    animation: none;
+  }
 }
 
 .footer {

@@ -21,7 +21,16 @@ React, Docker{% endblock %}
 </div>
 
 <div class="container">
-    <img src="{{ url_for('static', filename='img/profile.webp') }}" class="profile-picture" alt="Arte del sitio web">
+    <div class="profile-cube-scene" role="img" aria-label="Arte del sitio web">
+        <div class="profile-cube">
+            <img src="{{ url_for('static', filename='img/profile.webp') }}" class="profile-cube-face profile-cube-face-front"
+                aria-hidden="true">
+            <img src="https://github.com/AstronautMarkus.png" class="profile-cube-face profile-cube-face-right"
+                aria-hidden="true">
+            <img src="https://github.com/MarcosKingsDuoc.png" class="profile-cube-face profile-cube-face-left"
+                aria-hidden="true">
+        </div>
+    </div>
     <h2><img src="{{ url_for('static', filename='img/icons/w98_directory_open_net_web_documents.ico')}}" alt="Network" class="icon"> MI SITIO WEB</h2>
     <p>¡Bienvenidos, viajeros y bots, a mi sitio web personal! Aquí encontrarás una colección de mis proyectos,
         pensamientos y experiencias como desarrollador full stack y administrador de sistemas. Creé este sitio web para

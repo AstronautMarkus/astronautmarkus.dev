@@ -22,7 +22,16 @@ Docker{% endblock %}
 </div>
 
 <div class="container">
-  <img src="{{ url_for('static', filename='img/profile.webp') }}" class="profile-picture" alt="Website Art">
+  <div class="profile-cube-scene" role="img" aria-label="Website Art">
+    <div class="profile-cube">
+      <img src="{{ url_for('static', filename='img/profile.webp') }}" class="profile-cube-face profile-cube-face-front"
+       aria-hidden="true">
+      <img src="https://github.com/AstronautMarkus.png" class="profile-cube-face profile-cube-face-right"
+        aria-hidden="true">
+      <img src="https://github.com/MarcosKingsDuoc.png" class="profile-cube-face profile-cube-face-left"
+        aria-hidden="true">
+    </div>
+  </div>
   <h2><img src="{{ url_for('static', filename='img/icons/w98_directory_open_net_web_documents.ico')}}" alt="Network"
       class="icon"> MY WEBSITE</h2>
   <p>Welcome, travelers and bots, to my personal website! Here, you will find a collection of my projects, thoughts, and
