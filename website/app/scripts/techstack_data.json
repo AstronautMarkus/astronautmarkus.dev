@@ -50,6 +50,7 @@
   {"name": "Nginx", "type": "Cloud / Infrastructure", "image_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg"},
   {"name": "Fortinet", "type": "Cloud / Infrastructure", "image_url": "https://cdn.simpleicons.org/fortinet"},
 
+  {"name": "MacOS", "type": "Operating Systems", "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Finder_Icon_macOS_Big_Sur.png"},
   {"name": "Linux", "type": "Operating Systems", "image_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg"},
   {"name": "Ubuntu", "type": "Operating Systems", "image_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-original.svg"},
   {"name": "Debian", "type": "Operating Systems", "image_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/debian/debian-original.svg"},
