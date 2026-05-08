@@ -53,8 +53,8 @@
 ] %}
 
 <aside class="container available-routes-sidebar">
-    {% if is_home_endpoint %}
     <h4>{{ 'Rutas disponibles' if is_spanish else 'Available routes' }}</h4>
+    {% if is_home_endpoint %}
     {% for item in static_routes %}
     <a href="{{ url_for(item.endpoint_es if is_spanish else item.endpoint_en) }}" class="route-button">
        {% if item.icon %}
