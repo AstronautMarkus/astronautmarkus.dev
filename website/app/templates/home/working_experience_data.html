@@ -10,50 +10,61 @@ contributions{% endblock %}
 <p>Details about my working experience and project data.</p>
 
 <div class="container">
-    <p>If you are a recruiter or simply interested in what I have done, welcome to this section, where you can see a
-        table with the jobs or projects I have done. <img src="{{ url_for('static', filename='img/smilleys/hi.gif') }}" alt="Hi"> </p>
+    <p>If you are a recruiter or simply interested in what I have done, welcome to this section, where you can see
+        the jobs or projects I have done. <img src="{{ url_for('static', filename='img/smilleys/hi.gif') }}" alt="Hi"> </p>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Type of Project</th>
-                <th>Role that I had</th>
-                <th>Technologies Used</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if projects|length == 0 %}
-            <tr>
-                <td colspan="5" style="text-align: center;">No projects available. I guess I am still a baby in the
-                    world of working experience!</td>
-            </tr>
-            {% else %}
-            {% for project in projects %}
-            <tr>
-                <td>{{ project.name }}</td>
-                <td>{{ project.description }}</td>
-                <td>{{ project.type_of_project }}</td>
-                <td>{{ project.role_that_i_had }}</td>
-                <td>
-                    {% if project.technologies|length == 0 %}
-                    N/A
-                    {% else %}
-                    {% for technology in project.technologies %}
-                    {{ technology.name }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-        </tbody>
-    </table>
+    {% if projects|length == 0 %}
+    <div class="projects-grid">
+        <div class="project-card-empty">
+            <p>No projects available. I guess I am still a baby in the world of working experience!</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="projects-grid">
+        {% for project in projects %}
+        <div class="project-card">
+            <div class="project-card-header">
+                <img src="{{ url_for('static', filename='img/icons/w95_2.ico')}}" alt="Project" class="project-header-icon">
+                <div class="project-name">{{ project.name }}</div>
+            </div>
+            
+            <div class="project-card-body">
+                <div class="project-field">
+                    <span class="project-label">Description:</span>
+                    <span class="project-value">{{ project.description }}</span>
+                </div>
+                
+                <div class="project-field">
+                    <span class="project-label">Type:</span>
+                    <span class="project-value">{{ project.type_of_project }}</span>
+                </div>
+                
+                <div class="project-field">
+                    <span class="project-label">My Role:</span>
+                    <span class="project-value">{{ project.role_that_i_had }}</span>
+                </div>
+                
+                <div class="project-field">
+                    <span class="project-label">Technologies:</span>
+                    <span class="project-value">
+                        {% if project.technologies|length == 0 %}
+                        N/A
+                        {% else %}
+                        {% for technology in project.technologies %}
+                        <span class="tech-badge">{{ technology.name }}</span>{% if not loop.last %}<span class="tech-separator">,</span>{% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
-    <a href="{{ url_for('home.work_and_experience')}}" class="route-button"><img style="transform: scaleX(-1);" src="{{ url_for('static', filename='img/icons/w98_media_player_stream_conn1.ico')}}" alt="Go Back" class="route-icon"> Go Back</a>
-
-
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('home.work_and_experience')}}" class="route-button"><img style="transform: scaleX(-1);" src="{{ url_for('static', filename='img/icons/w98_media_player_stream_conn1.ico')}}" alt="Go Back" class="route-icon"> Go Back</a>
+    </div>
 </div>
 
 {% endblock %}
