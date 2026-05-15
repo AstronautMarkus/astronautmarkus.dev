@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}astronautmarkus.dev{% endblock %}</title>
+</head>
+<body>
+
+<nav>
+    <a href="/">astronautmarkus.dev</a>
+    <div>
+        <a href="/lang/en?next={{ request.path }}"{% if current_lang == 'en' %} aria-current="true"{% endif %}>EN</a>
+        <a href="/lang/es?next={{ request.path }}"{% if current_lang == 'es' %} aria-current="true"{% endif %}>ES</a>
+    </div>
+</nav>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>&copy; {{ current_year }} astronautmarkus</p>
+</footer>
+
+</body>
+</html>
