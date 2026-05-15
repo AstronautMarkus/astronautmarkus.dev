@@ -1,8 +1,125 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 {% block title %}Home - astronautmarkus.dev{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Hey, I'm Marcos.</h1>
-<p>Welcome to my personal site.</p>
+
+<div id="hero">
+    <div class="hero-content">
+        <h2>Hi, I'm <span>Marcos</span>.</h2>
+        <p>Welcome, seekers and bots alike to my personal website! This is where I share my projects, thoughts, and the
+            occasional rant about software development. If you're a human, feel free to explore and connect. If you're a
+            bot... well, enjoy the SEO juice.</p>
+        <a href="#" class="glossy-btn">View My Work</a>
+        <a href="#" class="glossy-btn btn-outline">Contact Me</a>
+    </div>
+</div>
+
+<div id="page-content">
+
+    <div id="primary">
+
+        <div class="about-text">
+            <h3 class="section-title">About Me</h3>
+            <p>I specialize in building high-performance web applications and scalable infrastructure. With over a years
+                of experience in the trenches of software development, I've honed my skills in <strong>Python,
+                    JavaScript, PHP</strong>, and a variety of frameworks and tools. I have a passion for late 2000s web
+                UIs, Networking, and all things distributed systems.</p>
+            <p>When I'm not shipping features, I'm experimenting with hardware, tinkering with home automation, taking
+                photos of my cats, or drinking way too much coffee. This site is a labor of love, built from scratch
+                with Flask and a custom-built blog engine. It's my digital playground hehe.</p>
+        </div>
+
+        <div class="skills">
+            <h3 class="section-title">Skills &amp; Stack</h3>
+            <ul class="skills-list">
+                <li>Python / Flask / FastAPI <span class="skill-level">&#9632;&#9632;&#9632;&#9632;&#9633;</span></li>
+                <li>JavaScript / TypeScript <span class="skill-level">&#9632;&#9632;&#9632;&#9632;&#9633;</span></li>
+                <li>PostgreSQL / SQLite <span class="skill-level">&#9632;&#9632;&#9632;&#9633;&#9633;</span></li>
+                <li>Docker / Linux / DevOps <span class="skill-level">&#9632;&#9632;&#9632;&#9633;&#9633;</span></li>
+                <li>HTML / CSS (yes, the real kind) <span class="skill-level">&#9632;&#9632;&#9632;&#9632;&#9632;</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="projects">
+            <h3 class="section-title">Featured Projects</h3>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h4>astronautmarkus.dev</h4>
+                    <p>This very site. Hand-crafted with Flask, no CMS, no bloat. Custom i18n, visit tracking, and a
+                        blog engine built from scratch.</p>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Flask</span>
+                    <span class="project-tag">CSS</span>
+                </div>
+                <div class="project-card">
+                    <h4>Project Codename: NEXUS</h4>
+                    <p>Internal automation platform for orchestrating distributed task queues across multiple cloud
+                        regions with real-time telemetry.</p>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Redis</span>
+                    <span class="project-tag">Docker</span>
+                </div>
+                <div class="project-card">
+                    <h4>Static Site Forge</h4>
+                    <p>A zero-dependency static site generator written in pure Python. Converts Markdown + templates
+                        into deployable HTML. No npm involved.</p>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">CLI</span>
+                </div>
+                <div class="project-card">
+                    <h4>DevLog API</h4>
+                    <p>Headless REST API powering structured development logs. JWT auth, full-text search, category
+                        tagging and RSS feed output.</p>
+                    <span class="project-tag">FastAPI</span>
+                    <span class="project-tag">PostgreSQL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-cta">
+            <h3>Got a project in mind?</h3>
+            <p>I'm available for freelance work, consulting, and interesting collaborations. Let's build something
+                together.</p>
+            <a href="#" class="glossy-btn">Send a Message</a>
+        </div>
+
+    </div>
+
+    <div id="secondary">
+
+        <div class="sidebar-box">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#">Development Blog</a></li>
+                <li><a href="#">GitHub Profile</a></li>
+                <li><a href="#">Download CV</a></li>
+                <li><a href="#">Contact Form</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Latest Posts</h4>
+            <ul>
+                <li><a href="#">Lorem ipsum dolor sit amet</a></li>
+                <li><a href="#">Consectetur adipiscing elit sed</a></li>
+                <li><a href="#">Do eiusmod tempor incididunt</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Status</h4>
+            <p>Currently: <strong style="color: #DE0000;">Available for work</strong></p>
+            <p>Location: Remote<br>Response time: &lt; 48h</p>
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}

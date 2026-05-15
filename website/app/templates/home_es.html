@@ -1,8 +1,112 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 {% block title %}Inicio - astronautmarkus.dev{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Hola, soy Marcos.</h1>
-<p>Bienvenido a mi sitio personal.</p>
+
+<div id="hero">
+    <div class="hero-content">
+        <h2>Hola, soy <span>Marcos</span>.</h2>
+        <p>¡Bienvenidos, curiosos y bots por igual, a mi sitio web personal! Aquí comparto mis proyectos, pensamientos y algún que otro desahogo sobre el desarrollo de software. Si eres humano, siéntete libre de explorar y conectar. Si eres un bot... bueno, disfruta del jugo SEO.</p>
+        <a href="#" class="glossy-btn">Ver mi trabajo</a>
+        <a href="#" class="glossy-btn btn-outline">Contáctame</a>
+    </div>
+</div>
+
+<div id="page-content">
+
+    <div id="primary">
+
+        <div class="about-text">
+            <h3 class="section-title">Sobre mí</h3>
+            <p>Me especializo en construir aplicaciones web de alto rendimiento e infraestructura escalable. Con más de un año de experiencia en las trincheras del desarrollo de software, he perfeccionado mis habilidades en <strong>Python, JavaScript, PHP</strong> y una variedad de frameworks y herramientas. Me apasionan las interfaces web de finales de los 2000, las redes y todo lo relacionado con los sistemas distribuidos.</p>
+            <p>Cuando no estoy lanzando features, experimento con hardware, trasteo con domótica, saco fotos a mis gatos o bebo demasiado café. Este sitio es un trabajo de amor, construido desde cero con Flask y un motor de blog hecho a medida. Es mi patio de recreo digital jeje.</p>
+        </div>
+
+        <div class="skills">
+            <h3 class="section-title">Habilidades y Stack</h3>
+            <ul class="skills-list">
+                <li>Python / Flask / FastAPI <span class="skill-level">&#9632;&#9632;&#9632;&#9632;&#9633;</span></li>
+                <li>JavaScript / TypeScript <span class="skill-level">&#9632;&#9632;&#9632;&#9632;&#9633;</span></li>
+                <li>PostgreSQL / SQLite <span class="skill-level">&#9632;&#9632;&#9632;&#9633;&#9633;</span></li>
+                <li>Docker / Linux / DevOps <span class="skill-level">&#9632;&#9632;&#9632;&#9633;&#9633;</span></li>
+                <li>HTML / CSS (sí, el de verdad) <span class="skill-level">&#9632;&#9632;&#9632;&#9632;&#9632;</span></li>
+            </ul>
+        </div>
+
+        <div class="projects">
+            <h3 class="section-title">Proyectos destacados</h3>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h4>astronautmarkus.dev</h4>
+                    <p>Este mismo sitio. Hecho a mano con Flask, sin CMS, sin bloat. i18n personalizado, seguimiento de visitas y un motor de blog construido desde cero.</p>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Flask</span>
+                    <span class="project-tag">CSS</span>
+                </div>
+                <div class="project-card">
+                    <h4>Proyecto Nombre en Clave: NEXUS</h4>
+                    <p>Plataforma de automatización interna para orquestar colas de tareas distribuidas en múltiples regiones cloud con telemetría en tiempo real.</p>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Redis</span>
+                    <span class="project-tag">Docker</span>
+                </div>
+                <div class="project-card">
+                    <h4>Static Site Forge</h4>
+                    <p>Un generador de sitios estáticos sin dependencias escrito en Python puro. Convierte Markdown + plantillas en HTML desplegable. Sin npm.</p>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">CLI</span>
+                </div>
+                <div class="project-card">
+                    <h4>DevLog API</h4>
+                    <p>API REST headless que gestiona registros de desarrollo estructurados. Autenticación JWT, búsqueda de texto completo, etiquetado por categorías y salida RSS.</p>
+                    <span class="project-tag">FastAPI</span>
+                    <span class="project-tag">PostgreSQL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-cta">
+            <h3>¿Tienes un proyecto en mente?</h3>
+            <p>Estoy disponible para trabajo freelance, consultoría y colaboraciones interesantes. Construyamos algo juntos.</p>
+            <a href="#" class="glossy-btn">Enviar un mensaje</a>
+        </div>
+
+    </div>
+
+    <div id="secondary">
+
+        <div class="sidebar-box">
+            <h4>Enlaces rápidos</h4>
+            <ul>
+                <li><a href="#">Blog de desarrollo</a></li>
+                <li><a href="#">Perfil de GitHub</a></li>
+                <li><a href="#">Descargar CV</a></li>
+                <li><a href="#">Formulario de contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Últimas entradas</h4>
+            <ul>
+                <li><a href="#">Lorem ipsum dolor sit amet</a></li>
+                <li><a href="#">Consectetur adipiscing elit sed</a></li>
+                <li><a href="#">Do eiusmod tempor incididunt</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Estado</h4>
+            <p>Actualmente: <strong style="color: #DE0000;">Disponible para trabajo</strong></p>
+            <p>Ubicación: Remoto<br>Tiempo de respuesta: &lt; 48h</p>
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}

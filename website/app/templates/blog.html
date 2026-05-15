@@ -1,0 +1,66 @@
+{% extends "base/base.html" %}
+
+{% block title %}Blog | AstronautMarkus.dev{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div id="banner">
+    <div class="banner-content">
+        <h2>Next-Generation Web Development</h2>
+        <p>We craft high-performance websites using valid XHTML 1.0 and CSS styling. No heavy frameworks, no
+            unnecessary bloat—just pure semantic code tailored for the modern web browser landscape.</p>
+        <a href="#" class="glossy-btn">Get a Quote Now</a>
+    </div>
+</div>
+
+<div id="main-content">
+
+    <div id="left-col">
+        <div class="post">
+            <h3>Announcing Our New Core Framework-less Architecture</h3>
+            <div class="meta">Posted by Admin on May 15, 2009 | Filed under Tech, Dev</div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut nisl id ipsum aliquet
+                sodales sed nec sapien. Morbi pretium lacus et enim feugiat, non tempor ex varius. Sed varius
+                eleifend mi, at dictum augue accumsan sed. Phasellus feugiat risus sed lectus efficitur, ut
+                tristique lorem lacinia.</p>
+            <p>In this architecture, we reject the bloat of emerging heavy scripting engines and focus purely on
+                raw execution speed and clean Cascading Style Sheets.</p>
+            <a href="#">Read full article &raquo;</a>
+        </div>
+
+        <div class="post">
+            <h3>Optimizing Web Layouts for 1024x768 Displays</h3>
+            <div class="meta">Posted by Webmaster on May 10, 2009 | Filed under Design</div>
+            <p>With widescreen monitors becoming standard, sticking to a strict 960px grid allows us to
+                guarantee perfect presentation across both legacy CRT monitors and modern LCD screens without
+                horizontal scrolling.</p>
+            <a href="#">Read full article &raquo;</a>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div class="sidebar-box">
+            <h4>Latest Projects</h4>
+            <ul>
+                <li><a href="#">E-Commerce Portal v2.0</a></li>
+                <li><a href="#">Corporate Intranet Redesign</a></li>
+                <li><a href="#">Flash Video Integration Hub</a></li>
+                <li><a href="#">Valid XHTML Mobile Template</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Client Resources</h4>
+            <p style="font-size: 11px; color: #AAA; line-height: 1.4;">Access your development sandbox or log in
+                to file a ticket in our SVN repository tracker.</p>
+            <a href="#" style="font-size: 11px;">Client Login Matrix &raquo;</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

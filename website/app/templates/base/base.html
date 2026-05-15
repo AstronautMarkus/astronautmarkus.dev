@@ -1,0 +1,56 @@
+{% macro nav_link(endpoint, label) %}
+<li><a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} class="active"{% endif %}>{{ label }}</a></li>
+{% endmacro %}
+
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <div id="header">
+            <div id="logo">
+                <h1>ASTRONAUT<span>MARKUS</span>.DEV</h1>
+                <div id="tagline">Taking the chance, taking the dream, taking the world.</div>
+            </div>
+        </div>
+
+        <div id="nav">
+            <ul>
+                {{ nav_link('main.home', 'Home' if current_lang == 'en' else 'Inicio') }}
+                {{ nav_link('main.about', 'About' if current_lang == 'en' else 'Acerca de') }}
+                {{ nav_link('main.services', 'Services' if current_lang == 'en' else 'Servicios') }}
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="https://blog.astronautmarkus.dev" target="_blank">Development Blog</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+            <ul id="lang-switcher">
+                <li><a href="/lang/en?next={{ request.path }}"{% if current_lang=='en' %} class="active"{% endif %}>{% if current_lang == 'en' %}English{% else %}Inglés{% endif %}</a></li>
+                <li><a href="/lang/es?next={{ request.path }}"{% if current_lang=='es' %} class="active"{% endif %}>{% if current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a></li>
+            </ul>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+        <div id="footer">
+            &copy; {{ current_year }} AstronautMarkus.dev. {% if current_lang == 'en' %} All rights reserved. {% elif
+            current_lang == 'es' %} Todos los derechos reservados. {% endif %} <br>
+            {% if current_lang == 'en' %} Reject modern complexity and embrace the freedom of simplicity. {% elif
+            current_lang == 'es' %} Rechaza la complejidad moderna y abraza la libertad de lo sencillo. {% endif %}
+        </div>
+
+    </div>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

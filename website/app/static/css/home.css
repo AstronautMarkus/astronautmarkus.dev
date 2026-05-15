@@ -1,0 +1,261 @@
+/* -----------------------------------------------
+   Hero
+----------------------------------------------- */
+#hero {
+    background-image: linear-gradient(to bottom, rgba(26, 0, 0, 0.4), rgba(17, 17, 17, 0.4)), url('/static/images/home/halo-background.jpg');
+    background-size: cover, cover;
+    background-position: center, center;
+    border-bottom: 1px solid #ff0000;
+    padding: 40px 30px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.hero-content {
+    width: 640px;
+    float: left;
+}
+
+.hero-content h2 {
+    font-size: 36px;
+    margin: 0 0 12px 0;
+    color: #FFFFFF;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.hero-content h2 span {
+    color: #DE0000;
+    text-shadow: 0px -1px 0px #000, 0px 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+.hero-content p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #CCCCCC;
+    margin-bottom: 22px;
+}
+
+.glossy-btn {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 10px 20px;
+    background: #DE0000;
+    color: #FFFFFF !important;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #FF3333;
+    border-radius: 5px;
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+}
+
+.glossy-btn.btn-outline {
+    background: transparent;
+    border-color: #DE0000;
+    color: #DE0000 !important;
+    box-shadow: none;
+}
+
+.glossy-btn:hover {
+    text-decoration: none;
+    opacity: 0.85;
+    text-shadow: none;
+}
+
+/* -----------------------------------------------
+   Page Layout
+----------------------------------------------- */
+#page-content {
+    padding: 25px 20px;
+    overflow: hidden;
+}
+
+#primary {
+    width: 600px;
+    float: left;
+}
+
+#secondary {
+    width: 280px;
+    float: right;
+    background: #111111;
+    border: 1px solid #222222;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* -----------------------------------------------
+   Section Titles
+----------------------------------------------- */
+.section-title {
+    font-size: 16px;
+    color: #DE0000;
+    border-bottom: 1px solid #222222;
+    padding-bottom: 8px;
+    margin: 0 0 18px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* -----------------------------------------------
+   About
+----------------------------------------------- */
+.about-text {
+    margin-bottom: 35px;
+}
+
+.about-text p {
+    line-height: 1.8;
+    font-size: 13px;
+    color: #CCCCCC;
+    margin-bottom: 12px;
+}
+
+/* -----------------------------------------------
+   Skills
+----------------------------------------------- */
+.skills {
+    margin-bottom: 35px;
+}
+
+.skills-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.skills-list li {
+    padding: 7px 0;
+    border-bottom: 1px dotted #2a2a2a;
+    font-size: 12px;
+    color: #CCCCCC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skill-level {
+    color: #DE0000;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+/* -----------------------------------------------
+   Projects
+----------------------------------------------- */
+.projects {
+    margin-bottom: 35px;
+}
+
+.projects-grid {
+    overflow: hidden;
+}
+
+.project-card {
+    width: 272px;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    background: #111111;
+    border: 1px solid #222222;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.project-card:nth-child(2n) {
+    margin-right: 0;
+}
+
+.project-card h4 {
+    font-size: 14px;
+    color: #DE0000;
+    margin: 0 0 8px 0;
+    border-bottom: 1px dotted #333333;
+    padding-bottom: 6px;
+}
+
+.project-card p {
+    font-size: 12px;
+    color: #AAAAAA;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.project-tag {
+    display: inline-block;
+    background: #1a0000;
+    border: 1px solid #550000;
+    color: #DE0000;
+    font-size: 10px;
+    padding: 2px 6px;
+    margin-right: 4px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* -----------------------------------------------
+   Contact CTA
+----------------------------------------------- */
+.contact-cta {
+    background: #0d0d0d;
+    border: 1px solid #DE0000;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.contact-cta h3 {
+    color: #FFFFFF;
+    font-size: 20px;
+    margin: 0 0 10px 0;
+}
+
+.contact-cta p {
+    font-size: 13px;
+    color: #AAAAAA;
+    margin-bottom: 18px;
+    line-height: 1.6;
+}
+
+/* -----------------------------------------------
+   Sidebar
+----------------------------------------------- */
+.sidebar-box {
+    margin-bottom: 25px;
+}
+
+.sidebar-box h4 {
+    font-size: 14px;
+    color: #FFFFFF;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    border-left: 3px solid #DE0000;
+    padding-left: 10px;
+}
+
+.sidebar-box ul {
+    margin: 0;
+    padding: 0;
+    list-style: square inside;
+    color: #DE0000;
+}
+
+.sidebar-box ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #222222;
+    font-size: 12px;
+}
+
+.sidebar-box ul li a {
+    color: #CCCCCC;
+    font-weight: normal;
+}
+
+.sidebar-box p {
+    font-size: 12px;
+    color: #888888;
+    line-height: 1.6;
+    margin: 0 0 6px 0;
+}
