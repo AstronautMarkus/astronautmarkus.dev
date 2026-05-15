@@ -1,0 +1,10 @@
+services:
+  web:
+    build: ./
+    ports:
+      - "5016:5016"
+    restart: always
+
+  init-db:
+    build: ./
+    command: python app/scripts/create_db.py --reset
