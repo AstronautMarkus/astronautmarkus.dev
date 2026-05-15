@@ -1,0 +1,170 @@
+#page-content {
+    padding: 25px 20px;
+    overflow: hidden;
+}
+
+#primary {
+    width: 600px;
+    float: left;
+}
+
+#secondary {
+    width: 280px;
+    float: right;
+    background: #111111;
+    border: 1px solid #222222;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+
+.about-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px dotted #222222;
+}
+
+.about-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.about-section p {
+    font-size: 13px;
+    color: #CCCCCC;
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+.about-section em {
+    color: #888888;
+    font-style: italic;
+}
+
+.about-section a {
+    color: #DE0000;
+}
+
+
+.tech-list {
+    margin: 12px 0 0 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #1e1e1e;
+}
+
+.tech-list li {
+    padding: 7px 12px;
+    border-bottom: 1px solid #1a1a1a;
+    font-size: 12px;
+    color: #CCCCCC;
+    background: #0a0a0a;
+}
+
+.tech-list li:nth-child(even) {
+    background: #111111;
+}
+
+.tech-list li:last-child {
+    border-bottom: none;
+}
+
+.tech-list li strong {
+    color: #DE0000;
+    margin-right: 6px;
+}
+
+.credits-list {
+    margin: 12px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.credits-list li {
+    padding: 7px 0;
+    border-bottom: 1px dotted #222222;
+    font-size: 12px;
+    color: #CCCCCC;
+    line-height: 1.6;
+}
+
+.credits-list li:last-child {
+    border-bottom: none;
+}
+
+.credits-list li strong {
+    color: #FFFFFF;
+}
+
+.credits-list li a {
+    color: #DE0000;
+}
+
+
+.personal-content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.personal-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.about-section.contact-cta {
+    background: #0d0d0d;
+    border: 1px solid #DE0000;
+    border-bottom: 1px solid #DE0000;
+    padding: 25px;
+    text-align: center;
+}
+
+.about-section.contact-cta h3 {
+    color: #FFFFFF;
+    font-size: 18px;
+    margin: 0 0 10px 0;
+}
+
+.about-section.contact-cta p {
+    margin-bottom: 18px;
+}
+
+
+.sidebar-box {
+    margin-bottom: 25px;
+}
+
+.sidebar-box h4 {
+    font-size: 14px;
+    color: #FFFFFF;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    border-left: 3px solid #DE0000;
+    padding-left: 10px;
+}
+
+.sidebar-box ul {
+    margin: 0;
+    padding: 0;
+    list-style: square inside;
+    color: #DE0000;
+}
+
+.sidebar-box ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #222222;
+    font-size: 12px;
+}
+
+.sidebar-box ul li a {
+    color: #CCCCCC;
+    font-weight: normal;
+}
+
+.sidebar-box p {
+    font-size: 12px;
+    color: #888888;
+    line-height: 1.6;
+    margin: 0 0 6px 0;
+}
