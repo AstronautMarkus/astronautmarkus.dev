@@ -2,7 +2,7 @@ alembic==1.17.2
 blinker==1.9.0
 click==8.3.1
 flask==3.1.2
-flask-jwt-extended==4.7.1
+flask-login==0.6.3
 flask-mail==0.10.0
 flask-migrate==4.1.0
 flask-sqlalchemy==3.1.1

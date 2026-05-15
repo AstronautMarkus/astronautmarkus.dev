@@ -30,10 +30,19 @@
                 <li><a href="https://blog.astronautmarkus.dev" target="_blank">Development Blog</a></li>
                 <li><a href="#">Contact Us</a></li>
             </ul>
-            <ul id="lang-switcher">
-                <li><a href="/lang/en?next={{ request.path }}"{% if current_lang=='en' %} class="active"{% endif %}>{% if current_lang == 'en' %}English{% else %}Inglés{% endif %}</a></li>
-                <li><a href="/lang/es?next={{ request.path }}"{% if current_lang=='es' %} class="active"{% endif %}>{% if current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a></li>
-            </ul>
+            <div id="nav-right">
+                <ul id="lang-switcher">
+                    <li><a href="/lang/en?next={{ request.path }}"{% if current_lang=='en' %} class="active"{% endif %}>{% if current_lang == 'en' %}English{% else %}Inglés{% endif %}</a></li>
+                    <li><a href="/lang/es?next={{ request.path }}"{% if current_lang=='es' %} class="active"{% endif %}>{% if current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a></li>
+                </ul>
+                <ul id="auth-nav">
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('auth.logout') }}" id="logout-btn">{{ 'Logout' if current_lang == 'en' else 'Salir' }}</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.login') }}" id="login-btn">{{ 'Login' if current_lang == 'en' else 'Entrar' }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
 
         {% block content %}

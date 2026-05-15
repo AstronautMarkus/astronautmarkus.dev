@@ -73,8 +73,37 @@ a:hover {
     display: flex;
 }
 
+#nav-right {
+    display: flex;
+    align-items: stretch;
+}
+
 #lang-switcher {
     border-left: 1px solid #222222;
+}
+
+#auth-nav {
+    border-left: 1px solid #222222;
+}
+
+#auth-nav #login-btn {
+    color: #DE0000;
+    letter-spacing: 0.5px;
+}
+
+#auth-nav #logout-btn {
+    color: #888888;
+}
+
+#auth-nav #login-btn:hover {
+    background-color: #DE0000;
+    color: #FFFFFF;
+}
+
+#auth-nav #logout-btn:hover {
+    background-color: #222222;
+    color: #FFFFFF;
+    text-decoration: none;
 }
 
 #nav ul li a {

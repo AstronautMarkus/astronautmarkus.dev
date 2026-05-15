@@ -1,0 +1,76 @@
+#login-wrap {
+    max-width: 360px;
+    margin: 60px auto;
+    padding: 30px;
+    background: #111111;
+    border: 1px solid #222222;
+    border-top: 3px solid #DE0000;
+}
+
+#login-wrap h2 {
+    margin: 0 0 22px;
+    font-size: 16px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#login-wrap .form-group {
+    margin-bottom: 16px;
+}
+
+#login-wrap label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888888;
+    margin-bottom: 5px;
+}
+
+#login-wrap input[type="text"],
+#login-wrap input[type="password"] {
+    width: 100%;
+    padding: 8px 10px;
+    background: #1a1a1a;
+    border: 1px solid #333333;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+}
+
+#login-wrap input[type="text"]:focus,
+#login-wrap input[type="password"]:focus {
+    border-color: #DE0000;
+}
+
+#login-wrap .login-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 22px;
+    background: #DE0000;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#login-wrap .login-btn:hover {
+    background: #BB0000;
+}
+
+.login-error {
+    font-size: 11px;
+    color: #DE0000;
+    margin-bottom: 16px;
+    padding: 8px 10px;
+    border: 1px solid #DE0000;
+    background: rgba(222, 0, 0, 0.07);
+}

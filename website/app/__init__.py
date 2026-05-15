@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, g, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail
+from flask_login import LoginManager
 from datetime import datetime
 from app.config.config import Config
 from app.i18n import (
@@ -15,9 +16,10 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.routing import RequestRedirect as _WerkzeugRedirect
 from werkzeug.exceptions import NotFound as _WerkzeugNotFound
 
-db      = SQLAlchemy()
-migrate = Migrate()
-mail    = Mail()
+db             = SQLAlchemy()
+migrate        = Migrate()
+mail           = Mail()
+login_manager  = LoginManager()
 
 def create_app():
 	app = Flask(__name__)
@@ -26,6 +28,14 @@ def create_app():
 	db.init_app(app)
 	migrate.init_app(app, db)
 	mail.init_app(app)
+
+	login_manager.init_app(app)
+	login_manager.login_view = 'auth.login'
+
+	@login_manager.user_loader
+	def load_user(user_id):
+		from app.models.models import User
+		return db.session.get(User, int(user_id))
 
 	app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
 	from app.middleware.register_visit import init_visit_middleware
@@ -92,6 +102,9 @@ def create_app():
 	# ── Blueprints ────────────────────────────────────────────────
 	from app.routes.main import main_bp
 	app.register_blueprint(main_bp)
+
+	from app.routes.auth import auth_bp
+	app.register_blueprint(auth_bp)
 
 	# ── Template globals ──────────────────────────────────────────
 	@app.context_processor
