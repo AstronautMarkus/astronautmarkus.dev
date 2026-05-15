@@ -2,4 +2,4 @@ from flask import Blueprint
 
 main_bp = Blueprint('main', __name__)
 
-from app.routes.main import index
+from app.routes.main import index, about
