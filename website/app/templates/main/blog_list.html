@@ -13,7 +13,12 @@
 <div id="blog-banner">
     <div class="blog-banner-inner">
         <h2>// Blog</h2>
-        <p>Development notes, system deep-dives, and the occasional rant.</p>
+        <p>
+            {% if current_lang == 'es' %}
+            Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja.
+            {% else %}
+            Development notes, system deep-dives, and the occasional rant.</p>
+            {% endif %}
     </div>
 </div>
 
