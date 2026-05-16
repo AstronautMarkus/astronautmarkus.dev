@@ -113,7 +113,7 @@
         <div class="sidebar-box">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="#">Development Blog</a></li>
+                <li><a href="{{ url_for('main.blog_list') }}">Development Blog</a></li>
                 <li><a href="https://github.com/astronautmarkus" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
                 {% if cv_url %}
                     <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Download CV</a></li>
@@ -135,7 +135,7 @@
 
         <div class="sidebar-box">
             <h4>Status</h4>
-            <p>Currently: <strong style="color: #DE0000;">Available for work</strong></p>
+            <p>Currently: <strong style="color: #DE0000;">Saturdays and Sundays only</strong><br>Open to new projects.</p>
             <p>Location: Remote<br>Response time: &lt; 48h</p>
         </div>
 
