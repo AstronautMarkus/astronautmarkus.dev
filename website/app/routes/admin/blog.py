@@ -199,7 +199,7 @@ def blog_post_create():
         cover = request.files.get('cover_image')
         if cover and cover.filename:
             ext = secure_filename(cover.filename).rsplit('.', 1)[-1].lower()
-            cover_path = f'blog/posts/{post.id}/cover.{ext}'
+            cover_path = f'blog/posts/{post.slug}/cover.{ext}'
             if _store_img(cover, cover_path):
                 post.cover_image_path = cover_path
             else:
@@ -208,7 +208,7 @@ def blog_post_create():
         # Markdown EN
         md_en = request.files.get('markdown_file')
         if md_en and md_en.filename:
-            path_en = f'blog/posts/{post.id}/content_en.md'
+            path_en = f'blog/posts/{post.slug}/content_en.md'
             if _store_md(md_en, path_en):
                 post.markdown_path = path_en
             else:
@@ -218,7 +218,7 @@ def blog_post_create():
         if has_es:
             md_es = request.files.get('markdown_file_es')
             if md_es and md_es.filename:
-                path_es = f'blog/posts/{post.id}/content_es.md'
+                path_es = f'blog/posts/{post.slug}/content_es.md'
                 if _store_md(md_es, path_es):
                     post.markdown_path_es = path_es
                 else:
@@ -263,7 +263,7 @@ def blog_post_edit(post_id):
         cover = request.files.get('cover_image')
         if cover and cover.filename:
             ext = secure_filename(cover.filename).rsplit('.', 1)[-1].lower()
-            cover_path = f'blog/posts/{post.id}/cover.{ext}'
+            cover_path = f'blog/posts/{post.slug}/cover.{ext}'
             if _store_img(cover, cover_path):
                 if post.cover_image_path and post.cover_image_path != cover_path:
                     storage.delete(post.cover_image_path)
@@ -274,7 +274,7 @@ def blog_post_edit(post_id):
         # Markdown EN
         md_en = request.files.get('markdown_file')
         if md_en and md_en.filename:
-            path_en = f'blog/posts/{post.id}/content_en.md'
+            path_en = f'blog/posts/{post.slug}/content_en.md'
             if _store_md(md_en, path_en):
                 post.markdown_path = path_en
             else:
@@ -284,7 +284,7 @@ def blog_post_edit(post_id):
         if has_es:
             md_es = request.files.get('markdown_file_es')
             if md_es and md_es.filename:
-                path_es = f'blog/posts/{post.id}/content_es.md'
+                path_es = f'blog/posts/{post.slug}/content_es.md'
                 if _store_md(md_es, path_es):
                     post.markdown_path_es = path_es
                 else:
@@ -348,7 +348,7 @@ def blog_post_add_image(post_id):
         return jsonify({'error': 'No image selected.'}), 400
 
     filename = secure_filename(file.filename)
-    path = f'blog/posts/{post_id}/images/{filename}'
+    path = f'blog/posts/{post.slug}/images/{filename}'
     if _store_img(file, path):
         img = BlogPostImage(post_id=post_id, image_path=path)
         db.session.add(img)
