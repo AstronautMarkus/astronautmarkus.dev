@@ -1,76 +1,84 @@
 #login-wrap {
-    max-width: 360px;
+    max-width: 340px;
     margin: 60px auto;
-    padding: 30px;
-    background: #111111;
-    border: 1px solid #222222;
-    border-top: 3px solid #DE0000;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-top: 3px solid #2b5797;
 }
 
 #login-wrap h2 {
-    margin: 0 0 22px;
-    font-size: 16px;
-    color: #FFFFFF;
+    margin: 0 0 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 #login-wrap .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 #login-wrap label {
     display: block;
     font-size: 10px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #888888;
-    margin-bottom: 5px;
+    color: #555555;
+    font-weight: bold;
+    margin-bottom: 4px;
 }
 
 #login-wrap input[type="text"],
 #login-wrap input[type="password"] {
     width: 100%;
-    padding: 8px 10px;
-    background: #1a1a1a;
-    border: 1px solid #333333;
-    color: #FFFFFF;
+    padding: 6px 8px;
+    background: #ffffff;
+    border: 1px solid #aaaaaa;
+    border-top-color: #888888;
+    color: #222222;
     font-size: 12px;
-    font-family: inherit;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
     box-sizing: border-box;
     outline: none;
 }
 
 #login-wrap input[type="text"]:focus,
 #login-wrap input[type="password"]:focus {
-    border-color: #DE0000;
+    border-color: #2b5797;
 }
 
 #login-wrap .login-btn {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin-top: 22px;
-    background: #DE0000;
-    color: #FFFFFF;
+    padding: 8px;
+    margin-top: 20px;
+    background: #2b5797;
+    color: #ffffff;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border: none;
+    border: 1px solid #1d3e6e;
     cursor: pointer;
-    font-family: inherit;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
 }
 
 #login-wrap .login-btn:hover {
-    background: #BB0000;
+    background: #1d3e6e;
 }
 
 .login-error {
     font-size: 11px;
-    color: #DE0000;
-    margin-bottom: 16px;
-    padding: 8px 10px;
-    border: 1px solid #DE0000;
-    background: rgba(222, 0, 0, 0.07);
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #aa0000;
+    margin-bottom: 14px;
+    padding: 6px 10px;
+    border: 1px solid #ffaaaa;
+    border-left-width: 4px;
+    border-left-color: #cc0000;
+    background: #fff0f0;
 }

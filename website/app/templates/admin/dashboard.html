@@ -12,7 +12,7 @@
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:1.75rem">
   <div class="card" style="margin:0">
     <div class="card-title">Portfolio Projects</div>
-    <div style="font-size:2.25rem;font-weight:700;color:#fff;line-height:1">{{ total_projects }}</div>
+    <div style="font-size:2.25rem;font-weight:700;color:#2b5797;line-height:1">{{ total_projects }}</div>
   </div>
 </div>
 
@@ -31,9 +31,9 @@
     <tbody>
     {% for p in recent_projects %}
     <tr>
-      <td style="color:#374151;font-variant-numeric:tabular-nums">{{ p.id }}</td>
-      <td style="font-weight:500">{{ p.title }}</td>
-      <td style="color:#4b5563">{{ p.created_at.strftime('%b %d, %Y') }}</td>
+      <td style="color:#555555;font-variant-numeric:tabular-nums">{{ p.id }}</td>
+      <td style="font-weight:700">{{ p.title }}</td>
+      <td style="color:#777777">{{ p.created_at.strftime('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}">Edit</a>
