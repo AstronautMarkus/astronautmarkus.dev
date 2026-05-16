@@ -31,7 +31,11 @@
           <div class="cover-placeholder">—</div>
         {% endif %}
       </td>
-      <td style="font-weight:700;max-width:240px">{{ p.title }}</td>
+      <td style="font-weight:700;max-width:240px">
+        {{ p.title }}
+        <span class="lang-badge lang-badge-en">EN</span>
+        {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
+      </td>
       <td>
         {% if p.project_url %}
           <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"

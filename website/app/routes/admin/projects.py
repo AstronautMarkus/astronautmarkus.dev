@@ -1,4 +1,4 @@
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
 from werkzeug.utils import secure_filename
 
@@ -52,11 +52,18 @@ def projects_create():
             flash('Title is required.', 'error')
             return render_template('admin/projects/form.html', project=None, extra_images=[])
 
+        has_es = request.form.get('has_es') == '1'
+        title_es = request.form.get('title_es', '').strip() or None
+        description_es = request.form.get('description_es', '').strip() or None
+
         project = PortfolioProject(
             title=title,
             description=request.form.get('description', '').strip() or None,
             project_url=request.form.get('project_url', '').strip() or None,
             github_repo_url=request.form.get('github_repo_url', '').strip() or None,
+            has_es=has_es,
+            title_es=title_es if has_es else None,
+            description_es=description_es if has_es else None,
         )
         db.session.add(project)
         db.session.flush()  # get id before commit
@@ -94,10 +101,17 @@ def projects_edit(project_id):
             return render_template('admin/projects/form.html',
                                    project=project, extra_images=project.extra_images)
 
+        has_es = request.form.get('has_es') == '1'
+        title_es = request.form.get('title_es', '').strip() or None
+        description_es = request.form.get('description_es', '').strip() or None
+
         project.title = title
         project.description = request.form.get('description', '').strip() or None
         project.project_url = request.form.get('project_url', '').strip() or None
         project.github_repo_url = request.form.get('github_repo_url', '').strip() or None
+        project.has_es = has_es
+        project.title_es = title_es if has_es else None
+        project.description_es = description_es if has_es else None
 
         cover = request.files.get('cover_image')
         if cover and cover.filename:
@@ -147,24 +161,21 @@ def projects_delete(project_id):
 def projects_add_image(project_id):
     project = db.session.get(PortfolioProject, project_id)
     if project is None:
-        flash('Project not found.', 'error')
-        return redirect(url_for('admin.projects_list'))
+        return jsonify({'error': 'Project not found.'}), 404
 
     file = request.files.get('image')
     if not file or not file.filename:
-        flash('No image selected.', 'error')
-        return redirect(url_for('admin.projects_edit', project_id=project_id))
+        return jsonify({'error': 'No image selected.'}), 400
 
     filename = secure_filename(file.filename)
     path = f"portfolio/extras/{project_id}/{filename}"
     if _store_image(file, path):
-        db.session.add(ExtraPortfolioImage(project_id=project_id, image_path=path))
+        img = ExtraPortfolioImage(project_id=project_id, image_path=path)
+        db.session.add(img)
         db.session.commit()
-        flash('Image added.', 'success')
-    else:
-        flash('Image rejected — invalid type or exceeds 5 MB.', 'error')
+        return jsonify({'id': img.id, 'url': url_for('serve_media', file_path=path)})
 
-    return redirect(url_for('admin.projects_edit', project_id=project_id))
+    return jsonify({'error': 'Image rejected — invalid type or exceeds 5 MB.'}), 400
 
 
 @admin_bp.post('/projects/<int:project_id>/images/<int:image_id>/delete')
@@ -175,5 +186,5 @@ def projects_delete_image(project_id, image_id):
         storage.delete(img.image_path)
         db.session.delete(img)
         db.session.commit()
-        flash('Image removed.', 'success')
-    return redirect(url_for('admin.projects_edit', project_id=project_id))
+        return jsonify({'ok': True})
+    return jsonify({'error': 'Image not found.'}), 404

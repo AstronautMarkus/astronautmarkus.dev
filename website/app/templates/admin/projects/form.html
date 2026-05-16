@@ -14,24 +14,64 @@
 {% set action_url = url_for('admin.projects_edit', project_id=project.id) if is_edit else url_for('admin.projects_create') %}
 
 <div class="card">
-  <div class="card-title">{{ 'Project Details' }}</div>
+  <div class="card-title">Project Details</div>
   <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
+
+    <!-- ── Language tabs ─────────────────────────────────────── -->
+    <div class="lang-tabs">
+      <button type="button" class="lang-tab active" data-target="panel-en">
+        English <span class="lang-req">*</span>
+      </button>
+      <button type="button" class="lang-tab" data-target="panel-es">
+        Español <span class="lang-opt">optional</span>
+      </button>
+    </div>
+
     <div class="form-grid">
 
-      <div class="form-group">
-        <label for="title">Title <span style="color:#cc0000">*</span></label>
-        <input type="text" id="title" name="title"
-               value="{{ project.title if is_edit else '' }}"
-               placeholder="My Awesome Project"
-               required>
+      <!-- ── English panel ─────────────────────────────────── -->
+      <div class="lang-panel active" id="panel-en">
+        <div class="form-group">
+          <label for="title">Title <span style="color:#cc0000">*</span></label>
+          <input type="text" id="title" name="title"
+                 value="{{ project.title if is_edit else '' }}"
+                 placeholder="My Awesome Project" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description"
+                    rows="4"
+                    placeholder="A short description of the project…">{{ project.description if is_edit and project.description else '' }}</textarea>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" name="description"
-                  placeholder="A short description of the project…">{{ project.description if is_edit and project.description else '' }}</textarea>
+      <!-- ── Spanish panel ─────────────────────────────────── -->
+      <div class="lang-panel" id="panel-es">
+        <div class="es-enable-row">
+          <input type="checkbox" id="enable_es" name="has_es" value="1"
+                 {{ 'checked' if is_edit and project.has_es else '' }}>
+          <label for="enable_es" class="es-enable-label">
+            Enable Spanish content for this project
+          </label>
+        </div>
+        <div class="es-fields-wrap{{ ' disabled' if not (is_edit and project.has_es) else '' }}"
+             id="es-fields">
+          <div class="form-group">
+            <label for="title_es">Título <span style="color:#cc0000">*</span></label>
+            <input type="text" id="title_es" name="title_es"
+                   value="{{ project.title_es if is_edit and project.title_es else '' }}"
+                   placeholder="Mi Proyecto Increíble">
+          </div>
+          <div class="form-group">
+            <label for="description_es">Descripción</label>
+            <textarea id="description_es" name="description_es"
+                      rows="4"
+                      placeholder="Una breve descripción del proyecto…">{{ project.description_es if is_edit and project.description_es else '' }}</textarea>
+          </div>
+        </div>
       </div>
 
+      <!-- ── Shared fields ─────────────────────────────────── -->
       <div class="form-row">
         <div class="form-group">
           <label for="project_url">Project URL</label>
@@ -47,15 +87,22 @@
         </div>
       </div>
 
+      <!-- ── Cover image ────────────────────────────────────── -->
       <div class="form-group">
         <label for="cover_image">Cover Image</label>
         {% if is_edit and project.image_path %}
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
-          <img src="{{ storage_url(project.image_path) }}"
+        <div id="cover-current-wrap" style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+          <img id="cover-current-img"
+               src="{{ storage_url(project.image_path) }}"
                style="height:72px;width:72px;object-fit:cover;border:1px solid #cccccc">
           <span class="form-hint">Upload a new file to replace the current cover.</span>
         </div>
         {% endif %}
+        <div id="cover-preview-wrap" style="display:none;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+          <img id="cover-preview-img" src="" alt="New cover preview"
+               style="height:72px;width:72px;object-fit:cover;border:2px dashed #2b5797">
+          <span class="form-hint" style="color:#2b5797">New cover — not saved yet</span>
+        </div>
         <input type="file" id="cover_image" name="cover_image" accept="image/*">
         <span class="form-hint">JPG, PNG, WebP, GIF — max 5 MB</span>
       </div>
@@ -70,35 +117,218 @@
   </form>
 </div>
 
+<!-- ── Extra Images (edit mode only) ──────────────────────── -->
 {% if is_edit %}
-<div class="card">
+<div class="card" id="extra-images-card">
   <div class="card-title">Extra Images</div>
 
-  {% if extra_images %}
-  <div class="img-grid">
+  <div id="ajax-flash-container"></div>
+
+  <div class="img-grid" id="extra-img-grid">
     {% for img in extra_images %}
-    <div class="img-item">
-      <img src="{{ storage_url(img.image_path) }}" alt="Extra image {{ img.id }}">
-      <form method="POST"
-            action="{{ url_for('admin.projects_delete_image', project_id=project.id, image_id=img.id) }}"
-            onsubmit="return confirm('Remove this image?')">
-        <button type="submit" class="del-img" title="Remove">×</button>
-      </form>
+    <div class="img-item" id="img-{{ img.id }}">
+      <img src="{{ storage_url(img.image_path) }}" alt="Image {{ img.id }}">
+      <button type="button" class="del-img" title="Remove"
+              onclick="Projects.deleteImage({{ img.id }}, this.closest('.img-item'))">×</button>
     </div>
     {% endfor %}
+    {% if not extra_images %}
+    <p id="no-images-hint" style="color:#888888;font-size:0.83rem;margin:0 0 4px">No extra images yet.</p>
+    {% endif %}
   </div>
-  {% else %}
-  <p style="color:#888888;font-size:0.83rem;margin-bottom:0.75rem">No extra images yet.</p>
-  {% endif %}
 
-  <form method="POST"
-        action="{{ url_for('admin.projects_add_image', project_id=project.id) }}"
-        enctype="multipart/form-data"
-        style="margin-top:1rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap">
-    <input type="file" name="image" accept="image/*" style="flex:1;min-width:200px">
-    <button type="submit" class="btn btn-ghost btn-sm">Add Image</button>
-  </form>
+  <!-- Upload zone -->
+  <div class="upload-zone" id="upload-zone">
+    <input type="file" id="img-file-input" accept="image/*" multiple>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.5" style="margin-bottom:6px;opacity:0.55">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="17 8 12 3 7 8"/>
+      <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    <div style="font-weight:bold">Click to upload or drag &amp; drop</div>
+    <div style="margin-top:3px;font-size:10px;color:#aaaaaa">JPG, PNG, WebP, GIF — max 5 MB each — multiple files supported</div>
+  </div>
 </div>
 {% endif %}
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  'use strict';
+
+  // ── Language tabs ─────────────────────────────────────────────
+  document.querySelectorAll('.lang-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.lang-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.lang-panel').forEach(function (p) { p.classList.remove('active'); });
+      this.classList.add('active');
+      document.getElementById(this.dataset.target).classList.add('active');
+    });
+  });
+
+  // ── Spanish toggle ────────────────────────────────────────────
+  var enableEs = document.getElementById('enable_es');
+  var esFields = document.getElementById('es-fields');
+  function syncEsState() {
+    if (!enableEs) return;
+    if (enableEs.checked) {
+      esFields.classList.remove('disabled');
+    } else {
+      esFields.classList.add('disabled');
+    }
+  }
+  if (enableEs) {
+    enableEs.addEventListener('change', syncEsState);
+    syncEsState();
+  }
+
+  // ── Cover image preview ───────────────────────────────────────
+  var coverInput   = document.getElementById('cover_image');
+  var previewWrap  = document.getElementById('cover-preview-wrap');
+  var previewImg   = document.getElementById('cover-preview-img');
+  var currentWrap  = document.getElementById('cover-current-wrap');
+  if (coverInput) {
+    coverInput.addEventListener('change', function () {
+      var file = this.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        previewImg.src = e.target.result;
+        previewWrap.style.display = 'flex';
+        if (currentWrap) currentWrap.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ── Extra images (edit mode only) ────────────────────────────
+  var PROJECT_ID = {{ project.id if is_edit else 'null' }};
+  var grid       = document.getElementById('extra-img-grid');
+  var zone       = document.getElementById('upload-zone');
+  var fileInput  = document.getElementById('img-file-input');
+
+  if (!zone) return; // not in edit mode
+
+  // Click zone → open file picker
+  zone.addEventListener('click', function (e) {
+    if (e.target !== fileInput) fileInput.click();
+  });
+
+  // Drag-and-drop
+  zone.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    zone.classList.add('drag-over');
+  });
+  zone.addEventListener('dragleave', function (e) {
+    if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over');
+  });
+  zone.addEventListener('drop', function (e) {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    var files = e.dataTransfer.files;
+    for (var i = 0; i < files.length; i++) { uploadImage(files[i]); }
+  });
+
+  // File picker change
+  fileInput.addEventListener('change', function () {
+    var files = this.files;
+    for (var i = 0; i < files.length; i++) { uploadImage(files[i]); }
+    this.value = '';
+  });
+
+  function removeNoImagesHint() {
+    var hint = document.getElementById('no-images-hint');
+    if (hint) hint.remove();
+  }
+
+  function uploadImage(file) {
+    removeNoImagesHint();
+
+    // Optimistic placeholder
+    var pending = document.createElement('div');
+    pending.className = 'img-item img-item-pending';
+    pending.innerHTML = '<div class="img-spinner"></div>';
+    grid.appendChild(pending);
+
+    var formData = new FormData();
+    formData.append('image', file);
+
+    fetch('/admin/projects/' + PROJECT_ID + '/images', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.error) {
+          pending.remove();
+          showFlash(data.error, 'error');
+        } else {
+          pending.replaceWith(buildCard(data.id, data.url));
+        }
+      })
+      .catch(function () {
+        pending.remove();
+        showFlash('Upload failed — please try again.', 'error');
+      });
+  }
+
+  function buildCard(id, url) {
+    var div = document.createElement('div');
+    div.className = 'img-item';
+    div.id = 'img-' + id;
+    var img = document.createElement('img');
+    img.src = url;
+    img.alt = 'Image ' + id;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'del-img';
+    btn.title = 'Remove';
+    btn.textContent = '×';
+    btn.addEventListener('click', function () { Projects.deleteImage(id, div); });
+    div.appendChild(img);
+    div.appendChild(btn);
+    return div;
+  }
+
+  function showFlash(msg, type) {
+    var container = document.getElementById('ajax-flash-container');
+    var div = document.createElement('div');
+    div.className = 'ajax-flash ajax-flash-' + type;
+    div.textContent = msg;
+    container.appendChild(div);
+    setTimeout(function () { div.remove(); }, 5000);
+  }
+
+  // Expose on Projects namespace for inline onclick handlers
+  window.Projects = window.Projects || {};
+  window.Projects.deleteImage = function (imageId, card) {
+    card.style.opacity = '0.35';
+    card.style.pointerEvents = 'none';
+    fetch('/admin/projects/' + PROJECT_ID + '/images/' + imageId + '/delete', {
+      method: 'POST',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.ok) {
+          card.remove();
+        } else {
+          card.style.opacity = '1';
+          card.style.pointerEvents = '';
+          showFlash('Failed to remove image.', 'error');
+        }
+      })
+      .catch(function () {
+        card.style.opacity = '1';
+        card.style.pointerEvents = '';
+        showFlash('Failed to remove image.', 'error');
+      });
+  };
+
+}());
+</script>
 {% endblock %}
