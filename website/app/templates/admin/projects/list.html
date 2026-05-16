@@ -1,0 +1,74 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Portfolio Projects{% endblock %}
+{% block page_title %}Portfolio Projects{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.projects_create') }}">+ New Project</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if projects %}
+  <table>
+    <thead>
+      <tr>
+        <th style="width:52px">Cover</th>
+        <th>Title</th>
+        <th>Project</th>
+        <th>GitHub</th>
+        <th>Created</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for p in projects %}
+    <tr>
+      <td>
+        {% if p.image_path %}
+          <img class="cover-thumb" src="{{ storage_url(p.image_path) }}" alt="{{ p.title }}">
+        {% else %}
+          <div class="cover-placeholder">—</div>
+        {% endif %}
+      </td>
+      <td style="font-weight:500;max-width:240px">{{ p.title }}</td>
+      <td>
+        {% if p.project_url %}
+          <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
+             style="color:#3b82f6;font-size:0.8rem">↗ link</a>
+        {% else %}
+          <span style="color:#374151">—</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if p.github_repo_url %}
+          <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
+             style="color:#3b82f6;font-size:0.8rem">↗ repo</a>
+        {% else %}
+          <span style="color:#374151">—</span>
+        {% endif %}
+      </td>
+      <td style="color:#4b5563;font-size:0.8rem">{{ p.created_at.strftime('%b %d, %Y') }}</td>
+      <td>
+        <div class="td-actions">
+          <a class="btn btn-ghost btn-sm"
+             href="{{ url_for('admin.projects_edit', project_id=p.id) }}">Edit</a>
+          <form method="POST"
+                action="{{ url_for('admin.projects_delete', project_id=p.id) }}"
+                onsubmit="return confirm('Delete project «{{ p.title }}»? This cannot be undone.')">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">
+    No projects yet.
+    <a href="{{ url_for('admin.projects_create') }}">Create your first project →</a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

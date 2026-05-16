@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, g, abort
+from flask import Flask, render_template, request, redirect, url_for, g, abort, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail
@@ -15,6 +15,8 @@ from app.i18n import (
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.routing import RequestRedirect as _WerkzeugRedirect
 from werkzeug.exceptions import NotFound as _WerkzeugNotFound
+
+from app.storage import storage
 
 db             = SQLAlchemy()
 migrate        = Migrate()
@@ -107,6 +109,27 @@ def create_app():
 	from app.routes.auth import auth_bp
 	app.register_blueprint(auth_bp)
 
+	from app.routes.admin import admin_bp
+	app.register_blueprint(admin_bp)
+
+	# ── Media proxy ───────────────────────────────────────────────
+	# All stored files are served through /media/<path> so the
+	# real storage backend (local or S3) is never exposed to the
+	# browser. Works transparently for both drivers.
+	@app.get('/media/<path:file_path>')
+	def serve_media(file_path):
+		import mimetypes
+		from io import BytesIO
+		if not storage.exists(file_path):
+			abort(404)
+		data = storage.get(file_path)
+		mime, _ = mimetypes.guess_type(file_path)
+		return send_file(
+			BytesIO(data),
+			mimetype=mime or 'application/octet-stream',
+			download_name=file_path.split('/')[-1],
+			as_attachment=False,
+		)
 
 	# ── Template globals ──────────────────────────────────────────
 	@app.context_processor
@@ -114,6 +137,7 @@ def create_app():
 		return {
 			'current_year': datetime.now().year,
 			'current_lang': get_current_language(),
+			'storage_url': lambda path: url_for('serve_media', file_path=path) if path else '',
 		}
 
 	return app

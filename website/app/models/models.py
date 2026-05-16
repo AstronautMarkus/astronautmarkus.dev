@@ -21,3 +21,25 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class PortfolioProject(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    image_path = db.Column(db.String(200), nullable=True)
+    project_url = db.Column(db.String(200), nullable=True)
+    github_repo_url = db.Column(db.String(200), nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    extra_images = db.relationship(
+        'ExtraPortfolioImage',
+        backref='project',
+        lazy=True,
+        cascade='all, delete-orphan',
+    )
+
+class ExtraPortfolioImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id'), nullable=False)
+    image_path = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())

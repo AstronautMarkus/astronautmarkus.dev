@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.projects_create') }}">+ New Project</a>
+{% endblock %}
+
+{% block content %}
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:1.75rem">
+  <div class="card" style="margin:0">
+    <div class="card-title">Portfolio Projects</div>
+    <div style="font-size:2.25rem;font-weight:700;color:#fff;line-height:1">{{ total_projects }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Recent Projects</div>
+  {% if recent_projects %}
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Created</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for p in recent_projects %}
+    <tr>
+      <td style="color:#374151;font-variant-numeric:tabular-nums">{{ p.id }}</td>
+      <td style="font-weight:500">{{ p.title }}</td>
+      <td style="color:#4b5563">{{ p.created_at.strftime('%b %d, %Y') }}</td>
+      <td>
+        <div class="td-actions">
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}">Edit</a>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">
+    No projects yet.
+    <a href="{{ url_for('admin.projects_create') }}">Create your first one →</a>
+  </p>
+  {% endif %}
+</div>
+
+{% endblock %}

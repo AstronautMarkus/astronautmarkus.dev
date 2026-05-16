@@ -1,0 +1,110 @@
+{% extends "admin/base.html" %}
+
+{% set is_edit = project is not none %}
+
+{% block title %}{{ 'Edit Project' if is_edit else 'New Project' }}{% endblock %}
+{% block page_title %}{{ 'Edit Project' if is_edit else 'New Project' }}{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_list') }}">← Back to list</a>
+{% endblock %}
+
+{% block content %}
+
+{% set action_url = url_for('admin.projects_edit', project_id=project.id) if is_edit else url_for('admin.projects_create') %}
+
+<div class="card">
+  <div class="card-title">{{ 'Project Details' }}</div>
+  <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
+    <div class="form-grid">
+
+      <!-- Title -->
+      <div class="form-group">
+        <label for="title">Title <span style="color:#ef4444">*</span></label>
+        <input type="text" id="title" name="title"
+               value="{{ project.title if is_edit else '' }}"
+               placeholder="My Awesome Project"
+               required>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description"
+                  placeholder="A short description of the project…">{{ project.description if is_edit and project.description else '' }}</textarea>
+      </div>
+
+      <!-- URLs -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="project_url">Project URL</label>
+          <input type="url" id="project_url" name="project_url"
+                 value="{{ project.project_url if is_edit and project.project_url else '' }}"
+                 placeholder="https://myproject.com">
+        </div>
+        <div class="form-group">
+          <label for="github_repo_url">GitHub Repository</label>
+          <input type="url" id="github_repo_url" name="github_repo_url"
+                 value="{{ project.github_repo_url if is_edit and project.github_repo_url else '' }}"
+                 placeholder="https://github.com/user/repo">
+        </div>
+      </div>
+
+      <!-- Cover image -->
+      <div class="form-group">
+        <label for="cover_image">Cover Image</label>
+        {% if is_edit and project.image_path %}
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+          <img src="{{ storage_url(project.image_path) }}"
+               style="height:72px;width:72px;object-fit:cover;border-radius:0.375rem;border:1px solid #1e2438">
+          <span class="form-hint">Upload a new file to replace the current cover.</span>
+        </div>
+        {% endif %}
+        <input type="file" id="cover_image" name="cover_image" accept="image/*">
+        <span class="form-hint">JPG, PNG, WebP, GIF — max 5 MB</span>
+      </div>
+
+      <!-- Submit -->
+      <div>
+        <button type="submit" class="btn btn-primary">
+          {{ 'Save Changes' if is_edit else 'Create Project' }}
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+{% if is_edit %}
+<!-- ── Extra images ──────────────────────────────────────────────────────── -->
+<div class="card">
+  <div class="card-title">Extra Images</div>
+
+  {% if extra_images %}
+  <div class="img-grid">
+    {% for img in extra_images %}
+    <div class="img-item">
+      <img src="{{ storage_url(img.image_path) }}" alt="Extra image {{ img.id }}">
+      <form method="POST"
+            action="{{ url_for('admin.projects_delete_image', project_id=project.id, image_id=img.id) }}"
+            onsubmit="return confirm('Remove this image?')">
+        <button type="submit" class="del-img" title="Remove">×</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="color:#374151;font-size:0.83rem;margin-bottom:0.75rem">No extra images yet.</p>
+  {% endif %}
+
+  <form method="POST"
+        action="{{ url_for('admin.projects_add_image', project_id=project.id) }}"
+        enctype="multipart/form-data"
+        style="margin-top:1rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap">
+    <input type="file" name="image" accept="image/*" style="flex:1;min-width:200px">
+    <button type="submit" class="btn btn-ghost btn-sm">Add Image</button>
+  </form>
+</div>
+{% endif %}
+
+{% endblock %}
