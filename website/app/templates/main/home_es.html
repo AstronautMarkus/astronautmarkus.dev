@@ -103,8 +103,10 @@
             <h4>Enlaces rápidos</h4>
             <ul>
                 <li><a href="#">Blog de desarrollo</a></li>
-                <li><a href="#">Perfil de GitHub</a></li>
-                <li><a href="{{ cv_url }}" target="_blank">Descargar CV</a></li>
+                <li><a href="https://github.com/astronautmarkus" target="_blank" rel="noopener noreferrer">Perfil de GitHub</a></li>
+                {% if cv_url %}
+                    <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Descargar CV</a></li>
+                {% endif %}
                 <li><a href="#">Formulario de contacto</a></li>
             </ul>
         </div>
@@ -112,9 +114,12 @@
         <div class="sidebar-box">
             <h4>Últimas entradas</h4>
             <ul>
-                <li><a href="#">Lorem ipsum dolor sit amet</a></li>
-                <li><a href="#">Consectetur adipiscing elit sed</a></li>
-                <li><a href="#">Do eiusmod tempor incididunt</a></li>
+                {% for p in latest_posts %}
+                {% set p_title = p.title_es if p.has_es and p.title_es else p.title %}
+                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p_title | truncate(38) }}</a></li>
+                {% else %}
+                <li style="list-style:none;color:#444444">Sin entradas aún.</li>
+                {% endfor %}
             </ul>
         </div>
 

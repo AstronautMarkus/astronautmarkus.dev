@@ -1,0 +1,142 @@
+{% extends "base/base.html" %}
+
+{% block title %}Blog{% endblock %}
+{% block description %}Development notes, system deep-dives, and the occasional rant — AstronautMarkus.dev{% endblock %}
+{% block keywords %}blog, development, tech, python, flask, devops, linux, networking{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="blog-banner">
+    <div class="blog-banner-inner">
+        <h2>// Blog</h2>
+        <p>Development notes, system deep-dives, and the occasional rant.</p>
+    </div>
+</div>
+
+<div id="blog-content">
+
+    <div id="blog-main">
+
+        {% if posts %}
+            {% for post in posts %}
+            {% if current_lang == 'es' and post.has_es %}
+                {% set p_title = post.title_es or post.title %}
+                {% set p_desc  = post.description_es or post.description %}
+            {% else %}
+                {% set p_title = post.title %}
+                {% set p_desc  = post.description %}
+            {% endif %}
+
+            <div class="blog-card">
+                {% if post.cover_image_path %}
+                <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-card-cover-link">
+                    <img src="{{ storage_url(post.cover_image_path) }}"
+                         class="blog-card-cover" alt="{{ p_title }}">
+                </a>
+                {% else %}
+                <div class="blog-card-cover-placeholder"></div>
+                {% endif %}
+
+                <div class="blog-card-body">
+                    <div class="blog-card-meta">
+                        {{ post.created_at.strftime('%B %d, %Y') }}
+                        {% if post.category %}
+                        &nbsp;·&nbsp;
+                        <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
+                            {% if current_lang == 'es' and post.category.has_es and post.category.name_es %}
+                                {{ post.category.name_es }}
+                            {% else %}
+                                {{ post.category.name }}
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <h3>
+                        <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ p_title }}</a>
+                    </h3>
+
+                    {% if p_desc %}
+                    <p class="blog-card-excerpt">{{ p_desc | truncate(160) }}</p>
+                    {% endif %}
+
+                    <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-read-more">
+                        Read more &raquo;
+                    </a>
+                </div>
+            </div>
+
+            {% endfor %}
+
+            {% if pagination.pages > 1 %}
+            <div class="blog-pagination">
+                <a href="{{ url_for('main.blog_list', page=pagination.prev_num, cat=current_cat) }}"
+                   class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">&#9668; Prev</a>
+
+                {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                    {% if p %}
+                    <a href="{{ url_for('main.blog_list', page=p, cat=current_cat) }}"
+                       class="blog-page-btn{% if p == pagination.page %} current{% endif %}">{{ p }}</a>
+                    {% else %}
+                    <span class="blog-page-btn disabled">&hellip;</span>
+                    {% endif %}
+                {% endfor %}
+
+                <a href="{{ url_for('main.blog_list', page=pagination.next_num, cat=current_cat) }}"
+                   class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">Next &#9658;</a>
+            </div>
+            {% endif %}
+
+        {% else %}
+        <p style="color:#555555;font-size:12px;padding:6px 0">No posts yet. Check back soon.</p>
+        {% endif %}
+
+    </div>
+
+    <div id="blog-sidebar">
+
+        <div class="blog-sidebar-box">
+            <h4>Categories</h4>
+            <ul>
+                <li>
+                    <a href="{{ url_for('main.blog_list') }}"
+                       {% if not current_cat %}class="blog-cat-active"{% endif %}>
+                        All posts
+                    </a>
+                </li>
+                {% for cat in categories %}
+                <li>
+                    <a href="{{ url_for('main.blog_list', cat=cat.id) }}"
+                       {% if current_cat == cat.id %}class="blog-cat-active"{% endif %}>
+                        {% if current_lang == 'es' and cat.has_es and cat.name_es %}
+                            {{ cat.name_es }}
+                        {% else %}
+                            {{ cat.name }}
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="blog-sidebar-box">
+            <h4>Recent Posts</h4>
+            <ul>
+                {% for post in posts[:5] %}
+                {% set p_title = post.title_es if current_lang == 'es' and post.has_es and post.title_es else post.title %}
+                <li>
+                    <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ p_title | truncate(42) }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

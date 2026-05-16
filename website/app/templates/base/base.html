@@ -52,7 +52,7 @@
                 {{ nav_link('main.home', 'Home' if current_lang == 'en' else 'Inicio') }}
                 {{ nav_link('main.about', 'About' if current_lang == 'en' else 'Acerca de') }}
                 <li><a href="#">Portfolio</a></li>
-                <li><a href="https://blog.astronautmarkus.dev" target="_blank">Development Blog</a></li>
+                <li><a href="{{ url_for('main.blog_list') }}"{% if 'blog' in request.endpoint %} class="active"{% endif %}>{{ 'Blog' }}</a></li>
                 <li><a href="#">Contact Us</a></li>
             </ul>
             <div id="nav-right">

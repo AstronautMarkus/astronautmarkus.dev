@@ -1,0 +1,123 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block description %}{{ post.description or title }}{% endblock %}
+{% block keywords %}{{ post.category.name ~ ', ' if post.category else '' }}blog, development, AstronautMarkus.dev{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% if post.cover_image_path %}
+<div class="post-cover-wrap">
+    <img src="{{ storage_url(post.cover_image_path) }}" class="post-cover-img" alt="{{ title }}">
+    <div class="post-cover-overlay">
+        <div class="post-cover-title">{{ title }}</div>
+    </div>
+</div>
+{% endif %}
+
+<div id="post-content">
+
+    <div id="post-main">
+
+        <div class="post-header">
+            {% if not post.cover_image_path %}
+            <h1>{{ title }}</h1>
+            {% endif %}
+            <div class="post-meta-row">
+                <span>{{ post.created_at.strftime('%B %d, %Y') }}</span>
+                {% if post.category %}
+                <a href="{{ url_for('main.blog_list', cat=post.category_id) }}" class="post-meta-cat">
+                    {% if current_lang == 'es' and post.category.has_es and post.category.name_es %}
+                        {{ post.category.name_es }}
+                    {% else %}
+                        {{ post.category.name }}
+                    {% endif %}
+                </a>
+                {% endif %}
+                {% if post.has_es %}
+                <span class="post-meta-lang">
+                    {% if current_lang == 'es' %}
+                    <a href="/lang/en?next={{ request.path }}">EN</a>
+                    {% else %}
+                    <a href="/lang/es?next={{ request.path }}">ES</a>
+                    {% endif %}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="prose">
+            {% if content_html %}
+                {{ content_html }}
+            {% else %}
+            <p style="color:#555555;font-style:italic">No content available for this post yet.</p>
+            {% endif %}
+        </div>
+
+        {% if post.images %}
+        <div class="post-gallery">
+            <h4>&#9632; Post Images</h4>
+            <div class="post-gallery-grid">
+                {% for img in post.images %}
+                <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
+                   title="Image {{ loop.index }}">
+                    <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}">
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <a href="{{ url_for('main.blog_list') }}" class="post-back">&#8592; Back to Blog</a>
+
+    </div>
+
+    <div id="post-sidebar">
+
+        <div class="blog-sidebar-box">
+            <h4>Post Info</h4>
+            <ul>
+                <li>Published: {{ post.created_at.strftime('%d %b %Y') }}</li>
+                {% if post.category %}
+                <li>
+                    Category:
+                    <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
+                        {% if current_lang == 'es' and post.category.has_es and post.category.name_es %}
+                            {{ post.category.name_es }}
+                        {% else %}
+                            {{ post.category.name }}
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if post.has_es %}
+                <li>
+                    {% if current_lang == 'es' %}
+                    <a href="/lang/en?next={{ request.path }}">&#9658; Read in English</a>
+                    {% else %}
+                    <a href="/lang/es?next={{ request.path }}">&#9658; Leer en Español</a>
+                    {% endif %}
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="blog-sidebar-box">
+            <h4>Share</h4>
+            <ul>
+                <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">&#9658; Share on Twitter/X</a></li>
+                <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">&#9658; Share on LinkedIn</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

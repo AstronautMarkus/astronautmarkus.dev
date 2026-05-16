@@ -1,7 +1,7 @@
 from flask import url_for
 from app.routes.main import main_bp
 from app.i18n import get_current_language, render_localized_template
-from app.models.models import CvFile, PortfolioProject
+from app.models.models import BlogPost, CvFile, PortfolioProject
 
 
 @main_bp.route('/')
@@ -18,4 +18,12 @@ def home():
         .all()
     )
 
-    return render_localized_template('main/home.html', cv_url=cv_url, projects=projects)
+    latest_posts = (
+        BlogPost.query
+        .filter_by(published=True)
+        .order_by(BlogPost.created_at.desc())
+        .limit(4)
+        .all()
+    )
+
+    return render_localized_template('main/home.html', cv_url=cv_url, projects=projects, latest_posts=latest_posts)
