@@ -57,6 +57,16 @@ a:hover {
     margin-top: 5px;
 }
 
+#header img {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 90px;
+    width: auto;
+    pointer-events: none;
+}
+
 #nav {
     height: 40px;
     background: #111111;
