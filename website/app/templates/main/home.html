@@ -57,38 +57,41 @@
         </div>
 
         <div class="projects">
-            <h3 class="section-title">Featured Projects</h3>
+            <h3 class="section-title">Latest Projects</h3>
             <div class="projects-grid">
-                <div class="project-card">
-                    <h4>astronautmarkus.dev</h4>
-                    <p>This very site. Hand-crafted with Flask, no CMS, no bloat. Custom i18n, visit tracking, and a
-                        blog engine built from scratch.</p>
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Flask</span>
-                    <span class="project-tag">CSS</span>
-                </div>
-                <div class="project-card">
-                    <h4>Project Codename: NEXUS</h4>
-                    <p>Internal automation platform for orchestrating distributed task queues across multiple cloud
-                        regions with real-time telemetry.</p>
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Redis</span>
-                    <span class="project-tag">Docker</span>
-                </div>
-                <div class="project-card">
-                    <h4>Static Site Forge</h4>
-                    <p>A zero-dependency static site generator written in pure Python. Converts Markdown + templates
-                        into deployable HTML. No npm involved.</p>
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">CLI</span>
-                </div>
-                <div class="project-card">
-                    <h4>DevLog API</h4>
-                    <p>Headless REST API powering structured development logs. JWT auth, full-text search, category
-                        tagging and RSS feed output.</p>
-                    <span class="project-tag">FastAPI</span>
-                    <span class="project-tag">PostgreSQL</span>
-                </div>
+                {% if projects %}
+                    {% for p in projects %}
+                    <div class="project-card">
+                        <div class="project-card-img-wrap">
+                            {% if p.image_path %}
+                            <img src="{{ storage_url(p.image_path) }}"
+                                 class="project-card-img"
+                                 alt="{{ p.title }}">
+                            {% else %}
+                            <div class="project-card-img-placeholder">[ no image ]</div>
+                            {% endif %}
+                        </div>
+                        <h4>{{ p.title }}</h4>
+                        {% if p.description %}
+                        <p>{{ p.description | truncate(110) }}</p>
+                        {% endif %}
+                        {% if p.project_url or p.github_repo_url %}
+                        <div class="project-card-links">
+                            {% if p.project_url %}
+                            <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
+                               class="project-link">↗ Visit</a>
+                            {% endif %}
+                            {% if p.github_repo_url %}
+                            <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
+                               class="project-link">⌥ GitHub</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <p style="color:#555555;font-size:12px">No projects yet. Check back soon.</p>
+                {% endif %}
             </div>
         </div>
 
