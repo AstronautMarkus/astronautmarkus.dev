@@ -70,7 +70,7 @@
                     {% endif %}
 
                     <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-read-more">
-                        Read more &raquo;
+                        {% if current_lang == 'es' %}Leer más{% else %}Read more{% endif %} &raquo;
                     </a>
                 </div>
             </div>
@@ -80,7 +80,7 @@
             {% if pagination.pages > 1 %}
             <div class="blog-pagination">
                 <a href="{{ url_for('main.blog_list', page=pagination.prev_num, cat=current_cat) }}"
-                   class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">&#9668; Prev</a>
+                   class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">&#9668; {% if current_lang == 'es' %}Anterior{% else %}Prev{% endif %}</a>
 
                 {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
                     {% if p %}
@@ -92,12 +92,16 @@
                 {% endfor %}
 
                 <a href="{{ url_for('main.blog_list', page=pagination.next_num, cat=current_cat) }}"
-                   class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">Next &#9658;</a>
+                   class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">{% if current_lang == 'es' %}Siguiente{% else %}Next{% endif %} &#9658;</a>
             </div>
             {% endif %}
 
         {% else %}
-        <p style="color:#555555;font-size:12px;padding:6px 0">No posts yet. Check back soon.</p>
+            {% if current_lang == 'es' %}
+            <p style="color:#555555;font-size:12px;padding:6px 0">No hay publicaciones todavía. Vuelve pronto.</p>
+            {% else %}
+            <p style="color:#555555;font-size:12px;padding:6px 0">No posts yet. Check back soon.</p>
+            {% endif %}
         {% endif %}
 
     </div>
@@ -105,12 +109,12 @@
     <div id="blog-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4>Categories</h4>
+            <h4>{% if current_lang == 'es' %}Categorías{% else %}Categories{% endif %}</h4>
             <ul>
                 <li>
                     <a href="{{ url_for('main.blog_list') }}"
                        {% if not current_cat %}class="blog-cat-active"{% endif %}>
-                        All posts
+                        {% if current_lang == 'es' %}Todas las publicaciones{% else %}All posts{% endif %}
                     </a>
                 </li>
                 {% for cat in categories %}
@@ -129,7 +133,7 @@
         </div>
 
         <div class="blog-sidebar-box">
-            <h4>Recent Posts</h4>
+            <h4>{% if current_lang == 'es' %}Publicaciones recientes{% else %}Recent Posts{% endif %}</h4>
             <ul>
                 {% for post in posts[:5] %}
                 {% set p_title = post.title_es if current_lang == 'es' and post.has_es and post.title_es else post.title %}
