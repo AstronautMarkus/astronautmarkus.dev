@@ -43,3 +43,9 @@ class ExtraPortfolioImage(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id'), nullable=False)
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+class CvFile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    file_path = db.Column(db.String(200), nullable=False)
+    language = db.Column(db.String(10), nullable=False)
+    uploaded_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())

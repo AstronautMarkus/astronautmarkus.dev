@@ -24,6 +24,10 @@
        class="{{ 'active' if request.endpoint and 'project' in request.endpoint else '' }}">
       Portfolio
     </a>
+    <a href="{{ url_for('admin.cv_list') }}"
+       class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
+      CV Files
+    </a>
   </nav>
   <div class="sidebar-footer">
     <div class="user-info">

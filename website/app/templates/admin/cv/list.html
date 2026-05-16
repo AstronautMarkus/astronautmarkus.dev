@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+
+{% block title %}CV Files{% endblock %}
+{% block page_title %}CV Files{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.cv_upload') }}">+ Upload CV</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if cvs %}
+  <table>
+    <thead>
+      <tr>
+        <th>Language</th>
+        <th>File Path</th>
+        <th>Uploaded</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for cv in cvs %}
+    <tr>
+      <td style="font-weight:700;text-transform:uppercase">{{ cv.language }}</td>
+      <td style="font-size:0.82rem;color:#555555">{{ cv.file_path }}</td>
+      <td style="color:#777777;font-size:0.8rem">{{ cv.uploaded_at.strftime('%b %d, %Y') }}</td>
+      <td>
+        <div class="td-actions">
+          <a class="btn btn-ghost btn-sm"
+             href="{{ storage_url(cv.file_path) }}" target="_blank" rel="noopener noreferrer">
+            Download
+          </a>
+          <a class="btn btn-ghost btn-sm"
+             href="{{ url_for('admin.cv_edit', cv_id=cv.id) }}">Edit</a>
+          <form method="POST"
+                action="{{ url_for('admin.cv_delete', cv_id=cv.id) }}"
+                onsubmit="return confirm('Delete CV ({{ cv.language.upper() }})? This cannot be undone.')">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">
+    No CV files yet.
+    <a href="{{ url_for('admin.cv_upload') }}">Upload your first CV →</a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
