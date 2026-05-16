@@ -71,7 +71,7 @@
                             <div class="project-card-img-placeholder">[ no image ]</div>
                             {% endif %}
                         </div>
-                        <h4>{{ p.title }}</h4>
+                        <h4><a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}">{{ p.title }}</a></h4>
                         {% if p.description %}
                         <p>{{ p.description | truncate(110) }}</p>
                         {% endif %}
@@ -93,6 +93,10 @@
                 <p style="color:#555555;font-size:12px">No projects yet. Check back soon.</p>
                 {% endif %}
             </div>
+        </div>
+
+        <div class="projects-view-all">
+            <a href="{{ url_for('main.portfolio_list') }}" class="view-all-link">View all projects »</a>
         </div>
 
         <div class="contact-cta">

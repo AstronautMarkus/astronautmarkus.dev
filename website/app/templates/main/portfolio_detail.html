@@ -1,0 +1,102 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block description %}{{ project.description | truncate(160) if project.description else project.title }}{% endblock %}
+{% block keywords %}{{ project.title }}, project, portfolio, Marcos Reyes{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% if project.image_path %}
+<div class="portfolio-cover-wrap">
+    <img src="{{ storage_url(project.image_path) }}"
+         class="portfolio-cover-img"
+         alt="{{ project.title }}">
+    <div class="portfolio-cover-overlay">
+        <span class="portfolio-cover-title">{{ project.title }}</span>
+    </div>
+</div>
+{% endif %}
+
+<div id="portfolio-detail-content">
+
+    <div id="portfolio-detail-main">
+
+        <div class="portfolio-detail-header">
+            {% if not project.image_path %}
+            <h1>{{ project.title }}</h1>
+            {% endif %}
+
+            <div class="portfolio-detail-links">
+                {% if project.project_url %}
+                <a href="{{ project.project_url }}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="portfolio-action-btn">↗ Visit Site</a>
+                {% endif %}
+                {% if project.github_repo_url %}
+                <a href="{{ project.github_repo_url }}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="portfolio-action-btn btn-github">⌥ View on GitHub</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if project.description %}
+        <div class="portfolio-detail-desc">{{ project.description }}</div>
+        {% endif %}
+
+        {% if project.extra_images %}
+        <div class="portfolio-gallery">
+            <h4>Screenshots / Media</h4>
+            <div class="portfolio-gallery-grid">
+                {% for img in project.extra_images %}
+                <a href="{{ storage_url(img.image_path) }}" target="_blank">
+                    <img src="{{ storage_url(img.image_path) }}" alt="Project image">
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back">« Back to Portfolio</a>
+
+    </div>
+
+    <div id="portfolio-detail-sidebar">
+
+        <div class="portfolio-sidebar-box">
+            <h4>Project Info</h4>
+            <ul>
+                <li><span>Added</span> {{ project.created_at.strftime('%b %d, %Y') }}</li>
+                {% if project.project_url %}
+                <li><span>Live URL</span>
+                    <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer">Visit ↗</a>
+                </li>
+                {% endif %}
+                {% if project.github_repo_url %}
+                <li><span>GitHub</span>
+                    <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer">Repo ↗</a>
+                </li>
+                {% endif %}
+                {% if project.has_es %}
+                <li><span>Lang</span>
+                    <a href="/lang/es?next={{ request.path }}">Ver en Español</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="portfolio-sidebar-box">
+            <h4>All Projects</h4>
+            <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back" style="margin-top:0">« Back to list</a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

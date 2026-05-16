@@ -1,0 +1,60 @@
+{% extends "base/base.html" %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block description %}A selection of projects built by Marcos Reyes — web apps, tools, and open source work.{% endblock %}
+{% block keywords %}portfolio, projects, web development, open source, Marcos Reyes{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="portfolio-banner">
+    <div class="portfolio-banner-inner">
+        <h2>// Portfolio</h2>
+        <p>A selection of projects I've built or contributed to.</p>
+    </div>
+</div>
+
+<div id="portfolio-content">
+
+    {% if projects %}
+    <div class="portfolio-grid">
+        {% for p in projects %}
+        <div class="portfolio-card">
+            <a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}" class="portfolio-card-cover-link">
+                {% if p.image_path %}
+                <img src="{{ storage_url(p.image_path) }}"
+                     class="portfolio-card-cover"
+                     alt="{{ p.title }}">
+                {% else %}
+                <div class="portfolio-card-cover-placeholder">[ no image ]</div>
+                {% endif %}
+            </a>
+            <div class="portfolio-card-body">
+                <h3><a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}">{{ p.title }}</a></h3>
+                {% if p.description %}
+                <p class="portfolio-card-desc">{{ p.description | truncate(120) }}</p>
+                {% endif %}
+                <div class="portfolio-card-actions">
+                    <a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}" class="portfolio-read-more">Details »</a>
+                    {% if p.project_url %}
+                    <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-ext-link">↗ Visit</a>
+                    {% endif %}
+                    {% if p.github_repo_url %}
+                    <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-ext-link">⌥ GitHub</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="portfolio-empty">No projects yet. Check back soon.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
