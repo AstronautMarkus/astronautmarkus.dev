@@ -55,3 +55,54 @@ class CvFile(db.Model):
     file_path = db.Column(db.String(200), nullable=False)
     language = db.Column(db.String(10), nullable=False)
     uploaded_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class BlogCategory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # English (required)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    # Spanish (optional)
+    name_es = db.Column(db.String(100), nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    posts = db.relationship('BlogPost', backref='category', lazy=True)
+
+
+class BlogPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(200), nullable=False, unique=True)
+
+    # English content (required)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    markdown_path = db.Column(db.String(200), nullable=True)
+
+    # Spanish content (optional)
+    title_es = db.Column(db.String(200), nullable=True)
+    description_es = db.Column(db.Text, nullable=True)
+    markdown_path_es = db.Column(db.String(200), nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+
+    # Metadata
+    category_id = db.Column(db.Integer, db.ForeignKey('blog_category.id'), nullable=True)
+    published = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    # Cover image
+    cover_image_path = db.Column(db.String(200), nullable=True)
+
+    images = db.relationship(
+        'BlogPostImage',
+        backref='post',
+        lazy=True,
+        cascade='all, delete-orphan',
+    )
+
+
+class BlogPostImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False)
+    image_path = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())

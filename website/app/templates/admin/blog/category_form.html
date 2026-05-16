@@ -1,0 +1,104 @@
+{% extends "admin/base.html" %}
+
+{% set is_edit = category is not none %}
+
+{% block title %}{{ 'Edit Category' if is_edit else 'New Category' }}{% endblock %}
+{% block page_title %}{{ 'Edit Category' if is_edit else 'New Category' }}{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_categories_list') }}">← Back to list</a>
+{% endblock %}
+
+{% block content %}
+
+{% set action_url = url_for('admin.blog_category_edit', cat_id=category.id) if is_edit else url_for('admin.blog_category_create') %}
+
+<div class="card">
+  <div class="card-title">Category Details</div>
+  <form method="POST" action="{{ action_url }}">
+
+    <!-- ── Language tabs ─────────────────────────────────────────── -->
+    <div class="lang-tabs">
+      <button type="button" class="lang-tab active" data-target="panel-en">
+        English <span class="lang-req">*</span>
+      </button>
+      <button type="button" class="lang-tab" data-target="panel-es">
+        Español <span class="lang-opt">optional</span>
+      </button>
+    </div>
+
+    <div class="form-grid">
+
+      <!-- ── English panel ──────────────────────────────────────── -->
+      <div class="lang-panel active" id="panel-en">
+        <div class="form-group">
+          <label for="name">Name <span style="color:#cc0000">*</span></label>
+          <input type="text" id="name" name="name"
+                 value="{{ category.name if is_edit else '' }}"
+                 placeholder="e.g. Development"
+                 required>
+        </div>
+      </div>
+
+      <!-- ── Spanish panel ─────────────────────────────────────── -->
+      <div class="lang-panel" id="panel-es">
+
+        <div class="es-enable-row">
+          <input type="checkbox" id="enable_es" name="has_es" value="1"
+                 {{ 'checked' if is_edit and category.has_es else '' }}>
+          <label for="enable_es" class="es-enable-label">
+            Enable Spanish name for this category
+          </label>
+        </div>
+
+        <div class="es-fields-wrap{{ ' disabled' if not (is_edit and category.has_es) else '' }}"
+             id="es-fields">
+          <div class="form-group">
+            <label for="name_es">Nombre <span style="color:#cc0000">*</span></label>
+            <input type="text" id="name_es" name="name_es"
+                   value="{{ category.name_es if is_edit and category.name_es else '' }}"
+                   placeholder="p. ej. Desarrollo">
+          </div>
+        </div>
+
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary">
+          {{ 'Save Changes' if is_edit else 'Create Category' }}
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  'use strict';
+
+  document.querySelectorAll('.lang-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.lang-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.lang-panel').forEach(function (p) { p.classList.remove('active'); });
+      this.classList.add('active');
+      document.getElementById(this.dataset.target).classList.add('active');
+    });
+  });
+
+  var enableEs = document.getElementById('enable_es');
+  var esFields = document.getElementById('es-fields');
+  function syncEsState() {
+    if (!enableEs) return;
+    esFields.classList.toggle('disabled', !enableEs.checked);
+  }
+  if (enableEs) {
+    enableEs.addEventListener('change', syncEsState);
+    syncEsState();
+  }
+}());
+</script>
+{% endblock %}

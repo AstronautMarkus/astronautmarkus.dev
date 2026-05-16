@@ -1,0 +1,451 @@
+{% extends "admin/base.html" %}
+
+{% set is_edit = post is not none %}
+
+{% block title %}{{ 'Edit Post' if is_edit else 'New Post' }}{% endblock %}
+{% block page_title %}{{ 'Edit Post' if is_edit else 'New Post' }}{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_posts_list') }}">← Back to list</a>
+  {% if is_edit %}
+  <button type="button"
+          class="publish-toggle {{ 'is-published' if post.published else '' }}"
+          id="topbar-publish-toggle"
+          data-post-id="{{ post.id }}"
+          title="{{ 'Click to unpublish' if post.published else 'Click to publish' }}">
+    <span class="toggle-track"><span class="toggle-thumb"></span></span>
+    <span class="toggle-label">{{ 'Published' if post.published else 'Draft' }}</span>
+  </button>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% set action_url = url_for('admin.blog_post_edit', post_id=post.id) if is_edit else url_for('admin.blog_post_create') %}
+
+<!-- ── Main form ────────────────────────────────────────────── -->
+<div class="card">
+  <div class="card-title">Post Content</div>
+  <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
+
+    <!-- language tabs -->
+    <div class="lang-tabs">
+      <button type="button" class="lang-tab active" data-target="panel-en">
+        English <span class="lang-req">*</span>
+      </button>
+      <button type="button" class="lang-tab" data-target="panel-es">
+        Español <span class="lang-opt">optional</span>
+      </button>
+    </div>
+
+    <div class="form-grid">
+
+      <!-- ── English panel ──────────────────────────────────── -->
+      <div class="lang-panel active" id="panel-en">
+
+        <div class="form-group">
+          <label for="title">Title <span style="color:#cc0000">*</span></label>
+          <input type="text" id="title" name="title"
+                 value="{{ post.title if is_edit else '' }}"
+                 placeholder="My Post Title" required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Excerpt / Short Description</label>
+          <textarea id="description" name="description" rows="3"
+                    placeholder="A brief summary shown in listings and meta tags…">{{ post.description if is_edit and post.description else '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="markdown_file">Markdown Content (EN)</label>
+          {% if is_edit and post.markdown_path %}
+          <div class="file-current-row">
+            <span>Current file:</span>
+            <a href="{{ storage_url(post.markdown_path) }}" target="_blank"
+               rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Download EN .md</a>
+            <span class="form-hint">Upload a new file to replace it.</span>
+          </div>
+          {% endif %}
+          <input type="file" id="markdown_file" name="markdown_file" accept=".md,.markdown">
+          <span class="form-hint">.md or .markdown — max 2 MB</span>
+        </div>
+
+      </div>
+
+      <!-- ── Spanish panel ─────────────────────────────────── -->
+      <div class="lang-panel" id="panel-es">
+        <div class="es-enable-row">
+          <input type="checkbox" id="enable_es" name="has_es" value="1"
+                 {{ 'checked' if is_edit and post.has_es else '' }}>
+          <label for="enable_es" class="es-enable-label">
+            Enable Spanish content for this post
+          </label>
+        </div>
+        <div class="es-fields-wrap{{ ' disabled' if not (is_edit and post.has_es) else '' }}"
+             id="es-fields">
+
+          <div class="form-group">
+            <label for="title_es">Título <span style="color:#cc0000">*</span></label>
+            <input type="text" id="title_es" name="title_es"
+                   value="{{ post.title_es if is_edit and post.title_es else '' }}"
+                   placeholder="El título de mi artículo">
+          </div>
+
+          <div class="form-group">
+            <label for="description_es">Extracto / Descripción corta</label>
+            <textarea id="description_es" name="description_es" rows="3"
+                      placeholder="Un resumen breve…">{{ post.description_es if is_edit and post.description_es else '' }}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="markdown_file_es">Contenido Markdown (ES)</label>
+            {% if is_edit and post.markdown_path_es %}
+            <div class="file-current-row">
+              <span>Archivo actual:</span>
+              <a href="{{ storage_url(post.markdown_path_es) }}" target="_blank"
+                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Descargar ES .md</a>
+              <span class="form-hint">Sube un archivo nuevo para reemplazarlo.</span>
+            </div>
+            {% endif %}
+            <input type="file" id="markdown_file_es" name="markdown_file_es" accept=".md,.markdown">
+            <span class="form-hint">.md o .markdown — máx. 2 MB</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Cover image ────────────────────────────────────── -->
+      <div class="form-group">
+        <label for="cover_image">Header / Cover Image</label>
+        {% if is_edit and post.cover_image_path %}
+        <div id="cover-current-wrap"
+             style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+          <img id="cover-current-img" src="{{ storage_url(post.cover_image_path) }}"
+               style="height:72px;width:128px;object-fit:cover;border:1px solid #cccccc">
+          <span class="form-hint">Upload a new file to replace the current header.</span>
+        </div>
+        {% endif %}
+        <div id="cover-preview-wrap"
+             style="display:none;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+          <img id="cover-preview-img" src="" alt="New cover preview"
+               style="height:72px;width:128px;object-fit:cover;border:2px dashed #2b5797">
+          <span class="form-hint" style="color:#2b5797">New cover — not saved yet</span>
+        </div>
+        <input type="file" id="cover_image" name="cover_image" accept="image/*">
+        <span class="form-hint">JPG, PNG, WebP, GIF — max 5 MB</span>
+      </div>
+
+      <!-- ── Shared metadata ────────────────────────────────── -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="category_id">Category</label>
+          <select id="category_id" name="category_id">
+            <option value="">— Uncategorized —</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}"
+                    {{ 'selected' if is_edit and post.category_id == cat.id else '' }}>
+              {{ cat.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="slug">Slug</label>
+          <input type="text" id="slug" name="slug"
+                 value="{{ post.slug if is_edit else '' }}"
+                 placeholder="auto-generated-from-title"
+                 {{ 'readonly' if is_edit else '' }}
+                 style="{{ 'background:#f5f5f5;color:#888888;' if is_edit else '' }}">
+          {% if is_edit %}
+          <span class="form-hint">Locked after creation to preserve future URLs.</span>
+          {% else %}
+          <span class="form-hint">Leave blank to auto-generate from the English title.</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group"
+           style="flex-direction:row;align-items:center;gap:10px">
+        <input type="checkbox" id="published" name="published" value="1"
+               {{ 'checked' if is_edit and post.published else '' }}
+               style="width:auto">
+        <label for="published"
+               style="text-transform:none;letter-spacing:0;font-size:12px;cursor:pointer;color:#333333">
+          Publish this post (make it visible on the public site)
+        </label>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary">
+          {{ 'Save Changes' if is_edit else 'Create Post' }}
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<!-- ── Post Images (edit mode only) ────────────────────────── -->
+{% if is_edit %}
+<div class="card">
+  <div class="card-title">
+    Post Images
+    <span style="font-size:10px;font-weight:normal;color:#888888;text-transform:none;letter-spacing:0;margin-left:8px">
+      Upload images, then copy their URLs to paste into your Markdown.
+    </span>
+  </div>
+
+  <div id="ajax-flash-container"></div>
+
+  <div class="img-grid" id="post-img-grid">
+    {% for img in post.images %}
+    <div class="img-item blog-img-item" id="bimg-{{ img.id }}">
+      <img src="{{ storage_url(img.image_path) }}" alt="Image {{ img.id }}">
+      <div class="blog-img-actions">
+        <button type="button" class="copy-url-btn"
+                data-url="{{ storage_url(img.image_path) }}"
+                title="Copy URL to clipboard">Copy URL</button>
+        <button type="button" class="del-img"
+                title="Remove"
+                onclick="BlogImages.delete({{ img.id }}, this.closest('.blog-img-item'))">×</button>
+      </div>
+    </div>
+    {% endfor %}
+    {% if not post.images %}
+    <p id="no-images-hint"
+       style="color:#888888;font-size:0.83rem;margin:0 0 4px">No images yet.</p>
+    {% endif %}
+  </div>
+
+  <div class="upload-zone" id="upload-zone">
+    <input type="file" id="img-file-input" accept="image/*" multiple>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.5" style="margin-bottom:6px;opacity:0.55">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="17 8 12 3 7 8"/>
+      <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    <div style="font-weight:bold">Click to upload or drag &amp; drop</div>
+    <div style="margin-top:3px;font-size:10px;color:#aaaaaa">
+      JPG, PNG, WebP, GIF — max 5 MB each — multiple files supported
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  'use strict';
+
+  // ── Language tabs ──────────────────────────────────────────────
+  document.querySelectorAll('.lang-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.lang-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.lang-panel').forEach(function (p) { p.classList.remove('active'); });
+      this.classList.add('active');
+      document.getElementById(this.dataset.target).classList.add('active');
+    });
+  });
+
+  // ── Spanish toggle ─────────────────────────────────────────────
+  var enableEs = document.getElementById('enable_es');
+  var esFields = document.getElementById('es-fields');
+  function syncEsState() {
+    if (!enableEs) return;
+    esFields.classList.toggle('disabled', !enableEs.checked);
+  }
+  if (enableEs) { enableEs.addEventListener('change', syncEsState); syncEsState(); }
+
+  // ── Cover preview ──────────────────────────────────────────────
+  var coverInput  = document.getElementById('cover_image');
+  var previewWrap = document.getElementById('cover-preview-wrap');
+  var previewImg  = document.getElementById('cover-preview-img');
+  var currentWrap = document.getElementById('cover-current-wrap');
+  if (coverInput) {
+    coverInput.addEventListener('change', function () {
+      var file = this.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        previewImg.src = e.target.result;
+        previewWrap.style.display = 'flex';
+        if (currentWrap) currentWrap.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ── Auto-slug (create mode only) ──────────────────────────────
+  var titleInput = document.getElementById('title');
+  var slugInput  = document.getElementById('slug');
+  var isEdit     = {{ 'true' if is_edit else 'false' }};
+  if (!isEdit && titleInput && slugInput) {
+    var slugManuallyEdited = false;
+    slugInput.addEventListener('input', function () { slugManuallyEdited = !!this.value; });
+    titleInput.addEventListener('input', function () {
+      if (slugManuallyEdited) return;
+      slugInput.value = this.value.toLowerCase().trim()
+        .replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-')
+        .replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '');
+    });
+  }
+
+  // ── Topbar publish toggle ──────────────────────────────────────
+  var topbarToggle = document.getElementById('topbar-publish-toggle');
+  var publishedCb  = document.getElementById('published');
+  if (topbarToggle) {
+    topbarToggle.addEventListener('click', function () {
+      var postId = this.dataset.postId;
+      var btn = this;
+      btn.disabled = true;
+      fetch('/admin/blog/' + postId + '/toggle-publish', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.error) { btn.disabled = false; return; }
+          if (data.published) {
+            btn.classList.add('is-published');
+            btn.title = 'Click to unpublish';
+            btn.querySelector('.toggle-label').textContent = 'Published';
+            if (publishedCb) publishedCb.checked = true;
+          } else {
+            btn.classList.remove('is-published');
+            btn.title = 'Click to publish';
+            btn.querySelector('.toggle-label').textContent = 'Draft';
+            if (publishedCb) publishedCb.checked = false;
+          }
+          btn.disabled = false;
+        })
+        .catch(function () { btn.disabled = false; });
+    });
+  }
+
+  // ── Image gallery (edit mode only) ────────────────────────────
+  var POST_ID   = {{ post.id if is_edit else 'null' }};
+  var grid      = document.getElementById('post-img-grid');
+  var zone      = document.getElementById('upload-zone');
+  var fileInput = document.getElementById('img-file-input');
+
+  if (!zone) return;
+
+  zone.addEventListener('click', function (e) { if (e.target !== fileInput) fileInput.click(); });
+  zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function (e) { if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function (e) {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    for (var i = 0; i < e.dataTransfer.files.length; i++) { upload(e.dataTransfer.files[i]); }
+  });
+  fileInput.addEventListener('change', function () {
+    for (var i = 0; i < this.files.length; i++) { upload(this.files[i]); }
+    this.value = '';
+  });
+
+  function upload(file) {
+    var hint = document.getElementById('no-images-hint');
+    if (hint) hint.remove();
+
+    var pending = document.createElement('div');
+    pending.className = 'img-item img-item-pending';
+    pending.innerHTML = '<div class="img-spinner"></div>';
+    grid.appendChild(pending);
+
+    var fd = new FormData();
+    fd.append('image', file);
+    fetch('/admin/blog/' + POST_ID + '/images', {
+      method: 'POST', body: fd,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.error) { pending.remove(); showFlash(data.error, 'error'); }
+        else             { pending.replaceWith(buildCard(data.id, data.url)); }
+      })
+      .catch(function () { pending.remove(); showFlash('Upload failed — please try again.', 'error'); });
+  }
+
+  function buildCard(id, url) {
+    var div = document.createElement('div');
+    div.className = 'img-item blog-img-item';
+    div.id = 'bimg-' + id;
+    div.innerHTML =
+      '<img src="' + url + '" alt="Image ' + id + '">' +
+      '<div class="blog-img-actions">' +
+        '<button type="button" class="copy-url-btn" data-url="' + url + '" title="Copy URL to clipboard">Copy URL</button>' +
+        '<button type="button" class="del-img" title="Remove" ' +
+          'onclick="BlogImages.delete(' + id + ', this.closest(\'.blog-img-item\'))">×</button>' +
+      '</div>';
+    div.querySelector('.copy-url-btn').addEventListener('click', handleCopy);
+    return div;
+  }
+
+  function showFlash(msg, type) {
+    var c = document.getElementById('ajax-flash-container');
+    var d = document.createElement('div');
+    d.className = 'ajax-flash ajax-flash-' + type;
+    d.textContent = msg;
+    c.appendChild(d);
+    setTimeout(function () { d.remove(); }, 5000);
+  }
+
+  // Copy URL to clipboard
+  function handleCopy(e) {
+    var btn = e.currentTarget;
+    var url = btn.dataset.url;
+    if (!navigator.clipboard) {
+      // Fallback for non-secure contexts
+      var ta = document.createElement('textarea');
+      ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      flashCopied(btn);
+      return;
+    }
+    navigator.clipboard.writeText(url).then(function () { flashCopied(btn); });
+  }
+
+  function flashCopied(btn) {
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.background = '#44aa44';
+    btn.style.color = '#fff';
+    btn.style.borderColor = '#44aa44';
+    setTimeout(function () {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1800);
+  }
+
+  // Wire up existing copy buttons on page load
+  document.querySelectorAll('.copy-url-btn').forEach(function (btn) {
+    btn.addEventListener('click', handleCopy);
+  });
+
+  // Expose delete globally for inline onclick
+  window.BlogImages = {
+    delete: function (imageId, card) {
+      card.style.opacity = '0.35';
+      card.style.pointerEvents = 'none';
+      fetch('/admin/blog/' + POST_ID + '/images/' + imageId + '/delete', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.ok) { card.remove(); }
+          else { card.style.opacity = '1'; card.style.pointerEvents = ''; showFlash('Failed to remove image.', 'error'); }
+        })
+        .catch(function () { card.style.opacity = '1'; card.style.pointerEvents = ''; showFlash('Failed to remove image.', 'error'); });
+    }
+  };
+
+}());
+</script>
+{% endblock %}

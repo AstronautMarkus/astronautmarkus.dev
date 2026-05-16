@@ -28,6 +28,15 @@
        class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
       CV Files
     </a>
+    <div class="nav-section">Blog</div>
+    <a href="{{ url_for('admin.blog_posts_list') }}"
+       class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_post') else '' }}">
+      Posts
+    </a>
+    <a href="{{ url_for('admin.blog_categories_list') }}"
+       class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
+      Categories
+    </a>
   </nav>
   <div class="sidebar-footer">
     <div class="user-info">

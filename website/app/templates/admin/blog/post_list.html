@@ -1,0 +1,121 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Blog Posts{% endblock %}
+{% block page_title %}Blog Posts{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_categories_list') }}">Categories</a>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.blog_post_create') }}">+ New Post</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if posts %}
+  <table>
+    <thead>
+      <tr>
+        <th style="width:44px">Cover</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Languages</th>
+        <th>Published</th>
+        <th>Created</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for p in posts %}
+    <tr id="post-row-{{ p.id }}">
+      <td>
+        {% if p.cover_image_path %}
+          <img class="cover-thumb" src="{{ storage_url(p.cover_image_path) }}" alt="{{ p.title }}">
+        {% else %}
+          <div class="cover-placeholder">—</div>
+        {% endif %}
+      </td>
+      <td style="font-weight:700;max-width:240px">
+        {{ p.title }}
+        <div style="font-size:10px;color:#999999;font-weight:normal;margin-top:2px">{{ p.slug }}</div>
+      </td>
+      <td>
+        {% if p.category %}
+          <span style="font-size:11px;background:#eef3fb;border:1px solid #c8d8f0;padding:2px 7px;color:#2b5797">
+            {{ p.category.name }}
+          </span>
+        {% else %}
+          <span style="color:#aaaaaa">—</span>
+        {% endif %}
+      </td>
+      <td>
+        <span class="lang-badge lang-badge-en">EN</span>
+        {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
+      </td>
+      <td>
+        <button type="button"
+                class="publish-toggle {{ 'is-published' if p.published else '' }}"
+                data-post-id="{{ p.id }}"
+                title="{{ 'Click to unpublish' if p.published else 'Click to publish' }}">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-label">{{ 'Published' if p.published else 'Draft' }}</span>
+        </button>
+      </td>
+      <td style="color:#777777;font-size:0.8rem">{{ p.created_at.strftime('%b %d, %Y') }}</td>
+      <td>
+        <div class="td-actions">
+          <a class="btn btn-ghost btn-sm"
+             href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}">Edit</a>
+          <form method="POST"
+                action="{{ url_for('admin.blog_post_delete', post_id=p.id) }}"
+                onsubmit="return confirm('Delete post «{{ p.title }}»? This cannot be undone.')">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">
+    No posts yet.
+    <a href="{{ url_for('admin.blog_post_create') }}">Write your first post →</a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  'use strict';
+
+  document.querySelectorAll('.publish-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var postId = this.dataset.postId;
+      var toggle = this;
+      toggle.disabled = true;
+
+      fetch('/admin/blog/' + postId + '/toggle-publish', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.error) { toggle.disabled = false; return; }
+          if (data.published) {
+            toggle.classList.add('is-published');
+            toggle.title = 'Click to unpublish';
+            toggle.querySelector('.toggle-label').textContent = 'Published';
+          } else {
+            toggle.classList.remove('is-published');
+            toggle.title = 'Click to publish';
+            toggle.querySelector('.toggle-label').textContent = 'Draft';
+          }
+          toggle.disabled = false;
+        })
+        .catch(function () { toggle.disabled = false; });
+    });
+  });
+}());
+</script>
+{% endblock %}
