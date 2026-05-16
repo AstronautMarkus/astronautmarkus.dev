@@ -28,6 +28,7 @@ def create_app():
 	db.init_app(app)
 	migrate.init_app(app, db)
 	mail.init_app(app)
+	storage.init_app(app)
 
 	login_manager.init_app(app)
 	login_manager.login_view = 'auth.login'
@@ -105,6 +106,7 @@ def create_app():
 
 	from app.routes.auth import auth_bp
 	app.register_blueprint(auth_bp)
+
 
 	# ── Template globals ──────────────────────────────────────────
 	@app.context_processor

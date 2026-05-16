@@ -37,3 +37,18 @@ class Config:
     MAIL_USERNAME = clean_env(os.getenv('MAIL_USERNAME'), '')
     MAIL_PASSWORD = clean_env(os.getenv('MAIL_PASSWORD'), '')
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
+
+    # ── Storage ──────────────────────────────────────────────────
+    # 'local' or 's3'
+    STORAGE_DRIVER = os.getenv('STORAGE_DRIVER', 'local')
+    STORAGE_LOCAL_ROOT = str(BASE_DIR / 'storage')
+
+    # S3 / S3-compatible (MinIO, Cloudflare R2, DigitalOcean Spaces, …)
+    STORAGE_S3_BUCKET = os.getenv('STORAGE_S3_BUCKET', '')
+    STORAGE_S3_REGION = os.getenv('STORAGE_S3_REGION', 'us-east-1')
+    STORAGE_S3_ACCESS_KEY = clean_env(os.getenv('STORAGE_S3_ACCESS_KEY'), '')
+    STORAGE_S3_SECRET_KEY = clean_env(os.getenv('STORAGE_S3_SECRET_KEY'), '')
+    # Optional: custom endpoint for S3-compatible services
+    STORAGE_S3_ENDPOINT = clean_env(os.getenv('STORAGE_S3_ENDPOINT'), '')
+    # Optional: override public base URL (e.g. a CDN in front of the bucket)
+    STORAGE_S3_PUBLIC_URL = clean_env(os.getenv('STORAGE_S3_PUBLIC_URL'), '')
