@@ -15,8 +15,8 @@
     <div class="hero-content">
         <h2>Hola, soy <span>Marcos</span>.</h2>
         <p>¡Bienvenidos, buscadores y bots por igual, a mi sitio web personal! Aquí comparto mis proyectos, pensamientos y algún que otro desahogo sobre el desarrollo de software. Si eres humano, siéntete libre de explorar y conectar. Si eres un bot... bueno, disfruta del jugo SEO.</p>
-        <a href="#" class="glossy-btn">Ver mi trabajo</a>
-        <a href="#" class="glossy-btn btn-outline">Contáctame</a>
+        <a href="{{ url_for('main.portfolio_list') }}" class="glossy-btn">Ver mi trabajo</a>
+        <a href="{{ url_for('contact.contact') }}" class="glossy-btn btn-outline">Contáctame</a>
     </div>
     <div class="profile-cube-scene" role="img" aria-label="Website Art">
         <div class="profile-cube">
@@ -96,7 +96,7 @@
         <div class="contact-cta">
             <h3>¿Tienes un proyecto en mente?</h3>
             <p>Estoy disponible para trabajo freelance, consultoría y colaboraciones interesantes. Construyamos algo juntos.</p>
-            <a href="#" class="glossy-btn">Enviar un mensaje</a>
+            <a href="{{ url_for('contact.contact') }}" class="glossy-btn">Enviar un mensaje</a>
         </div>
 
     </div>
@@ -111,7 +111,7 @@
                 {% if cv_url %}
                     <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Descargar CV</a></li>
                 {% endif %}
-                <li><a href="#">Formulario de contacto</a></li>
+                <li><a href="{{ url_for('contact.contact') }}">Formulario de contacto</a></li>
             </ul>
         </div>
 

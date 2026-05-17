@@ -17,8 +17,8 @@
         <p>Welcome, seekers and bots alike to my personal website! This is where I share my projects, thoughts, and the
             occasional rant about software development. If you're a human, feel free to explore and connect. If you're a
             bot... well, enjoy the SEO juice.</p>
-        <a href="#" class="glossy-btn">View My Work</a>
-        <a href="#" class="glossy-btn btn-outline">Contact Me</a>
+        <a href="{{ url_for('main.portfolio_list') }}" class="glossy-btn">View My Work</a>
+        <a href="{{ url_for('contact.contact') }}" class="glossy-btn btn-outline">Contact Me</a>
     </div>
     <div class="profile-cube-scene" role="img" aria-label="Website Art">
         <div class="profile-cube">
@@ -103,7 +103,7 @@
             <h3>Got a project in mind?</h3>
             <p>I'm available for freelance work, consulting, and interesting collaborations. Let's build something
                 together.</p>
-            <a href="#" class="glossy-btn">Send a Message</a>
+            <a href="{{ url_for('contact.contact') }}" class="glossy-btn">Send a Message</a>
         </div>
 
     </div>
@@ -118,7 +118,7 @@
                 {% if cv_url %}
                     <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Download CV</a></li>
                 {% endif %}
-                <li><a href="#">Contact Form</a></li>
+                <li><a href="{{ url_for('contact.contact') }}">Contact Form</a></li>
             </ul>
         </div>
 
