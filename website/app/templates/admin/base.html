@@ -11,12 +11,17 @@
 
 <!-- ── Top bar ── -->
 <div class="admin-topbar">
-  <div class="brand">
-    <span class="brand-main">AstronautMarkusDev</span>
-    <span class="brand-sub">Admin Panel</span>
+  <div class="topbar-left">
+    <button class="hamburger" id="sidebarToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="brand">
+      <span class="brand-main">AstronautMarkusDev</span>
+      <span class="brand-sub">Admin Panel</span>
+    </div>
   </div>
   <div class="topbar-user">
-    <span>Signed in as <strong>{{ current_user.username }}</strong></span>
+    <span class="topbar-username">Signed in as <strong>{{ current_user.username }}</strong></span>
     <a href="{{ url_for('main.home') }}" target="_blank">View Site ↗</a>
     <a href="{{ url_for('auth.logout') }}">Logout</a>
   </div>
@@ -99,6 +104,26 @@
       </ul>
     </div>
 
+    <div class="sidebar-box">
+      <div class="sidebar-title green">System</div>
+      <div class="sidebar-content">
+        <div class="status-box ok">DB Connected</div>
+        <div class="status-box ok">Storage OK</div>
+      </div>
+    </div>
+
+    {% if admin_unread_contact %}
+    <div class="sidebar-box">
+      <div class="sidebar-title red">Alerts</div>
+      <div class="sidebar-content">
+        <div class="status-box warn">
+          {{ admin_unread_contact }} unread
+          <a href="{{ url_for('admin.contact_inbox') }}">→ Inbox</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
   </aside>
 
   <!-- Main content -->
@@ -120,32 +145,27 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Right bar -->
-  <aside class="rightbar">
-    {% block rightbar %}
-    <div class="sidebar-box">
-      <div class="sidebar-title green">System</div>
-      <div class="sidebar-content">
-        <div class="status-box ok">DB Connected</div>
-        <div class="status-box ok">Storage OK</div>
-      </div>
-    </div>
-
-    {% if admin_unread_contact %}
-    <div class="sidebar-box">
-      <div class="sidebar-title red">Alerts</div>
-      <div class="sidebar-content">
-        <div class="status-box warn">
-          {{ admin_unread_contact }} unread
-          <a href="{{ url_for('admin.contact_inbox') }}">→ Inbox</a>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-    {% endblock %}
-  </aside>
-
 </div><!-- /admin-page -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<script>
+(function () {
+  var toggle = document.getElementById('sidebarToggle');
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  function close() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.classList.remove('sidebar-open');
+  }
+  toggle.addEventListener('click', function () {
+    var isOpen = sidebar.classList.toggle('open');
+    overlay.classList.toggle('active', isOpen);
+    document.body.classList.toggle('sidebar-open', isOpen);
+  });
+  overlay.addEventListener('click', close);
+})();
+</script>
 
 {% block extra_js %}{% endblock %}
 </body>
