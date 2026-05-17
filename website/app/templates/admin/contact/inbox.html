@@ -15,7 +15,7 @@
 {% block content %}
 <div class="card">
   {% if messages %}
-  <table>
+  <table class="table-blue">
     <thead>
       <tr>
         <th style="width:16px"></th>
@@ -28,17 +28,19 @@
     </thead>
     <tbody>
     {% for m in messages %}
-    <tr {% if not m.is_read %}style="font-weight:700;background:#1a1a2e"{% endif %}>
-      <td>
+    <tr {% if not m.is_read %}style="background:#fffbe6;border-left:3px solid #cc0000"{% endif %}>
+      <td style="padding-left:10px">
         {% if not m.is_read %}
-        <span style="display:inline-block;width:8px;height:8px;background:#cc0000;border-radius:50%"></span>
+        <span style="display:inline-block;width:7px;height:7px;background:#cc0000;border-radius:50%;vertical-align:middle"></span>
+        {% else %}
+        <span style="display:inline-block;width:7px;height:7px;background:#ccc;border-radius:50%;vertical-align:middle"></span>
         {% endif %}
       </td>
-      <td>
+      <td style="{% if not m.is_read %}font-weight:700{% endif %}">
         {{ m.name }}<br>
         <span style="font-size:10px;color:#888;font-weight:normal">{{ m.email }}</span>
       </td>
-      <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.subject }}</td>
+      <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;{% if not m.is_read %}font-weight:700{% endif %}">{{ m.subject }}</td>
       <td>
         <span class="lang-badge lang-badge-{{ m.language }}">{{ m.language | upper }}</span>
       </td>

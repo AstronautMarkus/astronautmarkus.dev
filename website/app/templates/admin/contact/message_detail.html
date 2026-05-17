@@ -13,34 +13,34 @@
 
 {% block content %}
 <div class="card">
-  <table style="width:100%;border-collapse:collapse">
+  <table class="table-light" style="width:100%;border-collapse:collapse">
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;width:100px">From</td>
+      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;width:110px;background:#f7f7f7;border-right:1px solid #e4e4e4">From</td>
       <td style="padding:8px 12px;font-weight:700">{{ entry.name }}</td>
     </tr>
-    <tr style="background:#111">
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px">Email</td>
-      <td style="padding:8px 12px"><a href="mailto:{{ entry.email }}" style="color:#5588dd">{{ entry.email }}</a></td>
+    <tr>
+      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Email</td>
+      <td style="padding:8px 12px"><a href="mailto:{{ entry.email }}">{{ entry.email }}</a></td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px">Subject</td>
+      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Subject</td>
       <td style="padding:8px 12px">{{ entry.subject }}</td>
     </tr>
-    <tr style="background:#111">
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px">Language</td>
+    <tr>
+      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Language</td>
       <td style="padding:8px 12px">
         <span class="lang-badge lang-badge-{{ entry.language }}">{{ entry.language | upper }}</span>
       </td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px">Received</td>
+      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Received</td>
       <td style="padding:8px 12px;color:#777">{{ entry.created_at | dtfmt('%B %d, %Y at %H:%M') }}</td>
     </tr>
   </table>
 </div>
 
-<div class="card" style="margin-top:1rem">
+<div class="card" style="margin-top:14px">
   <div class="card-title">Message</div>
-  <div style="white-space:pre-wrap;line-height:1.6;color:#cccccc">{{ entry.message }}</div>
+  <div style="white-space:pre-wrap;line-height:1.7;color:#333">{{ entry.message }}</div>
 </div>
 {% endblock %}
