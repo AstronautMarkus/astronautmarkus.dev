@@ -1,0 +1,85 @@
+{% extends "base/base.html" %}
+
+{% block title %}Contact{% endblock %}
+{% block description %}Get in touch with Marcos Reyes — send me a message about projects, collaboration, or anything else.{% endblock %}
+{% block keywords %}contact, Marcos Reyes, AstronautMarkus, hire, email{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div id="contact-wrap">
+
+    <h2>Contact Me</h2>
+    <p class="contact-intro">
+      Got a question, a project idea, or just want to say hi? Fill in the form below and I'll get back to you as soon as I can.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        {% if category == 'success' %}
+        <div class="contact-alert contact-alert-success">
+          Your message has been sent! I'll reply to you shortly.
+        </div>
+        {% elif category == 'error' %}
+        <div class="contact-alert contact-alert-error">
+          Please fill in all required fields correctly.
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('contact.contact') }}" novalidate>
+
+      <div class="form-row">
+        <div class="form-group {% if 'name' in field_errors %}has-error{% endif %}">
+          <label for="name">Full Name <span class="required">*</span></label>
+          <input type="text" id="name" name="name"
+                 value="{{ form_data.get('name', '') }}"
+                 placeholder="Your name"
+                 autocomplete="name">
+          {% if 'name' in field_errors %}
+          <span class="field-error">Name is required.</span>
+          {% endif %}
+        </div>
+
+        <div class="form-group {% if 'email' in field_errors %}has-error{% endif %}">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input type="email" id="email" name="email"
+                 value="{{ form_data.get('email', '') }}"
+                 placeholder="you@example.com"
+                 autocomplete="email">
+          {% if 'email' in field_errors %}
+          <span class="field-error">A valid email address is required.</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group {% if 'subject' in field_errors %}has-error{% endif %}">
+        <label for="subject">Subject <span class="required">*</span></label>
+        <input type="text" id="subject" name="subject"
+               value="{{ form_data.get('subject', '') }}"
+               placeholder="What's this about?">
+        {% if 'subject' in field_errors %}
+        <span class="field-error">Subject is required.</span>
+        {% endif %}
+      </div>
+
+      <div class="form-group {% if 'message' in field_errors %}has-error{% endif %}">
+        <label for="message">Message <span class="required">*</span></label>
+        <textarea id="message" name="message" rows="7"
+                  placeholder="Your message…">{{ form_data.get('message', '') }}</textarea>
+        {% if 'message' in field_errors %}
+        <span class="field-error">Message cannot be empty.</span>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="contact-btn">Send Message</button>
+
+    </form>
+
+  </div>
+</div>
+{% endblock %}

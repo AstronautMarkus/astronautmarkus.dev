@@ -54,7 +54,7 @@
                 {{ nav_link('main.about', 'About' if current_lang == 'en' else 'Acerca de') }}
                 <li><a href="{{ url_for('main.portfolio_list') }}"{% if request.endpoint and 'portfolio' in request.endpoint %} class="active"{% endif %}>Portfolio</a></li>
                 <li><a href="{{ url_for('main.blog_list') }}"{% if 'blog' in request.endpoint %} class="active"{% endif %}>{{ 'Blog' }}</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="{{ url_for('contact.contact') }}"{% if request.endpoint and 'contact' in request.endpoint %} class="active"{% endif %}>{{ 'Contact' if current_lang == 'en' else 'Contacto' }}</a></li>
             </ul>
             <div id="nav-right">
                 <ul id="lang-switcher">

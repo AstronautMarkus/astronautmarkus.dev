@@ -1,0 +1,63 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Contact Inbox{% endblock %}
+{% block page_title %}Contact Inbox{% endblock %}
+
+{% block topbar_actions %}
+  {% if unread > 0 %}
+  <span style="font-size:11px;background:#cc0000;color:#fff;padding:3px 8px;border-radius:2px;font-weight:700">
+    {{ unread }} unread
+  </span>
+  {% endif %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_mail_templates') }}">Mail Templates</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if messages %}
+  <table>
+    <thead>
+      <tr>
+        <th style="width:16px"></th>
+        <th>From</th>
+        <th>Subject</th>
+        <th>Lang</th>
+        <th>Received</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for m in messages %}
+    <tr {% if not m.is_read %}style="font-weight:700;background:#1a1a2e"{% endif %}>
+      <td>
+        {% if not m.is_read %}
+        <span style="display:inline-block;width:8px;height:8px;background:#cc0000;border-radius:50%"></span>
+        {% endif %}
+      </td>
+      <td>
+        {{ m.name }}<br>
+        <span style="font-size:10px;color:#888;font-weight:normal">{{ m.email }}</span>
+      </td>
+      <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.subject }}</td>
+      <td>
+        <span class="lang-badge lang-badge-{{ m.language }}">{{ m.language | upper }}</span>
+      </td>
+      <td style="color:#777;white-space:nowrap">{{ m.created_at.strftime('%b %d, %Y %H:%M') }}</td>
+      <td>
+        <div class="td-actions">
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}">View</a>
+          <form method="POST" action="{{ url_for('admin.contact_message_delete', message_id=m.id) }}"
+                onsubmit="return confirm('Delete this message?');" style="display:inline">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">No messages yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

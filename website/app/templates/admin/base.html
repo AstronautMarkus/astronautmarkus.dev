@@ -37,6 +37,15 @@
        class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
       Categories
     </a>
+    <div class="nav-section">Contact</div>
+    <a href="{{ url_for('admin.contact_inbox') }}"
+       class="{{ 'active' if request.endpoint and request.endpoint == 'admin.contact_inbox' else '' }}">
+      Inbox
+    </a>
+    <a href="{{ url_for('admin.contact_mail_templates') }}"
+       class="{{ 'active' if request.endpoint and 'mail_template' in request.endpoint else '' }}">
+      Mail Templates
+    </a>
   </nav>
   <div class="sidebar-footer">
     <div class="user-info">

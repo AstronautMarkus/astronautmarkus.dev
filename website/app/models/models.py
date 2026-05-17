@@ -106,3 +106,33 @@ class BlogPostImage(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False)
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class ContactMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(200), nullable=False)
+    subject = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    language = db.Column(db.String(10), nullable=False, default='en')
+    is_read = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class MailTemplate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(50), nullable=False)
+    language = db.Column(db.String(10), nullable=False, default='en')
+    description = db.Column(db.String(200), nullable=True)
+    subject = db.Column(db.String(200), nullable=False)
+    body_html = db.Column(db.Text, nullable=False)
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp(),
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint('slug', 'language', name='uq_mail_template_slug_lang'),
+    )

@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edit Template · {{ tpl.slug }} ({{ tpl.language | upper }}){% endblock %}
+{% block page_title %}Edit Template · {{ tpl.slug }} ({{ tpl.language | upper }}){% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_mail_templates') }}">← Back to templates</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-title">{{ tpl.description or tpl.slug }}</div>
+
+  <form method="POST" action="{{ url_for('admin.contact_mail_template_edit', template_id=tpl.id) }}">
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" id="description" name="description"
+             value="{{ tpl.description or '' }}"
+             placeholder="Short description for this template">
+    </div>
+
+    <div class="form-group">
+      <label for="subject">Subject <span style="color:#cc0000">*</span></label>
+      <input type="text" id="subject" name="subject"
+             value="{{ tpl.subject }}"
+             placeholder="Email subject — supports {{ '{{' }} name {{ '}}' }}, {{ '{{' }} subject {{ '}}' }}, etc."
+             required>
+      <small style="color:#666;font-size:10px">
+        Jinja2 variables available:
+        <code>{{ '{{' }} name {{ '}}' }}</code>
+        <code>{{ '{{' }} email {{ '}}' }}</code>
+        <code>{{ '{{' }} subject {{ '}}' }}</code>
+        <code>{{ '{{' }} message {{ '}}' }}</code>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="body_html">Body (HTML) <span style="color:#cc0000">*</span></label>
+      <textarea id="body_html" name="body_html" rows="18"
+                style="font-family:monospace;font-size:12px"
+                placeholder="HTML email body…" required>{{ tpl.body_html }}</textarea>
+      <small style="color:#666;font-size:10px">
+        Same Jinja2 variables as the subject field are available in the body.
+      </small>
+    </div>
+
+    <div style="display:flex;gap:0.5rem;justify-content:flex-end;margin-top:1rem">
+      <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_mail_templates') }}">Cancel</a>
+      <button type="submit" class="btn btn-primary btn-sm">Save Template</button>
+    </div>
+
+  </form>
+</div>
+{% endblock %}

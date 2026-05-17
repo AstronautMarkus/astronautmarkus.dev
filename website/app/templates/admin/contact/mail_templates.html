@@ -1,0 +1,56 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Mail Templates{% endblock %}
+{% block page_title %}Mail Templates{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">← Inbox</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <p style="font-size:12px;color:#888;margin:0 0 1rem">
+    These templates are used when sending emails from the contact form.
+    Use <code style="background:#222;padding:1px 4px;font-size:11px">{{ '{{' }} name {{ '}}' }}</code>,
+    <code style="background:#222;padding:1px 4px;font-size:11px">{{ '{{' }} email {{ '}}' }}</code>,
+    <code style="background:#222;padding:1px 4px;font-size:11px">{{ '{{' }} subject {{ '}}' }}</code>, and
+    <code style="background:#222;padding:1px 4px;font-size:11px">{{ '{{' }} message {{ '}}' }}</code> as placeholders.
+  </p>
+
+  {% if templates %}
+  <table>
+    <thead>
+      <tr>
+        <th>Slug</th>
+        <th>Language</th>
+        <th>Description</th>
+        <th>Subject</th>
+        <th>Last Updated</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for t in templates %}
+    <tr>
+      <td style="font-family:monospace;font-size:12px">{{ t.slug }}</td>
+      <td><span class="lang-badge lang-badge-{{ t.language }}">{{ t.language | upper }}</span></td>
+      <td style="color:#888;font-size:12px">{{ t.description or '—' }}</td>
+      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">{{ t.subject }}</td>
+      <td style="color:#777;font-size:11px;white-space:nowrap">{{ t.updated_at.strftime('%b %d, %Y %H:%M') }}</td>
+      <td>
+        <div class="td-actions">
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_mail_template_edit', template_id=t.id) }}">Edit</a>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">
+    No templates found. They are created automatically when the first contact form is submitted.
+    You can also trigger creation by submitting the contact form once.
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
