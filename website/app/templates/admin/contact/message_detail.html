@@ -34,7 +34,7 @@
     </tr>
     <tr>
       <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px">Received</td>
-      <td style="padding:8px 12px;color:#777">{{ entry.created_at.strftime('%B %d, %Y at %H:%M') }}</td>
+      <td style="padding:8px 12px;color:#777">{{ entry.created_at | dtfmt('%B %d, %Y at %H:%M') }}</td>
     </tr>
   </table>
 </div>

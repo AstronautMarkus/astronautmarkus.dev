@@ -137,6 +137,26 @@ def create_app():
 			as_attachment=False,
 		)
 
+	# ── Template filters ──────────────────────────────────────────
+	def _dtfmt(value, fmt='%b %d, %Y'):
+		if isinstance(value, str):
+			# treat zero/null MySQL dates as missing
+			if not value or value.startswith('0000'):
+				return '—'
+			for pattern in ('%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M'):
+				try:
+					value = datetime.strptime(value, pattern)
+					break
+				except ValueError:
+					continue
+			else:
+				return value
+		if hasattr(value, 'strftime'):
+			return value.strftime(fmt)
+		return str(value)
+
+	app.jinja_env.filters['dtfmt'] = _dtfmt
+
 	# ── Template globals ──────────────────────────────────────────
 	@app.context_processor
 	def inject_globals():

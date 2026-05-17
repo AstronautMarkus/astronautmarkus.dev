@@ -1,25 +1,143 @@
 {% extends "admin/base.html" %}
 
 {% block title %}Dashboard{% endblock %}
+{% block breadcrumb %}Overview{% endblock %}
 {% block page_title %}Dashboard{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.projects_create') }}">+ New Project</a>
+  <a class="btn btn-sm" href="{{ url_for('admin.projects_create') }}">+ Portfolio</a>
+  <a class="btn btn-sm" href="{{ url_for('admin.blog_post_create') }}">+ Post</a>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.contact_inbox') }}">
+    Inbox{% if unread_messages %} ({{ unread_messages }}){% endif %}
+  </a>
 {% endblock %}
 
 {% block content %}
 
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:1.75rem">
-  <div class="card" style="margin:0">
-    <div class="card-title">Portfolio Projects</div>
-    <div style="font-size:2.25rem;font-weight:700;color:#2b5797;line-height:1">{{ total_projects }}</div>
+<!-- ── Stats ── -->
+<div class="stat-grid">
+  <div class="stat-box accent">
+    <div class="stat-box-label">Portfolio Projects</div>
+    <div class="stat-box-value">{{ total_projects }}</div>
+    <div class="stat-box-sub"><a href="{{ url_for('admin.projects_list') }}">View all →</a></div>
   </div>
-  <div class="card" style="margin:0">
-    <div class="card-title">CV Files</div>
-    <div style="font-size:2.25rem;font-weight:700;color:#2b5797;line-height:1">{{ total_cvs }}</div>
+  <div class="stat-box">
+    <div class="stat-box-label">CV Files</div>
+    <div class="stat-box-value">{{ total_cvs }}</div>
+    <div class="stat-box-sub"><a href="{{ url_for('admin.cv_list') }}">View all →</a></div>
+  </div>
+  <div class="stat-box accent">
+    <div class="stat-box-label">Blog Posts</div>
+    <div class="stat-box-value">{{ total_posts }}</div>
+    <div class="stat-box-sub">{{ total_categories }} categor{{ 'y' if total_categories == 1 else 'ies' }}</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-box-label">Categories</div>
+    <div class="stat-box-value">{{ total_categories }}</div>
+    <div class="stat-box-sub"><a href="{{ url_for('admin.blog_categories_list') }}">Manage →</a></div>
+  </div>
+  <div class="stat-box {{ 'accent-red' if unread_messages else '' }}">
+    <div class="stat-box-label">Messages</div>
+    <div class="stat-box-value">{{ total_messages }}</div>
+    <div class="stat-box-sub">
+      {% if unread_messages %}
+        <a href="{{ url_for('admin.contact_inbox') }}" style="color:#8f1c1c;font-weight:bold;">{{ unread_messages }} unread →</a>
+      {% else %}
+        all read
+      {% endif %}
+    </div>
+  </div>
+  <div class="stat-box accent-green">
+    <div class="stat-box-label">Total Visits</div>
+    <div class="stat-box-value">{{ total_visits }}</div>
+    <div class="stat-box-sub"><a href="{{ url_for('admin.visits_list') }}">Analytics →</a></div>
   </div>
 </div>
 
+<!-- ── Two-col grid: recent messages + recent posts ── -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+  <!-- Recent messages -->
+  <div class="card">
+    <div class="card-title red">Recent Messages</div>
+    {% if recent_messages %}
+    <table>
+      <thead>
+        <tr>
+          <th>From</th>
+          <th>Subject</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for m in recent_messages %}
+      <tr>
+        <td>
+          <a href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}"
+             style="font-weight:{{ 'bold' if not m.is_read else 'normal' }};color:#2b5797;">
+            {{ m.name }}
+          </a>
+          {% if not m.is_read %}
+            <span class="lang-badge lang-badge-es" style="background:#a32929;color:#fff;border-color:#6f1515;">new</span>
+          {% endif %}
+        </td>
+        <td style="color:#555;font-size:11px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+          {{ m.subject or '—' }}
+        </td>
+        <td style="color:#888;font-size:10px;white-space:nowrap">
+          {{ m.created_at | dtfmt('%b %d') }}
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">No messages yet.</div>
+    {% endif %}
+  </div>
+
+  <!-- Recent posts -->
+  <div class="card">
+    <div class="card-title">Recent Blog Posts</div>
+    {% if recent_posts %}
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for p in recent_posts %}
+      <tr>
+        <td>
+          <a href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}" style="color:#2b5797;font-weight:bold;">
+            {{ p.title }}
+          </a>
+        </td>
+        <td>
+          {% if p.published %}
+            <span class="lang-badge lang-badge-en" style="background:#d9f1d9;color:#226600;border-color:#88cc88;">Live</span>
+          {% else %}
+            <span class="lang-badge" style="background:#f5f5f5;color:#888;border-color:#ccc;">Draft</span>
+          {% endif %}
+        </td>
+        <td style="color:#888;font-size:10px;white-space:nowrap">
+          {{ p.created_at | dtfmt('%b %d') }}
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">No posts yet. <a href="{{ url_for('admin.blog_post_create') }}">Write one →</a></div>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- ── Recent projects table ── -->
 <div class="card">
   <div class="card-title">Recent Projects</div>
   {% if recent_projects %}
@@ -35,9 +153,9 @@
     <tbody>
     {% for p in recent_projects %}
     <tr>
-      <td style="color:#555555;font-variant-numeric:tabular-nums">{{ p.id }}</td>
-      <td style="font-weight:700">{{ p.title }}</td>
-      <td style="color:#777777">{{ p.created_at.strftime('%b %d, %Y') }}</td>
+      <td style="color:#888;font-variant-numeric:tabular-nums">{{ p.id }}</td>
+      <td style="font-weight:bold">{{ p.title }}</td>
+      <td style="color:#888;font-size:11px">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}">Edit</a>
@@ -48,10 +166,7 @@
     </tbody>
   </table>
   {% else %}
-  <p class="empty-state">
-    No projects yet.
-    <a href="{{ url_for('admin.projects_create') }}">Create your first one →</a>
-  </p>
+  <div class="empty-state">No projects yet. <a href="{{ url_for('admin.projects_create') }}">Add one →</a></div>
   {% endif %}
 </div>
 

@@ -42,7 +42,7 @@
       <td>
         <span class="lang-badge lang-badge-{{ m.language }}">{{ m.language | upper }}</span>
       </td>
-      <td style="color:#777;white-space:nowrap">{{ m.created_at.strftime('%b %d, %Y %H:%M') }}</td>
+      <td style="color:#777;white-space:nowrap">{{ m.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}">View</a>

@@ -9,60 +9,108 @@
 </head>
 <body>
 
-<aside class="sidebar">
+<!-- ── Top bar ── -->
+<div class="admin-topbar">
   <div class="brand">
-    <span class="brand-icon">▲</span>
-    AstronautMarkus
+    <span class="brand-main">▲ AstronautMarkus</span>
+    <span class="brand-sub">Admin Panel</span>
   </div>
-  <nav>
-    <div class="nav-section">Navigation</div>
-    <a href="{{ url_for('admin.dashboard') }}"
-       class="{{ 'active' if request.endpoint == 'admin.dashboard' else '' }}">
-      Dashboard
-    </a>
-    <a href="{{ url_for('admin.projects_list') }}"
-       class="{{ 'active' if request.endpoint and 'project' in request.endpoint else '' }}">
-      Portfolio
-    </a>
-    <a href="{{ url_for('admin.cv_list') }}"
-       class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
-      CV Files
-    </a>
-    <div class="nav-section">Blog</div>
-    <a href="{{ url_for('admin.blog_posts_list') }}"
-       class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_post') else '' }}">
-      Posts
-    </a>
-    <a href="{{ url_for('admin.blog_categories_list') }}"
-       class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
-      Categories
-    </a>
-    <div class="nav-section">Contact</div>
-    <a href="{{ url_for('admin.contact_inbox') }}"
-       class="{{ 'active' if request.endpoint and request.endpoint == 'admin.contact_inbox' else '' }}">
-      Inbox
-    </a>
-    <a href="{{ url_for('admin.contact_mail_templates') }}"
-       class="{{ 'active' if request.endpoint and 'mail_template' in request.endpoint else '' }}">
-      Mail Templates
-    </a>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="user-info">
-      <span class="username">{{ current_user.username }}</span>
-      <span class="user-role">admin</span>
-    </div>
+  <div class="topbar-user">
+    <span>Signed in as <strong>{{ current_user.username }}</strong></span>
+    <a href="{{ url_for('main.home') }}" target="_blank">View Site ↗</a>
     <a href="{{ url_for('auth.logout') }}">Logout</a>
   </div>
-</aside>
+</div>
 
-<div class="main-content">
-  <div class="topbar">
-    <h1>{% block page_title %}Admin{% endblock %}</h1>
-    <div>{% block topbar_actions %}{% endblock %}</div>
-  </div>
+<!-- ── Page body ── -->
+<div class="admin-page">
 
-  <div class="page-body">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div class="sidebar-box">
+      <div class="sidebar-title">Main</div>
+      <ul class="menu">
+        <li>
+          <a href="{{ url_for('admin.dashboard') }}"
+             class="{{ 'active' if request.endpoint == 'admin.dashboard' else '' }}">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.visits_list') }}"
+             class="{{ 'active' if request.endpoint and 'visit' in request.endpoint else '' }}">
+            Visits
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-box">
+      <div class="sidebar-title blue">Content</div>
+      <ul class="menu">
+        <li>
+          <a href="{{ url_for('admin.projects_list') }}"
+             class="{{ 'active' if request.endpoint and 'project' in request.endpoint else '' }}">
+            Portfolio
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.cv_list') }}"
+             class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
+            CV Files
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.blog_posts_list') }}"
+             class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_post') else '' }}">
+            Blog Posts
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.blog_categories_list') }}"
+             class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
+            Categories
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-box">
+      <div class="sidebar-title red">Contact</div>
+      <ul class="menu">
+        <li>
+          <a href="{{ url_for('admin.contact_inbox') }}"
+             class="{{ 'active' if request.endpoint == 'admin.contact_inbox' or request.endpoint == 'admin.contact_message_detail' else '' }}">
+            Inbox
+            {% if admin_unread_contact %}
+              <span class="lang-badge lang-badge-es" style="background:#a32929;color:#fff;border-color:#6f1515;">
+                {{ admin_unread_contact }}
+              </span>
+            {% endif %}
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.contact_mail_templates') }}"
+             class="{{ 'active' if request.endpoint and 'mail_template' in request.endpoint else '' }}">
+            Mail Templates
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </aside>
+
+  <!-- Main content -->
+  <main class="content">
+    <div class="content-header">
+      <div>
+        <div class="breadcrumb">Admin › {% block breadcrumb %}{% endblock %}</div>
+        <h2 class="page-title">{% block page_title %}Dashboard{% endblock %}</h2>
+      </div>
+      <div class="content-actions">{% block topbar_actions %}{% endblock %}</div>
+    </div>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
         <div class="flash flash-{{ category }}">{{ message }}</div>
@@ -70,9 +118,35 @@
     {% endwith %}
 
     {% block content %}{% endblock %}
-  </div>
-</div>
+  </main>
 
-  {% block extra_js %}{% endblock %}
+  <!-- Right bar -->
+  <aside class="rightbar">
+    {% block rightbar %}
+    <div class="sidebar-box">
+      <div class="sidebar-title green">System</div>
+      <div class="sidebar-content">
+        <div class="status-box ok">DB Connected</div>
+        <div class="status-box ok">Storage OK</div>
+      </div>
+    </div>
+
+    {% if admin_unread_contact %}
+    <div class="sidebar-box">
+      <div class="sidebar-title red">Alerts</div>
+      <div class="sidebar-content">
+        <div class="status-box warn">
+          {{ admin_unread_contact }} unread
+          <a href="{{ url_for('admin.contact_inbox') }}">→ Inbox</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endblock %}
+  </aside>
+
+</div><!-- /admin-page -->
+
+{% block extra_js %}{% endblock %}
 </body>
 </html>

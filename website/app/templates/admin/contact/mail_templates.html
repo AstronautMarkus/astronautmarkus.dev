@@ -36,7 +36,7 @@
       <td><span class="lang-badge lang-badge-{{ t.language }}">{{ t.language | upper }}</span></td>
       <td style="color:#888;font-size:12px">{{ t.description or '—' }}</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">{{ t.subject }}</td>
-      <td style="color:#777;font-size:11px;white-space:nowrap">{{ t.updated_at.strftime('%b %d, %Y %H:%M') }}</td>
+      <td style="color:#777;font-size:11px;white-space:nowrap">{{ t.updated_at | dtfmt('%b %d, %Y %H:%M') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_mail_template_edit', template_id=t.id) }}">Edit</a>

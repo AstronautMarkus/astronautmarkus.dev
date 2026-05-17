@@ -24,7 +24,7 @@
     <tr>
       <td style="font-weight:700;text-transform:uppercase">{{ cv.language }}</td>
       <td style="font-size:0.82rem;color:#555555">{{ cv.file_path }}</td>
-      <td style="color:#777777;font-size:0.8rem">{{ cv.uploaded_at.strftime('%b %d, %Y') }}</td>
+      <td style="color:#777777;font-size:0.8rem">{{ cv.uploaded_at | dtfmt('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm"

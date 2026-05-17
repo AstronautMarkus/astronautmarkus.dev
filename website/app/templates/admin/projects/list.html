@@ -52,7 +52,7 @@
           <span style="color:#aaaaaa">—</span>
         {% endif %}
       </td>
-      <td style="color:#777777;font-size:0.8rem">{{ p.created_at.strftime('%b %d, %Y') }}</td>
+      <td style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm"

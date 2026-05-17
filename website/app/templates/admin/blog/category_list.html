@@ -32,7 +32,7 @@
       <td>
         <span style="font-size:11px;color:#555555">{{ cat.posts | length }}</span>
       </td>
-      <td style="color:#777777;font-size:0.8rem">{{ cat.created_at.strftime('%b %d, %Y') }}</td>
+      <td style="color:#777777;font-size:0.8rem">{{ cat.created_at | dtfmt('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm"

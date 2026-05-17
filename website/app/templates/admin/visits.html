@@ -1,0 +1,172 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Visits{% endblock %}
+{% block breadcrumb %}Visits{% endblock %}
+{% block page_title %}Site Visits{% endblock %}
+
+{% block content %}
+
+<!-- ── Stats ── -->
+<div class="stat-grid" style="grid-template-columns:repeat(3,minmax(140px,1fr));max-width:560px;margin-bottom:16px">
+  <div class="stat-box accent-green">
+    <div class="stat-box-label">Total Visits</div>
+    <div class="stat-box-value">{{ '{:,}'.format(total) }}</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-box-label">Today</div>
+    <div class="stat-box-value">{{ today_count }}</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-box-label">Last 7 Days</div>
+    <div class="stat-box-value">{{ week_count }}</div>
+  </div>
+</div>
+
+<!-- ── 14-day bar chart ── -->
+<div class="card" style="margin-bottom:16px">
+  <div class="card-title green">Traffic — Last 14 Days</div>
+  <div style="padding:12px 14px 8px">
+    <div class="bar-chart">
+      {% for day in chart_data %}
+      <div class="bar-day">
+        <div class="bar-fill" style="height:{{ ((day.count / max_count) * 100)|int }}%">
+          {% if day.count > 0 %}
+          <span class="bar-val">{{ day.count }}</span>
+          {% endif %}
+        </div>
+        <div class="bar-label">{{ day.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- ── Filter bar ── -->
+<form method="get" action="{{ url_for('admin.visits_list') }}" style="display:flex;gap:8px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap">
+  <div class="form-group" style="flex:0 0 180px">
+    <label for="ip">Filter by IP</label>
+    <input type="text" id="ip" name="ip" value="{{ ip_filter }}" placeholder="e.g. 127.0.0" style="padding:5px 8px;font-size:11px">
+  </div>
+  <div class="form-group" style="flex:0 0 160px">
+    <label for="utm">UTM Source</label>
+    <input type="text" id="utm" name="utm" value="{{ utm_filter }}" placeholder="e.g. facebook" style="padding:5px 8px;font-size:11px">
+  </div>
+  <div style="display:flex;gap:6px;padding-bottom:1px">
+    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+    {% if ip_filter or utm_filter %}
+    <a href="{{ url_for('admin.visits_list') }}" class="btn btn-ghost btn-sm">Clear</a>
+    {% endif %}
+  </div>
+  <div style="margin-left:auto;padding-bottom:1px;color:#666;font-size:11px;align-self:flex-end">
+    {% if pagination.total != total %}
+      <strong>{{ pagination.total }}</strong> matching /
+    {% endif %}
+    <strong>{{ '{:,}'.format(total) }}</strong> total &nbsp;·&nbsp;
+    Page <strong>{{ pagination.page }}</strong> of <strong>{{ pagination.pages or 1 }}</strong>
+  </div>
+</form>
+
+<!-- ── Visits table ── -->
+<div class="card" style="margin-bottom:0">
+  <div class="card-title">
+    Visits
+    <span style="font-weight:normal;opacity:0.7;font-size:10px;margin-left:6px">
+      showing {{ pagination.items | length }} of {{ pagination.total }}
+    </span>
+  </div>
+  {% if pagination.items %}
+  <table>
+    <colgroup>
+      <col style="width:64px">
+      <col style="width:130px">
+      <col>
+      <col style="width:120px">
+      <col style="width:130px">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>IP Address</th>
+        <th>User Agent</th>
+        <th>UTM Source</th>
+        <th>Visited At</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for v in pagination.items %}
+    <tr>
+      <td style="color:#999;font-variant-numeric:tabular-nums;font-size:11px">{{ v.id }}</td>
+      <td style="font-family:'Courier New',monospace;font-size:11px;white-space:nowrap">
+        <a href="{{ url_for('admin.visits_list', ip=v.ip_address, utm=utm_filter) }}" style="color:#444;text-decoration:none" title="Filter by this IP">{{ v.ip_address }}</a>
+      </td>
+      <td style="font-size:11px;color:#555;max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ v.user_agent or '' }}">
+        {{ v.user_agent or '—' }}
+      </td>
+      <td>
+        {% if v.utm_source %}
+          <a href="{{ url_for('admin.visits_list', ip=ip_filter, utm=v.utm_source) }}" class="lang-badge lang-badge-en" style="text-decoration:none" title="Filter by source">{{ v.utm_source | truncate(18, True, '…') }}</a>
+        {% else %}
+          <span style="color:#bbb">—</span>
+        {% endif %}
+      </td>
+      <td style="color:#666;font-size:11px;white-space:nowrap">
+        {{ v.visited_at | dtfmt('%Y-%m-%d %H:%M') }}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- ── Pagination ── -->
+  {% if pagination.pages > 1 %}
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid #ddd;background:#fafafa;gap:8px;flex-wrap:wrap">
+    <div style="font-size:11px;color:#666">
+      Showing <strong>{{ (pagination.page - 1) * 50 + 1 }}–{{ (pagination.page - 1) * 50 + (pagination.items | length) }}</strong>
+      of <strong>{{ '{:,}'.format(pagination.total) }}</strong>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+      {# Prev #}
+      {% if pagination.has_prev %}
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.visits_list', page=pagination.prev_num, ip=ip_filter, utm=utm_filter) }}">← Prev</a>
+      {% else %}
+        <span class="btn btn-ghost btn-sm" style="opacity:0.35;cursor:default">← Prev</span>
+      {% endif %}
+
+      {# Page numbers – show up to 7 around current #}
+      {% set pages = pagination.pages %}
+      {% set cur = pagination.page %}
+      {% for p in range(1, pages + 1) %}
+        {% if p == 1 or p == pages or (p >= cur - 2 and p <= cur + 2) %}
+          {% if loop.changed(p > 1 and p != cur - 3 and p != pages + 1) %}{% endif %}
+          {% if p == cur %}
+            <span class="btn btn-primary btn-sm" style="cursor:default">{{ p }}</span>
+          {% else %}
+            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.visits_list', page=p, ip=ip_filter, utm=utm_filter) }}">{{ p }}</a>
+          {% endif %}
+        {% elif p == cur - 3 or p == cur + 3 %}
+          <span style="font-size:11px;color:#aaa;padding:0 2px">…</span>
+        {% endif %}
+      {% endfor %}
+
+      {# Next #}
+      {% if pagination.has_next %}
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.visits_list', page=pagination.next_num, ip=ip_filter, utm=utm_filter) }}">Next →</a>
+      {% else %}
+        <span class="btn btn-ghost btn-sm" style="opacity:0.35;cursor:default">Next →</span>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <div class="empty-state">
+    {% if ip_filter or utm_filter %}
+      No visits match the current filter. <a href="{{ url_for('admin.visits_list') }}">Clear filters</a>
+    {% else %}
+      No visits recorded yet.
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
