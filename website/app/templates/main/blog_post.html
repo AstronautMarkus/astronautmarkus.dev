@@ -106,6 +106,13 @@
             </ul>
         </div>
 
+        <div class="blog-sidebar-box" id="toc-box">
+            <h4>{% if current_lang == 'es' %}Contenido{% else %}Contents{% endif %}</h4>
+            <ul id="toc-list">
+                <li class="toc-empty">{% if current_lang == 'es' %}No hay encabezados.{% else %}No headings found.{% endif %}</li>
+            </ul>
+        </div>
+
         <div class="blog-sidebar-box">
             <h4>Share</h4>
             <ul>
@@ -120,4 +127,79 @@
 
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var prose = document.querySelector('.prose');
+    var tocList = document.getElementById('toc-list');
+    var tocBox  = document.getElementById('toc-box');
+
+    if (!prose || !tocList || !tocBox) return;
+
+    var headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    if (!headings.length) return;
+
+    /* slugify heading text to create unique IDs */
+    var usedIds = {};
+    function slugify(text) {
+        var base = text.toLowerCase()
+            .replace(/[^\w\s\-áéíóúüñàèìòùâêîôûäëïöü]/g, '')
+            .trim()
+            .replace(/[\s_]+/g, '-')
+            .replace(/-+/g, '-');
+        if (!base) base = 'heading';
+        var id = base;
+        var n = 1;
+        while (usedIds[id]) { id = base + '-' + (++n); }
+        usedIds[id] = true;
+        return id;
+    }
+
+    /* assign IDs and build TOC items */
+    var items = [];
+    headings.forEach(function (h) {
+        var level = parseInt(h.tagName.charAt(1), 10);
+        var text  = h.textContent.trim();
+        var id    = h.id || slugify(text);
+        h.id = id;
+
+        var li = document.createElement('li');
+        li.setAttribute('data-level', level);
+
+        var a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = text;
+        li.appendChild(a);
+        items.push({ el: h, link: a });
+        tocList.appendChild(li);
+    });
+
+    /* remove placeholder */
+    var empty = tocList.querySelector('.toc-empty');
+    if (empty) tocList.removeChild(empty);
+
+    /* show the TOC box */
+    tocBox.style.display = 'block';
+
+    /* active-heading tracking on scroll */
+    function onScroll() {
+        var scrollY = window.scrollY || window.pageYOffset;
+        var active  = null;
+        for (var i = 0; i < items.length; i++) {
+            var top = items[i].el.getBoundingClientRect().top + scrollY;
+            if (top <= scrollY + 80) {
+                active = items[i];
+            }
+        }
+        items.forEach(function (it) {
+            it.link.classList.toggle('toc-active', it === active);
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+})();
+</script>
 {% endblock %}

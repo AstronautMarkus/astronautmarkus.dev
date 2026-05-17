@@ -435,6 +435,56 @@
 }
 
 
+/* ── Table of Contents (sidebar) ─────────────────────────────────────────── */
+#toc-box {
+    display: none; /* shown by JS when headings exist */
+}
+
+#toc-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#toc-list li {
+    padding: 4px 0;
+    border-bottom: 1px solid #141414;
+    line-height: 1.4;
+}
+
+#toc-list li.toc-empty {
+    font-size: 10px;
+    color: #444444;
+    font-style: italic;
+    border-bottom: none;
+}
+
+#toc-list li a {
+    font-size: 11px;
+    color: #888888;
+    text-decoration: none;
+    display: block;
+    transition: color 0.15s;
+}
+
+#toc-list li a:hover {
+    color: #DE0000;
+    text-decoration: none;
+}
+
+#toc-list li a.toc-active {
+    color: #DE0000;
+}
+
+/* indentation by heading level */
+#toc-list li[data-level="1"] a { padding-left: 0;    font-weight: bold; }
+#toc-list li[data-level="2"] a { padding-left: 0;    font-weight: bold; }
+#toc-list li[data-level="3"] a { padding-left: 10px; }
+#toc-list li[data-level="4"] a { padding-left: 18px; font-size: 10px; color: #666666; }
+#toc-list li[data-level="5"] a { padding-left: 24px; font-size: 10px; color: #555555; }
+#toc-list li[data-level="6"] a { padding-left: 28px; font-size: 10px; color: #444444; }
+
+
 /* ═══════════════════════════════════════════════════════════════════════════
    PROSE  (rendered markdown content)
    ═══════════════════════════════════════════════════════════════════════════ */
