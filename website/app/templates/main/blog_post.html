@@ -54,37 +54,37 @@
             {% if content_html %}
                 {{ content_html }}
             {% else %}
-            <p style="color:#555555;font-style:italic">No content available for this post yet.</p>
+            <p style="color:#555555;font-style:italic">{% if current_lang == 'es' %}No hay contenido disponible para este post aún.{% else %}No content available for this post yet.{% endif %}</p>
             {% endif %}
         </div>
 
         {% if post.images %}
         <div class="post-gallery">
-            <h4>&#9632; Post Images</h4>
+            <h4>&#9632; {% if current_lang == 'es' %}Imágenes del Post{% else %}Post Images{% endif %}</h4>
             <div class="post-gallery-grid">
                 {% for img in post.images %}
                 <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
-                   title="Image {{ loop.index }}">
-                    <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}">
+                   title="{% if current_lang == 'es' %}Imagen{% else %}Image{% endif %} {{ loop.index }}">
+                    <img src="{{ storage_url(img.image_path) }}" alt="{% if current_lang == 'es' %}Imagen{% else %}Image{% endif %} {{ loop.index }}">
                 </a>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
 
-        <a href="{{ url_for('main.blog_list') }}" class="post-back">&#8592; Back to Blog</a>
+        <a href="{{ url_for('main.blog_list') }}" class="post-back">&#8592; {% if current_lang == 'es' %}Volver al Blog{% else %}Back to Blog{% endif %}</a>
 
     </div>
 
     <div id="post-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4>Post Info</h4>
+            <h4>{% if current_lang == 'es' %}Info del Post{% else %}Post Info{% endif %}</h4>
             <ul>
-                <li>Published: {{ post.created_at.strftime('%d %b %Y') }}</li>
+                <li>{% if current_lang == 'es' %}Publicado{% else %}Published{% endif %}: {{ post.created_at.strftime('%d %b %Y') }}</li>
                 {% if post.category %}
                 <li>
-                    Category:
+                    {% if current_lang == 'es' %}Categoría{% else %}Category{% endif %}:
                     <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
                         {% if current_lang == 'es' and post.category.has_es and post.category.name_es %}
                             {{ post.category.name_es }}
@@ -114,12 +114,14 @@
         </div>
 
         <div class="blog-sidebar-box">
-            <h4>Share</h4>
+            <h4>{% if current_lang == 'es' %}Compartir{% else %}Share{% endif %}</h4>
             <ul>
                 <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">&#9658; Share on Twitter/X</a></li>
+                       target="_blank" rel="noopener noreferrer">&#9658; {% if current_lang == 'es' %}Compartir en Twitter/X{% else %}Share on Twitter/X{% endif %}</a></li>
                 <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">&#9658; Share on LinkedIn</a></li>
+                       target="_blank" rel="noopener noreferrer">&#9658; {% if current_lang == 'es' %}Compartir en LinkedIn{% else %}Share on LinkedIn{% endif %}</a></li>
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">&#9658; {% if current_lang == 'es' %}Compartir en Facebook{% else %}Share on Facebook{% endif %}</a></li>
             </ul>
         </div>
 
