@@ -166,4 +166,9 @@ def create_app():
 			'storage_url': lambda path: url_for('serve_media', file_path=path) if path else '',
 		}
 
+	# ── Error handlers ────────────────────────────────────────────
+	@app.errorhandler(404)
+	def page_not_found(e):
+		return render_localized_template('errors/404.html'), 404
+
 	return app

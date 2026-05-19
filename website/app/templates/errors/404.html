@@ -1,0 +1,156 @@
+{% extends "base/base.html" %}
+
+{% block title %}404 - Not Found{% endblock %}
+{% block description %}Page not found — AstronautMarkus.dev{% endblock %}
+
+{% block extra_css %}
+<style>
+    #error-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+        min-height: 400px;
+        background: #000000;
+        border-bottom: 1px solid #222222;
+    }
+
+    .error-code {
+        font-size: 120px;
+        font-weight: bold;
+        color: #DE0000;
+        line-height: 1;
+        margin: 0;
+        letter-spacing: -4px;
+        text-shadow:
+            0 0 20px rgba(222, 0, 0, 0.6),
+            0 0 40px rgba(222, 0, 0, 0.3),
+            2px 2px 0 #4a0000,
+            4px 4px 0 #2a0000;
+    }
+
+    .error-divider {
+        width: 300px;
+        height: 2px;
+        background: linear-gradient(to right, transparent, #DE0000, transparent);
+        margin: 20px auto;
+    }
+
+    .error-title {
+        font-size: 20px;
+        color: #FFFFFF;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+
+    .error-subtitle {
+        font-size: 13px;
+        color: #888888;
+        margin: 0 0 30px 0;
+        font-style: italic;
+        line-height: 1.6;
+        max-width: 480px;
+    }
+
+    .error-ascii {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 11px;
+        color: #333333;
+        line-height: 1.3;
+        margin: 0 0 30px 0;
+        white-space: pre;
+        user-select: none;
+    }
+
+    .error-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .error-actions .glossy-btn {
+        display: inline-block;
+        padding: 10px 22px;
+        background: #DE0000;
+        color: #FFFFFF !important;
+        font-size: 13px;
+        font-weight: bold;
+        border: 1px solid #FF3333;
+        border-radius: 5px;
+        box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: background 0.2s;
+        text-decoration: none;
+    }
+
+    .error-actions .glossy-btn:hover {
+        background: #ff1a1a;
+        text-decoration: none;
+    }
+
+    .error-actions .btn-outline {
+        background: transparent;
+        border: 1px solid #444444;
+        color: #AAAAAA !important;
+        box-shadow: none;
+    }
+
+    .error-actions .btn-outline:hover {
+        background: #1a1a1a;
+        border-color: #666666;
+        color: #FFFFFF !important;
+    }
+
+    .error-hint {
+        margin-top: 30px;
+        font-size: 11px;
+        color: #444444;
+    }
+
+    .error-hint code {
+        color: #DE0000;
+        font-family: "Courier New", Courier, monospace;
+        background: #0d0d0d;
+        padding: 1px 5px;
+        border-radius: 3px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="error-page">
+
+    <pre class="error-ascii">
+ _   _  ___  _  _
+| | | |/ _ \| || |
+| |_| | (_) | || |_
+ \___/ \___/|__\__|
+</pre>
+
+    <p class="error-code">404</p>
+
+    <div class="error-divider"></div>
+
+    <h2 class="error-title">Page Not Found</h2>
+    <p class="error-subtitle">
+        Houston, we have a problem. The page you're looking for drifted into
+        deep space and is no longer at this coordinates.<br>
+        Maybe it was deleted, maybe it never existed, or maybe you just typed the URL wrong.
+    </p>
+
+    <div class="error-actions">
+        <a href="{{ url_for('main.home') }}" class="glossy-btn">Back to Home</a>
+        <a href="{{ url_for('main.blog_list') }}" class="glossy-btn btn-outline">Read the Blog</a>
+    </div>
+
+    <p class="error-hint">
+        Tried to reach: <code>{{ request.path }}</code>
+    </p>
+
+</div>
+{% endblock %}
