@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
@@ -172,13 +173,20 @@ def blog_post_create():
         title = request.form.get('title', '').strip()
         if not title:
             flash('Title is required.', 'error')
-            return render_template('admin/blog/post_form.html', post=None, categories=categories)
+            return render_template('admin/blog/post_form.html', post=None, categories=categories,
+                                   now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'))
 
         has_es      = request.form.get('has_es') == '1'
         published   = request.form.get('published') == '1'
         category_id = request.form.get('category_id') or None
         slug_input  = request.form.get('slug', '').strip()
         base_slug   = _slugify(slug_input) if slug_input else _slugify(title)
+
+        created_at_raw = request.form.get('created_at', '').strip()
+        try:
+            created_at = datetime.strptime(created_at_raw, '%Y-%m-%dT%H:%M') if created_at_raw else datetime.utcnow()
+        except ValueError:
+            created_at = datetime.utcnow()
 
         post = BlogPost(
             title=title,
@@ -189,6 +197,7 @@ def blog_post_create():
             category_id=int(category_id) if category_id else None,
             published=published,
             slug='__tmp__',
+            created_at=created_at,
         )
         db.session.add(post)
         db.session.flush()
@@ -228,7 +237,8 @@ def blog_post_create():
         flash(f'Post "{post.title}" created.', 'success')
         return redirect(url_for('admin.blog_post_edit', post_id=post.id))
 
-    return render_template('admin/blog/post_form.html', post=None, categories=categories)
+    return render_template('admin/blog/post_form.html', post=None, categories=categories,
+                           now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'))
 
 
 @admin_bp.route('/blog/<int:post_id>/edit', methods=['GET', 'POST'])
@@ -251,6 +261,12 @@ def blog_post_edit(post_id):
         published   = request.form.get('published') == '1'
         category_id = request.form.get('category_id') or None
 
+        created_at_raw = request.form.get('created_at', '').strip()
+        try:
+            created_at = datetime.strptime(created_at_raw, '%Y-%m-%dT%H:%M') if created_at_raw else post.created_at
+        except ValueError:
+            created_at = post.created_at
+
         post.title          = title
         post.description    = request.form.get('description', '').strip() or None
         post.has_es         = has_es
@@ -258,6 +274,7 @@ def blog_post_edit(post_id):
         post.description_es = request.form.get('description_es', '').strip() or None if has_es else None
         post.category_id    = int(category_id) if category_id else None
         post.published      = published
+        post.created_at     = created_at
 
         # Cover image
         cover = request.files.get('cover_image')
@@ -294,7 +311,8 @@ def blog_post_edit(post_id):
         flash('Post updated.', 'success')
         return redirect(url_for('admin.blog_post_edit', post_id=post.id))
 
-    return render_template('admin/blog/post_form.html', post=post, categories=categories)
+    return render_template('admin/blog/post_form.html', post=post, categories=categories,
+                           now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'))
 
 
 @admin_bp.post('/blog/<int:post_id>/delete')
