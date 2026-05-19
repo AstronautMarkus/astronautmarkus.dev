@@ -70,6 +70,18 @@ def render_markdown(md: str) -> Markup:
         line = lines[i]
         stripped = line.strip()
 
+        # ── Raw HTML block (<div>, <iframe>, <figure>, etc.) ─────
+        # If a block starts with an HTML tag, pass it through unescaped
+        # until a blank line is found (standard CommonMark behaviour).
+        html_block = re.match(r'^<([a-zA-Z][a-zA-Z0-9\-]*)[\s>/]', stripped)
+        if html_block or stripped == '</div>' or stripped.startswith('</'):
+            raw: list[str] = []
+            while i < n and lines[i].strip():
+                raw.append(lines[i])
+                i += 1
+            out.append('\n'.join(raw))
+            continue
+
         # ── Fenced code block (``` or ~~~) ───────────────────────
         fence = re.match(r'^(`{3,}|~{3,})([\w\-]*)', line)
         if fence:
