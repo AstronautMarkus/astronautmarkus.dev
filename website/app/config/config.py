@@ -52,3 +52,7 @@ class Config:
     STORAGE_S3_ENDPOINT = clean_env(os.getenv('STORAGE_S3_ENDPOINT'), '')
     # Optional: override public base URL (e.g. a CDN in front of the bucket)
     STORAGE_S3_PUBLIC_URL = clean_env(os.getenv('STORAGE_S3_PUBLIC_URL'), '')
+
+    # ── Cloudflare Turnstile ─────────────────────────────────────
+    TURNSTILE_SITE_KEY = os.getenv('TURNSTILE_SITE_KEY', '')
+    TURNSTILE_SECRET_KEY = clean_env(os.getenv('TURNSTILE_SECRET_KEY'), '')

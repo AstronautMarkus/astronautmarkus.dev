@@ -1,4 +1,7 @@
+import json
 import re
+import urllib.parse
+import urllib.request
 
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_mail import Message
@@ -99,6 +102,42 @@ def _get_template(slug: str, lang: str) -> MailTemplate | None:
     return MailTemplate.query.filter_by(slug=slug, language=lang).first()
 
 
+_PRIVATE_IP_PREFIXES = ('127.', '::1', '10.', '172.', '192.168.', '::ffff:127.')
+
+
+def _verify_turnstile(token: str, remote_ip: str | None = None) -> bool:
+    """Verify a Cloudflare Turnstile token. Returns True if valid or if not configured."""
+    secret = current_app.config.get('TURNSTILE_SECRET_KEY', '')
+    if not secret:
+        return True
+    if not token:
+        current_app.logger.warning('Turnstile: empty token received')
+        return False
+    data: dict = {'secret': secret, 'response': token}
+    # remoteip is optional; omit loopback/private addresses to avoid rejection
+    if remote_ip and not any(remote_ip.startswith(p) for p in _PRIVATE_IP_PREFIXES):
+        data['remoteip'] = remote_ip
+    payload = urllib.parse.urlencode(data).encode()
+    req = urllib.request.Request(
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        data=payload,
+        method='POST',
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:  # noqa: S310
+            result = json.loads(resp.read().decode())
+            success = bool(result.get('success', False))
+            if not success:
+                current_app.logger.warning(
+                    'Turnstile verification failed — error-codes: %s',
+                    result.get('error-codes', []),
+                )
+            return success
+    except Exception as exc:
+        current_app.logger.error('Turnstile verification error: %s', exc)
+        return False
+
+
 def _send_notification(lang: str, name: str, email: str, subject: str, message: str) -> None:
     tpl = _get_template('contact_notification', lang) or _get_template('contact_notification', 'en')
     if not tpl:
@@ -134,12 +173,14 @@ def _send_autoresponse(lang: str, name: str, email: str, subject: str, message: 
 @contact_bp.route('/contact', methods=['GET', 'POST'])
 def contact():
     lang = get_current_language()
+    turnstile_site_key = current_app.config.get('TURNSTILE_SITE_KEY', '')
 
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip()
         subject = request.form.get('subject', '').strip()
         message = request.form.get('message', '').strip()
+        form_data = {'name': name, 'email': email, 'subject': subject, 'message': message}
 
         field_errors: list[str] = []
         if not name:
@@ -156,7 +197,19 @@ def contact():
             return render_localized_template(
                 'main/contact.html',
                 field_errors=field_errors,
-                form_data={'name': name, 'email': email, 'subject': subject, 'message': message},
+                form_data=form_data,
+                turnstile_site_key=turnstile_site_key,
+                turnstile_error=False,
+            )
+
+        turnstile_token = request.form.get('cf-turnstile-response', '')
+        if not _verify_turnstile(turnstile_token, request.remote_addr):
+            return render_localized_template(
+                'main/contact.html',
+                field_errors=[],
+                form_data=form_data,
+                turnstile_site_key=turnstile_site_key,
+                turnstile_error=True,
             )
 
         # Persist
@@ -175,4 +228,10 @@ def contact():
         flash('sent', 'success')
         return redirect(url_for('contact.contact'))
 
-    return render_localized_template('main/contact.html', field_errors=[], form_data={})
+    return render_localized_template(
+        'main/contact.html',
+        field_errors=[],
+        form_data={},
+        turnstile_site_key=turnstile_site_key,
+        turnstile_error=False,
+    )

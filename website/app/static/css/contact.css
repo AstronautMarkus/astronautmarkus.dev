@@ -103,6 +103,12 @@
     margin-top: 4px;
 }
 
+/* ── Turnstile ───────────────────────────────────────────── */
+.cf-turnstile {
+    display: table;
+    margin: 0 auto 1rem;
+}
+
 /* ── Submit button ───────────────────────────────────────── */
 .contact-btn {
     display: inline-block;

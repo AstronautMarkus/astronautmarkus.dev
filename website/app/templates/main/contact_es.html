@@ -31,6 +31,12 @@
       {% endfor %}
     {% endwith %}
 
+    {% if turnstile_error %}
+    <div class="contact-alert contact-alert-error">
+      La verificación de seguridad falló. Por favor inténtalo de nuevo.
+    </div>
+    {% endif %}
+
     <form method="POST" action="{{ url_for('contact.contact') }}" novalidate>
 
       <div class="form-row">
@@ -76,10 +82,16 @@
         {% endif %}
       </div>
 
+      <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+
       <button type="submit" class="contact-btn">Enviar mensaje</button>
 
     </form>
 
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endblock %}

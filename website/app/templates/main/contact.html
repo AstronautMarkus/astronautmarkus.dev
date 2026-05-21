@@ -31,6 +31,12 @@
       {% endfor %}
     {% endwith %}
 
+    {% if turnstile_error %}
+    <div class="contact-alert contact-alert-error">
+      Security check failed. Please try again.
+    </div>
+    {% endif %}
+
     <form method="POST" action="{{ url_for('contact.contact') }}" novalidate>
 
       <div class="form-row">
@@ -74,7 +80,9 @@
         {% if 'message' in field_errors %}
         <span class="field-error">Message cannot be empty.</span>
         {% endif %}
-      </div>
+      </div>  
+
+      <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
 
       <button type="submit" class="contact-btn">Send Message</button>
 
@@ -82,4 +90,8 @@
 
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endblock %}
