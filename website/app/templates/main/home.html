@@ -140,11 +140,11 @@
         </div>
 
         <div class="sidebar-box">
-            <h4>Proyectadas</h4>
+            <h4>Proyectadas (personal reflections)</h4>
             {% if latest_proyectadas %}
             <ul>
                 {% for item in latest_proyectadas %}
-                <li style="list-style:none;font-size:0.85rem;color:#cccccc;margin-bottom:0.5rem">{{ item.text | truncate(90) }}</li>
+                <li style="list-style:none;font-size:0.85rem;color:#cccccc;margin-bottom:0.5rem"><a href="{{ url_for('main.proyectadas_list')}}">{{ item.text | truncate(67) }}</a></li>
                 {% endfor %}
             </ul>
             <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">See all proyectadas »</a>

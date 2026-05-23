@@ -76,7 +76,8 @@ a:hover {
     align-items: stretch;
 }
 
-#nav ul {
+#nav > ul,
+#nav-right > ul {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -116,7 +117,8 @@ a:hover {
     text-decoration: none;
 }
 
-#nav ul li a {
+#nav > ul > li > a,
+#nav-right > ul > li > a {
     display: block;
     padding: 12px 20px;
     color: #FFFFFF;
@@ -125,8 +127,10 @@ a:hover {
     border-right: 1px solid #222222;
 }
 
-#nav ul li a:hover,
-#nav ul li a.active {
+#nav > ul > li > a:hover,
+#nav > ul > li > a.active,
+#nav-right > ul > li > a:hover,
+#nav-right > ul > li > a.active {
     background-color: #DE0000;
     color: #FFFFFF;
     text-decoration: none;
@@ -141,4 +145,52 @@ a:hover {
     font-size: 11px;
     color: #666666;
     clear: both;
+}
+
+/* Extras dropdown */
+.nav-dropdown {
+    position: relative;
+}
+
+.nav-dropdown > a::after {
+    content: ' \25BE';
+    font-size: 10px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #111111;
+    border: 1px solid #222222;
+    border-top: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-width: 160px;
+    z-index: 100;
+    flex-direction: column;
+}
+
+.dropdown-menu.open {
+    display: flex;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 12px 20px;
+    color: #FFFFFF;
+    font-size: 13px;
+    text-transform: uppercase;
+    border-right: none;
+    border-bottom: 1px solid #222222;
+    white-space: nowrap;
+}
+
+.dropdown-menu li a:hover,
+.dropdown-menu li a.active {
+    background-color: #DE0000;
+    color: #FFFFFF;
+    text-decoration: none;
 }

@@ -139,7 +139,7 @@
             <ul>
                 {% for item in latest_proyectadas %}
                 {% set display_text = item.text_es if item.has_es and item.text_es else item.text %}
-                <li style="list-style:none;font-size:0.85rem;color:#cccccc;margin-bottom:0.5rem">{{ display_text | truncate(90) }}</li>
+                <li style="list-style:none;font-size:0.85rem;color:#cccccc;margin-bottom:0.5rem"><a href="{{ url_for('main.proyectadas_list')}}">{{ item.text_es | truncate(67) }}</a></li>
                 {% endfor %}
             </ul>
             <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">Ver todas las proyectadas »</a>

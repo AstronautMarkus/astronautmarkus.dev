@@ -55,6 +55,12 @@
                 {{ nav_link('main.portfolio_list', 'Portfolio' if current_lang == 'en' else 'Portafolio') }}
                 {{ nav_link('main.blog_list', 'Blog' if current_lang == 'en' else 'Blog') }}
                 {{ nav_link('contact.contact', 'Contact' if current_lang == 'en' else 'Contacto') }}
+                <li class="nav-dropdown">
+                    <a href="#">{{ 'Extras' }}</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('main.proyectadas_list') }}"{% if request.endpoint == 'main.proyectadas_list' %} class="active"{% endif %}>{{ 'Proyectadas (personal reflections)' if current_lang == 'en' else 'Proyectadas' }}</a></li>
+                    </ul>
+                </li>
             </ul>
             <div id="nav-right">
                 <ul id="lang-switcher">
@@ -85,7 +91,24 @@
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     {% block extra_js %}{% endblock %}
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+        document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
+            var toggle = dropdown.querySelector(':scope > a');
+            var menu = dropdown.querySelector('.dropdown-menu');
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                menu.classList.toggle('open');
+            });
+        });
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.dropdown-menu.open').forEach(function(m) {
+                    m.classList.remove('open');
+                });
+            }
+        });
+    </script>
 
 </body>
 
