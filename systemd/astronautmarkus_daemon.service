@@ -1,0 +1,25 @@
+[Unit]
+Description=AstronautMarkusDev Daemon
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+
+WorkingDirectory=/var/www/astronautmarkus.dev
+
+Environment="PATH=/var/www/astronautmarkus.dev/.venv/bin"
+Environment="PYTHONUNBUFFERED=1"
+
+ExecStart=/var/www/astronautmarkus.dev/.venv/bin/gunicorn \
+          --workers 3 \
+          --bind 127.0.0.1:5016 \
+          --access-logfile - \
+          --error-logfile - \
+          main:app
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
