@@ -1,10 +1,10 @@
 [Unit]
-Description=AstronautMarkusDev Daemon
+Description=AstronautMarkusDev Web Daemon
 After=network.target
 
 [Service]
-User=www-data
-Group=www-data
+User=astronautmarkus
+Group=astronautmarkus
 
 WorkingDirectory=/var/www/astronautmarkus.dev
 
