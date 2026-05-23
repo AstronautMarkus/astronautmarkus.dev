@@ -13,11 +13,11 @@
   <table>
     <thead>
       <tr>
-        <th>Texto (EN)</th>
-        <th>Idiomas</th>
-        <th>Estado</th>
-        <th>Fecha</th>
-        <th style="text-align:right">Acciones</th>
+        <th>Text (EN)</th>
+        <th>Languages</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th style="text-align:right">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -30,20 +30,20 @@
       </td>
       <td>
         {% if item.published %}
-          <span style="color:#22a322;font-weight:700;font-size:0.8rem">Publicada</span>
+          <span style="color:#22a322;font-weight:700;font-size:0.8rem">Published</span>
         {% else %}
-          <span style="color:#aaaaaa;font-size:0.8rem">Borrador</span>
+          <span style="color:#aaaaaa;font-size:0.8rem">Draft</span>
         {% endif %}
       </td>
       <td style="color:#777777;font-size:0.8rem">{{ item.created_at | dtfmt('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm"
-             href="{{ url_for('admin.proyectadas_edit', item_id=item.id) }}">Editar</a>
+             href="{{ url_for('admin.proyectadas_edit', item_id=item.id) }}">Edit</a>
           <form method="POST"
                 action="{{ url_for('admin.proyectadas_delete', item_id=item.id) }}"
-                onsubmit="return confirm('¿Eliminar esta proyectada? No se puede deshacer.')">
-            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                onsubmit="return confirm('Delete this proyectada? This cannot be undone.')">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
           </form>
         </div>
       </td>

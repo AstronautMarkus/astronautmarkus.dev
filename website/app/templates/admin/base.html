@@ -1,178 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Admin{% endblock %} · AstronautMarkus</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-96x96.png') }}" sizes="96x96">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
   {% block extra_css %}{% endblock %}
 </head>
+
 <body>
 
-<!-- ── Top bar ── -->
-<div class="admin-topbar">
-  <div class="topbar-left">
-    <button class="hamburger" id="sidebarToggle" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="brand">
-      <span class="brand-main">AstronautMarkusDev</span>
-      <span class="brand-sub">Admin Panel</span>
+  <!-- ── Top bar ── -->
+  <div class="admin-topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="sidebarToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="brand">
+        <span class="brand-main">AstronautMarkusDev</span>
+        <span class="brand-sub">Admin Panel</span>
+      </div>
+    </div>
+    <div class="topbar-user">
+      <span class="topbar-username">Signed in as <strong>{{ current_user.username }}</strong></span>
+      <a href="{{ url_for('main.home') }}" target="_blank">View Site ↗</a>
+      <a href="{{ url_for('auth.logout') }}">Logout</a>
     </div>
   </div>
-  <div class="topbar-user">
-    <span class="topbar-username">Signed in as <strong>{{ current_user.username }}</strong></span>
-    <a href="{{ url_for('main.home') }}" target="_blank">View Site ↗</a>
-    <a href="{{ url_for('auth.logout') }}">Logout</a>
-  </div>
-</div>
 
-<!-- ── Page body ── -->
-<div class="admin-page">
+  <!-- ── Page body ── -->
+  <div class="admin-page">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-    <div class="sidebar-box">
-      <div class="sidebar-title">Main</div>
-      <ul class="menu">
-        <li>
-          <a href="{{ url_for('admin.dashboard') }}"
-             class="{{ 'active' if request.endpoint == 'admin.dashboard' else '' }}">
-            Dashboard
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('admin.visits_list') }}"
-             class="{{ 'active' if request.endpoint and 'visit' in request.endpoint else '' }}">
-            Visits
-          </a>
-        </li>
-      </ul>
-    </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">Main</div>
+        <ul class="menu">
+          <li>
+            <a href="{{ url_for('admin.dashboard') }}"
+              class="{{ 'active' if request.endpoint == 'admin.dashboard' else '' }}">
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin.visits_list') }}"
+              class="{{ 'active' if request.endpoint and 'visit' in request.endpoint else '' }}">
+              Visits
+            </a>
+          </li>
+        </ul>
+      </div>
 
-    <div class="sidebar-box">
-      <div class="sidebar-title blue">Content</div>
-      <ul class="menu">
-        <li>
-          <a href="{{ url_for('admin.projects_list') }}"
-             class="{{ 'active' if request.endpoint and 'project' in request.endpoint else '' }}">
-            Portfolio
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('admin.cv_list') }}"
-             class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
-            CV Files
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('admin.blog_posts_list') }}"
-             class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_post') else '' }}">
-            Blog Posts
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('admin.blog_categories_list') }}"
-             class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
-            Categories
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('admin.proyectadas_list') }}"
-             class="{{ 'active' if request.endpoint and 'proyectada' in request.endpoint else '' }}">
-            Proyectadas
-          </a>
-        </li>
-      </ul>
-    </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title blue">Content</div>
+        <ul class="menu">
+          <li>
+            <a href="{{ url_for('admin.projects_list') }}"
+              class="{{ 'active' if request.endpoint and 'project' in request.endpoint else '' }}">
+              Portfolio
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin.cv_list') }}"
+              class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
+              CV Files
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin.blog_posts_list') }}"
+              class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_post') else '' }}">
+              Blog Posts
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin.blog_categories_list') }}"
+              class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
+              Categories
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin.proyectadas_list') }}"
+              class="{{ 'active' if request.endpoint and 'proyectada' in request.endpoint else '' }}">
+              Proyectadas
+            </a>
+          </li>
+        </ul>
+      </div>
 
-    <div class="sidebar-box">
-      <div class="sidebar-title red">Contact</div>
-      <ul class="menu">
-        <li>
-          <a href="{{ url_for('admin.contact_inbox') }}"
-             class="{{ 'active' if request.endpoint == 'admin.contact_inbox' or request.endpoint == 'admin.contact_message_detail' else '' }}">
-            Inbox
-            {% if admin_unread_contact %}
+      <div class="sidebar-box">
+        <div class="sidebar-title red">Contact</div>
+        <ul class="menu">
+          <li>
+            <a href="{{ url_for('admin.contact_inbox') }}"
+              class="{{ 'active' if request.endpoint == 'admin.contact_inbox' or request.endpoint == 'admin.contact_message_detail' else '' }}">
+              Inbox
+              {% if admin_unread_contact %}
               <span class="lang-badge lang-badge-es" style="background:#a32929;color:#fff;border-color:#6f1515;">
                 {{ admin_unread_contact }}
               </span>
-            {% endif %}
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('admin.contact_mail_templates') }}"
-             class="{{ 'active' if request.endpoint and 'mail_template' in request.endpoint else '' }}">
-            Mail Templates
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="sidebar-box">
-      <div class="sidebar-title green">System</div>
-      <div class="sidebar-content">
-        <div class="status-box ok">DB Connected</div>
-        <div class="status-box ok">Storage OK</div>
+              {% endif %}
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin.contact_mail_templates') }}"
+              class="{{ 'active' if request.endpoint and 'mail_template' in request.endpoint else '' }}">
+              Mail Templates
+            </a>
+          </li>
+        </ul>
       </div>
-    </div>
 
-    {% if admin_unread_contact %}
-    <div class="sidebar-box">
-      <div class="sidebar-title red">Alerts</div>
-      <div class="sidebar-content">
-        <div class="status-box warn">
-          {{ admin_unread_contact }} unread
-          <a href="{{ url_for('admin.contact_inbox') }}">→ Inbox</a>
+      <div class="sidebar-box">
+        <div class="sidebar-title green">System</div>
+        <div class="sidebar-content">
+          <div class="status-box ok">DB Connected</div>
+          <div class="status-box ok">Storage OK</div>
         </div>
       </div>
-    </div>
-    {% endif %}
 
-  </aside>
-
-  <!-- Main content -->
-  <main class="content">
-    <div class="content-header">
-      <div>
-        <div class="breadcrumb">Admin › {% block breadcrumb %}{% endblock %}</div>
-        <h2 class="page-title">{% block page_title %}Dashboard{% endblock %}</h2>
+      {% if admin_unread_contact %}
+      <div class="sidebar-box">
+        <div class="sidebar-title red">Alerts</div>
+        <div class="sidebar-content">
+          <div class="status-box warn">
+            {{ admin_unread_contact }} unread
+            <a href="{{ url_for('admin.contact_inbox') }}">→ Inbox</a>
+          </div>
+        </div>
       </div>
-      <div class="content-actions">{% block topbar_actions %}{% endblock %}</div>
-    </div>
+      {% endif %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+      <div class="content-header">
+        <div>
+          <div class="breadcrumb">Admin › {% block breadcrumb %}{% endblock %}</div>
+          <h2 class="page-title">{% block page_title %}Dashboard{% endblock %}</h2>
+        </div>
+        <div class="content-actions">{% block topbar_actions %}{% endblock %}</div>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
-        <div class="flash flash-{{ category }}">{{ message }}</div>
+      <div class="flash flash-{{ category }}">{{ message }}</div>
       {% endfor %}
-    {% endwith %}
+      {% endwith %}
 
-    {% block content %}{% endblock %}
-  </main>
+      {% block content %}{% endblock %}
+    </main>
 
-</div><!-- /admin-page -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
+  </div><!-- /admin-page -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<script>
-(function () {
-  var toggle = document.getElementById('sidebarToggle');
-  var sidebar = document.querySelector('.sidebar');
-  var overlay = document.getElementById('sidebarOverlay');
-  function close() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('active');
-    document.body.classList.remove('sidebar-open');
-  }
-  toggle.addEventListener('click', function () {
-    var isOpen = sidebar.classList.toggle('open');
-    overlay.classList.toggle('active', isOpen);
-    document.body.classList.toggle('sidebar-open', isOpen);
-  });
-  overlay.addEventListener('click', close);
-})();
-</script>
+  <script>
+    (function () {
+      var toggle = document.getElementById('sidebarToggle');
+      var sidebar = document.querySelector('.sidebar');
+      var overlay = document.getElementById('sidebarOverlay');
+      function close() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.classList.remove('sidebar-open');
+      }
+      toggle.addEventListener('click', function () {
+        var isOpen = sidebar.classList.toggle('open');
+        overlay.classList.toggle('active', isOpen);
+        document.body.classList.toggle('sidebar-open', isOpen);
+      });
+      overlay.addEventListener('click', close);
+    })();
+  </script>
 
-{% block extra_js %}{% endblock %}
+  {% block extra_js %}{% endblock %}
 </body>
+
 </html>
