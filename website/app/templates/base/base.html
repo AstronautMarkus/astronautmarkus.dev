@@ -89,10 +89,8 @@
 
     </div>
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     {% block extra_js %}{% endblock %}
     <script>
-        lucide.createIcons();
         document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
             var toggle = dropdown.querySelector(':scope > a');
             var menu = dropdown.querySelector('.dropdown-menu');

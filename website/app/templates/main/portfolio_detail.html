@@ -35,12 +35,12 @@
                 {% if project.project_url %}
                 <a href="{{ project.project_url }}"
                    target="_blank" rel="noopener noreferrer"
-                   class="portfolio-action-btn"><i data-lucide="external-link"></i> Visit Site</a>
+                   class="portfolio-action-btn">Visit Site</a>
                 {% endif %}
                 {% if project.github_repo_url %}
                 <a href="{{ project.github_repo_url }}"
                    target="_blank" rel="noopener noreferrer"
-                   class="portfolio-action-btn btn-github"><i data-lucide="github"></i> View on GitHub</a>
+                   class="portfolio-action-btn btn-github">View on GitHub</a>
                 {% endif %}
             </div>
         </div>
@@ -62,7 +62,7 @@
         </div>
         {% endif %}
 
-        <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back"><i data-lucide="arrow-left"></i> Back to Portfolio</a>
+        <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back">Back to Portfolio</a>
 
     </div>
 
@@ -74,12 +74,12 @@
                 <li><span>Added</span> {{ project.created_at.strftime('%b %d, %Y') }}</li>
                 {% if project.project_url %}
                 <li><span>Live URL</span>
-                    <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer">Visit <i data-lucide="external-link"></i></a>
+                    <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer">Visit</a>
                 </li>
                 {% endif %}
                 {% if project.github_repo_url %}
                 <li><span>GitHub</span>
-                    <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer">Repo <i data-lucide="external-link"></i></a>
+                    <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer">Repo</a>
                 </li>
                 {% endif %}
                 {% if project.has_es %}
@@ -92,7 +92,7 @@
 
         <div class="portfolio-sidebar-box">
             <h4>All Projects</h4>
-            <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back" style="margin-top:0"><i data-lucide="arrow-left"></i> Back to list</a>
+            <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back" style="margin-top:0">Back to list</a>
         </div>
 
     </div>

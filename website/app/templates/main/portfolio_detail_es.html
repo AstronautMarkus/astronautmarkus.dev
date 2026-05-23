@@ -38,12 +38,12 @@
                 {% if project.project_url %}
                 <a href="{{ project.project_url }}"
                    target="_blank" rel="noopener noreferrer"
-                   class="portfolio-action-btn"><i data-lucide="external-link"></i> Visitar Sitio</a>
+                   class="portfolio-action-btn">Visitar Sitio</a>
                 {% endif %}
                 {% if project.github_repo_url %}
                 <a href="{{ project.github_repo_url }}"
                    target="_blank" rel="noopener noreferrer"
-                   class="portfolio-action-btn btn-github"><i data-lucide="github"></i> Ver en GitHub</a>
+                   class="portfolio-action-btn btn-github">Ver en GitHub</a>
                 {% endif %}
             </div>
         </div>
@@ -65,7 +65,7 @@
         </div>
         {% endif %}
 
-        <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back"><i data-lucide="arrow-left"></i> Volver al Portafolio</a>
+        <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back">Volver al Portafolio</a>
 
     </div>
 
@@ -77,12 +77,12 @@
                 <li><span>Añadido</span> {{ project.created_at.strftime('%d/%m/%Y') }}</li>
                 {% if project.project_url %}
                 <li><span>URL</span>
-                    <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer">Visitar <i data-lucide="external-link"></i></a>
+                    <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer">Visitar</a>
                 </li>
                 {% endif %}
                 {% if project.github_repo_url %}
                 <li><span>GitHub</span>
-                    <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer">Repo <i data-lucide="external-link"></i></a>
+                    <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer">Repo</a>
                 </li>
                 {% endif %}
                 {% if project.has_es %}
@@ -95,7 +95,7 @@
 
         <div class="portfolio-sidebar-box">
             <h4>Todos los Proyectos</h4>
-            <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back" style="margin-top:0"><i data-lucide="arrow-left"></i> Volver al listado</a>
+            <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back" style="margin-top:0">Volver al listado</a>
         </div>
 
     </div>
