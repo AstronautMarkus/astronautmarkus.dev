@@ -140,6 +140,20 @@
         </div>
 
         <div class="sidebar-box">
+            <h4>Proyectadas</h4>
+            {% if latest_proyectadas %}
+            <ul>
+                {% for item in latest_proyectadas %}
+                <li style="list-style:none;font-size:0.85rem;color:#cccccc;margin-bottom:0.5rem">{{ item.text | truncate(90) }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">See all proyectadas »</a>
+            {% else %}
+            <p style="font-size:0.82rem;color:#555555">No proyectadas yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-box">
             <h4>Status</h4>
             <p>Currently: <strong style="color: #DE0000;">Saturdays and Sundays only</strong><br>Open to new projects.</p>
             <p>Location: Remote<br>Response time: &lt; 48h</p>

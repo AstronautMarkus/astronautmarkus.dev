@@ -134,6 +134,21 @@
         </div>
 
         <div class="sidebar-box">
+            <h4>Proyectadas</h4>
+            {% if latest_proyectadas %}
+            <ul>
+                {% for item in latest_proyectadas %}
+                {% set display_text = item.text_es if item.has_es and item.text_es else item.text %}
+                <li style="list-style:none;font-size:0.85rem;color:#cccccc;margin-bottom:0.5rem">{{ display_text | truncate(90) }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">Ver todas las proyectadas »</a>
+            {% else %}
+            <p style="font-size:0.82rem;color:#555555">Todavía no hay proyectadas.</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-box">
             <h4>Estado</h4>
             <p>Actualmente: <strong style="color: #DE0000;">Disponible los sábados y domingos</strong><br>Abierto a nuevos proyectos.</p>
             <p>Ubicación: Remoto<br>Tiempo de respuesta: &lt; 48h</p>

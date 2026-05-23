@@ -59,6 +59,18 @@ class CvFile(db.Model):
     uploaded_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 
+class Proyectada(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # English content (required)
+    text = db.Column(db.Text, nullable=False)
+    # Spanish content (optional)
+    text_es = db.Column(db.Text, nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    # Visibility
+    published = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
 class BlogCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # English (required)

@@ -78,6 +78,12 @@
             Categories
           </a>
         </li>
+        <li>
+          <a href="{{ url_for('admin.proyectadas_list') }}"
+             class="{{ 'active' if request.endpoint and 'proyectada' in request.endpoint else '' }}">
+            Proyectadas
+          </a>
+        </li>
       </ul>
     </div>
 

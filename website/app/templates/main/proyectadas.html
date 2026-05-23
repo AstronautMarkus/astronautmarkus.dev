@@ -1,0 +1,41 @@
+{% extends "base/base.html" %}
+
+{% block title %}Proyectadas{% endblock %}
+{% block description %}A collection of proyectadas — the internet's favourite projection of insecurities and hidden fantasies.{% endblock %}
+{% block keywords %}proyectadas, memes, internet, projection, insecurities{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="blog-banner">
+    <div class="blog-banner-inner">
+        <h2>// Proyectadas (personal reflections)</h2>
+        <p>Warning: possible red flags on my part due to my own insecurities and hidden fantasies. Proceed with caution.</p>
+    </div>
+</div>
+
+<div id="blog-content">
+
+    <div id="blog-main">
+
+        {% if items %}
+            {% for item in items %}
+            <div class="blog-card" style="padding:1.5rem 1.75rem">
+                <p style="font-size:1rem;line-height:1.7;margin:0">{{ item.text }}</p>
+                <div class="blog-card-meta" style="margin-top:1rem">
+                    <span class="blog-card-date">{{ item.created_at | dtfmt('%b %d, %Y') }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:#777;margin-top:2rem">No proyectadas yet. Check back soon.</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
