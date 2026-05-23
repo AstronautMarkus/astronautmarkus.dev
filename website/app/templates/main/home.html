@@ -85,11 +85,11 @@
                         <div class="project-card-links">
                             {% if p.project_url %}
                             <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
-                               class="project-link">↗ Visit</a>
+                               class="project-link"><i data-lucide="external-link"></i> Visit</a>
                             {% endif %}
                             {% if p.github_repo_url %}
                             <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
-                               class="project-link">⌥ GitHub</a>
+                               class="project-link"><i data-lucide="github"></i> GitHub</a>
                             {% endif %}
                         </div>
                         {% endif %}

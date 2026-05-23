@@ -39,12 +39,12 @@
                 <p class="portfolio-card-desc">{{ p.description | truncate(120) }}</p>
                 {% endif %}
                 <div class="portfolio-card-actions">
-                    <a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}" class="portfolio-read-more">Details »</a>
+                    <a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}" class="portfolio-read-more">Details <i data-lucide="arrow-right"></i></a>
                     {% if p.project_url %}
-                    <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-ext-link">↗ Visit</a>
+                    <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-ext-link"><i data-lucide="external-link"></i> Visit</a>
                     {% endif %}
                     {% if p.github_repo_url %}
-                    <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-ext-link">⌥ GitHub</a>
+                    <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-ext-link"><i data-lucide="github"></i> GitHub</a>
                     {% endif %}
                 </div>
             </div>

@@ -70,7 +70,7 @@
                     {% endif %}
 
                     <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-read-more">
-                        {% if current_lang == 'es' %}Leer más{% else %}Read more{% endif %} &raquo;
+                        {% if current_lang == 'es' %}Leer más{% else %}Read more{% endif %} <i data-lucide="chevron-right"></i>
                     </a>
                 </div>
             </div>
@@ -80,7 +80,7 @@
             {% if pagination.pages > 1 %}
             <div class="blog-pagination">
                 <a href="{{ url_for('main.blog_list', page=pagination.prev_num, cat=current_cat) }}"
-                   class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">&#9668; {% if current_lang == 'es' %}Anterior{% else %}Prev{% endif %}</a>
+                   class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}"><i data-lucide="chevron-left"></i> {% if current_lang == 'es' %}Anterior{% else %}Prev{% endif %}</a>
 
                 {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
                     {% if p %}
@@ -92,7 +92,7 @@
                 {% endfor %}
 
                 <a href="{{ url_for('main.blog_list', page=pagination.next_num, cat=current_cat) }}"
-                   class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">{% if current_lang == 'es' %}Siguiente{% else %}Next{% endif %} &#9658;</a>
+                   class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">{% if current_lang == 'es' %}Siguiente{% else %}Next{% endif %} <i data-lucide="chevron-right"></i></a>
             </div>
             {% endif %}
 

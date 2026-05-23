@@ -60,7 +60,7 @@
 
         {% if post.images %}
         <div class="post-gallery">
-            <h4>&#9632; {% if current_lang == 'es' %}Imágenes del Post{% else %}Post Images{% endif %}</h4>
+            <h4><i data-lucide="image"></i> {% if current_lang == 'es' %}Imágenes del Post{% else %}Post Images{% endif %}</h4>
             <div class="post-gallery-grid">
                 {% for img in post.images %}
                 <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
@@ -72,7 +72,7 @@
         </div>
         {% endif %}
 
-        <a href="{{ url_for('main.blog_list') }}" class="post-back">&#8592; {% if current_lang == 'es' %}Volver al Blog{% else %}Back to Blog{% endif %}</a>
+        <a href="{{ url_for('main.blog_list') }}" class="post-back"><i data-lucide="arrow-left"></i> {% if current_lang == 'es' %}Volver al Blog{% else %}Back to Blog{% endif %}</a>
 
     </div>
 
@@ -97,9 +97,9 @@
                 {% if post.has_es %}
                 <li>
                     {% if current_lang == 'es' %}
-                    <a href="/lang/en?next={{ request.path }}">&#9658; Read in English</a>
+                    <a href="/lang/en?next={{ request.path }}"><i data-lucide="globe"></i> Read in English</a>
                     {% else %}
-                    <a href="/lang/es?next={{ request.path }}">&#9658; Leer en Español</a>
+                    <a href="/lang/es?next={{ request.path }}"><i data-lucide="globe"></i> Leer en Español</a>
                     {% endif %}
                 </li>
                 {% endif %}
@@ -117,11 +117,11 @@
             <h4>{% if current_lang == 'es' %}Compartir{% else %}Share{% endif %}</h4>
             <ul>
                 <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">&#9658; {% if current_lang == 'es' %}Compartir en Twitter/X{% else %}Share on Twitter/X{% endif %}</a></li>
+                       target="_blank" rel="noopener noreferrer"><i data-lucide="twitter"></i> {% if current_lang == 'es' %}Compartir en Twitter/X{% else %}Share on Twitter/X{% endif %}</a></li>
                 <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">&#9658; {% if current_lang == 'es' %}Compartir en LinkedIn{% else %}Share on LinkedIn{% endif %}</a></li>
+                       target="_blank" rel="noopener noreferrer"><i data-lucide="linkedin"></i> {% if current_lang == 'es' %}Compartir en LinkedIn{% else %}Share on LinkedIn{% endif %}</a></li>
                 <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">&#9658; {% if current_lang == 'es' %}Compartir en Facebook{% else %}Share on Facebook{% endif %}</a></li>
+                       target="_blank" rel="noopener noreferrer"><i data-lucide="facebook"></i> {% if current_lang == 'es' %}Compartir en Facebook{% else %}Share on Facebook{% endif %}</a></li>
             </ul>
         </div>
 
