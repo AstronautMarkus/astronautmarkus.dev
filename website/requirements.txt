@@ -17,6 +17,7 @@ markupsafe==3.0.3
 packaging==25.0
 pillow==11.3.0
 pymysql==1.1.2
+reportlab==4.4.1
 python-dotenv==1.2.1
 sqlalchemy==2.0.44
 typing-extensions==4.15.0

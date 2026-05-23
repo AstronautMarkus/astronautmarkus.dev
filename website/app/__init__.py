@@ -118,6 +118,9 @@ def create_app():
 	from app.routes.contact import contact_bp
 	app.register_blueprint(contact_bp)
 
+	from app.routes.extras import extras_bp
+	app.register_blueprint(extras_bp)
+
 	# ── Media proxy ───────────────────────────────────────────────
 	# All stored files are served through /media/<path> so the
 	# real storage backend (local or S3) is never exposed to the

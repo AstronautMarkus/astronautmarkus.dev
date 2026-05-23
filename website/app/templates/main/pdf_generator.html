@@ -1,0 +1,109 @@
+{% extends "base/base.html" %}
+
+{% block title %}PDF Generator{% endblock %}
+{% block description %}Generate a dummy PDF document — lightweight or heavy corporate report — for testing and demonstration purposes.{% endblock %}
+{% block keywords %}PDF generator, dummy PDF, test PDF, AstronautMarkus{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pdf_generator.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div id="pdf-gen-wrap">
+
+    <div class="pdf-gen-header">
+      <h2>// PDF Generator</h2>
+      <p class="pdf-gen-intro">
+        Generate a dummy PDF document for testing, integration, or demonstration purposes.
+        Choose between a lightweight single-page report or a full corporate multi-page document.
+      </p>
+    </div>
+
+    <form method="POST" action="{{ url_for('extras.pdf_generator') }}" id="pdf-gen-form">
+
+      <div class="mode-cards">
+
+        <label class="mode-card" id="card-light">
+          <input type="radio" name="mode" value="light" checked>
+          <div class="mode-card-inner">
+            <div class="mode-card-icon"><img src="{{ url_for('static', filename='images/icons/Icon_pdf_file.png')}}" style="width: auto; height: 40px; pointer-events: none;"></div>
+            <div class="mode-card-title">Light</div>
+            <div class="mode-card-desc">
+              Single-page document. Minimal corporate header, three short sections,
+              and a confidential stamp. Fast to generate, easy on the eyes.
+            </div>
+            <ul class="mode-card-specs">
+              <li>1 page</li>
+              <li>Text only</li>
+              <li>~10 KB</li>
+            </ul>
+          </div>
+        </label>
+
+        <label class="mode-card" id="card-heavy">
+          <input type="radio" name="mode" value="heavy">
+          <div class="mode-card-inner">
+            <div class="mode-card-icon"><img src="{{ url_for('static', filename='images/icons/Icon_pdf_file.png')}}" style="width: auto; height: 40px; pointer-events: none;"></div>
+            <div class="mode-card-title">Heavy</div>
+            <div class="mode-card-desc">
+              Full corporate report. Navy cover page with the punk Tux mascot,
+              table of contents, executive summary, financial tables, tech specs,
+              and a legal notice. The real deal.
+            </div>
+            <ul class="mode-card-specs">
+              <li>6 pages</li>
+              <li>Tables + image</li>
+              <li>~150 KB</li>
+            </ul>
+          </div>
+        </label>
+
+      </div>
+
+      <div class="pdf-gen-submit">
+        <button type="submit" class="btn-generate">
+          &#8659; Generate &amp; Download PDF
+        </button>
+        <p class="pdf-gen-note">
+          The document is generated server-side and downloaded immediately.
+          Language matches your current site language selection.
+        </p>
+      </div>
+
+    </form>
+
+    <div class="pdf-gen-info">
+      <h3 class="section-title">About This Tool</h3>
+      <ul class="tech-list">
+        <li><strong>Library:</strong> ReportLab (Python)</li>
+        <li><strong>Formats:</strong> A4, PDF 1.4</li>
+        <li><strong>Content:</strong> Entirely fictional — no real data</li>
+        <li><strong>Languages:</strong> English / Español (follows site language)</li>
+        <li><strong>Mascot:</strong> Tux the Linux Penguin — punk edition</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Highlight selected card
+  document.querySelectorAll('.mode-card input[type="radio"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      document.querySelectorAll('.mode-card').forEach(function(c) {
+        c.classList.remove('selected');
+      });
+      if (this.checked) {
+        this.closest('.mode-card').classList.add('selected');
+      }
+    });
+  });
+  // Set initial state
+  var checked = document.querySelector('.mode-card input[type="radio"]:checked');
+  if (checked) checked.closest('.mode-card').classList.add('selected');
+</script>
+{% endblock %}
