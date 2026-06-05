@@ -14,6 +14,13 @@ from reportlab.platypus import (
 from reportlab.platypus import Image as RLImage
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY, TA_RIGHT
 from reportlab.pdfgen import canvas as pdfcanvas
+from reportlab.graphics.shapes import Drawing, String
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.graphics.charts.lineplots import LinePlot
+from reportlab.graphics import renderPDF
+
+from faker import Faker
+from random import randint, uniform, choice
 
 from app.routes.extras import extras_bp
 from app.i18n import get_current_language, render_localized_template
@@ -302,6 +309,72 @@ def _build_styles(lang: str) -> dict:
     }
 
 
+# ─── Random data + charts helpers ──────────────────────────────────────────
+def _generate_fake_data(lang: str) -> dict:
+    fake = Faker('es_ES' if lang == 'es' else 'en_US')
+    title = fake.company()
+    author = fake.name()
+    points = [round(uniform(1000, 5500) * (1 + i * uniform(0.01, 0.15)), 2) for i in range(6)]
+    categories = [fake.month_name()[:3].capitalize() for _ in range(6)]
+    peak = max(points)
+    avg = round(sum(points) / len(points), 2)
+    return {
+        'gen_title': title,
+        'gen_author': author,
+        'points': points,
+        'categories': categories,
+        'peak': peak,
+        'avg': avg,
+    }
+
+
+def _make_chart(data: list, categories: list, width_cm: float = 14, height_cm: float = 6,
+                kind: str = 'line') -> Drawing:
+    w = width_cm * cm
+    h = height_cm * cm
+    drawing = Drawing(w, h)
+    if kind == 'bar':
+        bc = VerticalBarChart()
+        bc.x = 40
+        bc.y = 10
+        bc.height = h - 30
+        bc.width = w - 80
+        bc.data = [data]
+        bc.categoryAxis.categoryNames = categories
+        bc.valueAxis.valueMin = 0
+        bc.valueAxis.valueMax = max(data) * 1.2
+        bc.valueAxis.valueStep = max(1, int(max(data) // 5))
+        drawing.add(bc)
+    else:
+        lp = LinePlot()
+        lp.x = 40
+        lp.y = 10
+        lp.height = h - 30
+        lp.width = w - 80
+        pts = list(enumerate(data, start=1))
+        lp.data = [pts]
+        lp.lines[0].strokeWidth = 1.5
+        drawing.add(lp)
+
+    drawing.add(String(w / 2, h - 8, 'Auto-generated chart', textAnchor='middle', fontSize=9))
+    return drawing
+
+
+# ─── Year replacement helper ───────────────────────────────────────────────
+def _replace_years(obj):
+    y = str(datetime.now().year)
+    if isinstance(obj, str):
+        return obj.replace('2026', y)
+    elif isinstance(obj, dict):
+        return {k: _replace_years(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [_replace_years(v) for v in obj]
+    elif isinstance(obj, tuple):
+        return tuple(_replace_years(v) for v in obj)
+    else:
+        return obj
+
+
 # ─── Page number canvas ───────────────────────────────────────────────────────
 
 class _NumberedCanvas(pdfcanvas.Canvas):
@@ -321,7 +394,7 @@ class _NumberedCanvas(pdfcanvas.Canvas):
 
     def save(self):
         n = len(self._saved_page_states)
-        s = STRINGS[self._lang]
+        s = _replace_years(STRINGS[self._lang])
         for state in self._saved_page_states:
             self.__dict__.update(state)
             if self._pageNumber == 1 and self._has_cover:
@@ -348,7 +421,7 @@ class _NumberedCanvas(pdfcanvas.Canvas):
 # ─── Light PDF ────────────────────────────────────────────────────────────────
 
 def _build_light(buf: BytesIO, lang: str) -> None:
-    s = STRINGS[lang]
+    s = _replace_years(STRINGS[lang])
     styles = _build_styles(lang)
     page_w, page_h = A4
     date_str = datetime.now().strftime('%B %d, %Y') if lang == 'en' \
@@ -402,6 +475,15 @@ def _build_light(buf: BytesIO, lang: str) -> None:
                                 alignment=TA_CENTER)
     story.append(Paragraph(s['confidential'], conf_style))
 
+    # Insert small auto-generated snapshot and chart to make each PDF unique
+    gen = _generate_fake_data(lang)
+    story.append(Spacer(1, 0.3 * cm))
+    story.append(Paragraph(f"Snapshot: {gen['gen_title']} — {gen['gen_author']}", styles['light_meta']))
+    chart = _make_chart(gen['points'], gen['categories'], width_cm=14, height_cm=5,
+                        kind=choice(['line', 'bar']))
+    story.append(Spacer(1, 0.2 * cm))
+    story.append(chart)
+
     doc.build(
         story,
         canvasmaker=lambda *a, **kw: _NumberedCanvas(*a, pdf_lang=lang, **kw),
@@ -411,13 +493,17 @@ def _build_light(buf: BytesIO, lang: str) -> None:
 # ─── Heavy PDF ────────────────────────────────────────────────────────────────
 
 def _build_heavy(buf: BytesIO, lang: str) -> None:
-    s = STRINGS[lang]
+    s = _replace_years(STRINGS[lang])
     styles = _build_styles(lang)
     page_w, page_h = A4
     date_str = datetime.now().strftime('%B %d, %Y') if lang == 'en' \
         else datetime.now().strftime('%d de %B de %Y')
 
-    tux_path = os.path.join(current_app.root_path, 'static', 'images', 'tux.png')
+    try:
+        root_path = current_app.root_path
+    except Exception:
+        root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+    tux_path = os.path.join(root_path, 'static', 'images', 'tux.png')
 
     doc = SimpleDocTemplate(
         buf,
@@ -504,6 +590,15 @@ def _build_heavy(buf: BytesIO, lang: str) -> None:
 
     for point in s['exec_highlights']:
         story.append(Paragraph(f'• {point}', styles['bullet']))
+
+    # Auto-generated snapshot to vary outputs
+    gen = _generate_fake_data(lang)
+    story.append(Spacer(1, 0.4 * cm))
+    story.append(Paragraph(f"Snapshot: {gen['gen_title']} — Avg: ${gen['avg']}", styles['body']))
+    chart = _make_chart(gen['points'], gen['categories'], width_cm=14, height_cm=6,
+                        kind=choice(['line', 'bar']))
+    story.append(Spacer(1, 0.3 * cm))
+    story.append(chart)
 
     story.append(PageBreak())
 
