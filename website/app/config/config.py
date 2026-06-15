@@ -56,3 +56,9 @@ class Config:
     # ── Cloudflare Turnstile ─────────────────────────────────────
     TURNSTILE_SITE_KEY = os.getenv('TURNSTILE_SITE_KEY', '')
     TURNSTILE_SECRET_KEY = clean_env(os.getenv('TURNSTILE_SECRET_KEY'), '')
+
+    # ── Contact form kill switch ──────────────────────────────────
+    # Set to 'false' to temporarily disable the contact form (no DB writes, no emails).
+    CONTACT_FORM_ENABLED = clean_env(os.getenv('CONTACT_FORM_ENABLED'), 'true').lower() not in (
+        '0', 'false', 'no', 'off',
+    )

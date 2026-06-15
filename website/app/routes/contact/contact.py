@@ -175,6 +175,16 @@ def contact():
     lang = get_current_language()
     turnstile_site_key = current_app.config.get('TURNSTILE_SITE_KEY', '')
 
+    if not current_app.config.get('CONTACT_FORM_ENABLED', True):
+        return render_localized_template(
+            'main/contact.html',
+            field_errors=[],
+            form_data={},
+            turnstile_site_key=turnstile_site_key,
+            turnstile_error=False,
+            form_disabled=True,
+        )
+
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip()

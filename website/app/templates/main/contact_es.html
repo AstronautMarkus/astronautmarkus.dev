@@ -37,6 +37,11 @@
     </div>
     {% endif %}
 
+    {% if form_disabled %}
+    <div class="contact-alert contact-alert-error">
+      El formulario de contacto está temporalmente desactivado. Por favor vuelve más tarde.
+    </div>
+    {% else %}
     <form method="POST" action="{{ url_for('contact.contact') }}" novalidate>
 
       <div class="form-row">
@@ -87,6 +92,7 @@
       <button type="submit" class="contact-btn">Enviar mensaje</button>
 
     </form>
+    {% endif %}
 
   </div>
 </div>
