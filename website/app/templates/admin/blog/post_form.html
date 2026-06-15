@@ -164,6 +164,14 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label for="tags">Tags</label>
+        <input type="text" id="tags" name="tags"
+               value="{{ post.tags | map(attribute='name') | join(', ') if is_edit else '' }}"
+               placeholder="python, flask, devops">
+        <span class="form-hint">Comma-separated list of tags.</span>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <label for="created_at">Publication Date</label>

@@ -84,6 +84,19 @@ class BlogCategory(db.Model):
     posts = db.relationship('BlogPost', backref='category', lazy=True)
 
 
+blog_post_tags = db.Table(
+    'blog_post_tags',
+    db.Column('post_id', db.Integer, db.ForeignKey('blog_post.id'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('blog_tag.id'), primary_key=True),
+)
+
+
+class BlogTag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(200), nullable=False, unique=True)
@@ -112,6 +125,13 @@ class BlogPost(db.Model):
         backref='post',
         lazy=True,
         cascade='all, delete-orphan',
+    )
+
+    tags = db.relationship(
+        'BlogTag',
+        secondary=blog_post_tags,
+        backref=db.backref('posts', lazy='dynamic'),
+        lazy='subquery',
     )
 
 

@@ -6,7 +6,7 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 from app import db
-from app.models.models import BlogCategory, BlogPost, BlogPostImage
+from app.models.models import BlogCategory, BlogPost, BlogPostImage, BlogTag
 from app.routes.admin import admin_bp
 from app.storage import storage
 
@@ -57,6 +57,28 @@ def _slugify(text: str) -> str:
     text = re.sub(r'-{2,}', '-', text)
     text = re.sub(r'^-+|-+$', '', text)
     return text or 'post'
+
+
+def _parse_tags(raw: str) -> list[BlogTag]:
+    """Parse a comma-separated tag string, returning existing or newly created BlogTags."""
+    seen = set()
+    tags = []
+    for part in raw.split(','):
+        name = part.strip()
+        if not name:
+            continue
+        key = name.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+
+        tag = BlogTag.query.filter(db.func.lower(BlogTag.name) == key).first()
+        if not tag:
+            tag = BlogTag(name=name)
+            db.session.add(tag)
+            db.session.flush()
+        tags.append(tag)
+    return tags
 
 
 def _unique_slug(base: str, exclude_id: int | None = None) -> str:
@@ -199,6 +221,8 @@ def blog_post_create():
             slug='__tmp__',
             created_at=created_at,
         )
+        post.tags = _parse_tags(request.form.get('tags', ''))
+
         db.session.add(post)
         db.session.flush()
 
@@ -275,6 +299,7 @@ def blog_post_edit(post_id):
         post.category_id    = int(category_id) if category_id else None
         post.published      = published
         post.created_at     = created_at
+        post.tags           = _parse_tags(request.form.get('tags', ''))
 
         # Cover image
         cover = request.files.get('cover_image')

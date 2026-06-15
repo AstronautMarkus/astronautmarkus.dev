@@ -161,6 +161,25 @@
 
     </div>
 
+
+    <div id="tertiary">
+
+        <div class="sidebar-box">
+            <h4>Tags</h4>
+            {% if all_tags %}
+            <div class="tag-cloud">
+                {% for tag in all_tags %}
+                <a href="{{ url_for('main.blog_list', tag=tag.id) }}" class="tag-pill">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="font-size:0.82rem;color:var(--text-faint)">No tags yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    
 </div>
 
 {% endblock %}

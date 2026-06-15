@@ -1,7 +1,7 @@
 from flask import abort, render_template, request
 
 from app.i18n import get_current_language
-from app.models.models import BlogCategory, BlogPost
+from app.models.models import BlogCategory, BlogPost, BlogTag
 from app.routes.main import main_bp
 from app.storage import storage
 from app.utils import expand_post_images, render_markdown
@@ -11,11 +11,14 @@ from app.utils import expand_post_images, render_markdown
 def blog_list():
     page       = request.args.get('page', 1, type=int)
     cat_id     = request.args.get('cat', None, type=int)
+    tag_id     = request.args.get('tag', None, type=int)
     per_page   = 8
 
     q = BlogPost.query.filter_by(published=True)
     if cat_id:
         q = q.filter_by(category_id=cat_id)
+    if tag_id:
+        q = q.filter(BlogPost.tags.any(BlogTag.id == tag_id))
 
     pagination = (
         q.order_by(BlogPost.created_at.desc())
@@ -30,6 +33,7 @@ def blog_list():
         posts=pagination.items,
         categories=categories,
         current_cat=cat_id,
+        current_tag=tag_id,
     )
 
 
