@@ -8,10 +8,13 @@ from app.models.models import Visit
 from . import utils_bp
 
 
+LEGO_STUD_CAP = 4_000_000_000
+
+
 def _format_visitor_counter(total_visits: int) -> str:
     if total_visits <= 9999:
         return f"{total_visits:04d}"
-    return str(total_visits)
+    return str(min(total_visits, LEGO_STUD_CAP))
 
 
 def _build_counter_gif(counter_text: str) -> bytes:
