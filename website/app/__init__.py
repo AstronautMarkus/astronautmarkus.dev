@@ -17,6 +17,13 @@ from werkzeug.routing import RequestRedirect as _WerkzeugRedirect
 from werkzeug.exceptions import NotFound as _WerkzeugNotFound
 
 from app.storage import storage
+from app.storage.url_cache import get_or_set as _cache_get_or_set
+
+# S3-backed files are served via temporary presigned URLs, cached
+# server-side for almost as long as they remain valid so every visitor
+# reuses the same link instead of hitting S3 on every page view.
+PRESIGNED_URL_TTL = 60 * 60 * 24  # 1 day
+PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
 
 db             = SQLAlchemy()
 migrate        = Migrate()
@@ -161,12 +168,23 @@ def create_app():
 	app.jinja_env.filters['dtfmt'] = _dtfmt
 
 	# ── Template globals ──────────────────────────────────────────
+	def _storage_url(path):
+		if not path:
+			return ''
+		if app.config.get('STORAGE_DRIVER', 'local').lower() == 's3':
+			return _cache_get_or_set(
+				f'presigned:{path}',
+				PRESIGNED_URL_CACHE_TTL,
+				lambda: storage.presigned_url(path, expires_in=PRESIGNED_URL_TTL),
+			)
+		return url_for('serve_media', file_path=path)
+
 	@app.context_processor
 	def inject_globals():
 		return {
 			'current_year': datetime.now().year,
 			'current_lang': get_current_language(),
-			'storage_url': lambda path: url_for('serve_media', file_path=path) if path else '',
+			'storage_url': _storage_url,
 		}
 
 	# ── Error handlers ────────────────────────────────────────────

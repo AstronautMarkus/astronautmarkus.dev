@@ -64,6 +64,13 @@ class S3Driver(StorageDriver):
             return f"{self._public_url}/{path}"
         return f"https://{self.bucket}.s3.amazonaws.com/{path}"
 
+    def presigned_url(self, path: str, expires_in: int = 86400) -> str:
+        return self._client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': self.bucket, 'Key': path},
+            ExpiresIn=expires_in,
+        )
+
     def list(self, prefix: str = '') -> List[str]:
         paginator = self._client.get_paginator('list_objects_v2')
         keys: List[str] = []
