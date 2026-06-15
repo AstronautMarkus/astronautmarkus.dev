@@ -90,7 +90,7 @@
                     </div>
                     {% endfor %}
                 {% else %}
-                <p style="color:#555555;font-size:12px">Aún no hay proyectos. Vuelve pronto.</p>
+                <p style="color:var(--text-faint);font-size:12px">Aún no hay proyectos. Vuelve pronto.</p>
                 {% endif %}
             </div>
         </div>
@@ -128,7 +128,7 @@
                 {% set p_title = p.title_es if p.has_es and p.title_es else p.title %}
                 <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p_title | truncate(38) }}</a></li>
                 {% else %}
-                <li style="list-style:none;color:#444444">Sin entradas aún.</li>
+                <li style="list-style:none;color:var(--text-dim)">Sin entradas aún.</li>
                 {% endfor %}
             </ul>
         </div>
@@ -139,18 +139,18 @@
             <ul>
                 {% for item in latest_proyectadas %}
                 {% set display_text = item.text_es if item.has_es and item.text_es else item.text %}
-                <li style="list-style:none;font-size:0.85rem;color:#cccccc;margin-bottom:0.5rem"><a href="{{ url_for('main.proyectadas_list')}}">{{ item.text_es | truncate(67) }}</a></li>
+                <li style="list-style:none;font-size:0.85rem;color:var(--text-body);margin-bottom:0.5rem"><a href="{{ url_for('main.proyectadas_list')}}">{{ item.text_es | truncate(67) }}</a></li>
                 {% endfor %}
             </ul>
             <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">Ver todas las proyectadas »</a>
             {% else %}
-            <p style="font-size:0.82rem;color:#555555">Todavía no hay proyectadas.</p>
+            <p style="font-size:0.82rem;color:var(--text-faint)">Todavía no hay proyectadas.</p>
             {% endif %}
         </div>
 
         <div class="sidebar-box">
             <h4>Estado</h4>
-            <p>Actualmente: <strong style="color: #DE0000;">Disponible los sábados y domingos</strong><br>Abierto a nuevos proyectos.</p>
+            <p>Actualmente: <strong style="color: var(--accent);">Disponible los sábados y domingos</strong><br>Abierto a nuevos proyectos.</p>
             <p>Ubicación: Remoto<br>Tiempo de respuesta: &lt; 48h</p>
         </div>
 

@@ -11,8 +11,8 @@
 #secondary {
     width: 280px;
     float: right;
-    background: #111111;
-    border: 1px solid #222222;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-mid);
     padding: 15px;
     box-sizing: border-box;
 }
@@ -21,7 +21,7 @@
 .about-section {
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 1px dotted #222222;
+    border-bottom: 1px dotted var(--border-mid);
 }
 
 .about-section:last-child {
@@ -31,18 +31,18 @@
 
 .about-section p {
     font-size: 13px;
-    color: #CCCCCC;
+    color: var(--text-body);
     line-height: 1.8;
     margin-bottom: 10px;
 }
 
 .about-section em {
-    color: #888888;
+    color: var(--text-muted);
     font-style: italic;
 }
 
 .about-section a {
-    color: #DE0000;
+    color: var(--accent);
 }
 
 
@@ -50,19 +50,19 @@
     margin: 12px 0 0 0;
     padding: 0;
     list-style: none;
-    border: 1px solid #1e1e1e;
+    border: 1px solid var(--border-soft);
 }
 
 .tech-list li {
     padding: 7px 12px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--border-soft);
     font-size: 12px;
-    color: #CCCCCC;
-    background: #0a0a0a;
+    color: var(--text-body);
+    background: var(--bg-void);
 }
 
 .tech-list li:nth-child(even) {
-    background: #111111;
+    background: var(--bg-panel);
 }
 
 .tech-list li:last-child {
@@ -70,7 +70,7 @@
 }
 
 .tech-list li strong {
-    color: #DE0000;
+    color: var(--accent);
     margin-right: 6px;
 }
 
@@ -82,9 +82,9 @@
 
 .credits-list li {
     padding: 7px 0;
-    border-bottom: 1px dotted #222222;
+    border-bottom: 1px dotted var(--border-mid);
     font-size: 12px;
-    color: #CCCCCC;
+    color: var(--text-body);
     line-height: 1.6;
 }
 
@@ -93,11 +93,11 @@
 }
 
 .credits-list li strong {
-    color: #FFFFFF;
+    color: var(--text-bright);
 }
 
 .credits-list li a {
-    color: #DE0000;
+    color: var(--accent);
 }
 
 
@@ -113,15 +113,15 @@
 }
 
 .about-section.contact-cta {
-    background: #0d0d0d;
-    border: 1px solid #DE0000;
-    border-bottom: 1px solid #DE0000;
+    background: var(--bg-panel);
+    border: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
     padding: 25px;
     text-align: center;
 }
 
 .about-section.contact-cta h3 {
-    color: #FFFFFF;
+    color: var(--text-bright);
     font-size: 18px;
     margin: 0 0 10px 0;
 }
@@ -137,10 +137,10 @@
 
 .sidebar-box h4 {
     font-size: 14px;
-    color: #FFFFFF;
+    color: var(--text-bright);
     margin: 0 0 10px 0;
     text-transform: uppercase;
-    border-left: 3px solid #DE0000;
+    border-left: 3px solid var(--accent);
     padding-left: 10px;
 }
 
@@ -148,23 +148,23 @@
     margin: 0;
     padding: 0;
     list-style: square inside;
-    color: #DE0000;
+    color: var(--accent);
 }
 
 .sidebar-box ul li {
     padding: 5px 0;
-    border-bottom: 1px solid #222222;
+    border-bottom: 1px solid var(--border-mid);
     font-size: 12px;
 }
 
 .sidebar-box ul li a {
-    color: #CCCCCC;
+    color: var(--text-body);
     font-weight: normal;
 }
 
 .sidebar-box p {
     font-size: 12px;
-    color: #888888;
+    color: var(--text-muted);
     line-height: 1.6;
     margin: 0 0 6px 0;
 }

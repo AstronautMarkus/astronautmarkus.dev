@@ -1,14 +1,58 @@
+:root {
+
+    --accent: #44d95c;
+    --accent-bright: #73f084;
+    --accent-soft-bg: #102a1a;
+    --accent-soft-border: #225c34;
+
+    --accent-fill: #6d5ab3;
+    --accent-fill-hover: #7d68cb;
+    --accent-fill-active: #564791;
+    --accent-fill-border: #8b7ad1;
+    --accent-fill-soft-bg: #1e1938;
+
+    --success: #5ecf8f;
+
+    --link-alt: #5cc6ce;
+    --link-alt-dim: #1f3a3f;
+    --link-alt-fill: #1f5b63;
+
+    --danger: #d6453c;
+
+    --bg-void: #070810;
+    --bg-base: #0d1020;
+    --bg-panel: #14182a;
+    --bg-input: #1c2137;
+
+    --border-soft: #252b42;
+    --border-mid: #343b58;
+    --border-strong: #4b5479;
+
+    --text-bright: #ffffff;
+    --text-body: #d0d4e5;
+    --text-muted: #a6adc7;
+    --text-faint: #6a7190;
+    --text-dim: #555d7c;
+}
+
 body {
     margin: 0;
     padding: 0;
-    background-color: #000000;
+    background-color: var(--bg-void);
+    background-image:
+        linear-gradient(rgba(6, 7, 13, 0.45), rgba(6, 7, 13, 0.85)),
+        url('/static/images/background/blood_gulch.jpeg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
     font-size: 12px;
-    color: #FFFFFF;
+    color: var(--text-bright);
 }
 
 a {
-    color: #DE0000;
+    color: var(--accent);
     text-decoration: none;
     font-weight: bold;
 }
@@ -20,15 +64,15 @@ a:hover {
 #wrapper {
     width: 960px;
     margin: 0 auto;
-    background: #000000;
-    border-left: 1px solid #333333;
-    border-right: 1px solid #333333;
+    background: var(--bg-base);
+    border-left: 1px solid var(--border-mid);
+    border-right: 1px solid var(--border-mid);
 }
 
 #header {
     height: 120px;
-    background: #000000;
-    border-bottom: 4px solid #DE0000;
+    background: var(--bg-void);
+    border-bottom: 4px solid var(--accent);
     position: relative;
 }
 
@@ -42,17 +86,17 @@ a:hover {
     font-size: 32px;
     font-weight: bold;
     letter-spacing: -1px;
-    color: #FFFFFF;
+    color: var(--text-bright);
 }
 
 #logo h1 span {
-    color: #DE0000;
-    text-shadow: 0px -1px 0px #000, 0px 1px 3px rgba(255, 255, 255, 0.5);
+    color: var(--accent);
+    text-shadow: 0px -1px 0px var(--bg-void), 0px 1px 3px rgba(255, 255, 255, 0.5);
 }
 
 #tagline {
     font-size: 11px;
-    color: #888888;
+    color: var(--text-muted);
     font-style: italic;
     margin-top: 5px;
 }
@@ -69,8 +113,8 @@ a:hover {
 
 #nav {
     height: 40px;
-    background: #111111;
-    border-bottom: 1px solid #222222;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-mid);
     display: flex;
     justify-content: space-between;
     align-items: stretch;
@@ -90,30 +134,30 @@ a:hover {
 }
 
 #lang-switcher {
-    border-left: 1px solid #222222;
+    border-left: 1px solid var(--border-mid);
 }
 
 #auth-nav {
-    border-left: 1px solid #222222;
+    border-left: 1px solid var(--border-mid);
 }
 
 #auth-nav #login-btn {
-    color: #DE0000;
+    color: var(--accent);
     letter-spacing: 0.5px;
 }
 
 #auth-nav #logout-btn {
-    color: #888888;
+    color: var(--text-muted);
 }
 
 #auth-nav #login-btn:hover {
-    background-color: #DE0000;
-    color: #FFFFFF;
+    background-color: var(--accent-fill);
+    color: var(--text-bright);
 }
 
 #auth-nav #logout-btn:hover {
-    background-color: #222222;
-    color: #FFFFFF;
+    background-color: var(--border-mid);
+    color: var(--text-bright);
     text-decoration: none;
 }
 
@@ -121,29 +165,29 @@ a:hover {
 #nav-right > ul > li > a {
     display: block;
     padding: 12px 20px;
-    color: #FFFFFF;
+    color: var(--text-bright);
     font-size: 13px;
     text-transform: uppercase;
-    border-right: 1px solid #222222;
+    border-right: 1px solid var(--border-mid);
 }
 
 #nav > ul > li > a:hover,
 #nav > ul > li > a.active,
 #nav-right > ul > li > a:hover,
 #nav-right > ul > li > a.active {
-    background-color: #DE0000;
-    color: #FFFFFF;
+    background-color: var(--accent-fill);
+    color: var(--text-bright);
     text-decoration: none;
     text-shadow: none;
 }
 
 #footer {
-    background: #111111;
-    border-top: 1px solid #222222;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border-mid);
     padding: 20px;
     text-align: center;
     font-size: 11px;
-    color: #666666;
+    color: var(--text-faint);
     clear: both;
 }
 
@@ -162,8 +206,8 @@ a:hover {
     position: absolute;
     top: 100%;
     left: 0;
-    background: #111111;
-    border: 1px solid #222222;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-mid);
     border-top: none;
     list-style: none;
     margin: 0;
@@ -180,17 +224,17 @@ a:hover {
 .dropdown-menu li a {
     display: block;
     padding: 12px 20px;
-    color: #FFFFFF;
+    color: var(--text-bright);
     font-size: 13px;
     text-transform: uppercase;
     border-right: none;
-    border-bottom: 1px solid #222222;
+    border-bottom: 1px solid var(--border-mid);
     white-space: nowrap;
 }
 
 .dropdown-menu li a:hover,
 .dropdown-menu li a.active {
-    background-color: #DE0000;
-    color: #FFFFFF;
+    background-color: var(--accent-fill);
+    color: var(--text-bright);
     text-decoration: none;
 }

@@ -13,34 +13,34 @@
         padding: 60px 20px;
         text-align: center;
         min-height: 400px;
-        background: #000000;
-        border-bottom: 1px solid #222222;
+        background: var(--bg-void);
+        border-bottom: 1px solid var(--border-mid);
     }
 
     .error-code {
         font-size: 120px;
         font-weight: bold;
-        color: #DE0000;
+        color: var(--danger);
         line-height: 1;
         margin: 0;
         letter-spacing: -4px;
         text-shadow:
-            0 0 20px rgba(222, 0, 0, 0.6),
-            0 0 40px rgba(222, 0, 0, 0.3),
-            2px 2px 0 #4a0000,
-            4px 4px 0 #2a0000;
+            0 0 20px rgba(214, 69, 60, 0.6),
+            0 0 40px rgba(214, 69, 60, 0.3),
+            2px 2px 0 #4a1f1a,
+            4px 4px 0 #2a120f;
     }
 
     .error-divider {
         width: 300px;
         height: 2px;
-        background: linear-gradient(to right, transparent, #DE0000, transparent);
+        background: linear-gradient(to right, transparent, var(--danger), transparent);
         margin: 20px auto;
     }
 
     .error-title {
         font-size: 20px;
-        color: #FFFFFF;
+        color: var(--text-bright);
         margin: 0 0 10px 0;
         text-transform: uppercase;
         letter-spacing: 3px;
@@ -48,7 +48,7 @@
 
     .error-subtitle {
         font-size: 13px;
-        color: #888888;
+        color: var(--text-muted);
         margin: 0 0 30px 0;
         font-style: italic;
         line-height: 1.6;
@@ -58,7 +58,7 @@
     .error-ascii {
         font-family: "Courier New", Courier, monospace;
         font-size: 11px;
-        color: #333333;
+        color: var(--text-dim);
         line-height: 1.3;
         margin: 0 0 30px 0;
         white-space: pre;
@@ -75,11 +75,11 @@
     .error-actions .glossy-btn {
         display: inline-block;
         padding: 10px 22px;
-        background: #DE0000;
-        color: #FFFFFF !important;
+        background: var(--accent-fill);
+        color: var(--text-bright) !important;
         font-size: 13px;
         font-weight: bold;
-        border: 1px solid #FF3333;
+        border: 1px solid var(--accent-fill-border);
         border-radius: 5px;
         box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.4);
         text-transform: uppercase;
@@ -89,33 +89,33 @@
     }
 
     .error-actions .glossy-btn:hover {
-        background: #ff1a1a;
+        background: var(--accent-fill-hover);
         text-decoration: none;
     }
 
     .error-actions .btn-outline {
         background: transparent;
-        border: 1px solid #444444;
-        color: #AAAAAA !important;
+        border: 1px solid var(--border-strong);
+        color: var(--text-muted) !important;
         box-shadow: none;
     }
 
     .error-actions .btn-outline:hover {
-        background: #1a1a1a;
-        border-color: #666666;
-        color: #FFFFFF !important;
+        background: var(--bg-input);
+        border-color: var(--text-faint);
+        color: var(--text-bright) !important;
     }
 
     .error-hint {
         margin-top: 30px;
         font-size: 11px;
-        color: #444444;
+        color: var(--text-dim);
     }
 
     .error-hint code {
-        color: #DE0000;
+        color: var(--accent);
         font-family: "Courier New", Courier, monospace;
-        background: #0d0d0d;
+        background: var(--bg-panel);
         padding: 1px 5px;
         border-radius: 3px;
     }

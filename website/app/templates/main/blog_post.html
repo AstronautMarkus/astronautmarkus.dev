@@ -54,7 +54,7 @@
             {% if content_html %}
                 {{ content_html }}
             {% else %}
-            <p style="color:#555555;font-style:italic">{% if current_lang == 'es' %}No hay contenido disponible para este post aún.{% else %}No content available for this post yet.{% endif %}</p>
+            <p style="color:var(--text-faint);font-style:italic">{% if current_lang == 'es' %}No hay contenido disponible para este post aún.{% else %}No content available for this post yet.{% endif %}</p>
             {% endif %}
         </div>
 

@@ -2,15 +2,15 @@
     max-width: 360px;
     margin: 60px auto;
     padding: 30px;
-    background: #111111;
-    border: 1px solid #222222;
-    border-top: 3px solid #DE0000;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-mid);
+    border-top: 3px solid var(--accent);
 }
 
 #login-wrap h2 {
     margin: 0 0 22px;
     font-size: 16px;
-    color: #FFFFFF;
+    color: var(--text-bright);
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -24,7 +24,7 @@
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #888888;
+    color: var(--text-muted);
     margin-bottom: 5px;
 }
 
@@ -32,9 +32,9 @@
 #login-wrap input[type="password"] {
     width: 100%;
     padding: 8px 10px;
-    background: #1a1a1a;
-    border: 1px solid #333333;
-    color: #FFFFFF;
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
+    color: var(--text-bright);
     font-size: 12px;
     font-family: inherit;
     box-sizing: border-box;
@@ -43,7 +43,7 @@
 
 #login-wrap input[type="text"]:focus,
 #login-wrap input[type="password"]:focus {
-    border-color: #DE0000;
+    border-color: var(--accent);
 }
 
 #login-wrap .login-btn {
@@ -51,8 +51,8 @@
     width: 100%;
     padding: 10px;
     margin-top: 22px;
-    background: #DE0000;
-    color: #FFFFFF;
+    background: var(--accent-fill);
+    color: var(--text-bright);
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -63,14 +63,14 @@
 }
 
 #login-wrap .login-btn:hover {
-    background: #BB0000;
+    background: var(--accent-fill-hover);
 }
 
 .login-error {
     font-size: 11px;
-    color: #DE0000;
+    color: var(--danger);
     margin-bottom: 16px;
     padding: 8px 10px;
-    border: 1px solid #DE0000;
-    background: rgba(222, 0, 0, 0.07);
+    border: 1px solid var(--danger);
+    background: rgba(214, 69, 60, 0.08);
 }
