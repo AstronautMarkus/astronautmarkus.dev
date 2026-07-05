@@ -102,7 +102,7 @@
               class="{{ 'active' if request.endpoint == 'admin.contact_inbox' or request.endpoint == 'admin.contact_message_detail' else '' }}">
               Inbox
               {% if admin_unread_contact %}
-              <span class="lang-badge lang-badge-es" style="background:#a32929;color:#fff;border-color:#6f1515;">
+              <span class="lang-badge lang-badge-danger">
                 {{ admin_unread_contact }}
               </span>
               {% endif %}

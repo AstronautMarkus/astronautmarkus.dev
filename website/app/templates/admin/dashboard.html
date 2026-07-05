@@ -41,7 +41,7 @@
     <div class="stat-box-value">{{ total_messages }}</div>
     <div class="stat-box-sub">
       {% if unread_messages %}
-        <a href="{{ url_for('admin.contact_inbox') }}" style="color:#8f1c1c;font-weight:bold;">{{ unread_messages }} unread →</a>
+        <a href="{{ url_for('admin.contact_inbox') }}" class="text-danger">{{ unread_messages }} unread →</a>
       {% else %}
         all read
       {% endif %}
@@ -55,7 +55,7 @@
 </div>
 
 <!-- ── Two-col grid: recent messages + recent posts ── -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="two-col-grid">
 
   <!-- Recent messages -->
   <div class="card">
@@ -74,17 +74,17 @@
       <tr>
         <td>
           <a href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}"
-             style="font-weight:{{ 'bold' if not m.is_read else 'normal' }};color:#2b5797;">
+             class="{{ 'text-strong' if not m.is_read else '' }}">
             {{ m.name }}
           </a>
           {% if not m.is_read %}
-            <span class="lang-badge lang-badge-es" style="background:#a32929;color:#fff;border-color:#6f1515;">new</span>
+            <span class="lang-badge lang-badge-danger">new</span>
           {% endif %}
         </td>
-        <td style="color:#555;font-size:11px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        <td class="text-muted text-sm truncate" style="max-width:120px">
           {{ m.subject or '—' }}
         </td>
-        <td style="color:#888;font-size:10px;white-space:nowrap">
+        <td class="text-muted text-sm nowrap">
           {{ m.created_at | dtfmt('%b %d') }}
         </td>
       </tr>
@@ -112,18 +112,18 @@
       {% for p in recent_posts %}
       <tr>
         <td>
-          <a href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}" style="color:#2b5797;font-weight:bold;">
+          <a href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}" class="text-strong">
             {{ p.title }}
           </a>
         </td>
         <td>
           {% if p.published %}
-            <span class="lang-badge lang-badge-en" style="background:#d9f1d9;color:#226600;border-color:#88cc88;">Live</span>
+            <span class="lang-badge lang-badge-success">Live</span>
           {% else %}
-            <span class="lang-badge" style="background:#f5f5f5;color:#888;border-color:#ccc;">Draft</span>
+            <span class="lang-badge">Draft</span>
           {% endif %}
         </td>
-        <td style="color:#888;font-size:10px;white-space:nowrap">
+        <td class="text-muted text-sm nowrap">
           {{ p.created_at | dtfmt('%b %d') }}
         </td>
       </tr>
@@ -153,9 +153,9 @@
     <tbody>
     {% for p in recent_projects %}
     <tr>
-      <td style="color:#888;font-variant-numeric:tabular-nums">{{ p.id }}</td>
-      <td style="font-weight:bold">{{ p.title }}</td>
-      <td style="color:#888;font-size:11px">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
+      <td class="text-muted nowrap">{{ p.id }}</td>
+      <td class="text-strong">{{ p.title }}</td>
+      <td class="text-muted text-sm">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}">Edit</a>
