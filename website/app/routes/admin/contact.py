@@ -39,6 +39,23 @@ def contact_message_delete(message_id):
     return redirect(url_for('admin.contact_inbox'))
 
 
+@admin_bp.post('/contact/bulk-delete')
+@login_required
+def contact_messages_bulk_delete():
+    ids = request.form.getlist('message_ids', type=int)
+    if ids:
+        deleted = (
+            ContactMessage.query
+            .filter(ContactMessage.id.in_(ids))
+            .delete(synchronize_session=False)
+        )
+        db.session.commit()
+        flash(f'{deleted} message(s) deleted.', 'success')
+    else:
+        flash('No messages selected.', 'error')
+    return redirect(url_for('admin.contact_inbox'))
+
+
 # ─── Mail templates ───────────────────────────────────────────────────────────
 
 @admin_bp.get('/contact/mail-templates/')
