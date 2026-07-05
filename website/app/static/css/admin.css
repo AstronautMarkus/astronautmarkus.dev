@@ -3,38 +3,43 @@
    ══════════════════════════════════════════════════════════════════════════ */
 :root {
     /* Surfaces */
-    --c-bg: #eef0f4;
+    --c-bg: #eeeeef;
     --c-surface: #ffffff;
-    --c-surface-2: #f6f7f9;
-    --c-border: #e2e5ea;
-    --c-border-strong: #cdd2db;
+    --c-surface-2: #f5f5f6;
+    --c-border: #e2e2e4;
+    --c-border-strong: #cccccf;
 
     /* Text */
-    --c-ink: #1b1e27;
-    --c-ink-soft: #4b5163;
-    --c-muted: #868c9a;
-    --c-faint: #aab0bc;
+    --c-ink: #1a1a1c;
+    --c-ink-soft: #4a4a4e;
+    --c-muted: #82828a;
+    --c-faint: #aaaab0;
 
-    /* Accents */
-    --c-primary: #3763c9;
-    --c-primary-dark: #294d9e;
-    --c-primary-soft: #eaf1fd;
-    --c-primary-ring: rgba(55, 99, 201, 0.18);
+    /* Accents — gray / red / white */
+    --c-primary: #b3241f;
+    --c-primary-dark: #8a1a17;
+    --c-primary-soft: #fbeceb;
+    --c-primary-ring: rgba(179, 36, 31, 0.2);
 
-    --c-danger: #d1393d;
-    --c-danger-dark: #a52b2e;
-    --c-danger-soft: #fceeee;
+    --c-danger: #b3241f;
+    --c-danger-dark: #8a1a17;
+    --c-danger-soft: #fbeceb;
 
-    --c-success: #1e9c5a;
-    --c-success-dark: #157042;
-    --c-success-soft: #e8f8ee;
+    --c-success: #2a2c33;
+    --c-success-dark: #1a1a1c;
+    --c-success-soft: #ececed;
 
-    --c-warning: #c9891c;
-    --c-warning-soft: #fdf3df;
+    --c-warning: #b3241f;
+    --c-warning-soft: #fbeceb;
 
-    --topbar-bg: #14161f;
-    --topbar-bg-2: #1d2030;
-    --topbar-border: #05060a;
+    --topbar-bg: #17171a;
+    --topbar-bg-2: #202024;
+    --topbar-border: #0a0a0b;
+    --sidebar-bg: #1c1c20;
+    --sidebar-bg-2: #232327;
+    --sidebar-border: #302f34;
+    --sidebar-text: #c6c6cc;
+    --sidebar-text-soft: #8e8e96;
 
     /* Shape */
     --radius-sm: 6px;
@@ -111,7 +116,7 @@ a:hover { text-decoration: underline; }
 
 .brand-sub {
     font-size: 9.5px;
-    color: #8a90b8;
+    color: var(--c-primary);
     text-transform: uppercase;
     letter-spacing: 0.14em;
     font-weight: 600;
@@ -121,7 +126,7 @@ a:hover { text-decoration: underline; }
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #a7abcf;
+    color: var(--sidebar-text);
     font-size: 12px;
     flex-shrink: 0;
 }
@@ -129,7 +134,10 @@ a:hover { text-decoration: underline; }
 .topbar-user strong { color: #ffffff; font-weight: 600; }
 
 .topbar-user a {
-    color: #b3b7d6;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--sidebar-text-soft);
     font-size: 11.5px;
     font-weight: 600;
     padding: 6px 11px;
@@ -167,7 +175,7 @@ a:hover { text-decoration: underline; }
     width: 20px;
     height: 2px;
     border-radius: 2px;
-    background: #d3d6ee;
+    background: var(--sidebar-text);
     transition: background var(--transition);
 }
 
@@ -197,8 +205,8 @@ a:hover { text-decoration: underline; }
 .sidebar {
     width: var(--sidebar-w);
     min-width: var(--sidebar-w);
-    background: var(--c-surface);
-    border-right: 1px solid var(--c-border);
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
     padding: 16px 12px;
     display: flex;
     flex-direction: column;
@@ -256,8 +264,8 @@ a:hover { text-decoration: underline; }
 .sidebar-title {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: var(--c-muted);
+    gap: 7px;
+    color: var(--sidebar-text-soft);
     font-weight: 700;
     padding: 4px 10px;
     font-size: 10.5px;
@@ -265,18 +273,9 @@ a:hover { text-decoration: underline; }
     letter-spacing: 0.1em;
 }
 
-.sidebar-title::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--c-faint);
-    flex-shrink: 0;
-}
-
-.sidebar-title.red::before   { background: var(--c-danger); }
-.sidebar-title.blue::before  { background: var(--c-primary); }
-.sidebar-title.green::before { background: var(--c-success); }
+.sidebar-title i { font-size: 10px; width: 12px; text-align: center; color: var(--c-faint); }
+.sidebar-title.red i,
+.sidebar-title.blue i  { color: var(--c-primary); }
 
 .sidebar-content { padding: 0 4px; display: flex; flex-direction: column; gap: 6px; }
 
@@ -286,8 +285,9 @@ a:hover { text-decoration: underline; }
 .menu li a {
     display: flex;
     align-items: center;
+    gap: 9px;
     text-decoration: none;
-    color: var(--c-ink-soft);
+    color: var(--sidebar-text);
     padding: 9px 10px;
     font-size: 13px;
     font-weight: 600;
@@ -297,24 +297,32 @@ a:hover { text-decoration: underline; }
     min-height: 38px;
 }
 
-.menu li a:hover { background: var(--c-surface-2); color: var(--c-ink); text-decoration: none; }
+.menu li a i { width: 15px; text-align: center; color: var(--sidebar-text-soft); flex-shrink: 0; transition: color var(--transition); }
+
+.menu li a:hover { background: var(--sidebar-bg-2); color: #ffffff; text-decoration: none; }
+.menu li a:hover i { color: var(--c-primary); }
 .menu li a.active {
-    background: var(--c-primary-soft);
-    color: var(--c-primary-dark);
+    background: rgba(179, 36, 31, 0.16);
+    color: #ffffff;
     border-left-color: var(--c-primary);
 }
+.menu li a.active i { color: var(--c-primary); }
 
 /* ── Sidebar status boxes ────────────────────────────────────────────────── */
 .status-box {
+    display: flex;
+    align-items: center;
+    gap: 7px;
     padding: 8px 10px;
     border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
 }
 
-.status-box.ok   { background: var(--c-success-soft); color: var(--c-success-dark); }
-.status-box.warn { background: var(--c-warning-soft); color: #8a5f0f; }
-.status-box.err  { background: var(--c-danger-soft); color: var(--c-danger-dark); }
+.status-box.ok   { background: var(--sidebar-bg-2); color: var(--sidebar-text); }
+.status-box.ok i { color: #9a9aa2; }
+.status-box.warn { background: var(--c-primary-soft); color: var(--c-primary-dark); }
+.status-box.err  { background: var(--c-danger); color: #ffffff; }
 .status-box a    { color: inherit; font-weight: 700; text-decoration: none; }
 .status-box a:hover { text-decoration: underline; }
 
@@ -390,6 +398,10 @@ a:hover { text-decoration: underline; }
     margin-bottom: 6px;
 }
 
+.stat-box-label i { margin-right: 5px; color: var(--c-faint); }
+
+.card-title i { margin-right: 7px; }
+
 .stat-box-value {
     font-size: clamp(22px, 4vw, 28px);
     font-weight: 700;
@@ -422,7 +434,7 @@ a:hover { text-decoration: underline; }
 
 .bar-fill {
     width: 100%;
-    background: linear-gradient(180deg, #4fce7a 0%, var(--c-success-dark) 100%);
+    background: linear-gradient(180deg, var(--c-primary) 0%, var(--c-primary-dark) 100%);
     border-radius: 3px 3px 0 0;
     min-height: 2px;
     position: relative;
@@ -430,7 +442,7 @@ a:hover { text-decoration: underline; }
 
 .bar-val {
     font-size: 9px;
-    color: var(--c-success-dark);
+    color: var(--c-primary-dark);
     font-weight: 600;
     position: absolute;
     top: -14px;
@@ -516,13 +528,13 @@ table { width: 100%; border-collapse: collapse; background: var(--c-surface); }
 th {
     text-align: left;
     padding: 10px 14px;
-    background: var(--c-surface-2);
-    color: var(--c-ink-soft);
+    background: var(--topbar-bg);
+    color: #f0f0f2;
     font-weight: 700;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    border-bottom: 1px solid var(--c-border);
+    border-bottom: 2px solid var(--c-primary);
     white-space: nowrap;
 }
 
@@ -535,18 +547,18 @@ td { padding: 10px 14px; vertical-align: middle; }
 .empty-state { text-align: center; padding: 36px 16px; color: var(--c-muted); font-size: 13px; }
 .empty-state a { color: var(--c-primary); font-weight: 600; }
 
-/* Light table header variant (default look, kept for template compatibility) */
+/* Light table header variant — subtle, for secondary/detail tables */
 .table-light th {
     background: var(--c-surface-2);
     color: var(--c-ink-soft);
-    border-bottom: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border-strong);
 }
 
-/* Blue table header variant */
+/* Solid red table header variant — for primary/important listings */
 .table-blue th {
     background: var(--c-primary);
     color: #ffffff;
-    border-bottom: 1px solid var(--c-primary-dark);
+    border-bottom: 2px solid var(--c-primary-dark);
 }
 
 /* ── Forms ───────────────────────────────────────────────────────────────── */
@@ -765,8 +777,8 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     color: var(--c-muted);
 }
 
-.lang-badge-en { background: var(--c-primary-soft); color: var(--c-primary-dark); }
-.lang-badge-es { background: var(--c-warning-soft); color: #8a5f0f; }
+.lang-badge-en { background: var(--c-surface-2); color: var(--c-ink-soft); border: 1px solid var(--c-border-strong); }
+.lang-badge-es { background: var(--c-primary-soft); color: var(--c-primary-dark); }
 .lang-badge-success { background: var(--c-success-soft); color: var(--c-success-dark); }
 .lang-badge-danger  { background: var(--c-danger); color: #ffffff; }
 
