@@ -7,7 +7,7 @@ from app.routes.auth import auth_bp
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for('admin.dashboard'))
 
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
@@ -16,9 +16,9 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
-            next_url = request.args.get('next', '/')
+            next_url = request.args.get('next', url_for('admin.dashboard'))
             if not next_url.startswith('/'):
-                next_url = '/'
+                next_url = url_for('admin.dashboard')
             return redirect(next_url)
 
         flash('invalid_credentials')
