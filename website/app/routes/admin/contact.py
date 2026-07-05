@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from app import db
-from app.models.models import ContactMessage, MailTemplate
+from app.models.models import BlockedSender, ContactMessage, MailTemplate
 from app.routes.admin import admin_bp
 
 # ─── Inbox ────────────────────────────────────────────────────────────────────
@@ -54,6 +54,68 @@ def contact_messages_bulk_delete():
     else:
         flash('No messages selected.', 'error')
     return redirect(url_for('admin.contact_inbox'))
+
+
+@admin_bp.post('/contact/<int:message_id>/block-sender')
+@login_required
+def contact_message_block_sender(message_id):
+    entry = db.session.get(ContactMessage, message_id)
+    if entry is None:
+        flash('Message not found.', 'error')
+        return redirect(url_for('admin.contact_inbox'))
+
+    email = entry.email.lower()
+    if not BlockedSender.query.filter_by(email=email).first():
+        db.session.add(BlockedSender(email=email, reason='manual'))
+
+    deleted = (
+        ContactMessage.query
+        .filter(db.func.lower(ContactMessage.email) == email)
+        .delete(synchronize_session=False)
+    )
+    db.session.commit()
+    flash(f'Blocked {email} and deleted {deleted} message(s).', 'success')
+    return redirect(url_for('admin.contact_inbox'))
+
+
+# ─── Blocked senders ───────────────────────────────────────────────────────────
+
+@admin_bp.get('/contact/blocked/')
+@login_required
+def blocked_senders():
+    blocked = BlockedSender.query.order_by(BlockedSender.created_at.desc()).all()
+    return render_template('admin/contact/blocked_senders.html', blocked=blocked)
+
+
+@admin_bp.post('/contact/blocked/add')
+@login_required
+def blocked_sender_add():
+    email = request.form.get('email', '').strip().lower()
+    ip_address = request.form.get('ip_address', '').strip()
+
+    if not email and not ip_address:
+        flash('Provide an email and/or an IP address.', 'error')
+        return redirect(url_for('admin.blocked_senders'))
+
+    db.session.add(BlockedSender(
+        email=email or None,
+        ip_address=ip_address or None,
+        reason='manual',
+    ))
+    db.session.commit()
+    flash('Sender blocked.', 'success')
+    return redirect(url_for('admin.blocked_senders'))
+
+
+@admin_bp.post('/contact/blocked/<int:blocked_id>/delete')
+@login_required
+def blocked_sender_delete(blocked_id):
+    entry = db.session.get(BlockedSender, blocked_id)
+    if entry:
+        db.session.delete(entry)
+        db.session.commit()
+        flash('Sender unblocked.', 'success')
+    return redirect(url_for('admin.blocked_senders'))
 
 
 # ─── Mail templates ───────────────────────────────────────────────────────────

@@ -170,3 +170,19 @@ class MailTemplate(db.Model):
     __table_args__ = (
         db.UniqueConstraint('slug', 'language', name='uq_mail_template_slug_lang'),
     )
+
+
+class BlockedSender(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(200), nullable=True, index=True)
+    ip_address = db.Column(db.String(45), nullable=True, index=True)
+    reason = db.Column(db.String(200), nullable=False, default='manual')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class ContactSubmissionLog(db.Model):
+    """Records every contact-form attempt that passes the honeypot/timing traps, used for rate limiting."""
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(200), nullable=False, index=True)
+    ip_address = db.Column(db.String(45), nullable=True, index=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(), index=True)

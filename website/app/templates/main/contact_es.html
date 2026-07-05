@@ -44,6 +44,12 @@
     {% else %}
     <form method="POST" action="{{ url_for('contact.contact') }}" novalidate>
 
+      <input type="hidden" name="form_ts" value="{{ form_ts }}">
+      <div class="hp-field" aria-hidden="true">
+        <label for="company_site">Company Site</label>
+        <input type="text" id="company_site" name="company_site" tabindex="-1" autocomplete="off">
+      </div>
+
       <div class="form-row">
         <div class="form-group {% if 'name' in field_errors %}has-error{% endif %}">
           <label for="name">Nombre completo <span class="required">*</span></label>

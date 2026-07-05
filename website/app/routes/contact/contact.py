@@ -1,7 +1,9 @@
 import json
 import re
+import time
 import urllib.parse
 import urllib.request
+from datetime import datetime, timedelta
 
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_mail import Message
@@ -9,10 +11,17 @@ from jinja2 import Environment, select_autoescape
 
 from app import db, mail
 from app.i18n import get_current_language, render_localized_template
-from app.models.models import ContactMessage, MailTemplate
+from app.models.models import BlockedSender, ContactMessage, ContactSubmissionLog, MailTemplate
 from app.routes.contact import contact_bp
 
 _EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+
+# ─── Anti-spam ─────────────────────────────────────────────────────────────────
+
+HONEYPOT_FIELD = 'company_site'  # decoy field — real users never see or fill it
+MIN_SUBMIT_SECONDS = 3           # forms submitted faster than this are treated as bots
+RATE_LIMIT_WINDOW_MINUTES = 10
+RATE_LIMIT_MAX_ATTEMPTS = 3      # attempts allowed per email/IP within the window before auto-ban
 
 # ─── Default templates ────────────────────────────────────────────────────────
 
@@ -168,6 +177,39 @@ def _send_autoresponse(lang: str, name: str, email: str, subject: str, message: 
     mail.send(msg)
 
 
+def _is_blocked(email: str, ip: str | None) -> bool:
+    conditions = [BlockedSender.email == email] if email else []
+    if ip:
+        conditions.append(BlockedSender.ip_address == ip)
+    if not conditions:
+        return False
+    return BlockedSender.query.filter(db.or_(*conditions)).first() is not None
+
+
+def _check_rate_limit_and_maybe_ban(email: str, ip: str | None) -> bool:
+    """Log this attempt and ban the sender if they've exceeded the rate limit. Returns True if banned."""
+    # created_at is populated via the DB server's NOW(), so the window must use the same clock (not UTC).
+    window_start = datetime.now() - timedelta(minutes=RATE_LIMIT_WINDOW_MINUTES)
+    conditions = [ContactSubmissionLog.email == email]
+    if ip:
+        conditions.append(ContactSubmissionLog.ip_address == ip)
+    recent_attempts = ContactSubmissionLog.query.filter(
+        ContactSubmissionLog.created_at >= window_start,
+        db.or_(*conditions),
+    ).count()
+
+    db.session.add(ContactSubmissionLog(email=email, ip_address=ip))
+
+    if recent_attempts >= RATE_LIMIT_MAX_ATTEMPTS:
+        db.session.add(BlockedSender(email=email, ip_address=ip, reason='rate_limit_exceeded'))
+        db.session.commit()
+        current_app.logger.warning('Contact form: auto-banned email=%s ip=%s (rate limit)', email, ip)
+        return True
+
+    db.session.commit()
+    return False
+
+
 # ─── Route ────────────────────────────────────────────────────────────────────
 
 @contact_bp.route('/contact', methods=['GET', 'POST'])
@@ -183,14 +225,37 @@ def contact():
             turnstile_site_key=turnstile_site_key,
             turnstile_error=False,
             form_disabled=True,
+            form_ts=time.time(),
         )
 
     if request.method == 'POST':
+        ip = request.remote_addr
         name = request.form.get('name', '').strip()
-        email = request.form.get('email', '').strip()
+        email = request.form.get('email', '').strip().lower()
         subject = request.form.get('subject', '').strip()
         message = request.form.get('message', '').strip()
         form_data = {'name': name, 'email': email, 'subject': subject, 'message': message}
+
+        # Honeypot — a hidden field real visitors never fill. Pretend success so bots don't adapt.
+        if request.form.get(HONEYPOT_FIELD, '').strip():
+            current_app.logger.warning('Contact form: honeypot triggered from ip=%s', ip)
+            flash('sent', 'success')
+            return redirect(url_for('contact.contact'))
+
+        # Timing trap — forms submitted faster than a human can fill are almost certainly scripted.
+        try:
+            rendered_at = float(request.form.get('form_ts', ''))
+        except ValueError:
+            rendered_at = 0.0
+        if rendered_at and (time.time() - rendered_at) < MIN_SUBMIT_SECONDS:
+            current_app.logger.warning('Contact form: submitted too fast from ip=%s', ip)
+            flash('sent', 'success')
+            return redirect(url_for('contact.contact'))
+
+        # Already-banned senders are dropped silently, before any validation/API calls.
+        if _is_blocked(email, ip):
+            flash('sent', 'success')
+            return redirect(url_for('contact.contact'))
 
         field_errors: list[str] = []
         if not name:
@@ -210,17 +275,24 @@ def contact():
                 form_data=form_data,
                 turnstile_site_key=turnstile_site_key,
                 turnstile_error=False,
+                form_ts=time.time(),
             )
 
         turnstile_token = request.form.get('cf-turnstile-response', '')
-        if not _verify_turnstile(turnstile_token, request.remote_addr):
+        if not _verify_turnstile(turnstile_token, ip):
             return render_localized_template(
                 'main/contact.html',
                 field_errors=[],
                 form_data=form_data,
                 turnstile_site_key=turnstile_site_key,
                 turnstile_error=True,
+                form_ts=time.time(),
             )
+
+        # Rate limit — too many attempts from this email/IP in the window bans them going forward.
+        if _check_rate_limit_and_maybe_ban(email, ip):
+            flash('sent', 'success')
+            return redirect(url_for('contact.contact'))
 
         # Persist
         entry = ContactMessage(name=name, email=email, subject=subject, message=message, language=lang)
@@ -244,4 +316,5 @@ def contact():
         form_data={},
         turnstile_site_key=turnstile_site_key,
         turnstile_error=False,
+        form_ts=time.time(),
     )

@@ -5,6 +5,10 @@
 
 {% block topbar_actions %}
   <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">← Back to inbox</a>
+  <form method="POST" action="{{ url_for('admin.contact_message_block_sender', message_id=entry.id) }}"
+        onsubmit="return confirm('Block ' + '{{ entry.email }}' + ' and delete all their messages?');" style="display:inline">
+    <button type="submit" class="btn btn-danger btn-sm">Block sender</button>
+  </form>
   <form method="POST" action="{{ url_for('admin.contact_message_delete', message_id=entry.id) }}"
         onsubmit="return confirm('Delete this message?');" style="display:inline">
     <button type="submit" class="btn btn-danger btn-sm">Delete</button>

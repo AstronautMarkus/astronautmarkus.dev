@@ -57,6 +57,8 @@
         <td>
           <div class="td-actions">
             <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}">View</a>
+            <button type="submit" formaction="{{ url_for('admin.contact_message_block_sender', message_id=m.id) }}"
+                    formnovalidate onclick="return confirm('Block ' + '{{ m.email }}' + ' and delete all their messages?');" class="btn btn-danger btn-sm">Block</button>
             <button type="submit" formaction="{{ url_for('admin.contact_message_delete', message_id=m.id) }}"
                     formnovalidate onclick="return confirm('Delete this message?');" class="btn btn-danger btn-sm">Delete</button>
           </div>

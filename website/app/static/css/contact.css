@@ -22,6 +22,17 @@
     line-height: 1.6;
 }
 
+/* ── Honeypot (bot trap, kept off-screen instead of display:none) ─── */
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
 /* ── Alerts ──────────────────────────────────────────────── */
 .contact-alert {
     font-size: 12px;
