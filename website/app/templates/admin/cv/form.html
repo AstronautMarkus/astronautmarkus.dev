@@ -1,6 +1,7 @@
 {% extends "admin/base.html" %}
 
 {% set is_edit = cv is not none %}
+{% set current_source = submitted_source if submitted_source is defined else (cv.source if is_edit else 'upload') %}
 
 {% block title %}{{ 'Edit CV' if is_edit else 'Upload CV' }}{% endblock %}
 {% block page_title %}{{ 'Edit CV' if is_edit else 'Upload CV' }}{% endblock %}
@@ -32,21 +33,49 @@
         <span class="form-hint">Each language identifies a distinct CV version.</span>
       </div>
 
-      <div class="form-group">
-        <label for="cv_file">
-          PDF File {% if not is_edit %}<span style="color:#cc0000">*</span>{% endif %}
-        </label>
-        {% if is_edit %}
+      <!-- ── Source tabs ───────────────────────────────────────── -->
+      <div class="lang-tabs">
+        <button type="button" class="lang-tab {{ 'active' if current_source == 'upload' else '' }}"
+                data-target="panel-source-upload">Upload PDF</button>
+        <button type="button" class="lang-tab {{ 'active' if current_source == 'generated' else '' }}"
+                data-target="panel-source-generate">Generate from YAML</button>
+      </div>
+      <input type="hidden" name="source" id="source_field" value="{{ current_source }}">
+
+      <!-- ── Upload panel ──────────────────────────────────────── -->
+      <div class="lang-panel {{ 'active' if current_source == 'upload' else '' }}" id="panel-source-upload">
+        <div class="form-group">
+          <label for="cv_file">PDF File</label>
+          {% if is_edit and cv.source == 'upload' %}
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+            <a href="{{ storage_url(cv.file_path) }}" target="_blank" rel="noopener noreferrer"
+               class="btn btn-ghost btn-sm">View current file ↗</a>
+            <span class="form-hint">Upload a new file to replace it.</span>
+          </div>
+          {% endif %}
+          <input type="file" id="cv_file" name="cv_file" accept=".pdf,application/pdf">
+          <span class="form-hint">PDF only — max 10 MB</span>
+        </div>
+      </div>
+
+      <!-- ── Generate panel ────────────────────────────────────── -->
+      <div class="lang-panel {{ 'active' if current_source == 'generated' else '' }}" id="panel-source-generate">
+        {% if is_edit and cv.source == 'generated' and cv.yaml_path %}
         <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
-          <a href="{{ storage_url(cv.file_path) }}" target="_blank" rel="noopener noreferrer"
-             class="btn btn-ghost btn-sm">View current file ↗</a>
-          <span class="form-hint">Upload a new file to replace it.</span>
+          <a href="{{ storage_url(cv.yaml_path) }}" target="_blank" rel="noopener noreferrer"
+             class="btn btn-ghost btn-sm">View current YAML ↗</a>
+          <span class="form-hint">The PDF is regenerated whenever the YAML below changes.</span>
         </div>
         {% endif %}
-        <input type="file" id="cv_file" name="cv_file"
-               accept=".pdf,application/pdf"
-               {{ 'required' if not is_edit else '' }}>
-        <span class="form-hint">PDF only — max 10 MB</span>
+        <div class="form-group">
+          <label for="cv_yaml">RenderCV YAML</label>
+          <textarea id="cv_yaml" name="cv_yaml" rows="16"
+                    placeholder="Paste the RenderCV YAML here…">{{ submitted_yaml or '' }}</textarea>
+          <span class="form-hint">Or upload a .yaml/.yml file below — max 2 MB. Leave both empty to keep the current version.</span>
+        </div>
+        <div class="form-group">
+          <input type="file" id="cv_yaml_file" name="cv_yaml_file" accept=".yaml,.yml">
+        </div>
       </div>
 
       <div>
@@ -58,5 +87,20 @@
     </div>
   </form>
 </div>
+
+<script>
+(function () {
+  var sourceField = document.getElementById('source_field');
+  document.querySelectorAll('.lang-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.lang-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.lang-panel').forEach(function (p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+      sourceField.value = tab.dataset.target === 'panel-source-generate' ? 'generated' : 'upload';
+    });
+  });
+})();
+</script>
 
 {% endblock %}

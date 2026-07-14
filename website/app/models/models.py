@@ -57,6 +57,8 @@ class CvFile(db.Model):
     file_path = db.Column(db.String(200), nullable=False)
     language = db.Column(db.String(10), nullable=False)
     uploaded_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+    source = db.Column(db.String(10), nullable=False, default='upload', server_default='upload')
+    yaml_path = db.Column(db.String(200), nullable=True)
 
 
 class Proyectada(db.Model):
