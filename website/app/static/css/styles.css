@@ -67,6 +67,7 @@ a:hover {
     background: var(--bg-base);
     border-left: 1px solid var(--border-mid);
     border-right: 1px solid var(--border-mid);
+    border-bottom: 1px solid var(--border-mid);
 }
 
 #header {
