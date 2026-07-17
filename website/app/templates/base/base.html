@@ -31,6 +31,10 @@
     <meta name="twitter:description" content="{{ self.description() | striptags | trim }}">
     <meta name="twitter:image" content="{{ url_for('static', filename='og-image.jpg', _external=True) }}">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block extra_css %}{% endblock %}
     <meta name="theme-color" content="#11141f">
