@@ -171,12 +171,10 @@
 
 #secondary {
     flex-shrink: 0;
-    max-height: 320px;
     background: var(--bg-panel);
     border: 1px solid var(--border-mid);
     padding: 15px;
     box-sizing: border-box;
-    overflow-y: auto;
 }
 
 #tertiary {
@@ -193,30 +191,25 @@
     margin-bottom: 0;
 }
 
-/* Themed scrollbar for the scrollable sidebar panels */
-#secondary,
+/* Themed scrollbar for the scrollable sidebar panel */
 #tertiary {
     scrollbar-width: thin;
     scrollbar-color: var(--border-mid) transparent;
 }
 
-#secondary::-webkit-scrollbar,
 #tertiary::-webkit-scrollbar {
     width: 6px;
 }
 
-#secondary::-webkit-scrollbar-track,
 #tertiary::-webkit-scrollbar-track {
     background: transparent;
 }
 
-#secondary::-webkit-scrollbar-thumb,
 #tertiary::-webkit-scrollbar-thumb {
     background-color: var(--border-mid);
     border-radius: 3px;
 }
 
-#secondary::-webkit-scrollbar-thumb:hover,
 #tertiary::-webkit-scrollbar-thumb:hover {
     background-color: var(--accent);
 }
