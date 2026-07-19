@@ -64,6 +64,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="{{ url_for('main.proyectadas_list') }}"{% if request.endpoint == 'main.proyectadas_list' %} class="active"{% endif %}>{{ 'Proyectadas (personal reflections)' if current_lang == 'en' else 'Proyectadas' }}</a></li>
                         <li><a href="{{ url_for('extras.pdf_generator') }}"{% if request.endpoint == 'extras.pdf_generator' %} class="active"{% endif %}>{{ 'PDF Generator' if current_lang == 'en' else 'Generador de PDF' }}</a></li>
+                        <li><a href="{{ url_for('main.profile') }}"{% if request.endpoint == 'main.profile' %} class="active"{% endif %}>{{ 'Profile (myspace throwback)' if current_lang == 'en' else 'Perfil (al estilo myspace)' }}</a></li>
                     </ul>
                 </li>
             </ul>
