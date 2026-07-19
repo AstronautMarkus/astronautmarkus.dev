@@ -205,11 +205,13 @@ a:hover {
 #nav > ul > li > a,
 #nav-right > ul > li > a {
     display: block;
-    padding: 12px 20px;
+    padding: 12px 12px;
     color: var(--text-bright);
-    font-size: 13px;
+    font-size: 11px;
+    letter-spacing: -0.2px;
     text-transform: uppercase;
     border-right: 1px solid var(--border-mid);
+    white-space: nowrap;
 }
 
 #nav > ul > li > a:hover,
@@ -264,9 +266,9 @@ a:hover {
 
 .dropdown-menu li a {
     display: block;
-    padding: 12px 20px;
+    padding: 10px 16px;
     color: var(--text-bright);
-    font-size: 13px;
+    font-size: 11px;
     text-transform: uppercase;
     border-right: none;
     border-bottom: 1px solid var(--border-mid);
