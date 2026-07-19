@@ -72,6 +72,12 @@
             </a>
           </li>
           <li>
+            <a href="{{ url_for('admin.gallery_list') }}"
+              class="{{ 'active' if request.endpoint and 'gallery' in request.endpoint else '' }}">
+              <i class="fa-solid fa-images"></i> Gallery
+            </a>
+          </li>
+          <li>
             <a href="{{ url_for('admin.cv_list') }}"
               class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
               <i class="fa-solid fa-file-pdf"></i> CV Files

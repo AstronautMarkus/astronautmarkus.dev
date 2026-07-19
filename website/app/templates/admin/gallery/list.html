@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Gallery{% endblock %}
+{% block page_title %}Gallery{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.gallery_create') }}">+ New Photo</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if photos %}
+  <table>
+    <thead>
+      <tr>
+        <th style="width:52px">Photo</th>
+        <th>Title</th>
+        <th>Created</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for p in photos %}
+    <tr>
+      <td>
+        {% if p.image_path %}
+          <img class="cover-thumb" src="{{ storage_url(p.image_path) }}" alt="{{ p.title }}">
+        {% else %}
+          <div class="cover-placeholder">—</div>
+        {% endif %}
+      </td>
+      <td style="font-weight:700;max-width:240px">
+        {{ p.title }}
+        <span class="lang-badge lang-badge-en">EN</span>
+        {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
+      </td>
+      <td style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
+      <td>
+        <div class="td-actions">
+          <a class="btn btn-ghost btn-sm"
+             href="{{ url_for('admin.gallery_edit', photo_id=p.id) }}">Edit</a>
+          <form method="POST"
+                action="{{ url_for('admin.gallery_delete', photo_id=p.id) }}"
+                onsubmit="return confirm('Delete photo «{{ p.title }}»? This cannot be undone.')">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">
+    No photos yet.
+    <a href="{{ url_for('admin.gallery_create') }}">Upload your first photo →</a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

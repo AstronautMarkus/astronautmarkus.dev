@@ -52,6 +52,20 @@ class ExtraPortfolioImage(db.Model):
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
+class GalleryPhoto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # English content (required)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    # Spanish content (optional)
+    title_es = db.Column(db.String(200), nullable=True)
+    description_es = db.Column(db.Text, nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    # Shared fields
+    image_path = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
 class CvFile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     file_path = db.Column(db.String(200), nullable=False)
