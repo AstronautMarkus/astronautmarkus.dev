@@ -1,0 +1,17 @@
+.links-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.links-dead {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.links-footnote {
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-top: 8px;
+}

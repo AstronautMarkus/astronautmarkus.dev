@@ -35,6 +35,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block extra_css %}{% endblock %}
     <meta name="theme-color" content="#11141f">
@@ -66,6 +71,22 @@
                         <li><a href="{{ url_for('main.proyectadas_list') }}"{% if request.endpoint == 'main.proyectadas_list' %} class="active"{% endif %}>{{ 'Proyectadas (personal reflections)' if current_lang == 'en' else 'Proyectadas' }}</a></li>
                         <li><a href="{{ url_for('extras.pdf_generator') }}"{% if request.endpoint == 'extras.pdf_generator' %} class="active"{% endif %}>{{ 'PDF Generator' if current_lang == 'en' else 'Generador de PDF' }}</a></li>
                         <li><a href="{{ url_for('main.profile') }}"{% if request.endpoint == 'main.profile' %} class="active"{% endif %}>{{ 'Profile (myspace throwback)' if current_lang == 'en' else 'Perfil (al estilo myspace)' }}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#"><i class="fa-solid fa-trash-can"></i> {{ 'Junk' if current_lang == 'en' else 'Basura' }}</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('junk.best_viewed') }}"{% if request.endpoint == 'junk.best_viewed' %} class="active"{% endif %}>{{ 'Best Viewed In 800x600' if current_lang == 'en' else 'Mejor Visto en 800x600' }}</a></li>
+                        <li><a href="{{ url_for('junk.geocities') }}"{% if request.endpoint == 'junk.geocities' %} class="active"{% endif %}>{{ 'GeoCities Homepage' if current_lang == 'en' else 'Página GeoCities' }}</a></li>
+                        <li><a href="{{ url_for('junk.y2k') }}"{% if request.endpoint == 'junk.y2k' %} class="active"{% endif %}>{{ 'Y2K Bug Tracker' if current_lang == 'en' else 'Rastreador Y2K' }}</a></li>
+                        <li><a href="{{ url_for('junk.blink') }}"{% if request.endpoint == 'junk.blink' %} class="active"{% endif %}>{{ 'Blink Tag Shrine' if current_lang == 'en' else 'Santuario del Blink' }}</a></li>
+                        <li><a href="{{ url_for('junk.marquee') }}"{% if request.endpoint == 'junk.marquee' %} class="active"{% endif %}>{{ 'Marquee Ticker' if current_lang == 'en' else 'Ticker Marquee' }}</a></li>
+                        <li><a href="{{ url_for('junk.dialup') }}"{% if request.endpoint == 'junk.dialup' %} class="active"{% endif %}>{{ 'Dial-Up Simulator' if current_lang == 'en' else 'Simulador Dial-Up' }}</a></li>
+                        <li><a href="{{ url_for('junk.under_construction') }}"{% if request.endpoint == 'junk.under_construction' %} class="active"{% endif %}>{{ 'Under Construction' if current_lang == 'en' else 'En Construcción' }}</a></li>
+                        <li><a href="{{ url_for('junk.guestbook') }}"{% if request.endpoint == 'junk.guestbook' %} class="active"{% endif %}>{{ 'Guestbook' if current_lang == 'en' else 'Libro de Visitas' }}</a></li>
+                        <li><a href="{{ url_for('junk.links') }}"{% if request.endpoint == 'junk.links' %} class="active"{% endif %}>{{ 'Link Exchange' if current_lang == 'en' else 'Intercambio de Links' }}</a></li>
+                        <li><a href="{{ url_for('junk.webring') }}"{% if request.endpoint == 'junk.webring' %} class="active"{% endif %}>{{ 'Webring' if current_lang == 'en' else 'Webring' }}</a></li>
+                        <li><a href="{{ url_for('junk.counter') }}"{% if request.endpoint == 'junk.counter' %} class="active"{% endif %}>{{ 'Hit Counter' if current_lang == 'en' else 'Contador de Visitas' }}</a></li>
                     </ul>
                 </li>
             </ul>

@@ -1,0 +1,30 @@
+.geo-address {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: var(--link-alt);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.geo-blink {
+    text-align: center;
+    font-weight: bold;
+    color: var(--danger);
+    animation: junk-blink 0.8s steps(1) infinite;
+}
+
+.geo-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.geo-list li {
+    padding: 3px 0;
+    color: var(--text-body);
+}
+
+.geo-footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-faint);
+}

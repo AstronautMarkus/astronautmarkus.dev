@@ -1,0 +1,59 @@
+{% extends "base/base.html" %}
+
+{% block title %}El Santuario del Tag Blink{% endblock %}
+{% block description %}Un santuario para el extinto tag HTML blink, revivido en CSS para tu displacer visual.{% endblock %}
+{% block keywords %}blink tag, historia del html, netscape, web retro, animación css{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_blink.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title junk-blink">El Santuario del Tag Blink</h2>
+
+    <div class="junk-section blink-shrine">
+      <p id="blink-demo" class="blink-demo junk-blink">ESTE TEXTO NO DEJARÁ DE PARPADEAR</p>
+      <p class="blink-demo junk-blink blink-demo-alt">ESTE TAMPOCO</p>
+      <p class="blink-demo junk-blink blink-demo-alt2">NI ESTE</p>
+    </div>
+
+    <div class="junk-section">
+      <h3>Una Historia Breve e Innecesaria</h3>
+      <p>El tag <code>&lt;blink&gt;</code> fue introducido por Netscape en 1994. Hacía exactamente una cosa: hacer
+        que el texto parpadeara sin parar, sin forma de controlar la velocidad y sin ninguna consideración de
+        accesibilidad. Los navegadores eventualmente lo eliminaron por piedad. Lo trajimos de vuelta aquí usando
+        <code>@keyframes</code> de CSS, solo para que te vuelva a molestar.</p>
+    </div>
+
+    <div class="junk-section blink-controls">
+      <label for="blink-speed">Velocidad de parpadeo (porque el original nunca te dejaba controlarla):</label>
+      <input type="range" id="blink-speed" min="0.2" max="3" step="0.1" value="1">
+      <span id="blink-speed-value">1.0s</span>
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Volver al Inicio</a></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        var slider = document.getElementById('blink-speed');
+        var label = document.getElementById('blink-speed-value');
+        var blinkers = document.querySelectorAll('.junk-blink');
+
+        slider.addEventListener('input', function () {
+            var speed = parseFloat(slider.value);
+            label.textContent = speed.toFixed(1) + 's';
+            blinkers.forEach(function (el) {
+                el.style.animationDuration = speed + 's';
+            });
+        });
+    })();
+</script>
+{% endblock %}

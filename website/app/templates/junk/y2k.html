@@ -1,0 +1,63 @@
+{% extends "base/base.html" %}
+
+{% block title %}Y2K Bug Tracker{% endblock %}
+{% block description %}Live tracker for the Y2K bug. Spoiler: we survived.{% endblock %}
+{% block keywords %}y2k, millennium bug, year 2000, doomsday, retro web{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_y2k.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title">Y2K Bug Tracker</h2>
+
+    <div class="junk-section y2k-status">
+      <p>Millennium Bug Status: <span class="y2k-ok">CIVILIZATION STILL STANDING</span></p>
+      <p id="y2k-survived-text" class="y2k-counter">calculating...</p>
+      <p>Estimated planes that fell out of the sky: <strong>0</strong></p>
+      <p>Estimated nuclear launches triggered by two-digit years: <strong>0</strong></p>
+      <p>Estimated toasters that gained sentience: <strong>unconfirmed</strong></p>
+    </div>
+
+    <div class="junk-section">
+      <h3>What Was the Y2K Bug?</h3>
+      <p>Back when storage was expensive, programmers stored years using only two digits (like "99" instead of
+        "1999") to save space. When the clock rolled over to the year 2000, systems would in theory read "00" as
+        1900, breaking calculations everywhere. Billions were spent fixing it. The clock rolled over. Mostly
+        nothing happened. This tracker exists to honor that anticlimax.</p>
+    </div>
+
+    <div class="y2k-meter-wrap">
+      <div class="y2k-meter-label">Doomsday Meter</div>
+      <div class="y2k-meter"><div class="y2k-meter-fill" style="width: 0.4%"></div></div>
+      <div class="y2k-meter-label">0.4% — basically nothing</div>
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Back Home</a></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        var y2k = new Date(Date.UTC(2000, 0, 1));
+        var el = document.getElementById('y2k-survived-text');
+
+        function tick() {
+            var now = new Date();
+            var diffMs = now - y2k;
+            var days = Math.floor(diffMs / 86400000);
+            var years = (diffMs / (365.2425 * 86400000)).toFixed(6);
+            el.textContent = 'Humanity has survived Y2K for ' + days.toLocaleString() + ' days (' + years + ' years) and counting.';
+        }
+
+        tick();
+        setInterval(tick, 1000);
+    })();
+</script>
+{% endblock %}

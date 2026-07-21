@@ -1,0 +1,52 @@
+{% extends "base/base.html" %}
+
+{% block title %}¡Bienvenido a Mi Página!{% endblock %}
+{% block description %}Bienvenido a la página de AstronautMarkus en el vecindario SiliconValley/Cyber/1337.{% endblock %}
+{% block keywords %}geocities, homepage, vecindario, web retro, sitio personal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_geocities.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <div class="geo-address">SiliconValley/Cyber/1337</div>
+    <h2 class="junk-title">Bienvenido a Mi Página</h2>
+
+    <div class="junk-marquee"><span>Gracias por visitarme — firma mi <a href="{{ url_for('junk.guestbook') }}">libro de visitas</a> — eres el visitante número, tipo, muchos — mejor visto en <a href="{{ url_for('junk.best_viewed') }}">800x600</a></span></div>
+
+    <div class="junk-section">
+      <p class="geo-blink">ESTE SITIO SIEMPRE ESTÁ EN CONSTRUCCIÓN</p>
+      <p>Hola. Bienvenido a mi pequeño rincón de la web. Hice esta página con pura fuerza de voluntad y un
+        libro de HTML prestado de la biblioteca. Aquí va un poco sobre mí y mis intereses:</p>
+      <ul class="geo-list">
+        <li>Computadoras y la Autopista de la Información</li>
+        <li>Extraterrestres (yo sí creo)</li>
+        <li>Videojuegos, sobre todo los pixelados</li>
+        <li>Mi gato, que todavía no tiene su propia página</li>
+      </ul>
+    </div>
+
+    <div class="junk-section">
+      <h3>Mis Web Rings</h3>
+      <p>Esta página se enorgullece de ser parte de varios web rings exclusivos para gente de excelente gusto.
+        Explora el <a href="{{ url_for('junk.webring') }}">anillo oficial</a>.</p>
+    </div>
+
+    <div class="junk-badge-row">
+      <div class="junk-badge">HECHO CON<br>NOTEPAD</div>
+      <div class="junk-badge">SIN<br>FRAMES</div>
+      <div class="junk-badge">100% HECHO<br>POR HUMANOS</div>
+      <div class="junk-badge">ESCRÍBEME<br>UN E-MAIL</div>
+    </div>
+
+    <p class="geo-footer">Última actualización: en algún momento del milenio pasado. Visita mi
+      <a href="{{ url_for('junk.guestbook') }}">libro de visitas</a> y el <a href="{{ url_for('junk.counter') }}">contador de visitas</a>.</p>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Volver al Inicio</a></div>
+  </div>
+</div>
+{% endblock %}

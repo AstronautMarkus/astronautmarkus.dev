@@ -1,0 +1,48 @@
+{% extends "base/base.html" %}
+
+{% block title %}Best Viewed In 800x600{% endblock %}
+{% block description %}This page is optimized for a 15-inch CRT monitor at 800x600. Anything else is your problem.{% endblock %}
+{% block keywords %}best viewed, 800x600, netscape navigator, internet explorer, retro web{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_best_viewed.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title">Best Viewed In 800x600</h2>
+
+    <div class="bv-frame">
+      <div class="bv-frame-titlebar">viewport.exe — 800 x 600 — do not resize</div>
+      <div class="bv-frame-body">
+        <p>Congratulations! Your monitor is now displaying this page at the <strong>one true resolution</strong>.
+          If your screen is wider than this box, that's a you problem. We don't do "responsive" here — see the
+          <a href="{{ url_for('main.about') }}">About page</a> for our official stance on that.</p>
+
+        <p>This site is optimized and tested exclusively on:</p>
+        <ul>
+          <li>Netscape Navigator 4.7 on a 56k line</li>
+          <li>A 15" CRT monitor with visible curvature</li>
+          <li>1 GB of RAM, if you're lucky</li>
+        </ul>
+
+        <p>Anything rendered at a resolution higher than 800x600 is considered a rendering error and will not be
+          supported by our (nonexistent) helpdesk.</p>
+      </div>
+    </div>
+
+    <div class="junk-badge-row">
+      <div class="junk-badge">BEST VIEWED IN<br>NETSCAPE 4.7</div>
+      <div class="junk-badge">1024x768<br>NOT SUPPORTED</div>
+      <div class="junk-badge">OPTIMIZED FOR<br>800 x 600</div>
+      <div class="junk-badge">NO JAVASCRIPT<br>REQUIRED</div>
+      <div class="junk-badge">MADE WITH<br>NOTEPAD.EXE</div>
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Back Home</a></div>
+  </div>
+</div>
+{% endblock %}

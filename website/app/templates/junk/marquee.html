@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+
+{% block title %}The Marquee Ticker Zone{% endblock %}
+{% block description %}Multiple scrolling marquee banners, because one was never enough.{% endblock %}
+{% block keywords %}marquee tag, html history, scrolling text, retro web, breaking news{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_marquee.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title">The Marquee Ticker Zone</h2>
+
+    <div class="junk-marquee marquee-speed-slow">
+      <span>BREAKING NEWS: local developer discovers the &lt;marquee&gt; tag was never actually necessary —</span>
+    </div>
+    <div class="junk-marquee marquee-speed-medium marquee-reverse">
+      <span>THIS TEXT SCROLLS THE OTHER WAY BECAUSE WE CAN — ALSO PLEASE SIGN THE <a href="{{ url_for('junk.guestbook') }}">GUESTBOOK</a></span>
+    </div>
+    <div class="junk-marquee marquee-speed-fast">
+      <span>SCROLLING TEXT WAS THE ORIGINAL CLICKBAIT — YOU ARE VISITOR NUMBER SEE-THE-COUNTER — THANK YOU FOR YOUR PATRONAGE</span>
+    </div>
+
+    <div class="junk-section">
+      <h3>A Brief, Unnecessary History</h3>
+      <p>The <code>&lt;marquee&gt;</code> tag was Internet Explorer's answer to Netscape's <code>&lt;blink&gt;</code>
+        — introduced in 1996, it made text scroll horizontally across the screen. It was never part of any HTML
+        standard, was deprecated for over a decade, and yet here it lives on, reincarnated in pure CSS
+        <code>@keyframes</code>, immune to deprecation forever.</p>
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Back Home</a></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+.webring-list {
+    columns: 2;
+    column-gap: 24px;
+    padding-left: 20px;
+}
+
+.webring-list li {
+    margin-bottom: 8px;
+    break-inside: avoid;
+}

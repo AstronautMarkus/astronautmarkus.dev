@@ -202,3 +202,12 @@ class ContactSubmissionLog(db.Model):
     email = db.Column(db.String(200), nullable=False, index=True)
     ip_address = db.Column(db.String(45), nullable=True, index=True)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(), index=True)
+
+
+class GuestbookEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    ip_address = db.Column(db.String(45), nullable=True)
+    approved = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())

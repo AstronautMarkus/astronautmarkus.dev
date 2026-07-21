@@ -101,6 +101,12 @@
               <i class="fa-solid fa-rocket"></i> Proyectadas
             </a>
           </li>
+          <li>
+            <a href="{{ url_for('admin.guestbook_list') }}"
+              class="{{ 'active' if request.endpoint and 'guestbook' in request.endpoint else '' }}">
+              <i class="fa-solid fa-book"></i> Guestbook
+            </a>
+          </li>
         </ul>
       </div>
 

@@ -1,0 +1,44 @@
+{% extends "base/base.html" %}
+
+{% block title %}The AstronautMarkus Junk Webring{% endblock %}
+{% block description %}A fully self-contained webring linking every junk page on this site to every other one.{% endblock %}
+{% block keywords %}webring, retro web, link ring, geocities, 90s internet{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_webring.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title">The AstronautMarkus Junk Webring</h2>
+
+    <div class="junk-section">
+      <p>A webring is a collection of websites linked together in a circle, each one pointing to the "next" and
+        "previous" site so visitors could ring-hop between related pages without ever using a search engine. This
+        one is delightfully self-contained: it only links between the junk pages on this very site, forming a
+        perfect little ouroboros of nostalgia. Every page below carries the ring widget at the bottom — click
+        Prev/Next/Random from any of them and you'll stay inside the ring forever.</p>
+    </div>
+
+    <div class="junk-section">
+      <h3>Ring Members</h3>
+      <ol class="webring-list">
+        <li><a href="{{ url_for('junk.best_viewed') }}">Best Viewed In 800x600</a></li>
+        <li><a href="{{ url_for('junk.geocities') }}">GeoCities Homepage Tribute</a></li>
+        <li><a href="{{ url_for('junk.y2k') }}">Y2K Bug Tracker</a></li>
+        <li><a href="{{ url_for('junk.blink') }}">The Blink Tag Shrine</a></li>
+        <li><a href="{{ url_for('junk.marquee') }}">The Marquee Ticker Zone</a></li>
+        <li><a href="{{ url_for('junk.dialup') }}">Dial-Up Connection Simulator</a></li>
+        <li><a href="{{ url_for('junk.under_construction') }}">Under Construction</a></li>
+        <li><a href="{{ url_for('junk.guestbook') }}">Guestbook</a></li>
+        <li><a href="{{ url_for('junk.links') }}">Link Exchange</a></li>
+        <li><a href="{{ url_for('junk.counter') }}">Hit Counter</a></li>
+      </ol>
+    </div>
+
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Back Home</a></div>
+  </div>
+</div>
+{% endblock %}

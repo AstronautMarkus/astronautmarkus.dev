@@ -1,0 +1,71 @@
+{% extends "base/base.html" %}
+
+{% block title %}Libro de Visitas{% endblock %}
+{% block description %}Firma el libro de visitas de AstronautMarkus.dev — así funcionaba internet antes.{% endblock %}
+{% block keywords %}guestbook, libro de visitas, retro, y2k, geocities, web de los 90{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_guestbook.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title">Firma Mi Libro de Visitas</h2>
+
+    <div class="junk-section">
+      <p>¡Hola, viajero! Llegaste al libro de visitas. Deja un mensaje para que los próximos visitantes sepan que
+        estuviste aquí. Los mensajes se revisan antes de publicarse, porque internet cambió un poco desde 1999.</p>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            {% if message == 'sent' %}
+              <p class="gb-flash gb-flash-success">Gracias. Tu mensaje fue enviado y espera aprobación.</p>
+            {% elif message == 'validation_error' %}
+              <p class="gb-flash gb-flash-error">Por favor completa tu nombre y un mensaje.</p>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('junk.guestbook') }}" class="gb-form" novalidate>
+        <input type="hidden" name="form_ts" value="{{ form_ts }}">
+        <div class="hp-field" aria-hidden="true">
+          <label for="homepage_url">Homepage URL</label>
+          <input type="text" id="homepage_url" name="homepage_url" tabindex="-1" autocomplete="off">
+        </div>
+
+        <label for="name">Tu Nombre</label>
+        <input type="text" id="name" name="name" maxlength="100" required>
+
+        <label for="message">Tu Mensaje</label>
+        <textarea id="message" name="message" rows="4" maxlength="1000" required></textarea>
+
+        <button type="submit" class="junk-btn">Firmar el Libro</button>
+      </form>
+    </div>
+
+    <div class="junk-section">
+      <h3>Mensajes ({{ entries | length }})</h3>
+      {% if entries %}
+        {% for entry in entries %}
+        <div class="gb-entry">
+          <div class="gb-entry-header">
+            <strong>{{ entry.name }}</strong>
+            <span class="gb-entry-date">{{ entry.created_at.strftime('%d/%m/%Y') }}</span>
+          </div>
+          <p>{{ entry.message }}</p>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p><em>Aún no hay mensajes — ¡sé el primero en firmar!</em></p>
+      {% endif %}
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Volver al Inicio</a></div>
+  </div>
+</div>
+{% endblock %}
