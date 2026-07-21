@@ -259,15 +259,23 @@
     border-bottom: 1px dotted var(--border-mid);
     font-size: 12px;
     color: var(--text-body);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.skill-level {
-    color: var(--accent);
+.skill-group {
+    margin-bottom: 14px;
+}
+
+.skill-group:last-child {
+    margin-bottom: 0;
+}
+
+.skill-group-label {
+    display: block;
     font-size: 10px;
-    letter-spacing: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
 }
 
 /* -----------------------------------------------
