@@ -234,6 +234,18 @@ a:hover {
     clear: both;
 }
 
+#site-button {
+    background: var(--bg-void);
+    border-top: 1px solid var(--border-mid);
+    padding: 14px;
+    text-align: center;
+}
+
+#site-button img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 /* Extras dropdown */
 .nav-dropdown {
     position: relative;

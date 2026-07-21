@@ -41,6 +41,16 @@
     </div>
 
     <div class="junk-section">
+      <h3>Grab My Button</h3>
+      <p>Old-school webrings ran on 88x31 pixel buttons. Here's mine — right-click and save it, or copy the embed
+        code below to put it on your own site linking back here.</p>
+      <div class="button-grab">
+        <img src="{{ url_for('static', filename='images/88-31/button.png') }}" width="88" height="31" alt="AstronautMarkus.dev button">
+        <textarea readonly onclick="this.select()" rows="3">&lt;a href="{{ home_url }}"&gt;&lt;img src="{{ button_url }}" width="88" height="31" alt="AstronautMarkus.dev"&gt;&lt;/a&gt;</textarea>
+      </div>
+    </div>
+
+    <div class="junk-section">
       <h3>Want To Swap Links?</h3>
       <p>Add me to your links page and I'll (maybe) add you to mine! Reach out through the
         <a href="{{ url_for('contact.contact') }}">contact page</a> — no banner too small, no site too obscure.</p>

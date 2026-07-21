@@ -41,6 +41,16 @@
     </div>
 
     <div class="junk-section">
+      <h3>Llévate Mi Botón</h3>
+      <p>Los webrings de antes funcionaban con botones de 88x31 píxeles. Aquí está el mío — haz clic derecho y
+        guárdalo, o copia el código de abajo para ponerlo en tu propio sitio enlazando de vuelta aquí.</p>
+      <div class="button-grab">
+        <img src="{{ url_for('static', filename='images/88-31/button.png') }}" width="88" height="31" alt="Botón de AstronautMarkus.dev">
+        <textarea readonly onclick="this.select()" rows="3">&lt;a href="{{ home_url }}"&gt;&lt;img src="{{ button_url }}" width="88" height="31" alt="AstronautMarkus.dev"&gt;&lt;/a&gt;</textarea>
+      </div>
+    </div>
+
+    <div class="junk-section">
       <h3>¿Quieres Intercambiar Links?</h3>
       <p>¡Agrégame a tu página de links y yo (quizás) te agrego a la mía! Escríbeme por la
         <a href="{{ url_for('contact.contact') }}">página de contacto</a> — ningún banner es demasiado chico, ni
