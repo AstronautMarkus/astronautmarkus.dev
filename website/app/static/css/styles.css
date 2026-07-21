@@ -246,6 +246,16 @@ a:hover {
     vertical-align: middle;
 }
 
+#corner-mascot {
+    position: fixed;
+    right: 16px;
+    bottom: 0;
+    width: 84px;
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+}
+
 /* Extras dropdown */
 .nav-dropdown {
     position: relative;
