@@ -6,12 +6,6 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 
-def to_bool(value, default=False):
-    if value is None:
-        return default
-    return str(value).strip().lower() in {'1', 'true', 'yes', 'on'}
-
-
 def clean_env(value, default=''):
     if value is None:
         return default
@@ -21,6 +15,7 @@ def clean_env(value, default=''):
         cleaned = cleaned[1:-1].strip()
 
     return cleaned
+
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'mysecretkey')
@@ -36,18 +31,34 @@ class Config:
     MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
     MAIL_PORT = int(os.getenv('MAIL_PORT', 587))
     MAIL_TIMEOUT = float(os.getenv('MAIL_TIMEOUT', 10))
-    MAIL_USE_TLS = to_bool(os.getenv('MAIL_USE_TLS', 'true'))
-    MAIL_USE_SSL = to_bool(os.getenv('MAIL_USE_SSL', 'false'))
-
-    if MAIL_PORT == 465 and not MAIL_USE_SSL:
-        MAIL_USE_SSL = True
-        MAIL_USE_TLS = False
-    elif MAIL_PORT == 587 and not MAIL_USE_TLS:
-        MAIL_USE_TLS = True
-        MAIL_USE_SSL = False
-
+    # port 465 → implicit SSL; port 587 → STARTTLS; anything else → neither
+    MAIL_USE_SSL = MAIL_PORT == 465
+    MAIL_USE_TLS = MAIL_PORT == 587
     MAIL_USERNAME = clean_env(os.getenv('MAIL_USERNAME'), '')
     MAIL_PASSWORD = clean_env(os.getenv('MAIL_PASSWORD'), '')
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
-    TURNSTILE_SITE_KEY = clean_env(os.getenv('TURNSTILE_SITE_KEY', ''), '')
-    TURNSTILE_SECRET_KEY = clean_env(os.getenv('TURNSTILE_SECRET_KEY', ''), '')
+
+    # ── Storage ──────────────────────────────────────────────────
+    # 'local' or 's3'
+    STORAGE_DRIVER = os.getenv('STORAGE_DRIVER', 'local')
+    STORAGE_LOCAL_ROOT = str(BASE_DIR / 'storage')
+
+    # S3 / S3-compatible (MinIO, Cloudflare R2, DigitalOcean Spaces, …)
+    STORAGE_S3_BUCKET = os.getenv('STORAGE_S3_BUCKET', '')
+    STORAGE_S3_REGION = os.getenv('STORAGE_S3_REGION', 'us-east-1')
+    STORAGE_S3_ACCESS_KEY = clean_env(os.getenv('STORAGE_S3_ACCESS_KEY'), '')
+    STORAGE_S3_SECRET_KEY = clean_env(os.getenv('STORAGE_S3_SECRET_KEY'), '')
+    # Optional: custom endpoint for S3-compatible services
+    STORAGE_S3_ENDPOINT = clean_env(os.getenv('STORAGE_S3_ENDPOINT'), '')
+    # Optional: override public base URL (e.g. a CDN in front of the bucket)
+    STORAGE_S3_PUBLIC_URL = clean_env(os.getenv('STORAGE_S3_PUBLIC_URL'), '')
+
+    # ── Cloudflare Turnstile ─────────────────────────────────────
+    TURNSTILE_SITE_KEY = os.getenv('TURNSTILE_SITE_KEY', '')
+    TURNSTILE_SECRET_KEY = clean_env(os.getenv('TURNSTILE_SECRET_KEY'), '')
+
+    # ── Contact form kill switch ──────────────────────────────────
+    # Set to 'false' to temporarily disable the contact form (no DB writes, no emails).
+    CONTACT_FORM_ENABLED = clean_env(os.getenv('CONTACT_FORM_ENABLED'), 'true').lower() not in (
+        '0', 'false', 'no', 'off',
+    )

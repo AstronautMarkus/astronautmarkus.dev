@@ -1,0 +1,109 @@
+#banner {
+    height: 220px;
+    background: #111111;
+    border-bottom: 1px solid #DE0000;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.banner-content {
+    width: 600px;
+    float: left;
+}
+
+.banner-content h2 {
+    font-size: 28px;
+    margin: 0 0 15px 0;
+    color: #FFFFFF;
+}
+
+.banner-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #CCCCCC;
+}
+
+.glossy-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #DE0000;
+    color: #FFFFFF !important;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #FF3333;
+    border-radius: 5px;
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+#main-content {
+    padding: 20px;
+    overflow: hidden;
+}
+
+#left-col {
+    width: 600px;
+    float: left;
+}
+
+#sidebar {
+    width: 280px;
+    float: right;
+    background: #111111;
+    border: 1px solid #222222;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.post {
+    margin-bottom: 40px;
+}
+
+.post h3 {
+    font-size: 20px;
+    color: #DE0000;
+    margin: 0 0 10px 0;
+    border-bottom: 1px dotted #333333;
+    padding-bottom: 5px;
+}
+
+.meta {
+    font-size: 11px;
+    color: #666666;
+    margin-bottom: 15px;
+}
+
+.post p {
+    line-height: 1.8;
+    font-size: 13px;
+}
+
+.sidebar-box {
+    margin-bottom: 25px;
+}
+
+.sidebar-box h4 {
+    font-size: 14px;
+    color: #FFFFFF;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    border-left: 3px solid #DE0000;
+    padding-left: 10px;
+}
+
+.sidebar-box ul {
+    margin: 0;
+    padding: 0;
+    list-style: square inside;
+    color: #DE0000;
+}
+
+.sidebar-box ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #222222;
+}
+
+.sidebar-box ul li a {
+    color: #CCCCCC;
+    font-weight: normal;
+}

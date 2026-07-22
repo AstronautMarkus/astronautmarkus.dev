@@ -1,0 +1,341 @@
+{% extends "base/base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block description %}Marcos Reyes - Sitio web personal y portafolio tecnológico{% endblock %}
+{% block keywords %}Marcos Reyes, desarrollador, portafolio, tecnología, software, sitio web personal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var thumbs = document.querySelectorAll('.project-card-img');
+    if (!thumbs.length) return;
+
+    /* CRT power-on flicker, staggered, the first time each thumbnail enters view */
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            observer.unobserve(el);
+            var idx = Array.prototype.indexOf.call(thumbs, el);
+            setTimeout(function () { el.classList.add('crt-power-on'); }, Math.min(idx, 10) * 90);
+        });
+    }, { threshold: 0.2 });
+    thumbs.forEach(function (img) { observer.observe(img); });
+
+    /* occasional ambient glitch on a random thumbnail */
+    setInterval(function () {
+        if (Math.random() > 0.35) return;
+        var img = thumbs[Math.floor(Math.random() * thumbs.length)];
+        img.classList.remove('crt-glitch');
+        void img.offsetWidth;
+        img.classList.add('crt-glitch');
+    }, 2600);
+})();
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div id="hero">
+    <div class="hero-content">
+        <h2>Hola, soy <span>Marcos</span>.</h2>
+        <p>¡Bienvenidos, buscadores y bots por igual, a mi sitio web personal! Aquí comparto mis proyectos, pensamientos y algún que otro desahogo sobre el desarrollo de software. Si eres humano, siéntete libre de explorar y conectar. Si eres un bot... bueno, disfruta del jugo SEO.</p>
+        <a href="{{ url_for('main.portfolio_list') }}" class="glossy-btn">Ver mi trabajo</a>
+        <a href="{{ url_for('contact.contact') }}" class="glossy-btn btn-outline">Contáctame</a>
+    </div>
+    <div class="profile-cube-scene" role="img" aria-label="Website Art">
+        <div class="profile-cube">
+            <img style="background-color: white;" src="{{ url_for('static', filename='images/home/astronautmarkus-tux.png') }}" class="profile-cube-face profile-cube-face-front" aria-hidden="true">
+            <img src="https://github.com/AstronautMarkus.png" class="profile-cube-face profile-cube-face-right" aria-hidden="true">
+            <img src="https://github.com/MarcosKingsDuoc.png" class="profile-cube-face profile-cube-face-left" aria-hidden="true">
+        </div>
+    </div>
+</div>
+
+<div id="page-content">
+
+    <div id="primary">
+
+        <div class="about-text">
+            <h3 class="section-title">Sobre mí</h3>
+            <p>Me especializo en construir aplicaciones web de alto rendimiento e infraestructura escalable. Con más de un año de experiencia en las trincheras del desarrollo de software, he perfeccionado mis habilidades en <strong>Python, JavaScript, PHP</strong> y una variedad de frameworks y herramientas. Me apasionan las interfaces web de finales de los 2000, las redes y todo lo relacionado con los sistemas distribuidos.</p>
+            <p>Cuando no estoy lanzando features, experimento con hardware, trasteo con domótica, saco fotos a mis gatos o bebo demasiado café. Este sitio es un trabajo de amor, construido desde cero con Flask y un motor de blog hecho a medida. Es mi patio de recreo digital jeje.</p>
+        </div>
+
+        <div class="skills">
+            <h3 class="section-title">Habilidades y Stack</h3>
+            <div class="skill-group">
+                <span class="skill-group-label">Lenguajes y Scripts</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">Python</span>
+                    <span class="tag-pill">PHP</span>
+                    <span class="tag-pill">HTML</span>
+                    <span class="tag-pill">CSS</span>
+                    <span class="tag-pill">JavaScript</span>
+                    <span class="tag-pill">TypeScript</span>
+                    <span class="tag-pill">SQL</span>
+                    <span class="tag-pill">Bash</span>
+                    <span class="tag-pill">Dockerfile</span>
+                    <span class="tag-pill">Arduino</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Frameworks y Librerías</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">React</span>
+                    <span class="tag-pill">React Router</span>
+                    <span class="tag-pill">Laravel</span>
+                    <span class="tag-pill">Laravel Reverb</span>
+                    <span class="tag-pill">Livewire</span>
+                    <span class="tag-pill">TailwindCSS</span>
+                    <span class="tag-pill">Vue.js</span>
+                    <span class="tag-pill">Node.js</span>
+                    <span class="tag-pill">Flask</span>
+                    <span class="tag-pill">Django</span>
+                    <span class="tag-pill">FastAPI</span>
+                    <span class="tag-pill">Alpine.js</span>
+                    <span class="tag-pill">Chart.js</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Inteligencia Artificial</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">Google Gemini API</span>
+                    <span class="tag-pill">Gemini Live API</span>
+                    <span class="tag-pill">Function Calling / Tool Use</span>
+                    <span class="tag-pill">RAG</span>
+                    <span class="tag-pill">OCR</span>
+                    <span class="tag-pill">TTS</span>
+                    <span class="tag-pill">Prompt Engineering</span>
+                    <span class="tag-pill">Patrón Strategy para Reportes IA</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Metodologías y Gestión</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">Agile</span>
+                    <span class="tag-pill">Scrum</span>
+                    <span class="tag-pill">Kanban</span>
+                    <span class="tag-pill">Sprints</span>
+                    <span class="tag-pill">SDLC</span>
+                    <span class="tag-pill">Liderazgo Técnico</span>
+                    <span class="tag-pill">Mentoría</span>
+                    <span class="tag-pill">Resolución de Problemas</span>
+                    <span class="tag-pill">Troubleshooting</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Testing y Calidad</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">Unit Testing</span>
+                    <span class="tag-pill">Integration Testing</span>
+                    <span class="tag-pill">TDD</span>
+                    <span class="tag-pill">Jest</span>
+                    <span class="tag-pill">PHPUnit</span>
+                    <span class="tag-pill">PyTest</span>
+                    <span class="tag-pill">Calidad de Software</span>
+                    <span class="tag-pill">Code Review</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Infraestructura y Herramientas</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">Apache</span>
+                    <span class="tag-pill">Nginx</span>
+                    <span class="tag-pill">Linux (Ubuntu/Debian/RHEL)</span>
+                    <span class="tag-pill">VPS</span>
+                    <span class="tag-pill">Cloudflare</span>
+                    <span class="tag-pill">SSL</span>
+                    <span class="tag-pill">DNS</span>
+                    <span class="tag-pill">Git</span>
+                    <span class="tag-pill">GitHub</span>
+                    <span class="tag-pill">GitHub Actions</span>
+                    <span class="tag-pill">CI/CD</span>
+                    <span class="tag-pill">RESTful APIs</span>
+                    <span class="tag-pill">Docker</span>
+                    <span class="tag-pill">System Administration</span>
+                    <span class="tag-pill">systemd</span>
+                    <span class="tag-pill">WebSockets</span>
+                    <span class="tag-pill">Colas de Trabajo</span>
+                    <span class="tag-pill">Web Security</span>
+                    <span class="tag-pill">2FA/TOTP</span>
+                    <span class="tag-pill">SEO</span>
+                    <span class="tag-pill">Arquitectura de Microservicios</span>
+                    <span class="tag-pill">Arquitectura SaaS Multi-tenant</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Bases de Datos</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">MySQL</span>
+                    <span class="tag-pill">MariaDB</span>
+                    <span class="tag-pill">SQLite</span>
+                    <span class="tag-pill">Redis</span>
+                    <span class="tag-pill">Oracle Database</span>
+                    <span class="tag-pill">Cassandra</span>
+                    <span class="tag-pill">MongoDB</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Plataformas y Servicios</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">AWS S3</span>
+                    <span class="tag-pill">AWS EC2</span>
+                    <span class="tag-pill">AWS SES</span>
+                    <span class="tag-pill">Hostinger</span>
+                    <span class="tag-pill">WebPay</span>
+                    <span class="tag-pill">Stripe</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <span class="skill-group-label">Redes y Seguridad</span>
+                <div class="tag-cloud">
+                    <span class="tag-pill">Fortinet</span>
+                    <span class="tag-pill">FortiGate</span>
+                    <span class="tag-pill">Firewalls</span>
+                    <span class="tag-pill">VPN</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="skills">
+            <h3 class="section-title">Todo el Stack</h3>
+            <ul class="skills-list">
+                <li>Tengo mucha experiencia con varias tecnologías y frameworks, pero si te dijera la verdad, ¿me creerías?</li>
+            </ul>
+        </div>
+
+        <div class="projects">
+            <h3 class="section-title">Proyectos recientes</h3>
+            <div class="projects-grid">
+                {% if projects %}
+                    {% for p in projects %}
+                    {% set proj_title = p.title_es if p.has_es and p.title_es else p.title %}
+                    {% set proj_desc = p.description_es if p.has_es and p.description_es else p.description %}
+                    <div class="project-card">
+                        <div class="project-card-img-wrap">
+                            {% if p.image_path %}
+                            <img src="{{ storage_url(p.image_path) }}"
+                                 class="project-card-img"
+                                 alt="{{ proj_title }}">
+                            {% else %}
+                            <div class="project-card-img-placeholder">[ sin imagen ]</div>
+                            {% endif %}
+                        </div>
+                        <h4><a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}">{{ proj_title }}</a></h4>
+                        {% if proj_desc %}
+                        <p>{{ proj_desc | truncate(110) }}</p>
+                        {% endif %}
+                        {% if p.project_url or p.github_repo_url %}
+                        <div class="project-card-links">
+                            {% if p.project_url %}
+                            <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
+                               class="project-link">Visitar</a>
+                            {% endif %}
+                            {% if p.github_repo_url %}
+                            <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
+                               class="project-link">GitHub</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <p style="color:var(--text-faint);font-size:12px">Aún no hay proyectos. Vuelve pronto.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="projects-view-all">
+            <a href="{{ url_for('main.portfolio_list') }}" class="view-all-link">Ver todos los proyectos »</a>
+        </div>
+
+        <div class="contact-cta">
+            <h3>¿Tienes un proyecto en mente?</h3>
+            <p>Estoy disponible para trabajo freelance, consultoría y colaboraciones interesantes. Construyamos algo juntos.</p>
+            <a href="{{ url_for('contact.contact') }}" class="glossy-btn">Enviar un mensaje</a>
+        </div>
+
+    </div>
+
+    <div id="sidebar-column">
+
+    <div id="secondary">
+
+        <div class="sidebar-box">
+            <h4>Enlaces rápidos</h4>
+            <ul>
+                <li><a href="{{ url_for('main.blog_list') }}">Blog de desarrollo</a></li>
+                <li><a href="https://github.com/astronautmarkus" target="_blank" rel="noopener noreferrer">Perfil de GitHub</a></li>
+                {% if cv_url %}
+                    <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Descargar CV</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('contact.contact') }}">Formulario de contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Últimas entradas</h4>
+            <ul>
+                {% for p in latest_posts %}
+                {% set p_title = p.title_es if p.has_es and p.title_es else p.title %}
+                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p_title | truncate(38) }}</a></li>
+                {% else %}
+                <li style="list-style:none;color:var(--text-dim)">Sin entradas aún.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Proyectadas</h4>
+            {% if latest_proyectadas %}
+            <ul>
+                {% for item in latest_proyectadas %}
+                {% set display_text = item.text_es if item.has_es and item.text_es else item.text %}
+                <li style="list-style:none;font-size:0.85rem;color:var(--text-body);margin-bottom:0.5rem"><a href="{{ url_for('main.proyectadas_list')}}">{{ item.text_es | truncate(67) }}</a></li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">Ver todas las proyectadas »</a>
+            {% else %}
+            <p style="font-size:0.82rem;color:var(--text-faint)">Todavía no hay proyectadas.</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-box">
+            <h4>Estado</h4>
+            <p>Actualmente: <strong style="color: var(--accent);">Disponible los sábados y domingos</strong><br>Abierto a nuevos proyectos.</p>
+            <p>Ubicación: Remoto<br>Tiempo de respuesta: &lt; 48h</p>
+        </div>
+
+    </div>
+
+
+    <div id="tertiary">
+
+        <div class="sidebar-box">
+            <h4>Etiquetas</h4>
+            {% if all_tags %}
+            <div class="tag-cloud">
+                {% for tag in all_tags %}
+                <a href="{{ url_for('main.blog_list', tag=tag.id) }}" class="tag-pill">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="font-size:0.82rem;color:var(--text-faint)">Sin tags aún.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

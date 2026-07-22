@@ -1,0 +1,236 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block description %}{{ post.description or title }}{% endblock %}
+{% block keywords %}{{ post.category.name ~ ', ' if post.category else '' }}blog, development, AstronautMarkus.dev{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% if post.cover_image_path %}
+<div class="post-cover-wrap">
+    <img src="{{ storage_url(post.cover_image_path) }}" class="post-cover-img" alt="{{ title }}">
+    <div class="post-cover-overlay">
+        <div class="post-cover-title">{{ title }}</div>
+    </div>
+</div>
+{% endif %}
+
+<div id="post-content">
+
+    <div id="post-main">
+
+        <div class="post-header">
+            {% if not post.cover_image_path %}
+            <h1>{{ title }}</h1>
+            {% endif %}
+            <div class="post-meta-row">
+                <span>{{ post.created_at.strftime('%B %d, %Y') }}</span>
+                {% if post.category %}
+                <a href="{{ url_for('main.blog_list', cat=post.category_id) }}" class="post-meta-cat">
+                    {% if current_lang == 'es' and post.category.has_es and post.category.name_es %}
+                        {{ post.category.name_es }}
+                    {% else %}
+                        {{ post.category.name }}
+                    {% endif %}
+                </a>
+                {% endif %}
+                {% if post.has_es %}
+                <span class="post-meta-lang">
+                    {% if current_lang == 'es' %}
+                    <a href="/lang/en?next={{ request.path }}">EN</a>
+                    {% else %}
+                    <a href="/lang/es?next={{ request.path }}">ES</a>
+                    {% endif %}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="prose">
+            {% if content_html %}
+                {{ content_html }}
+            {% else %}
+            <p style="color:var(--text-faint);font-style:italic">{% if current_lang == 'es' %}No hay contenido disponible para este post aún.{% else %}No content available for this post yet.{% endif %}</p>
+            {% endif %}
+        </div>
+
+        {% if post.images %}
+        <div class="post-gallery">
+            <h4>{% if current_lang == 'es' %}Imágenes del Post{% else %}Post Images{% endif %}</h4>
+            <div class="post-gallery-grid">
+                {% for img in post.images %}
+                <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
+                   title="{% if current_lang == 'es' %}Imagen{% else %}Image{% endif %} {{ loop.index }}">
+                    <img src="{{ storage_url(img.image_path) }}" alt="{% if current_lang == 'es' %}Imagen{% else %}Image{% endif %} {{ loop.index }}">
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <a href="{{ url_for('main.blog_list') }}" class="post-back">{% if current_lang == 'es' %}Volver al Blog{% else %}Back to Blog{% endif %}</a>
+
+    </div>
+
+    <div id="post-sidebar">
+
+        <div class="blog-sidebar-box">
+            <h4>{% if current_lang == 'es' %}Info del Post{% else %}Post Info{% endif %}</h4>
+            <ul>
+                <li>{% if current_lang == 'es' %}Publicado{% else %}Published{% endif %}: {{ post.created_at.strftime('%d %b %Y') }}</li>
+                {% if post.category %}
+                <li>
+                    {% if current_lang == 'es' %}Categoría{% else %}Category{% endif %}:
+                    <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
+                        {% if current_lang == 'es' and post.category.has_es and post.category.name_es %}
+                            {{ post.category.name_es }}
+                        {% else %}
+                            {{ post.category.name }}
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if post.has_es %}
+                <li>
+                    {% if current_lang == 'es' %}
+                    <a href="/lang/en?next={{ request.path }}">Read in English</a>
+                    {% else %}
+                    <a href="/lang/es?next={{ request.path }}">Leer en Español</a>
+                    {% endif %}
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="blog-sidebar-box" id="toc-box">
+            <h4>{% if current_lang == 'es' %}Contenido{% else %}Contents{% endif %}</h4>
+            <ul id="toc-list">
+                <li class="toc-empty">{% if current_lang == 'es' %}No hay encabezados.{% else %}No headings found.{% endif %}</li>
+            </ul>
+        </div>
+
+        <div class="blog-sidebar-box">
+            <h4>{% if current_lang == 'es' %}Compartir{% else %}Share{% endif %}</h4>
+            <ul>
+                <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">{% if current_lang == 'es' %}Compartir en Twitter/X{% else %}Share on Twitter/X{% endif %}</a></li>
+                <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">{% if current_lang == 'es' %}Compartir en LinkedIn{% else %}Share on LinkedIn{% endif %}</a></li>
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">{% if current_lang == 'es' %}Compartir en Facebook{% else %}Share on Facebook{% endif %}</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var prose = document.querySelector('.prose');
+    var tocList = document.getElementById('toc-list');
+    var tocBox  = document.getElementById('toc-box');
+
+    if (!prose || !tocList || !tocBox) return;
+
+    var headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    if (!headings.length) return;
+
+    /* slugify heading text to create unique IDs */
+    var usedIds = {};
+    function slugify(text) {
+        var base = text.toLowerCase()
+            .replace(/[^\w\s\-áéíóúüñàèìòùâêîôûäëïöü]/g, '')
+            .trim()
+            .replace(/[\s_]+/g, '-')
+            .replace(/-+/g, '-');
+        if (!base) base = 'heading';
+        var id = base;
+        var n = 1;
+        while (usedIds[id]) { id = base + '-' + (++n); }
+        usedIds[id] = true;
+        return id;
+    }
+
+    /* assign IDs and build TOC items */
+    var items = [];
+    headings.forEach(function (h) {
+        var level = parseInt(h.tagName.charAt(1), 10);
+        var text  = h.textContent.trim();
+        var id    = h.id || slugify(text);
+        h.id = id;
+
+        var li = document.createElement('li');
+        li.setAttribute('data-level', level);
+
+        var a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = text;
+        li.appendChild(a);
+        items.push({ el: h, link: a });
+        tocList.appendChild(li);
+    });
+
+    /* remove placeholder */
+    var empty = tocList.querySelector('.toc-empty');
+    if (empty) tocList.removeChild(empty);
+
+    /* show the TOC box */
+    tocBox.style.display = 'block';
+
+    /* active-heading tracking on scroll */
+    function onScroll() {
+        var scrollY = window.scrollY || window.pageYOffset;
+        var active  = null;
+        for (var i = 0; i < items.length; i++) {
+            var top = items[i].el.getBoundingClientRect().top + scrollY;
+            if (top <= scrollY + 80) {
+                active = items[i];
+            }
+        }
+        items.forEach(function (it) {
+            it.link.classList.toggle('toc-active', it === active);
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+})();
+</script>
+<script>
+(function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var thumbs = document.querySelectorAll('.post-gallery-grid img');
+    if (!thumbs.length) return;
+
+    /* CRT power-on flicker, staggered, the first time each thumbnail enters view */
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            observer.unobserve(el);
+            var idx = Array.prototype.indexOf.call(thumbs, el);
+            setTimeout(function () { el.classList.add('crt-power-on'); }, Math.min(idx, 10) * 90);
+        });
+    }, { threshold: 0.2 });
+    thumbs.forEach(function (img) { observer.observe(img); });
+
+    /* occasional ambient glitch on a random thumbnail */
+    setInterval(function () {
+        if (Math.random() > 0.35) return;
+        var img = thumbs[Math.floor(Math.random() * thumbs.length)];
+        img.classList.remove('crt-glitch');
+        void img.offsetWidth;
+        img.classList.add('crt-glitch');
+    }, 2600);
+})();
+</script>
+{% endblock %}

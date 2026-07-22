@@ -1,0 +1,115 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Contact Inbox{% endblock %}
+{% block page_title %}Contact Inbox{% endblock %}
+
+{% block topbar_actions %}
+  {% if unread > 0 %}
+  <span style="font-size:11px;background:#cc0000;color:#fff;padding:3px 8px;border-radius:2px;font-weight:700">
+    {{ unread }} unread
+  </span>
+  {% endif %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_mail_templates') }}">Mail Templates</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if messages %}
+  <form id="bulk-form" method="POST" action="{{ url_for('admin.contact_messages_bulk_delete') }}">
+    <div class="td-actions" style="padding:8px 10px;justify-content:space-between;display:flex;align-items:center">
+      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> selected</span>
+      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete selected</button>
+    </div>
+    <table class="table-blue">
+      <thead>
+        <tr>
+          <th style="width:16px"><input type="checkbox" id="select-all"></th>
+          <th style="width:16px"></th>
+          <th>From</th>
+          <th>Subject</th>
+          <th>Lang</th>
+          <th>Received</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for m in messages %}
+      <tr {% if not m.is_read %}style="background:#fffbe6;border-left:3px solid #cc0000"{% endif %}>
+        <td style="padding-left:10px">
+          <input type="checkbox" class="row-checkbox" name="message_ids" value="{{ m.id }}">
+        </td>
+        <td>
+          {% if not m.is_read %}
+          <span style="display:inline-block;width:7px;height:7px;background:#cc0000;border-radius:50%;vertical-align:middle"></span>
+          {% else %}
+          <span style="display:inline-block;width:7px;height:7px;background:#ccc;border-radius:50%;vertical-align:middle"></span>
+          {% endif %}
+        </td>
+        <td style="{% if not m.is_read %}font-weight:700{% endif %}">
+          {{ m.name }}<br>
+          <span style="font-size:10px;color:#888;font-weight:normal">{{ m.email }}</span>
+        </td>
+        <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;{% if not m.is_read %}font-weight:700{% endif %}">{{ m.subject }}</td>
+        <td>
+          <span class="lang-badge lang-badge-{{ m.language }}">{{ m.language | upper }}</span>
+        </td>
+        <td style="color:#777;white-space:nowrap">{{ m.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
+        <td>
+          <div class="td-actions">
+            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}">View</a>
+            <button type="submit" formaction="{{ url_for('admin.contact_message_block_sender', message_id=m.id) }}"
+                    formnovalidate onclick="return confirm('Block ' + '{{ m.email }}' + ' and delete all their messages?');" class="btn btn-danger btn-sm">Block</button>
+            <button type="submit" formaction="{{ url_for('admin.contact_message_delete', message_id=m.id) }}"
+                    formnovalidate onclick="return confirm('Delete this message?');" class="btn btn-danger btn-sm">Delete</button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </form>
+  {% else %}
+  <p class="empty-state">No messages yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    var selectAll = document.getElementById('select-all');
+    var bulkForm = document.getElementById('bulk-form');
+    var bulkBtn = document.getElementById('bulk-delete-btn');
+    var countLabel = document.getElementById('selected-count');
+    if (!bulkForm) return;
+
+    function rowCheckboxes() {
+      return Array.prototype.slice.call(bulkForm.querySelectorAll('.row-checkbox'));
+    }
+
+    function updateState() {
+      var checked = rowCheckboxes().filter(function (cb) { return cb.checked; });
+      countLabel.textContent = checked.length;
+      bulkBtn.disabled = checked.length === 0;
+      selectAll.checked = checked.length > 0 && checked.length === rowCheckboxes().length;
+      selectAll.indeterminate = checked.length > 0 && checked.length < rowCheckboxes().length;
+    }
+
+    selectAll.addEventListener('change', function () {
+      rowCheckboxes().forEach(function (cb) { cb.checked = selectAll.checked; });
+      updateState();
+    });
+
+    bulkForm.addEventListener('change', function (e) {
+      if (e.target.classList.contains('row-checkbox')) updateState();
+    });
+
+    bulkBtn.addEventListener('click', function (e) {
+      var count = rowCheckboxes().filter(function (cb) { return cb.checked; }).length;
+      if (!confirm('Delete ' + count + ' selected message(s)?')) e.preventDefault();
+    });
+
+    updateState();
+  })();
+</script>
+{% endblock %}

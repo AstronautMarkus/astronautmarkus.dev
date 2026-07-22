@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+
+{% block title %}Tamaño{% endblock %}
+{% block description %}El peso real, medido, de esta página HTML exacta.{% endblock %}
+{% block keywords %}tamaño de página, peso de página, bytes, rendimiento{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Tamaño</h2>
+
+    <div class="nerd-section">
+      <p>Esta página se renderizó una vez internamente para contar sus propios bytes, y luego se volvió a
+        renderizar con ese número ya puesto abajo. La cifra es real — con un margen de un par de bytes por los
+        dígitos mismos.</p>
+    </div>
+
+    <div class="nerd-section">
+      <div class="nerd-stat-grid">
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ '{:,}'.format(page_bytes) }} B</div>
+          <div class="nerd-stat-label">Bytes de HTML</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ page_kb }} KB</div>
+          <div class="nerd-stat-label">Kilobytes</div>
+        </div>
+      </div>
+      <p class="nerd-note">Solo HTML sin comprimir — no cuenta imágenes, fuentes, ni el CDN de Font Awesome. Mira
+        <a href="{{ url_for('nerd.payload') }}">Payload</a> para los números de gzip sobre este mismo markup.</p>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Volver a Rendimiento</a></div>
+  </div>
+</div>
+{% endblock %}

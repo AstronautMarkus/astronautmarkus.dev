@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+
+{% block title %}Huella de Carbono{% endblock %}
+{% block description %}Una estimación completamente no científica del impacto ambiental de esta página. Metodología: onda.{% endblock %}
+{% block keywords %}huella de carbono, sustentabilidad, web verde, parodia{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd_carbon.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Huella de Carbono</h2>
+
+    <div class="nerd-section">
+      <p class="nerd-note">Importante: esto es sátira. No hay una metodología real de contabilidad de carbono
+        detrás del número de abajo. Sí existen calculadoras reales de huella de carbono web que usan datos reales
+        de intensidad de red eléctrica — esta no es una de ellas.</p>
+      <div class="carbon-readout">
+        <div class="carbon-value">0.0031g</div>
+        <div class="carbon-label">CO&#8322; por visita*</div>
+      </div>
+      <p class="nerd-note">*según una metodología que inventamos hace cinco minutos, vagamente inspirada en "esta
+        página casi no tiene JavaScript, así que probablemente no hace girar un ventilador en algún lado".</p>
+    </div>
+
+    <div class="nerd-section">
+      <h3>Lo Que Realmente Ayudaría</h3>
+      <p>Si te importa esto en serio: menos scripts que bloqueen el renderizado, imágenes más chicas, menos
+        tracking de terceros, y cachear de forma agresiva sí reducen el consumo de energía real por petición —
+        esa parte no es broma, aunque nuestro número sí lo sea.</p>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Volver a Rendimiento</a></div>
+  </div>
+</div>
+{% endblock %}

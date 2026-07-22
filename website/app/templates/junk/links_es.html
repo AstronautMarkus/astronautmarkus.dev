@@ -1,0 +1,64 @@
+{% extends "base/base.html" %}
+
+{% block title %}Intercambio de Links{% endblock %}
+{% block description %}Una página de intercambio de links, mayormente falsa, al mejor estilo de fines de los 90.{% endblock %}
+{% block keywords %}intercambio de links, webring, web retro, sitios geniales, banner exchange{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_links.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title">Intercambio de Links</h2>
+
+    <div class="junk-section">
+      <p>¡Bienvenido a mi página de Links Geniales! En su época, así se descubrían sitios nuevos — sin buscador,
+        sin algoritmo, solo onda y banners de 88x31. Aquí están los sitios que respaldo:</p>
+    </div>
+
+    <div class="junk-section">
+      <h3>Sitios en los Que Confío 100%</h3>
+      <div class="links-grid">
+        <a class="junk-badge" href="{{ url_for('main.home') }}">PÁGINA<br>DE INICIO</a>
+        <a class="junk-badge" href="{{ url_for('main.about') }}">ACERCA<br>DE MÍ</a>
+        <a class="junk-badge" href="{{ url_for('main.portfolio_list') }}">MI<br>PORTAFOLIO</a>
+        <a class="junk-badge" href="{{ url_for('main.blog_list') }}">MI<br>BLOG</a>
+        <a class="junk-badge" href="{{ url_for('main.gallery_list') }}">MI<br>GALERÍA</a>
+      </div>
+    </div>
+
+    <div class="junk-section">
+      <h3>Sitios en los Que No Confío</h3>
+      <div class="links-grid">
+        <span class="junk-badge links-dead">???<br>DESCONOCIDO</span>
+        <span class="junk-badge links-dead">404<br>NO ENCONTRADO</span>
+        <span class="junk-badge links-dead">SITIO<br>CERRADO EN 2003</span>
+      </div>
+      <p class="links-footnote">Estos links no llevan a ningún lado. Igual que la mayoría de los links en 1999.</p>
+    </div>
+
+    <div class="junk-section">
+      <h3>Llévate Mi Botón</h3>
+      <p>Los webrings de antes funcionaban con botones de 88x31 píxeles. Aquí está el mío — haz clic derecho y
+        guárdalo, o copia el código de abajo para ponerlo en tu propio sitio enlazando de vuelta aquí.</p>
+      <div class="button-grab">
+        <img src="{{ url_for('static', filename='images/88-31/button.png') }}" width="88" height="31" alt="Botón de AstronautMarkus.dev">
+        <textarea readonly onclick="this.select()" rows="3">&lt;a href="{{ home_url }}"&gt;&lt;img src="{{ button_url }}" width="88" height="31" alt="AstronautMarkus.dev"&gt;&lt;/a&gt;</textarea>
+      </div>
+    </div>
+
+    <div class="junk-section">
+      <h3>¿Quieres Intercambiar Links?</h3>
+      <p>¡Agrégame a tu página de links y yo (quizás) te agrego a la mía! Escríbeme por la
+        <a href="{{ url_for('contact.contact') }}">página de contacto</a> — ningún banner es demasiado chico, ni
+        ningún sitio demasiado oscuro.</p>
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Volver al Inicio</a></div>
+  </div>
+</div>
+{% endblock %}

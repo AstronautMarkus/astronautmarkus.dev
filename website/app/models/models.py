@@ -1,82 +1,213 @@
+from datetime import datetime
+
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
-
-class Note(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    username = db.Column(db.String(20), nullable=False)
-    color = db.Column(db.Enum('hotpink', 'cyan', 'lime', 'gold', 'orchid', 'skyblue', 'khaki', 'plum', 'lightcoral', 'palegreen'), nullable=False, default='hotpink')
-    ip_address = db.Column(db.String(45), nullable=False)
-    language = db.Column(db.String(10), nullable=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-
-class ContactMessage(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    message = db.Column(db.String(1000), nullable=False)
-    language = db.Column(db.String(10), nullable=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-
-class TechStack(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    type = db.Column(db.String(50), nullable=False)
-    image_url = db.Column(db.String(300), nullable=True)
-
-class PortfolioProject (db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    project_type = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(2000), nullable=False)
-    spanish_description = db.Column(db.String(2000), nullable=False)
-    project_url = db.Column(db.String(200), nullable=True)
-    github_url = db.Column(db.String(200), nullable=True)
-    tech_tags = db.relationship('TechTag', secondary='project_tech_tag', backref='projects')
-    image_url = db.Column(db.String(200), nullable=True)
-
-class TechTag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-
-class ProjectTechTag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id'), nullable=False)
-    tech_tag_id = db.Column(db.Integer, db.ForeignKey('tech_tag.id'), nullable=False)
-
-class WorkExperience(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), nullable=False)
-    spanish_name = db.Column(db.String(120), nullable=False)
-    description = db.Column(db.String(1200), nullable=False)
-    spanish_description = db.Column(db.String(1200), nullable=False)
-    type_of_project = db.Column(db.String(300), nullable=False)
-    spanish_type_of_project = db.Column(db.String(300), nullable=False)
-    role_that_i_had = db.Column(db.String(200), nullable=False)
-    spanish_role_that_i_had = db.Column(db.String(200), nullable=False)
-    technologies = db.relationship('ExperienceTechnology', secondary='work_experience_technology', backref='work_experiences')
-
-class ExperienceTechnology(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-
-class WorkExperienceTechnology(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    work_experience_id = db.Column(db.Integer, db.ForeignKey('work_experience.id'), nullable=False)
-    experience_technology_id = db.Column(db.Integer, db.ForeignKey('experience_technology.id'), nullable=False)
 
 class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ip_address = db.Column(db.String(45), nullable=False)
     user_agent = db.Column(db.String(200), nullable=True)
     utm_source = db.Column(db.String(100), nullable=True)
-    visited_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+    visited_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-class ExtraYoutubeSong(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    youtube_url = db.Column(db.String(200), nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-class ExtraYoutubeVideo(db.Model):
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+class PortfolioProject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # English content (required)
     title = db.Column(db.String(200), nullable=False)
-    youtube_url = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    # Spanish content (optional)
+    title_es = db.Column(db.String(200), nullable=True)
+    description_es = db.Column(db.Text, nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    # Shared fields
+    image_path = db.Column(db.String(200), nullable=True)
+    project_url = db.Column(db.String(200), nullable=True)
+    github_repo_url = db.Column(db.String(200), nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    extra_images = db.relationship(
+        'ExtraPortfolioImage',
+        backref='project',
+        lazy=True,
+        cascade='all, delete-orphan',
+    )
+
+class ExtraPortfolioImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id'), nullable=False)
+    image_path = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+class GalleryPhoto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # English content (required)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    # Spanish content (optional)
+    title_es = db.Column(db.String(200), nullable=True)
+    description_es = db.Column(db.Text, nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    # Shared fields
+    image_path = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class CvFile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    file_path = db.Column(db.String(200), nullable=False)
+    language = db.Column(db.String(10), nullable=False)
+    uploaded_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+    source = db.Column(db.String(10), nullable=False, default='upload', server_default='upload')
+    yaml_path = db.Column(db.String(200), nullable=True)
+
+
+class Proyectada(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # English content (required)
+    text = db.Column(db.Text, nullable=False)
+    # Spanish content (optional)
+    text_es = db.Column(db.Text, nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    # Visibility
+    published = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class BlogCategory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # English (required)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    # Spanish (optional)
+    name_es = db.Column(db.String(100), nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    posts = db.relationship('BlogPost', backref='category', lazy=True)
+
+
+blog_post_tags = db.Table(
+    'blog_post_tags',
+    db.Column('post_id', db.Integer, db.ForeignKey('blog_post.id'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('blog_tag.id'), primary_key=True),
+)
+
+
+class BlogTag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class BlogPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(200), nullable=False, unique=True)
+
+    # English content (required)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    markdown_path = db.Column(db.String(200), nullable=True)
+
+    # Spanish content (optional)
+    title_es = db.Column(db.String(200), nullable=True)
+    description_es = db.Column(db.Text, nullable=True)
+    markdown_path_es = db.Column(db.String(200), nullable=True)
+    has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+
+    # Metadata
+    category_id = db.Column(db.Integer, db.ForeignKey('blog_category.id'), nullable=True)
+    published = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    # Cover image
+    cover_image_path = db.Column(db.String(200), nullable=True)
+
+    images = db.relationship(
+        'BlogPostImage',
+        backref='post',
+        lazy=True,
+        cascade='all, delete-orphan',
+    )
+
+    tags = db.relationship(
+        'BlogTag',
+        secondary=blog_post_tags,
+        backref=db.backref('posts', lazy='dynamic'),
+        lazy='subquery',
+    )
+
+
+class BlogPostImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False)
+    image_path = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class ContactMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(200), nullable=False)
+    subject = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    language = db.Column(db.String(10), nullable=False, default='en')
+    is_read = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class MailTemplate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(50), nullable=False)
+    language = db.Column(db.String(10), nullable=False, default='en')
+    description = db.Column(db.String(200), nullable=True)
+    subject = db.Column(db.String(200), nullable=False)
+    body_html = db.Column(db.Text, nullable=False)
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp(),
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint('slug', 'language', name='uq_mail_template_slug_lang'),
+    )
+
+
+class BlockedSender(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(200), nullable=True, index=True)
+    ip_address = db.Column(db.String(45), nullable=True, index=True)
+    reason = db.Column(db.String(200), nullable=False, default='manual')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class ContactSubmissionLog(db.Model):
+    """Records every contact-form attempt that passes the honeypot/timing traps, used for rate limiting."""
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(200), nullable=False, index=True)
+    ip_address = db.Column(db.String(45), nullable=True, index=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(), index=True)
+
+
+class GuestbookEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    ip_address = db.Column(db.String(45), nullable=True)
+    approved = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())

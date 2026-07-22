@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>No-CSS - AstronautMarkus.dev</title>
+    <meta name="description" content="Este mismo tipo de contenido, sin ninguna hoja de estilos cargada. Puro estilo por defecto del navegador.">
+</head>
+
+<body>
+
+    <h1>No-CSS</h1>
+
+    <p>Esta página no carga ninguna hoja de estilos. No "CSS mínimo" — cero, literalmente. Sin
+        <code>styles.css</code>, sin CSS específico de sección, sin Google Fonts, sin el CDN de Font Awesome. Lo
+        que estás viendo ahora mismo es el renderizado por defecto de tu propio navegador sobre etiquetas HTML
+        planas, nada más.</p>
+
+    <h2>Por Qué Existe Esto</h2>
+
+    <p>Cada otra página de este sitio carga una hoja de estilos compartida más un archivo específico de página.
+        Es fácil decir que un sitio es "liviano" mientras sigue enviando fuentes, librerías de íconos y un sistema
+        de diseño en cada petición. Esta página es la línea base honesta: ¿cómo se ve el contenido real sin nada
+        de eso?</p>
+
+    <h2>Lo Que Realmente Falta</h2>
+
+    <ul>
+        <li>Sin fuentes personalizadas — esto es lo que sea que tu navegador use por defecto</li>
+        <li>Sin colores más allá de texto negro por defecto sobre fondo blanco</li>
+        <li>Sin layout — los encabezados, párrafos y listas se apilan exactamente como están escritos en el HTML</li>
+        <li>Sin modo oscuro, porque no hay CSS que declare uno</li>
+    </ul>
+
+    <p><a href="{{ url_for('nerd.performance') }}">Volver a Rendimiento</a></p>
+    <p><a href="{{ url_for('main.home') }}">Volver al inicio normal, con estilos</a></p>
+
+</body>
+
+</html>

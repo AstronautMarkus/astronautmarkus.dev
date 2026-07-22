@@ -1,0 +1,31 @@
+.tm-page {
+    font-family: "Courier New", monospace;
+    background: var(--bg-void);
+}
+
+.tm-page .nerd-title {
+    font-family: "Courier New", monospace;
+    text-shadow: none;
+}
+
+.tm-page p,
+.tm-page li {
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+}
+
+.tm-rule {
+    margin: 10px 0;
+    color: var(--border-strong);
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+.tm-ref-list {
+    list-style: none;
+    padding-left: 0;
+    color: var(--text-faint);
+    font-size: 12px;
+    word-break: break-all;
+}

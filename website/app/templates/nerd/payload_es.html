@@ -1,0 +1,58 @@
+{% extends "base/base.html" %}
+
+{% block title %}Payload{% endblock %}
+{% block description %}Qué hay realmente dentro de la respuesta HTTP de esta página, con números reales de gzip.{% endblock %}
+{% block keywords %}payload, respuesta http, gzip, compresión, content-type{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Payload</h2>
+
+    <div class="nerd-section">
+      <p>El HTML de esta misma página, comprimido con gzip en tiempo real usando el módulo <code>gzip</code> de
+        Python — el mismo algoritmo que tu navegador negocia vía <code>Accept-Encoding</code>, no un porcentaje
+        inventado.</p>
+      <div class="nerd-stat-grid">
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ '{:,}'.format(raw_bytes) }} B</div>
+          <div class="nerd-stat-label">HTML Crudo</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ '{:,}'.format(gzip_bytes) }} B</div>
+          <div class="nerd-stat-label">Gzip</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ savings_pct }}%</div>
+          <div class="nerd-stat-label">Más Chico</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nerd-section">
+      <h3>Datos de la Petición</h3>
+      <div class="nerd-stat-grid">
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ content_type }}</div>
+          <div class="nerd-stat-label">Content-Type</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ method }}</div>
+          <div class="nerd-stat-label">Método</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ 'Sí' if is_secure else 'No' }}</div>
+          <div class="nerd-stat-label">HTTPS</div>
+        </div>
+      </div>
+      <p class="nerd-note">¿Quieres los headers de la petición en vez de la respuesta? Mira <a href="{{ url_for('nerd.headers') }}">Headers</a>.</p>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Volver a Rendimiento</a></div>
+  </div>
+</div>
+{% endblock %}

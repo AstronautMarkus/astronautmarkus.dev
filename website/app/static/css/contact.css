@@ -1,0 +1,141 @@
+#contact-wrap {
+    max-width: 680px;
+    margin: 50px auto;
+    padding: 30px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-mid);
+    border-top: 3px solid var(--accent);
+}
+
+#contact-wrap h2 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: var(--text-bright);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.contact-intro {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0 0 22px;
+    line-height: 1.6;
+}
+
+/* ── Honeypot (bot trap, kept off-screen instead of display:none) ─── */
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* ── Alerts ──────────────────────────────────────────────── */
+.contact-alert {
+    font-size: 12px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    border-left: 3px solid;
+}
+
+.contact-alert-success {
+    color: var(--success);
+    border-color: var(--success);
+    background: rgba(94, 207, 143, 0.08);
+}
+
+.contact-alert-error {
+    color: var(--danger);
+    border-color: var(--danger);
+    background: rgba(214, 69, 60, 0.08);
+}
+
+/* ── Form layout ─────────────────────────────────────────── */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+}
+
+@media (max-width: 520px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.form-group .required {
+    color: var(--danger);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    padding: 8px 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
+    color: var(--text-bright);
+    font-size: 12px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--accent);
+}
+
+.form-group.has-error input,
+.form-group.has-error textarea {
+    border-color: var(--danger);
+}
+
+.field-error {
+    font-size: 10px;
+    color: var(--danger);
+    margin-top: 4px;
+}
+
+/* ── Turnstile ───────────────────────────────────────────── */
+.cf-turnstile {
+    display: table;
+    margin: 0 auto 1rem;
+}
+
+/* ── Submit button ───────────────────────────────────────── */
+.contact-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    margin-top: 8px;
+    background: var(--accent-fill);
+    color: var(--text-bright);
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.contact-btn:hover {
+    background: var(--accent-fill-hover);
+}

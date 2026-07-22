@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+
+{% block title %}Proyectadas{% endblock %}
+{% block description %}Una colección de proyectadas — la favorita del internet para proyectar inseguridades y fantasías ocultas.{% endblock %}
+{% block keywords %}proyectadas, memes, internet, proyección, inseguridades{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="blog-banner">
+    <div class="blog-banner-inner">
+        <h2>// Proyectadas</h2>
+        <p>Alerta: posibles red flags de mi parte por mi propia inseguridad y fantasías ocultas. Procede con precaución.</p>
+    </div>
+</div>
+
+<div id="blog-content">
+
+    <div id="blog-main">
+
+        {% if items %}
+            {% for item in items %}
+            {% set display_text = item.text_es if item.has_es and item.text_es else item.text %}
+            <div class="blog-card" style="padding:1.5rem 1.75rem">
+                <p style="font-size:1rem;line-height:1.7;margin:0">{{ display_text }}</p>
+                <div class="blog-card-meta" style="margin-top:1rem">
+                    <span class="blog-card-date">{{ item.created_at | dtfmt('%b %d, %Y') }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:var(--text-faint);margin-top:2rem">Todavía no hay proyectadas. Vuelve pronto.</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

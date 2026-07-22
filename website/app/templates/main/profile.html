@@ -1,0 +1,151 @@
+{% extends "base/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block description %}AstronautMarkus's profile — friends, interests, and things I like. A MySpace-style throwback.{% endblock %}
+{% block keywords %}Marcos Reyes, profile, myspace, friends, interests, AstronautMarkus{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="profile-content">
+
+    <div id="profile-primary">
+
+        <div class="profile-photo-box">
+            <img src="{{ url_for('static', filename='images/home/profile.jpg') }}" alt="AstronautMarkus" class="profile-photo">
+            <div class="profile-mood">"Can you feel your destiny calling you?"</div>
+        </div>
+
+        <div class="profile-namecard">
+            <h2 class="profile-name">Marcos "AstronautMarkus" Reyes</h2>
+            <div class="profile-quote">"If I had a coin for every time someone told me I couldn't do something, I'd have two coins, which isn't much but it's weird that it happened twice, right?"</div>
+            <ul class="profile-basic-info">
+                <li><span>Age</span>{{ age_geek }}</li>
+                <li><span>Gender</span>Male 99.999999999% of the time (like AWS S3)</li>
+                <li><span>Location</span>Chile, hosted on an Oracle VPS server</li>
+            </ul>
+        </div>
+
+        <div class="profile-box">
+            <h3 class="section-title">AstronautMarkus's Interests</h3>
+            <dl class="profile-interests">
+                <dt>General</dt>
+                <dd>Networking, home-labbing, amateur radio, taking things apart just to see how they work, tuned cars, spending money on food</dd>
+                <dt>Music</dt>
+                <dd>Eurobeat, eurobeat, EUROBEAT, euro beat, eURObeat, EURObeat, euroBEAT, euroBEAT, anything except reggaeton, cumbia, trap, rap, pop, and generally crappy music. Even My Little Pony songs.</dd>
+                <dt>Movies</dt>
+                <dd>Star Wars, Terminator, Robocop, 80s stuff for gentlemen over 40, action movies, sci-fi movies, basically anything a nerd would enjoy.</dd>
+                <dt>TV</dt>
+                <dd>Nothing. TV doesn't do anything for me anymore. I use a CRT as a cheap gaming monitor.</dd>
+                <dt>Books</dt>
+                <dd>The only book I truly enjoyed reading was The Metamorphosis by Franz Kafka. Every other book I've read has been out of obligation or curiosity. I admit it, I'd rather listen to audio or watch videos than read books.</dd>
+                <dt>Heroes</dt>
+                <dd>Linus Torvalds, Richard Stallman, Elon Musk, Steve Jobs, Nikola Tesla, Albert Einstein, Isaac Newton, Galileo Galilei, Leonardo Da Vinci, and everyone who's done something for humanity. Energy, power, and knowledge.</dd>
+                <dt>Food</dt>
+                <dd>White rice and grilled meat is the greatest dish in history and I'm not up for debating it.</dd>
+            </dl>
+        </div>
+
+        <div class="profile-box">
+            <h3 class="section-title">Details</h3>
+            <ul class="profile-details-list">
+                <li><span>Status:</span> Single, married to the terminal</li>
+                <li><span>Hometown:</span> Possibly Loquendo City</li>
+                <li><span>Ethnicity:</span> Chilean</li>
+                <li><span>Occupation:</span> Infrastructure Lead / Software Developer</li>
+            </ul>
+
+            <h4>About Me</h4>
+            <p>Not very extroverted or sociable — I just do what I like, which is the IT side of life and everything
+                related to technology and telecommunications. I like cats and dogs that aren't too energetic or
+                obsessive with you.</p>
+
+            <h4>Who I'd Like to Meet</h4>
+            <p>Anyone who believes that computing and technology isn't just a job, but a lifestyle :3</p>
+        </div>
+
+    </div>
+
+    <div id="profile-secondary">
+
+        <div class="profile-box">
+            <h3 class="section-title">AstronautMarkus has <span class="friend-count">5</span> Friends</h3>
+            <div class="friends-grid">
+                <a href="#" class="friend-card">
+                    <img src="{{ url_for('static', filename='images/home/seven.jpg') }}" alt="Friend" class="friend-avatar">
+                    <span class="friend-name">Seven (Pookie Gangsta)</span>
+                </a>
+                <a href="#" class="friend-card">
+                    <img src="{{ url_for('static', filename='images/home/sword.webp') }}" alt="Friend" class="friend-avatar">
+                    <span class="friend-name">Sword "Sergio" Hunter</span>
+                </a>
+                <a href="#" class="friend-card">
+                    <img src="{{ url_for('static', filename='images/home/claude.webp') }}" alt="Friend" class="friend-avatar">
+                    <span class="friend-name">Claude Code</span>
+                </a>
+                <a href="#" class="friend-card">
+                    <img src="{{ url_for('static', filename='images/home/random.webp') }}" alt="Friend" class="friend-avatar">
+                    <span class="friend-name">A random femboy who messaged me on Discord</span>
+                </a>
+                <a href="#" class="friend-card">
+                    <img src="{{ url_for('static', filename='images/home/you.jpg') }}" alt="Friend" class="friend-avatar">
+                    <span class="friend-name">You, the one reading this (sometimes)</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="profile-box">
+            <h3 class="section-title">Comments</h3>
+            <div class="comment-list">
+                <div class="comment-item">
+                    <img src="{{ url_for('static', filename='images/home/seven.jpg') }}" alt="" class="comment-avatar">
+                    <div class="comment-body">
+                        <div class="comment-meta">
+                            <span class="comment-author">Seven (Pookie Gangsta)</span>
+                            <span class="comment-date">[ 1/1/2026 12:00 PM ]</span>
+                        </div>
+                        <p class="comment-text">Yo dude let's play soccer</p>
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <img src="{{ url_for('static', filename='images/home/profile.jpg') }}" alt="" class="comment-avatar">
+                    <div class="comment-body">
+                        <div class="comment-meta">
+                            <span class="comment-author">Marcos "AstronautMarkus" Reyes</span>
+                            <span class="comment-date">[ 1/1/2026 12:00 PM ]</span>
+                        </div>
+                        <p class="comment-text">Clearly, you don't own an Air Fryer.</p>
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <img src="{{ url_for('static', filename='images/home/abriguense.webp') }}" alt="" class="comment-avatar">
+                    <div class="comment-body">
+                        <div class="comment-meta">
+                            <span class="comment-author">Bundle up, it's freezing cold</span>
+                            <span class="comment-date">[ 1/1/2026 12:00 PM ]</span>
+                        </div>
+                        <p class="comment-text">Bundle up, it's freezing cold</p>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-add-note">Want to leave a comment? <a href="{{ url_for('contact.contact') }}">Send me a message</a> and I'll add it here by hand. Yes, really.</div>
+        </div>
+
+        <div class="profile-box links-box">
+            <h4>Available Links</h4>
+            <ul class="profile-links-list">
+                <li><a href="{{ url_for('main.home') }}">Back Home</a></li>
+                <li><a href="{{ url_for('main.about') }}">About Me</a></li>
+                <li><a href="{{ url_for('contact.contact') }}">Contact Me</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

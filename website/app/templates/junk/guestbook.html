@@ -1,0 +1,71 @@
+{% extends "base/base.html" %}
+
+{% block title %}Guestbook{% endblock %}
+{% block description %}Sign the AstronautMarkus.dev guestbook — the way the internet used to work.{% endblock %}
+{% block keywords %}guestbook, retro, y2k, geocities, 90s web{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_guestbook.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page">
+    <h2 class="junk-title">Sign My Guestbook</h2>
+
+    <div class="junk-section">
+      <p>Hey there, traveler! You've reached the guestbook. Leave a message so future visitors know you were here.
+        Entries are reviewed before they show up, because the internet has changed a little since 1999.</p>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            {% if message == 'sent' %}
+              <p class="gb-flash gb-flash-success">Thanks. Your entry was submitted and is waiting for approval.</p>
+            {% elif message == 'validation_error' %}
+              <p class="gb-flash gb-flash-error">Please fill in both your name and a message.</p>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('junk.guestbook') }}" class="gb-form" novalidate>
+        <input type="hidden" name="form_ts" value="{{ form_ts }}">
+        <div class="hp-field" aria-hidden="true">
+          <label for="homepage_url">Homepage URL</label>
+          <input type="text" id="homepage_url" name="homepage_url" tabindex="-1" autocomplete="off">
+        </div>
+
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" maxlength="100" required>
+
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" rows="4" maxlength="1000" required></textarea>
+
+        <button type="submit" class="junk-btn">Sign the Guestbook</button>
+      </form>
+    </div>
+
+    <div class="junk-section">
+      <h3>Entries ({{ entries | length }})</h3>
+      {% if entries %}
+        {% for entry in entries %}
+        <div class="gb-entry">
+          <div class="gb-entry-header">
+            <strong>{{ entry.name }}</strong>
+            <span class="gb-entry-date">{{ entry.created_at.strftime('%b %d, %Y') }}</span>
+          </div>
+          <p>{{ entry.message }}</p>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p><em>No entries yet — be the first to sign!</em></p>
+      {% endif %}
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Back Home</a></div>
+  </div>
+</div>
+{% endblock %}

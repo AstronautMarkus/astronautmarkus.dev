@@ -1,0 +1,15 @@
+.marquee-speed-slow span {
+    animation-duration: 22s;
+}
+
+.marquee-speed-medium span {
+    animation-duration: 14s;
+}
+
+.marquee-speed-fast span {
+    animation-duration: 7s;
+}
+
+.marquee-reverse span {
+    animation-direction: reverse;
+}

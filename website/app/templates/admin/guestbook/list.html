@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Guestbook{% endblock %}
+{% block page_title %}Guestbook{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if entries %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Message</th>
+        <th>Status</th>
+        <th>IP</th>
+        <th>Date</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for entry in entries %}
+    <tr>
+      <td>{{ entry.name }}</td>
+      <td style="max-width:420px">{{ entry.message | truncate(140) }}</td>
+      <td>
+        {% if entry.approved %}
+          <span style="color:#22a322;font-weight:700;font-size:0.8rem">Published</span>
+        {% else %}
+          <span style="color:#aaaaaa;font-size:0.8rem">Pending</span>
+        {% endif %}
+      </td>
+      <td style="color:#777777;font-size:0.8rem">{{ entry.ip_address or '—' }}</td>
+      <td style="color:#777777;font-size:0.8rem">{{ entry.created_at | dtfmt('%b %d, %Y') }}</td>
+      <td>
+        <div class="td-actions">
+          {% if entry.approved %}
+          <form method="POST" action="{{ url_for('admin.guestbook_unapprove', entry_id=entry.id) }}">
+            <button type="submit" class="btn btn-ghost btn-sm">Unpublish</button>
+          </form>
+          {% else %}
+          <form method="POST" action="{{ url_for('admin.guestbook_approve', entry_id=entry.id) }}">
+            <button type="submit" class="btn btn-primary btn-sm">Approve</button>
+          </form>
+          {% endif %}
+          <form method="POST"
+                action="{{ url_for('admin.guestbook_delete', entry_id=entry.id) }}"
+                onsubmit="return confirm('Delete this guestbook entry? This cannot be undone.')">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">No guestbook entries yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

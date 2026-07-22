@@ -1,0 +1,34 @@
+{% extends "base/base.html" %}
+
+{% block title %}Contador de Visitas{% endblock %}
+{% block description %}El clásico contador de visitas en GIF animado, agrandado a tamaño dramático.{% endblock %}
+{% block keywords %}contador de visitas, hit counter, web retro, geocities, contador gif{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_counter.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="junk-page counter-page">
+    <h2 class="junk-title">Eres el Visitante Número</h2>
+
+    <div class="counter-display">
+      <img src="{{ url_for('utils.visitor_counter') }}" alt="contador de visitas mostrando {{ total_visits }} visitas">
+    </div>
+
+    <p class="counter-caption">{{ '{:,}'.format(total_visits) }} visitas desde que este sitio salió al aire —
+      todas contadas de verdad, sin números falsos aquí.</p>
+
+    <div class="junk-section">
+      <p>Este es exactamente el mismo contador que aparece en el header de cada página de este sitio — solo lo
+        agrandamos para el efecto dramático, tal como GeoCities lo hubiera querido. Gracias por ser uno de los
+        {{ '{:,}'.format(total_visits) }}.</p>
+    </div>
+
+    {% include "junk/_webring_widget.html" %}
+    <div class="junk-nav-back"><a href="{{ url_for('main.home') }}">← Volver al Inicio</a></div>
+  </div>
+</div>
+{% endblock %}

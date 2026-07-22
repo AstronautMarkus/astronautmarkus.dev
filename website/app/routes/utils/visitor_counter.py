@@ -8,15 +8,18 @@ from app.models.models import Visit
 from . import utils_bp
 
 
+LEGO_STUD_CAP = 4_000_000_000
+
+
 def _format_visitor_counter(total_visits: int) -> str:
     if total_visits <= 9999:
         return f"{total_visits:04d}"
-    return str(total_visits)
+    return str(min(total_visits, LEGO_STUD_CAP))
 
 
 def _build_counter_gif(counter_text: str) -> bytes:
     base_dir = Path(__file__).resolve().parents[2]
-    digits_dir = base_dir / 'static' / 'img' / 'booru-jaypee'
+    digits_dir = base_dir / 'static' / 'images' / 'booru-jaypee'
 
     digit_images = [Image.open(digits_dir / f'{digit}.gif') for digit in counter_text]
     frame_counts = [getattr(image, 'n_frames', 1) for image in digit_images]

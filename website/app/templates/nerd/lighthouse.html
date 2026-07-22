@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+
+{% block title %}Lighthouse{% endblock %}
+{% block description %}Self-graded Lighthouse-style scores. Take them exactly as seriously as that implies.{% endblock %}
+{% block keywords %}lighthouse, performance score, web vitals, self-graded{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd_lighthouse.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Lighthouse</h2>
+
+    <div class="nerd-section">
+      <p class="nerd-note">Disclaimer: these scores are self-reported. Nobody has actually run Chrome DevTools
+        against this page. We simply believe in ourselves.</p>
+    </div>
+
+    <div class="nerd-section">
+      <div class="lh-score-grid">
+        <div class="lh-score-tile">
+          <div class="lh-score-value">{{ scores.performance }}</div>
+          <div class="lh-score-label">Performance</div>
+        </div>
+        <div class="lh-score-tile">
+          <div class="lh-score-value">{{ scores.accessibility }}</div>
+          <div class="lh-score-label">Accessibility</div>
+        </div>
+        <div class="lh-score-tile">
+          <div class="lh-score-value">{{ scores.best_practices }}</div>
+          <div class="lh-score-label">Best Practices</div>
+        </div>
+        <div class="lh-score-tile">
+          <div class="lh-score-value">{{ scores.seo }}</div>
+          <div class="lh-score-label">SEO</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nerd-section">
+      <h3>Methodology</h3>
+      <p>We looked at the page, felt good about it, and picked numbers close to 100. This is not how Lighthouse
+        actually works — a real audit would need Chrome DevTools pointed at this exact URL. Until then, just
+        trust us, like everyone else does.</p>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Back to Performance</a></div>
+  </div>
+</div>
+{% endblock %}

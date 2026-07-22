@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+
+{% block title %}Carbon Footprint{% endblock %}
+{% block description %}A completely unscientific estimate of this page's environmental impact. Methodology: vibes.{% endblock %}
+{% block keywords %}carbon footprint, sustainability, green web, parody{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd_carbon.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Carbon Footprint</h2>
+
+    <div class="nerd-section">
+      <p class="nerd-note">Important: this is satire. There is no real carbon-accounting methodology behind the
+        number below. Actual website carbon calculators exist and use real grid-intensity data — this is not one
+        of them.</p>
+      <div class="carbon-readout">
+        <div class="carbon-value">0.0031g</div>
+        <div class="carbon-label">CO&#8322; per page view*</div>
+      </div>
+      <p class="nerd-note">*according to a methodology we made up five minutes ago, loosely inspired by "this page
+        has almost no JavaScript, so it probably doesn't spin up a fan somewhere."</p>
+    </div>
+
+    <div class="nerd-section">
+      <h3>What Would Actually Help</h3>
+      <p>If you care about this seriously: fewer render-blocking scripts, smaller images, less third-party
+        tracking, and caching aggressively all reduce real energy use per request — that part isn't a joke, even
+        if our number is.</p>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Back to Performance</a></div>
+  </div>
+</div>
+{% endblock %}

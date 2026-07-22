@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+
+{% block title %}Performance{% endblock %}
+{% block description %}A collection of pages about this site's actual performance, weight, and internals — some real, some not.{% endblock %}
+{% block keywords %}performance, web vitals, lighthouse, benchmarks, page weight{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Performance</h2>
+
+    <div class="nerd-section">
+      <p>This site is built on the same philosophy mentioned on the <a href="{{ url_for('main.about') }}">About page</a>:
+        stay under 5MB, avoid frameworks that ship megabytes of JavaScript for a blog, and actually measure things
+        instead of assuming. Most of the pages below pull real numbers from this exact request — a few are jokes,
+        and are labeled as such.</p>
+    </div>
+
+    <div class="nerd-section">
+      <h3>Real Numbers</h3>
+      <ul class="nerd-hub-list">
+        <li><a href="{{ url_for('nerd.metrics') }}">Metrics</a><span>Live counts pulled straight from the database.</span></li>
+        <li><a href="{{ url_for('nerd.headers') }}">Headers</a><span>The exact HTTP headers your browser just sent.</span></li>
+        <li><a href="{{ url_for('nerd.response_time') }}">Response Time</a><span>Server-side render time for this exact request.</span></li>
+        <li><a href="{{ url_for('nerd.size') }}">Size</a><span>Real byte count of the page you're looking at.</span></li>
+        <li><a href="{{ url_for('nerd.payload') }}">Payload</a><span>What's actually inside the HTTP response.</span></li>
+        <li><a href="{{ url_for('nerd.no_js') }}">No-JS</a><span>A page that ships (almost) no JavaScript.</span></li>
+        <li><a href="{{ url_for('nerd.no_css') }}">No-CSS</a><span>The same kind of content with zero stylesheet loaded.</span></li>
+        <li><a href="{{ url_for('nerd.html_only') }}">HTML Only</a><span>Pure semantic markup, no classes, no divs-for-layout.</span></li>
+      </ul>
+    </div>
+
+    <div class="nerd-section">
+      <h3>Less Serious</h3>
+      <ul class="nerd-hub-list">
+        <li><a href="{{ url_for('nerd.lighthouse') }}">Lighthouse</a><span>Self-graded scores. Google has not been consulted.</span></li>
+        <li><a href="{{ url_for('nerd.benchmark') }}">Benchmark</a><span>This site vs. a typical modern SPA.</span></li>
+        <li><a href="{{ url_for('nerd.carbon_footprint') }}">Carbon Footprint</a><span>Methodology: vibes.</span></li>
+        <li><a href="{{ url_for('nerd.text_mode') }}">Text Mode</a><span>What this page would look like in Lynx.</span></li>
+      </ul>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('main.home') }}">← Back Home</a></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base/base.html" %}
+
+{% block title %}Metrics{% endblock %}
+{% block description %}Live counts pulled straight from the database — no placeholder numbers.{% endblock %}
+{% block keywords %}metrics, analytics, dashboard, live data{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Metrics</h2>
+
+    <div class="nerd-section">
+      <p>Every number below is a live query against this site's actual database, run at the moment you loaded this
+        page. No mock data, no hardcoded placeholders.</p>
+    </div>
+
+    <div class="nerd-section">
+      <div class="nerd-stat-grid">
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ '{:,}'.format(stats.visits) }}</div>
+          <div class="nerd-stat-label">Total Visits</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ stats.blog_posts }}</div>
+          <div class="nerd-stat-label">Published Posts</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ stats.portfolio_projects }}</div>
+          <div class="nerd-stat-label">Portfolio Projects</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ stats.gallery_photos }}</div>
+          <div class="nerd-stat-label">Gallery Photos</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ stats.guestbook_entries }}</div>
+          <div class="nerd-stat-label">Guestbook Entries</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Back to Performance</a></div>
+  </div>
+</div>
+{% endblock %}

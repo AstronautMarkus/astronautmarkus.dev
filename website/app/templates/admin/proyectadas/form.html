@@ -1,0 +1,106 @@
+{% extends "admin/base.html" %}
+
+{% set is_edit = item is not none %}
+
+{% block title %}{{ 'Edit proyectada' if is_edit else 'New proyectada' }}{% endblock %}
+{% block page_title %}{{ 'Edit proyectada' if is_edit else 'New proyectada' }}{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.proyectadas_list') }}">← Back to list</a>
+{% endblock %}
+
+{% block content %}
+
+{% set action_url = url_for('admin.proyectadas_edit', item_id=item.id) if is_edit else url_for('admin.proyectadas_create') %}
+
+<div class="card">
+  <div class="card-title">Detail</div>
+  <form method="POST" action="{{ action_url }}">
+
+    <!-- ── Language tabs ─────────────────────────────────────── -->
+    <div class="lang-tabs">
+      <button type="button" class="lang-tab active" data-target="panel-en">
+        English <span class="lang-req">*</span>
+      </button>
+      <button type="button" class="lang-tab" data-target="panel-es">
+        Español <span class="lang-opt">optional</span>
+      </button>
+    </div>
+
+    <div class="form-grid">
+
+      <!-- ── English panel ─────────────────────────────────── -->
+      <div class="lang-panel active" id="panel-en">
+        <div class="form-group">
+          <label for="text">Text <span style="color:#cc0000">*</span></label>
+          <textarea id="text" name="text" rows="10"
+                    maxlength="10000"
+                    placeholder="Type the proyectada here…"
+                    required>{{ item.text if is_edit else '' }}</textarea>
+        </div>
+      </div>
+
+      <!-- ── Spanish panel ─────────────────────────────────── -->
+      <div class="lang-panel" id="panel-es">
+        <div class="es-enable-row">
+          <input type="checkbox" id="enable_es" name="has_es" value="1"
+                 {{ 'checked' if is_edit and item.has_es else '' }}>
+          <label for="enable_es" class="es-enable-label">
+            Enable Spanish content for this proyectada
+          </label>
+        </div>
+        <div class="es-fields-wrap{{ ' disabled' if not (is_edit and item.has_es) else '' }}"
+             id="es-fields">
+          <div class="form-group">
+            <label for="text_es">Text (ES) <span style="color:#cc0000">*</span></label>
+            <textarea id="text_es" name="text_es" rows="10"
+                      maxlength="10000"
+                      placeholder="Write the proyectada here…">{{ item.text_es if is_edit and item.text_es else '' }}</textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Visibility ────────────────────────────────────── -->
+    <div class="form-group" style="margin-top:1.5rem;padding:0 0.25rem">
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.5rem;">
+        <input type="checkbox" name="published" value="1"
+               {{ 'checked' if is_edit and item.published else '' }}>
+        Publish (visible on the site)
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{ 'Save changes' if is_edit else 'Create proyectada' }}
+      </button>
+      <a href="{{ url_for('admin.proyectadas_list') }}" class="btn btn-ghost">Cancel</a>
+    </div>
+
+  </form>
+</div>
+
+<script>
+(function () {
+  // Lang tabs
+  document.querySelectorAll('.lang-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.lang-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.lang-panel').forEach(function (p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // ES enable checkbox
+  var esCheckbox = document.getElementById('enable_es');
+  var esFields   = document.getElementById('es-fields');
+  if (esCheckbox && esFields) {
+    esCheckbox.addEventListener('change', function () {
+      esFields.classList.toggle('disabled', !esCheckbox.checked);
+    });
+  }
+})();
+</script>
+{% endblock %}

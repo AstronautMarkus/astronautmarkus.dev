@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+
+{% block title %}Benchmark{% endblock %}
+{% block description %}A very informal, very biased comparison against a typical modern single-page app.{% endblock %}
+{% block keywords %}benchmark, spa, framework, javascript, comparison{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd_benchmark.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Benchmark</h2>
+
+    <div class="nerd-section">
+      <p class="nerd-note">Not a scientific study. Just a Flask site with strong opinions, comparing itself to
+        "a typical modern SPA" — a composite stereotype, not any specific real project.</p>
+      <table class="nerd-benchmark-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>This Site</th>
+            <th>Typical Modern SPA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Build step</td><td>None</td><td>Webpack / Vite / Babel</td></tr>
+          <tr><td>node_modules</td><td>Doesn't exist</td><td>Several hundred MB</td></tr>
+          <tr><td>JS shipped for a static page</td><td>~0 KB</td><td>Several hundred KB, minimum</td></tr>
+          <tr><td>Trackers / analytics scripts</td><td>0</td><td>Usually more than one</td></tr>
+          <tr><td>Cookie consent banner</td><td>None needed</td><td>Almost always present</td></tr>
+          <tr><td>Time to first byte</td><td>Fast — server renders HTML directly</td><td>Depends on hydration</td></tr>
+          <tr><td>Works with JS disabled</td><td>Mostly, yes</td><td>Usually a blank page</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Back to Performance</a></div>
+  </div>
+</div>
+{% endblock %}

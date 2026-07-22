@@ -1,43 +1,156 @@
-{% extends "layout/base.html" %}
+{% extends "base/base.html" %}
 
-{% set is_spanish = request.path == '/es' or request.path.startswith('/es/') %}
+{% block title %}404 - Not Found{% endblock %}
+{% block description %}Page not found — AstronautMarkus.dev{% endblock %}
 
-{% set page_title = '404 - Página no encontrada | Marcos Reyes' if is_spanish else '404 - Page Not Found | Marcos Reyes'
-%}
-{% set page_description = 'La página que solicitaste no se pudo encontrar en el sitio personal de Marcos Reyes. Vuelve
-al inicio para seguir navegando.' if is_spanish else 'The page you requested could not be found on Marcos Reyes personal
-website. Return to the homepage to continue browsing.' %}
-{% set page_keywords = '404, página no encontrada, Marcos Reyes, error del sitio web, página faltante' if is_spanish
-else '404, page not found, Marcos Reyes, website error, missing page' %}
+{% block extra_css %}
+<style>
+    #error-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+        min-height: 400px;
+        background: var(--bg-void);
+        border-bottom: 1px solid var(--border-mid);
+    }
 
-{% block title %}{{ page_title }}{% endblock %}
-{% block description %}{{ page_description }}{% endblock %}
-{% block keywords %}{{ page_keywords }}{% endblock %}
+    .error-code {
+        font-size: 120px;
+        font-weight: bold;
+        color: var(--danger);
+        line-height: 1;
+        margin: 0;
+        letter-spacing: -4px;
+        text-shadow:
+            0 0 20px rgba(214, 69, 60, 0.6),
+            0 0 40px rgba(214, 69, 60, 0.3),
+            2px 2px 0 #4a1f1a,
+            4px 4px 0 #2a120f;
+    }
+
+    .error-divider {
+        width: 300px;
+        height: 2px;
+        background: linear-gradient(to right, transparent, var(--danger), transparent);
+        margin: 20px auto;
+    }
+
+    .error-title {
+        font-size: 20px;
+        color: var(--text-bright);
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+
+    .error-subtitle {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin: 0 0 30px 0;
+        font-style: italic;
+        line-height: 1.6;
+        max-width: 480px;
+    }
+
+    .error-ascii {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 11px;
+        color: var(--text-dim);
+        line-height: 1.3;
+        margin: 0 0 30px 0;
+        white-space: pre;
+        user-select: none;
+    }
+
+    .error-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .error-actions .glossy-btn {
+        display: inline-block;
+        padding: 10px 22px;
+        background: var(--accent-fill);
+        color: var(--text-bright) !important;
+        font-size: 13px;
+        font-weight: bold;
+        border: 1px solid var(--accent-fill-border);
+        border-radius: 5px;
+        box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: background 0.2s;
+        text-decoration: none;
+    }
+
+    .error-actions .glossy-btn:hover {
+        background: var(--accent-fill-hover);
+        text-decoration: none;
+    }
+
+    .error-actions .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border-strong);
+        color: var(--text-muted) !important;
+        box-shadow: none;
+    }
+
+    .error-actions .btn-outline:hover {
+        background: var(--bg-input);
+        border-color: var(--text-faint);
+        color: var(--text-bright) !important;
+    }
+
+    .error-hint {
+        margin-top: 30px;
+        font-size: 11px;
+        color: var(--text-dim);
+    }
+
+    .error-hint code {
+        color: var(--accent);
+        font-family: "Courier New", Courier, monospace;
+        background: var(--bg-panel);
+        padding: 1px 5px;
+        border-radius: 3px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    {% if is_spanish %}
-    <h1><img src="{{ url_for('static', filename='img/icons/w2k_stop.ico')}}" alt="Error" class="icon"> Error 404</h1>
-    <p>La página que estás buscando no existe. <br> Puede que haya sido movida o eliminada. Una disculpa de antemano.
+<div id="error-page">
+
+    <pre class="error-ascii">
+ _   _  ___  _  _
+| | | |/ _ \| || |
+| |_| | (_) | || |_
+ \___/ \___/|__\__|
+</pre>
+
+    <p class="error-code">404</p>
+
+    <div class="error-divider"></div>
+
+    <h2 class="error-title">Page Not Found</h2>
+    <p class="error-subtitle">
+        Houston, we have a problem. The page you're looking for drifted into
+        deep space and is no longer at this coordinates.<br>
+        Maybe it was deleted, maybe it never existed, or maybe you just typed the URL wrong.
     </p>
-    <div class="error-content">
-        <img src="{{ url_for('static', filename='img/di-gi-charat-dejiko.gif') }}" alt="Di Gi Charat Dejiko">
-        <div class="error-text">
-            <h3>¿Necesitas ayuda?</h3>
-            <p>Regresa a la página principal o utiliza el menú de navegación para encontrar lo que buscas.</p>
-        </div>
+
+    <div class="error-actions">
+        <a href="{{ url_for('main.home') }}" class="glossy-btn">Back to Home</a>
+        <a href="{{ url_for('main.blog_list') }}" class="glossy-btn btn-outline">Read the Blog</a>
     </div>
-    {% else %}
-    <h1><img src="{{ url_for('static', filename='img/icons/w2k_stop.ico')}}" alt="Error" class="icon"> Error 404</h1>
-    <p>The page you are looking for does not exist. It may have been moved or deleted. <br> We apologize for the
-        inconvenience.</p>
-    <div class="error-content">
-        <img src="{{ url_for('static', filename='img/di-gi-charat-dejiko.gif') }}" alt="Di Gi Charat Dejiko">
-        <div class="error-text">
-            <h3>Need help?</h3>
-            <p>Return to the homepage or use the navigation menu to find what you're looking for.</p>
-        </div>
-    </div>
-    {% endif %}
+
+    <p class="error-hint">
+        Tried to reach: <code>{{ request.path }}</code>
+    </p>
+
 </div>
 {% endblock %}

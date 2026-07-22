@@ -1,0 +1,67 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Blocked Senders{% endblock %}
+{% block page_title %}Blocked Senders{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">← Back to inbox</a>
+{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom:14px">
+  <div class="card-title">Block an email or IP manually</div>
+  <form method="POST" action="{{ url_for('admin.blocked_sender_add') }}" style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding:10px 0 0">
+    <div class="form-group" style="margin:0">
+      <label for="email" style="font-size:11px">Email</label>
+      <input type="text" id="email" name="email" placeholder="spammer@example.com">
+    </div>
+    <div class="form-group" style="margin:0">
+      <label for="ip_address" style="font-size:11px">IP address</label>
+      <input type="text" id="ip_address" name="ip_address" placeholder="203.0.113.42">
+    </div>
+    <button type="submit" class="btn btn-danger btn-sm">Block</button>
+  </form>
+</div>
+
+<div class="card">
+  {% if blocked %}
+  <table class="table-blue">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>IP address</th>
+        <th>Reason</th>
+        <th>Blocked</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for b in blocked %}
+    <tr>
+      <td>{{ b.email or '—' }}</td>
+      <td>{{ b.ip_address or '—' }}</td>
+      <td>
+        {% if b.reason == 'rate_limit_exceeded' %}
+        <span class="lang-badge lang-badge-danger">Auto (rate limit)</span>
+        {% else %}
+        <span class="lang-badge">Manual</span>
+        {% endif %}
+      </td>
+      <td style="color:#777;white-space:nowrap">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
+      <td>
+        <div class="td-actions">
+          <form method="POST" action="{{ url_for('admin.blocked_sender_delete', blocked_id=b.id) }}"
+                onsubmit="return confirm('Unblock this sender?');">
+            <button type="submit" class="btn btn-ghost btn-sm">Unblock</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">No blocked senders yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>No-CSS - AstronautMarkus.dev</title>
+    <meta name="description" content="This exact kind of page content, with zero stylesheets loaded. Pure browser defaults.">
+</head>
+
+<body>
+
+    <h1>No-CSS</h1>
+
+    <p>This page loads zero stylesheets. Not "minimal CSS" — actually zero. No <code>styles.css</code>, no
+        section-specific CSS, no Google Fonts, no Font Awesome CDN. What you're looking at right now is your
+        browser's own default rendering of plain HTML tags, nothing else.</p>
+
+    <h2>Why This Exists</h2>
+
+    <p>Every other page on this site loads a shared stylesheet plus one page-specific file. It's easy to claim a
+        site is "lightweight" while still shipping fonts, icon libraries, and a design system on every request.
+        This page is the honest baseline: what does the actual content look like with none of that?</p>
+
+    <h2>What's Actually Missing</h2>
+
+    <ul>
+        <li>No custom fonts — this is whatever monospace or serif your browser defaults to</li>
+        <li>No colors beyond default black text on a white background</li>
+        <li>No layout — headings, paragraphs, and lists stack exactly as written in the HTML</li>
+        <li>No dark mode, because there's no CSS to declare one</li>
+    </ul>
+
+    <p><a href="{{ url_for('nerd.performance') }}">Back to Performance</a></p>
+    <p><a href="{{ url_for('main.home') }}">Back to the regular, styled homepage</a></p>
+
+</body>
+
+</html>
