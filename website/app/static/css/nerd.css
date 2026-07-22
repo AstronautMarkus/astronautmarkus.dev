@@ -1,0 +1,131 @@
+/* Shared chrome for the "Nerd" performance-metrics section — loaded on every
+   nerd page alongside its own page-specific stylesheet. Same dark, square,
+   panel-on-a-line look as the rest of the site (and the junk.css section),
+   nothing section-specific introduced here beyond layout primitives. */
+
+.nerd-page {
+    max-width: 760px;
+    margin: 30px auto;
+    padding: 26px 32px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-mid);
+    border-top: 3px solid var(--accent);
+}
+
+.nerd-title {
+    margin: 0 0 20px;
+    font-family: 'Press Start 2P', 'Lucida Grande', monospace;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--text-bright);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0 var(--border-strong);
+}
+
+.nerd-section {
+    margin: 22px 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-soft);
+}
+
+.nerd-section:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.nerd-section h3 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-bright);
+}
+
+.nerd-note {
+    font-size: 11px;
+    color: var(--text-faint);
+}
+
+.nerd-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--accent-fill);
+    color: var(--text-bright);
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+}
+
+.nerd-btn:hover {
+    background: var(--accent-fill-hover);
+    text-decoration: none;
+}
+
+/* Hub links used on /performance */
+.nerd-hub-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nerd-hub-list li {
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--border-mid);
+}
+
+.nerd-hub-list li:last-child {
+    border-bottom: none;
+}
+
+.nerd-hub-list a {
+    font-size: 13px;
+}
+
+.nerd-hub-list span {
+    display: block;
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 2px;
+}
+
+/* Generic stat grid — reused by /metrics, /size, /payload */
+.nerd-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.nerd-stat-tile {
+    background: var(--bg-void);
+    border: 1px solid var(--border-mid);
+    padding: 14px;
+    text-align: center;
+}
+
+.nerd-stat-value {
+    font-family: 'Press Start 2P', 'Lucida Grande', monospace;
+    font-size: 16px;
+    color: var(--accent-bright);
+    line-height: 1.4;
+}
+
+.nerd-stat-label {
+    margin-top: 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.nerd-nav-back {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+}

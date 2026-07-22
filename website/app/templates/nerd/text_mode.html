@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+
+{% block title %}Text Mode{% endblock %}
+{% block description %}What this page would look like rendered by a text-mode browser like Lynx.{% endblock %}
+{% block keywords %}text mode, lynx, text browser, terminal, accessibility{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd_text_mode.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page tm-page">
+    <h2 class="nerd-title">Text Mode</h2>
+
+    <pre class="tm-rule">====================================================================</pre>
+
+    <div class="nerd-section">
+      <p>Lynx, w3m, and other text-mode browsers strip away images, fonts, and layout entirely, leaving just
+        structure and links — numbered references instead of inline anchors. This page is a CSS homage to that
+        look, not an actual text browser. It's still real HTML/CSS underneath.</p>
+    </div>
+
+    <pre class="tm-rule">--------------------------------------------------------------------</pre>
+
+    <div class="nerd-section">
+      <h3>Links on This Page</h3>
+      <p>Performance hub [1] &middot; Metrics [2] &middot; Headers [3] &middot; Home [4]</p>
+      <ol class="tm-ref-list">
+        <li>[1] {{ url_for('nerd.performance') }}</li>
+        <li>[2] {{ url_for('nerd.metrics') }}</li>
+        <li>[3] {{ url_for('nerd.headers') }}</li>
+        <li>[4] {{ url_for('main.home') }}</li>
+      </ol>
+    </div>
+
+    <pre class="tm-rule">====================================================================</pre>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Back to Performance</a></div>
+  </div>
+</div>
+{% endblock %}

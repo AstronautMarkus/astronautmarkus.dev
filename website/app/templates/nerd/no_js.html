@@ -1,0 +1,29 @@
+{% extends "base/base.html" %}
+
+{% block title %}No-JS{% endblock %}
+{% block description %}A page that adds zero JavaScript of its own. View source and check.{% endblock %}
+{% block keywords %}no javascript, progressive enhancement, lightweight web{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">No-JS</h2>
+
+    <div class="nerd-section">
+      <p>This page does not add a single line of JavaScript of its own — no <code>extra_js</code> block, no
+        inline <code>&lt;script&gt;</code>, nothing. View source and confirm it yourself.</p>
+      <p>Being fully honest: every page on this site, including this one, ships one small shared script in the
+        base layout that toggles the nav dropdowns open and closed — about 10 lines, present everywhere, not
+        specific to this page. Beyond that, nothing here runs client-side. Every link works, every form on this
+        site that needs to submit data does so with a plain HTML <code>&lt;form&gt;</code>, no fetch calls
+        required.</p>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Back to Performance</a></div>
+  </div>
+</div>
+{% endblock %}

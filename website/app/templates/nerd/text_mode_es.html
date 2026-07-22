@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+
+{% block title %}Modo Texto{% endblock %}
+{% block description %}Cómo se vería esta página renderizada por un navegador de texto como Lynx.{% endblock %}
+{% block keywords %}modo texto, lynx, navegador de texto, terminal, accesibilidad{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd_text_mode.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page tm-page">
+    <h2 class="nerd-title">Modo Texto</h2>
+
+    <pre class="tm-rule">====================================================================</pre>
+
+    <div class="nerd-section">
+      <p>Lynx, w3m y otros navegadores de modo texto eliminan imágenes, fuentes y layout por completo, dejando
+        solo estructura y links — referencias numeradas en vez de anclas inline. Esta página es un homenaje en
+        CSS a ese look, no un navegador de texto real. Por debajo sigue siendo HTML/CSS de verdad.</p>
+    </div>
+
+    <pre class="tm-rule">--------------------------------------------------------------------</pre>
+
+    <div class="nerd-section">
+      <h3>Links en Esta Página</h3>
+      <p>Centro de Rendimiento [1] &middot; Métricas [2] &middot; Headers [3] &middot; Inicio [4]</p>
+      <ol class="tm-ref-list">
+        <li>[1] {{ url_for('nerd.performance') }}</li>
+        <li>[2] {{ url_for('nerd.metrics') }}</li>
+        <li>[3] {{ url_for('nerd.headers') }}</li>
+        <li>[4] {{ url_for('main.home') }}</li>
+      </ol>
+    </div>
+
+    <pre class="tm-rule">====================================================================</pre>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Volver a Rendimiento</a></div>
+  </div>
+</div>
+{% endblock %}

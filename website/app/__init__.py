@@ -131,6 +131,9 @@ def create_app():
 	from app.routes.junk import junk_bp
 	app.register_blueprint(junk_bp)
 
+	from app.routes.nerd import nerd_bp
+	app.register_blueprint(nerd_bp)
+
 	# ── Media proxy ───────────────────────────────────────────────
 	# All stored files are served through /media/<path> so the
 	# real storage backend (local or S3) is never exposed to the

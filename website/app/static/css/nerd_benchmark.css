@@ -1,0 +1,33 @@
+.nerd-benchmark-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 12px;
+}
+
+.nerd-benchmark-table th,
+.nerd-benchmark-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px dotted var(--border-mid);
+}
+
+.nerd-benchmark-table th {
+    color: var(--text-bright);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-strong);
+}
+
+.nerd-benchmark-table td:first-child {
+    color: var(--text-muted);
+}
+
+.nerd-benchmark-table td:nth-child(2) {
+    color: var(--success);
+}
+
+.nerd-benchmark-table td:nth-child(3) {
+    color: var(--text-faint);
+}

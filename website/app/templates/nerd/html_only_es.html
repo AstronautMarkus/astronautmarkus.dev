@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Solo HTML - AstronautMarkus.dev</title>
+    <meta name="description" content="Una página escrita solo con elementos semánticos de HTML5 — sin divs, sin clases, sin CSS, sin JS.">
+</head>
+
+<body>
+
+    <header>
+        <h1>Solo HTML</h1>
+        <p>Ningún <code>&lt;div&gt;</code>, ningún atributo <code>class</code>, ninguna hoja de estilos, ningún
+            script — en ninguna parte de este documento. Mira el código fuente y cuéntalos; son cero.</p>
+    </header>
+
+    <nav>
+        <p>
+            <a href="{{ url_for('nerd.performance') }}">Centro de Rendimiento</a> ·
+            <a href="{{ url_for('nerd.no_css') }}">No-CSS</a> ·
+            <a href="{{ url_for('main.home') }}">Inicio normal</a>
+        </p>
+    </nav>
+
+    <main>
+        <article>
+            <h2>Por Qué Esto Es Distinto de No-CSS</h2>
+            <p>La página <a href="{{ url_for('nerd.no_css') }}">No-CSS</a> demuestra que el markup normal de este
+                sitio se sigue leyendo bien sin estilos — mantiene la misma estructura de <code>&lt;div&gt;</code>
+                y <code>class</code> que cualquier otra página, solo que sin estilizar. Esta página va más allá:
+                no usa <code>&lt;div&gt;</code> ni <code>class</code> en absoluto. Cada elemento de abajo se
+                eligió porque realmente describe lo que contiene.</p>
+        </article>
+
+        <article>
+            <h2>Qué Hace el Trabajo en su Lugar</h2>
+            <section>
+                <h3>Estructura</h3>
+                <p><code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>,
+                    <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code> y <code>&lt;footer&gt;</code>
+                    reemplazan lo que normalmente sería un montón de <code>&lt;div&gt;</code> genéricos.</p>
+            </section>
+            <section>
+                <h3>Listas</h3>
+                <ul>
+                    <li>El contenido ordenado usa <code>&lt;ol&gt;</code></li>
+                    <li>El contenido sin orden usa <code>&lt;ul&gt;</code>, como esta misma</li>
+                    <li>Las definiciones usan <code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code> y <code>&lt;dd&gt;</code></li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>AstronautMarkus.dev — <a href="{{ url_for('nerd.performance') }}">volver a Rendimiento</a></p>
+    </footer>
+
+</body>
+
+</html>

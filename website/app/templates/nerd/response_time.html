@@ -1,0 +1,35 @@
+{% extends "base/base.html" %}
+
+{% block title %}Response Time{% endblock %}
+{% block description %}Real server-side timing for the database query and template render behind this exact page.{% endblock %}
+{% block keywords %}response time, server timing, performance, latency{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nerd.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+  <div class="nerd-page">
+    <h2 class="nerd-title">Response Time</h2>
+
+    <div class="nerd-section">
+      <p>Two real numbers, timed with <code>time.perf_counter()</code> during this exact request: how long the
+        database query took, and how long Jinja took to render the template into HTML. Neither includes network
+        latency between your browser and this server — that part is on your connection, not this code.</p>
+      <div class="nerd-stat-grid">
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ query_ms }} ms</div>
+          <div class="nerd-stat-label">DB Query</div>
+        </div>
+        <div class="nerd-stat-tile">
+          <div class="nerd-stat-value">{{ render_ms }} ms</div>
+          <div class="nerd-stat-label">Template Render</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nerd-nav-back"><a href="{{ url_for('nerd.performance') }}">← Back to Performance</a></div>
+  </div>
+</div>
+{% endblock %}
