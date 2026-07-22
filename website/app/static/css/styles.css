@@ -303,3 +303,21 @@ a:hover {
     color: var(--text-bright);
     text-decoration: none;
 }
+
+/* Nested submenu (e.g. "Nerd" inside "Basura"), opens to the right */
+.nav-subdropdown {
+    position: relative;
+}
+
+.nav-subdropdown > a::after {
+    content: ' \25B8';
+    font-size: 10px;
+    float: right;
+    margin-left: 8px;
+}
+
+.dropdown-menu.dropdown-submenu {
+    top: 0;
+    left: 100%;
+    border-top: 1px solid var(--border-mid);
+}

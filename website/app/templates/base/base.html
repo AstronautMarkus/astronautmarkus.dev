@@ -87,24 +87,24 @@
                         <li><a href="{{ url_for('junk.links') }}"{% if request.endpoint == 'junk.links' %} class="active"{% endif %}>{{ 'Link Exchange' if current_lang == 'en' else 'Intercambio de Links' }}</a></li>
                         <li><a href="{{ url_for('junk.webring') }}"{% if request.endpoint == 'junk.webring' %} class="active"{% endif %}>{{ 'Webring' if current_lang == 'en' else 'Webring' }}</a></li>
                         <li><a href="{{ url_for('junk.counter') }}"{% if request.endpoint == 'junk.counter' %} class="active"{% endif %}>{{ 'Hit Counter' if current_lang == 'en' else 'Contador de Visitas' }}</a></li>
-                    </ul>
-                </li>
-                <li class="nav-dropdown">
-                    <a href="#"><i class="fa-solid fa-terminal"></i> {{ 'Nerd' if current_lang == 'en' else 'Nerd' }}</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('nerd.performance') }}"{% if request.endpoint == 'nerd.performance' %} class="active"{% endif %}>{{ 'Performance' if current_lang == 'en' else 'Rendimiento' }}</a></li>
-                        <li><a href="{{ url_for('nerd.lighthouse') }}"{% if request.endpoint == 'nerd.lighthouse' %} class="active"{% endif %}>{{ 'Lighthouse' if current_lang == 'en' else 'Lighthouse' }}</a></li>
-                        <li><a href="{{ url_for('nerd.metrics') }}"{% if request.endpoint == 'nerd.metrics' %} class="active"{% endif %}>{{ 'Metrics' if current_lang == 'en' else 'Métricas' }}</a></li>
-                        <li><a href="{{ url_for('nerd.size') }}"{% if request.endpoint == 'nerd.size' %} class="active"{% endif %}>{{ 'Size' if current_lang == 'en' else 'Tamaño' }}</a></li>
-                        <li><a href="{{ url_for('nerd.payload') }}"{% if request.endpoint == 'nerd.payload' %} class="active"{% endif %}>{{ 'Payload' if current_lang == 'en' else 'Payload' }}</a></li>
-                        <li><a href="{{ url_for('nerd.headers') }}"{% if request.endpoint == 'nerd.headers' %} class="active"{% endif %}>{{ 'Headers' if current_lang == 'en' else 'Headers' }}</a></li>
-                        <li><a href="{{ url_for('nerd.response_time') }}"{% if request.endpoint == 'nerd.response_time' %} class="active"{% endif %}>{{ 'Response Time' if current_lang == 'en' else 'Tiempo de Respuesta' }}</a></li>
-                        <li><a href="{{ url_for('nerd.benchmark') }}"{% if request.endpoint == 'nerd.benchmark' %} class="active"{% endif %}>{{ 'Benchmark' if current_lang == 'en' else 'Benchmark' }}</a></li>
-                        <li><a href="{{ url_for('nerd.carbon_footprint') }}"{% if request.endpoint == 'nerd.carbon_footprint' %} class="active"{% endif %}>{{ 'Carbon Footprint' if current_lang == 'en' else 'Huella de Carbono' }}</a></li>
-                        <li><a href="{{ url_for('nerd.no_js') }}"{% if request.endpoint == 'nerd.no_js' %} class="active"{% endif %}>{{ 'No-JS' if current_lang == 'en' else 'No-JS' }}</a></li>
-                        <li><a href="{{ url_for('nerd.no_css') }}"{% if request.endpoint == 'nerd.no_css' %} class="active"{% endif %}>{{ 'No-CSS' if current_lang == 'en' else 'No-CSS' }}</a></li>
-                        <li><a href="{{ url_for('nerd.html_only') }}"{% if request.endpoint == 'nerd.html_only' %} class="active"{% endif %}>{{ 'HTML Only' if current_lang == 'en' else 'Solo HTML' }}</a></li>
-                        <li><a href="{{ url_for('nerd.text_mode') }}"{% if request.endpoint == 'nerd.text_mode' %} class="active"{% endif %}>{{ 'Text Mode' if current_lang == 'en' else 'Modo Texto' }}</a></li>
+                        <li class="nav-subdropdown">
+                            <a href="#"><i class="fa-solid fa-terminal"></i> Nerd</a>
+                            <ul class="dropdown-menu dropdown-submenu">
+                                <li><a href="{{ url_for('nerd.performance') }}"{% if request.endpoint == 'nerd.performance' %} class="active"{% endif %}>{{ 'Performance' if current_lang == 'en' else 'Rendimiento' }}</a></li>
+                                <li><a href="{{ url_for('nerd.lighthouse') }}"{% if request.endpoint == 'nerd.lighthouse' %} class="active"{% endif %}>Lighthouse</a></li>
+                                <li><a href="{{ url_for('nerd.metrics') }}"{% if request.endpoint == 'nerd.metrics' %} class="active"{% endif %}>{{ 'Metrics' if current_lang == 'en' else 'Métricas' }}</a></li>
+                                <li><a href="{{ url_for('nerd.size') }}"{% if request.endpoint == 'nerd.size' %} class="active"{% endif %}>{{ 'Size' if current_lang == 'en' else 'Tamaño' }}</a></li>
+                                <li><a href="{{ url_for('nerd.payload') }}"{% if request.endpoint == 'nerd.payload' %} class="active"{% endif %}>Payload</a></li>
+                                <li><a href="{{ url_for('nerd.headers') }}"{% if request.endpoint == 'nerd.headers' %} class="active"{% endif %}>Headers</a></li>
+                                <li><a href="{{ url_for('nerd.response_time') }}"{% if request.endpoint == 'nerd.response_time' %} class="active"{% endif %}>{{ 'Response Time' if current_lang == 'en' else 'Tiempo de Respuesta' }}</a></li>
+                                <li><a href="{{ url_for('nerd.benchmark') }}"{% if request.endpoint == 'nerd.benchmark' %} class="active"{% endif %}>Benchmark</a></li>
+                                <li><a href="{{ url_for('nerd.carbon_footprint') }}"{% if request.endpoint == 'nerd.carbon_footprint' %} class="active"{% endif %}>{{ 'Carbon Footprint' if current_lang == 'en' else 'Huella de Carbono' }}</a></li>
+                                <li><a href="{{ url_for('nerd.no_js') }}"{% if request.endpoint == 'nerd.no_js' %} class="active"{% endif %}>No-JS</a></li>
+                                <li><a href="{{ url_for('nerd.no_css') }}"{% if request.endpoint == 'nerd.no_css' %} class="active"{% endif %}>No-CSS</a></li>
+                                <li><a href="{{ url_for('nerd.html_only') }}"{% if request.endpoint == 'nerd.html_only' %} class="active"{% endif %}>{{ 'HTML Only' if current_lang == 'en' else 'Solo HTML' }}</a></li>
+                                <li><a href="{{ url_for('nerd.text_mode') }}"{% if request.endpoint == 'nerd.text_mode' %} class="active"{% endif %}>{{ 'Text Mode' if current_lang == 'en' else 'Modo Texto' }}</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -147,9 +147,18 @@
     <script>
         document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
             var toggle = dropdown.querySelector(':scope > a');
-            var menu = dropdown.querySelector('.dropdown-menu');
+            var menu = dropdown.querySelector(':scope > .dropdown-menu');
             toggle.addEventListener('click', function(e) {
                 e.preventDefault();
+                menu.classList.toggle('open');
+            });
+        });
+        document.querySelectorAll('.nav-subdropdown').forEach(function(sub) {
+            var toggle = sub.querySelector(':scope > a');
+            var menu = sub.querySelector(':scope > .dropdown-submenu');
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 menu.classList.toggle('open');
             });
         });
