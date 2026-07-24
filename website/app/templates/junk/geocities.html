@@ -12,7 +12,7 @@
 {% block content %}
 <div id="page-content">
   <div class="junk-page">
-    <div class="geo-address">SiliconValley/Cyber/1337</div>
+    <div class="geo-address"><img src="{{ url_for('static', filename='images/icons/earth_night.png') }}" class="pixel-icon-inline" alt="">SiliconValley/Cyber/1337</div>
     <h2 class="junk-title">Welcome To My Homepage</h2>
 
     <div class="junk-marquee"><span>Thanks for stopping by — please sign my <a href="{{ url_for('junk.guestbook') }}">guestbook</a> — you are visitor number, like, a lot — best viewed at <a href="{{ url_for('junk.best_viewed') }}">800x600</a></span></div>
@@ -25,7 +25,7 @@
         <li>Computers and the Information Superhighway</li>
         <li>Aliens (I believe)</li>
         <li>Video games, mostly the ones with pixels</li>
-        <li>My cat, who does not have a page yet</li>
+        <li><img src="{{ url_for('static', filename='images/icons/cat.png') }}" class="pixel-icon-inline" alt="">My cat, who does not have a page yet</li>
       </ul>
     </div>
 

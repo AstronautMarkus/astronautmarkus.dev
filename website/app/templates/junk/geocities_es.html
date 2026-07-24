@@ -12,7 +12,7 @@
 {% block content %}
 <div id="page-content">
   <div class="junk-page">
-    <div class="geo-address">SiliconValley/Cyber/1337</div>
+    <div class="geo-address"><img src="{{ url_for('static', filename='images/icons/earth_night.png') }}" class="pixel-icon-inline" alt="">SiliconValley/Cyber/1337</div>
     <h2 class="junk-title">Bienvenido a Mi Página</h2>
 
     <div class="junk-marquee"><span>Gracias por visitarme — firma mi <a href="{{ url_for('junk.guestbook') }}">libro de visitas</a> — eres el visitante número, tipo, muchos — mejor visto en <a href="{{ url_for('junk.best_viewed') }}">800x600</a></span></div>
@@ -25,7 +25,7 @@
         <li>Computadoras y la Autopista de la Información</li>
         <li>Extraterrestres (yo sí creo)</li>
         <li>Videojuegos, sobre todo los pixelados</li>
-        <li>Mi gato, que todavía no tiene su propia página</li>
+        <li><img src="{{ url_for('static', filename='images/icons/cat.png') }}" class="pixel-icon-inline" alt="">Mi gato, que todavía no tiene su propia página</li>
       </ul>
     </div>
 

@@ -12,6 +12,26 @@
     border-top: 3px solid var(--accent);
 }
 
+.pixel-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+    margin-right: 6px;
+    position: relative;
+    top: -2px;
+}
+
+.pixel-icon-inline {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+    margin-right: 4px;
+    position: relative;
+    top: -1px;
+}
+
 .junk-title {
     margin: 0 0 20px;
     font-family: 'Press Start 2P', 'Lucida Grande', monospace;

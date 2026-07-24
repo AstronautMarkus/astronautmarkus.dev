@@ -12,10 +12,10 @@
 {% block content %}
 <div id="page-content">
   <div class="junk-page">
-    <h2 class="junk-title">Best Viewed In 800x600</h2>
+    <h2 class="junk-title"><img src="{{ url_for('static', filename='images/icons/monitor.png') }}" class="pixel-icon" alt="">Best Viewed In 800x600</h2>
 
     <div class="bv-frame">
-      <div class="bv-frame-titlebar">viewport.exe — 800 x 600 — do not resize</div>
+      <div class="bv-frame-titlebar"><img src="{{ url_for('static', filename='images/icons/computer.png') }}" class="pixel-icon-inline" alt="">viewport.exe — 800 x 600 — do not resize</div>
       <div class="bv-frame-body">
         <p>Congratulations! Your monitor is now displaying this page at the <strong>one true resolution</strong>.
           If your screen is wider than this box, that's a you problem. We don't do "responsive" here — see the

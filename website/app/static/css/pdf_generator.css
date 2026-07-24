@@ -3,6 +3,26 @@
     max-width: 820px;
 }
 
+.pixel-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+    margin-right: 6px;
+    position: relative;
+    top: -2px;
+}
+
+.pixel-icon-inline {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+    margin-right: 5px;
+    position: relative;
+    top: -1px;
+}
+
 .pdf-gen-header h2 {
     font-size: 20px;
     color: var(--text-bright);

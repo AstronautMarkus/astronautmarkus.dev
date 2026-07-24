@@ -160,12 +160,22 @@ a:hover {
 }
 
 #nav {
-    height: 40px;
+    min-height: 40px;
     background: var(--bg-panel);
     border-bottom: 1px solid var(--border-mid);
     display: flex;
     justify-content: space-between;
     align-items: stretch;
+}
+
+.pixel-icon-inline {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+    margin-right: 5px;
+    position: relative;
+    top: -1px;
 }
 
 #nav > ul,
@@ -176,9 +186,42 @@ a:hover {
     display: flex;
 }
 
+/* Main nav list: wraps onto multiple rows instead of overflowing the fixed
+   960px wrapper, and caps at a few rows with an internal scrollbar beyond
+   that — so a long nav never breaks the layout, it just scrolls in place. */
+#nav-main-list {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    max-height: 160px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) var(--bg-panel);
+}
+
+#nav-main-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#nav-main-list::-webkit-scrollbar-track {
+    background: var(--bg-panel);
+}
+
+#nav-main-list::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+}
+
+#nav-main-list::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
 #nav-right {
     display: flex;
     align-items: stretch;
+    align-self: flex-start;
+    flex-shrink: 0;
 }
 
 #lang-switcher {

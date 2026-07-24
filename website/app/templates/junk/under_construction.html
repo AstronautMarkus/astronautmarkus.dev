@@ -12,7 +12,7 @@
 {% block content %}
 <div id="page-content">
   <div class="junk-page uc-page">
-    <h2 class="junk-title">Page Under Construction</h2>
+    <h2 class="junk-title"><img src="{{ url_for('static', filename='images/icons/construction.png') }}" class="pixel-icon" alt="">Page Under Construction</h2>
 
     <div class="uc-barrier-row"></div>
 
@@ -20,7 +20,7 @@
       <p>We're hard at work bringing you an amazing web experience. Please check back later.</p>
 
       <div class="uc-progress-wrap">
-        <div class="uc-progress-label">Overall progress</div>
+        <div class="uc-progress-label"><img src="{{ url_for('static', filename='images/icons/hourglass_go.png') }}" class="pixel-icon-inline" alt="">Overall progress</div>
         <div class="uc-progress"><div class="uc-progress-fill" style="width: 12%">12%</div></div>
       </div>
 

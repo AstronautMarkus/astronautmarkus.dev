@@ -13,7 +13,7 @@
   <div id="pdf-gen-wrap">
 
     <div class="pdf-gen-header">
-      <h2>// Generador de PDF</h2>
+      <h2><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="pixel-icon" alt="">// Generador de PDF</h2>
       <p class="pdf-gen-intro">
         Genera un documento PDF de relleno para pruebas, integración o demostración.
         Elige entre un informe ligero de una página o un completo documento corporativo de varias hojas.
@@ -63,7 +63,7 @@
 
       <div class="pdf-gen-submit">
         <button type="submit" class="btn-generate">
-          &#8659; Generar y Descargar PDF
+          <img src="{{ url_for('static', filename='images/icons/download.png') }}" class="pixel-icon-inline" alt="">Generar y Descargar PDF
         </button>
         <p class="pdf-gen-note">
           El documento se genera en el servidor y se descarga inmediatamente.
@@ -74,13 +74,13 @@
     </form>
 
     <div class="pdf-gen-info">
-      <h3 class="section-title">Sobre Esta Herramienta</h3>
+      <h3 class="section-title"><img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="pixel-icon-inline" alt="">Sobre Esta Herramienta</h3>
       <ul class="tech-list">
-        <li><strong>Librería:</strong> ReportLab (Python)</li>
-        <li><strong>Formato:</strong> A4, PDF 1.4</li>
-        <li><strong>Contenido:</strong> Completamente ficticio — sin datos reales</li>
-        <li><strong>Idiomas:</strong> Español / English (sigue el idioma del sitio)</li>
-        <li><strong>Mascota:</strong> Tux el Pingüino de Linux — edición punk</li>
+        <li><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="pixel-icon-inline" alt=""><strong>Librería:</strong> ReportLab (Python)</li>
+        <li><img src="{{ url_for('static', filename='images/icons/table.png') }}" class="pixel-icon-inline" alt=""><strong>Formato:</strong> A4, PDF 1.4</li>
+        <li><img src="{{ url_for('static', filename='images/icons/warning.png') }}" class="pixel-icon-inline" alt=""><strong>Contenido:</strong> Completamente ficticio — sin datos reales</li>
+        <li><img src="{{ url_for('static', filename='images/icons/world.png') }}" class="pixel-icon-inline" alt=""><strong>Idiomas:</strong> Español / English (sigue el idioma del sitio)</li>
+        <li><img src="{{ url_for('static', filename='images/icons/tux.png') }}" class="pixel-icon-inline" alt=""><strong>Mascota:</strong> Tux el Pingüino de Linux — edición punk</li>
       </ul>
     </div>
 

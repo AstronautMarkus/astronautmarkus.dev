@@ -12,7 +12,7 @@
 {% block content %}
 <div id="page-content">
   <div class="junk-page">
-    <h2 class="junk-title">Rastreador del Bug Y2K</h2>
+    <h2 class="junk-title"><img src="{{ url_for('static', filename='images/icons/bug.png') }}" class="pixel-icon" alt="">Rastreador del Bug Y2K</h2>
 
     <div class="junk-section y2k-status">
       <p>Estado del Bug del Milenio: <span class="y2k-ok">CIVILIZACIÓN SIGUE EN PIE</span></p>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="y2k-meter-wrap">
-      <div class="y2k-meter-label">Medidor de Apocalipsis</div>
+      <div class="y2k-meter-label"><img src="{{ url_for('static', filename='images/icons/warning.png') }}" class="pixel-icon-inline" alt="">Medidor de Apocalipsis</div>
       <div class="y2k-meter"><div class="y2k-meter-fill" style="width: 0.4%"></div></div>
       <div class="y2k-meter-label">0.4% — básicamente nada</div>
     </div>

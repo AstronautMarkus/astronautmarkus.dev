@@ -12,7 +12,7 @@
 {% block content %}
 <div id="page-content">
   <div class="junk-page counter-page">
-    <h2 class="junk-title">Eres el Visitante Número</h2>
+    <h2 class="junk-title"><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon" alt="">Eres el Visitante Número</h2>
 
     <div class="counter-display">
       <img src="{{ url_for('utils.visitor_counter') }}" alt="contador de visitas mostrando {{ total_visits }} visitas">

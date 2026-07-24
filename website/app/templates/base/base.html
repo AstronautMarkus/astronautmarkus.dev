@@ -1,5 +1,5 @@
-{% macro nav_link(endpoint, label) %}
-<li><a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} class="active"{% endif %}>{{ label }}</a></li>
+{% macro nav_link(endpoint, label, icon=none) %}
+<li><a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} class="active"{% endif %}>{% if icon %}<img src="{{ url_for('static', filename='images/icons/' ~ icon) }}" class="pixel-icon-inline" alt="">{% endif %}{{ label }}</a></li>
 {% endmacro %}
 
 <!DOCTYPE html>
@@ -59,50 +59,50 @@
 
         <div id="nav">
             <ul>
-                {{ nav_link('main.home', 'Home' if current_lang == 'en' else 'Inicio') }}
-                {{ nav_link('main.about', 'About' if current_lang == 'en' else 'Acerca de') }}
-                {{ nav_link('main.portfolio_list', 'Portfolio' if current_lang == 'en' else 'Portafolio') }}
-                {{ nav_link('main.gallery_list', 'Gallery' if current_lang == 'en' else 'Galería') }}
-                {{ nav_link('main.blog_list', 'Blog' if current_lang == 'en' else 'Blog') }}
-                {{ nav_link('contact.contact', 'Contact' if current_lang == 'en' else 'Contacto') }}
+                {{ nav_link('main.home', 'Home' if current_lang == 'en' else 'Inicio', 'house.png') }}
+                {{ nav_link('main.about', 'About' if current_lang == 'en' else 'Sobre', 'user.png') }}
+                {{ nav_link('main.portfolio_list', 'Portfolio' if current_lang == 'en' else 'Portafolio', 'briefcase.png') }}
+                {{ nav_link('main.gallery_list', 'Gallery' if current_lang == 'en' else 'Galería', 'photos.png') }}
+                {{ nav_link('main.blog_list', 'Blog' if current_lang == 'en' else 'Blog', 'note.png') }}
+                {{ nav_link('contact.contact', 'Contact' if current_lang == 'en' else 'Contacto', 'email.png') }}
                 <li class="nav-dropdown">
-                    <a href="#">{{ 'Extras' }}</a>
+                    <a href="#"><img src="{{ url_for('static', filename='images/icons/package.png') }}" class="pixel-icon-inline" alt="">{{ 'Extras' }}</a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('main.proyectadas_list') }}"{% if request.endpoint == 'main.proyectadas_list' %} class="active"{% endif %}>{{ 'Proyectadas (personal reflections)' if current_lang == 'en' else 'Proyectadas' }}</a></li>
-                        <li><a href="{{ url_for('extras.pdf_generator') }}"{% if request.endpoint == 'extras.pdf_generator' %} class="active"{% endif %}>{{ 'PDF Generator' if current_lang == 'en' else 'Generador de PDF' }}</a></li>
-                        <li><a href="{{ url_for('main.profile') }}"{% if request.endpoint == 'main.profile' %} class="active"{% endif %}>{{ 'Profile (myspace throwback)' if current_lang == 'en' else 'Perfil (al estilo myspace)' }}</a></li>
+                        <li><a href="{{ url_for('main.proyectadas_list') }}"{% if request.endpoint == 'main.proyectadas_list' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/brain.png') }}" class="pixel-icon-inline" alt="">{{ 'Proyectadas (personal reflections)' if current_lang == 'en' else 'Proyectadas' }}</a></li>
+                        <li><a href="{{ url_for('extras.pdf_generator') }}"{% if request.endpoint == 'extras.pdf_generator' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="pixel-icon-inline" alt="">{{ 'PDF Generator' if current_lang == 'en' else 'Generador de PDF' }}</a></li>
+                        <li><a href="{{ url_for('main.profile') }}"{% if request.endpoint == 'main.profile' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/user.png') }}" class="pixel-icon-inline" alt="">{{ 'Profile (myspace throwback)' if current_lang == 'en' else 'Perfil (al estilo myspace)' }}</a></li>
                     </ul>
                 </li>
                 <li class="nav-dropdown">
-                    <a href="#"><i class="fa-solid fa-trash-can"></i> {{ 'Junk' if current_lang == 'en' else 'Basura' }}</a>
+                    <a href="#"><img src="{{ url_for('static', filename='images/icons/bin_closed.png') }}" class="pixel-icon-inline" alt="">{{ 'Junk' if current_lang == 'en' else 'Basura' }}</a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('junk.best_viewed') }}"{% if request.endpoint == 'junk.best_viewed' %} class="active"{% endif %}>{{ 'Best Viewed In 800x600' if current_lang == 'en' else 'Mejor Visto en 800x600' }}</a></li>
-                        <li><a href="{{ url_for('junk.geocities') }}"{% if request.endpoint == 'junk.geocities' %} class="active"{% endif %}>{{ 'GeoCities Homepage' if current_lang == 'en' else 'Página GeoCities' }}</a></li>
-                        <li><a href="{{ url_for('junk.y2k') }}"{% if request.endpoint == 'junk.y2k' %} class="active"{% endif %}>{{ 'Y2K Bug Tracker' if current_lang == 'en' else 'Rastreador Y2K' }}</a></li>
-                        <li><a href="{{ url_for('junk.blink') }}"{% if request.endpoint == 'junk.blink' %} class="active"{% endif %}>{{ 'Blink Tag Shrine' if current_lang == 'en' else 'Santuario del Blink' }}</a></li>
-                        <li><a href="{{ url_for('junk.marquee') }}"{% if request.endpoint == 'junk.marquee' %} class="active"{% endif %}>{{ 'Marquee Ticker' if current_lang == 'en' else 'Ticker Marquee' }}</a></li>
-                        <li><a href="{{ url_for('junk.dialup') }}"{% if request.endpoint == 'junk.dialup' %} class="active"{% endif %}>{{ 'Dial-Up Simulator' if current_lang == 'en' else 'Simulador Dial-Up' }}</a></li>
-                        <li><a href="{{ url_for('junk.under_construction') }}"{% if request.endpoint == 'junk.under_construction' %} class="active"{% endif %}>{{ 'Under Construction' if current_lang == 'en' else 'En Construcción' }}</a></li>
-                        <li><a href="{{ url_for('junk.guestbook') }}"{% if request.endpoint == 'junk.guestbook' %} class="active"{% endif %}>{{ 'Guestbook' if current_lang == 'en' else 'Libro de Visitas' }}</a></li>
-                        <li><a href="{{ url_for('junk.links') }}"{% if request.endpoint == 'junk.links' %} class="active"{% endif %}>{{ 'Link Exchange' if current_lang == 'en' else 'Intercambio de Links' }}</a></li>
-                        <li><a href="{{ url_for('junk.webring') }}"{% if request.endpoint == 'junk.webring' %} class="active"{% endif %}>{{ 'Webring' if current_lang == 'en' else 'Webring' }}</a></li>
-                        <li><a href="{{ url_for('junk.counter') }}"{% if request.endpoint == 'junk.counter' %} class="active"{% endif %}>{{ 'Hit Counter' if current_lang == 'en' else 'Contador de Visitas' }}</a></li>
+                        <li><a href="{{ url_for('junk.best_viewed') }}"{% if request.endpoint == 'junk.best_viewed' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/monitor.png') }}" class="pixel-icon-inline" alt="">{{ 'Best Viewed In 800x600' if current_lang == 'en' else 'Mejor Visto en 800x600' }}</a></li>
+                        <li><a href="{{ url_for('junk.geocities') }}"{% if request.endpoint == 'junk.geocities' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/earth_night.png') }}" class="pixel-icon-inline" alt="">{{ 'GeoCities Homepage' if current_lang == 'en' else 'Página GeoCities' }}</a></li>
+                        <li><a href="{{ url_for('junk.y2k') }}"{% if request.endpoint == 'junk.y2k' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/bug.png') }}" class="pixel-icon-inline" alt="">{{ 'Y2K Bug Tracker' if current_lang == 'en' else 'Rastreador Y2K' }}</a></li>
+                        <li><a href="{{ url_for('junk.blink') }}"{% if request.endpoint == 'junk.blink' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon-inline" alt="">{{ 'Blink Tag Shrine' if current_lang == 'en' else 'Santuario del Blink' }}</a></li>
+                        <li><a href="{{ url_for('junk.marquee') }}"{% if request.endpoint == 'junk.marquee' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon-inline" alt="">{{ 'Marquee Ticker' if current_lang == 'en' else 'Ticker Marquee' }}</a></li>
+                        <li><a href="{{ url_for('junk.dialup') }}"{% if request.endpoint == 'junk.dialup' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/phone_vintage.png') }}" class="pixel-icon-inline" alt="">{{ 'Dial-Up Simulator' if current_lang == 'en' else 'Simulador Dial-Up' }}</a></li>
+                        <li><a href="{{ url_for('junk.under_construction') }}"{% if request.endpoint == 'junk.under_construction' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/construction.png') }}" class="pixel-icon-inline" alt="">{{ 'Under Construction' if current_lang == 'en' else 'En Construcción' }}</a></li>
+                        <li><a href="{{ url_for('junk.guestbook') }}"{% if request.endpoint == 'junk.guestbook' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/book_edit.png') }}" class="pixel-icon-inline" alt="">{{ 'Guestbook' if current_lang == 'en' else 'Libro de Visitas' }}</a></li>
+                        <li><a href="{{ url_for('junk.links') }}"{% if request.endpoint == 'junk.links' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/link.png') }}" class="pixel-icon-inline" alt="">{{ 'Link Exchange' if current_lang == 'en' else 'Intercambio de Links' }}</a></li>
+                        <li><a href="{{ url_for('junk.webring') }}"{% if request.endpoint == 'junk.webring' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/world_link.png') }}" class="pixel-icon-inline" alt="">{{ 'Webring' if current_lang == 'en' else 'Webring' }}</a></li>
+                        <li><a href="{{ url_for('junk.counter') }}"{% if request.endpoint == 'junk.counter' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon-inline" alt="">{{ 'Hit Counter' if current_lang == 'en' else 'Contador de Visitas' }}</a></li>
                         <li class="nav-subdropdown">
-                            <a href="#"><i class="fa-solid fa-terminal"></i> Nerd</a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/icons/terminal.png') }}" class="pixel-icon-inline" alt="">Nerd</a>
                             <ul class="dropdown-menu dropdown-submenu">
-                                <li><a href="{{ url_for('nerd.performance') }}"{% if request.endpoint == 'nerd.performance' %} class="active"{% endif %}>{{ 'Performance' if current_lang == 'en' else 'Rendimiento' }}</a></li>
-                                <li><a href="{{ url_for('nerd.lighthouse') }}"{% if request.endpoint == 'nerd.lighthouse' %} class="active"{% endif %}>Lighthouse</a></li>
-                                <li><a href="{{ url_for('nerd.metrics') }}"{% if request.endpoint == 'nerd.metrics' %} class="active"{% endif %}>{{ 'Metrics' if current_lang == 'en' else 'Métricas' }}</a></li>
-                                <li><a href="{{ url_for('nerd.size') }}"{% if request.endpoint == 'nerd.size' %} class="active"{% endif %}>{{ 'Size' if current_lang == 'en' else 'Tamaño' }}</a></li>
-                                <li><a href="{{ url_for('nerd.payload') }}"{% if request.endpoint == 'nerd.payload' %} class="active"{% endif %}>Payload</a></li>
-                                <li><a href="{{ url_for('nerd.headers') }}"{% if request.endpoint == 'nerd.headers' %} class="active"{% endif %}>Headers</a></li>
-                                <li><a href="{{ url_for('nerd.response_time') }}"{% if request.endpoint == 'nerd.response_time' %} class="active"{% endif %}>{{ 'Response Time' if current_lang == 'en' else 'Tiempo de Respuesta' }}</a></li>
-                                <li><a href="{{ url_for('nerd.benchmark') }}"{% if request.endpoint == 'nerd.benchmark' %} class="active"{% endif %}>Benchmark</a></li>
-                                <li><a href="{{ url_for('nerd.carbon_footprint') }}"{% if request.endpoint == 'nerd.carbon_footprint' %} class="active"{% endif %}>{{ 'Carbon Footprint' if current_lang == 'en' else 'Huella de Carbono' }}</a></li>
-                                <li><a href="{{ url_for('nerd.no_js') }}"{% if request.endpoint == 'nerd.no_js' %} class="active"{% endif %}>No-JS</a></li>
-                                <li><a href="{{ url_for('nerd.no_css') }}"{% if request.endpoint == 'nerd.no_css' %} class="active"{% endif %}>No-CSS</a></li>
-                                <li><a href="{{ url_for('nerd.html_only') }}"{% if request.endpoint == 'nerd.html_only' %} class="active"{% endif %}>{{ 'HTML Only' if current_lang == 'en' else 'Solo HTML' }}</a></li>
-                                <li><a href="{{ url_for('nerd.text_mode') }}"{% if request.endpoint == 'nerd.text_mode' %} class="active"{% endif %}>{{ 'Text Mode' if current_lang == 'en' else 'Modo Texto' }}</a></li>
+                                <li><a href="{{ url_for('nerd.performance') }}"{% if request.endpoint == 'nerd.performance' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/speedometer.png') }}" class="pixel-icon-inline" alt="">{{ 'Performance' if current_lang == 'en' else 'Rendimiento' }}</a></li>
+                                <li><a href="{{ url_for('nerd.lighthouse') }}"{% if request.endpoint == 'nerd.lighthouse' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/lightbulb.png') }}" class="pixel-icon-inline" alt="">Lighthouse</a></li>
+                                <li><a href="{{ url_for('nerd.metrics') }}"{% if request.endpoint == 'nerd.metrics' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/database.png') }}" class="pixel-icon-inline" alt="">{{ 'Metrics' if current_lang == 'en' else 'Métricas' }}</a></li>
+                                <li><a href="{{ url_for('nerd.size') }}"{% if request.endpoint == 'nerd.size' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/disk_space.png') }}" class="pixel-icon-inline" alt="">{{ 'Size' if current_lang == 'en' else 'Tamaño' }}</a></li>
+                                <li><a href="{{ url_for('nerd.payload') }}"{% if request.endpoint == 'nerd.payload' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/package.png') }}" class="pixel-icon-inline" alt="">Payload</a></li>
+                                <li><a href="{{ url_for('nerd.headers') }}"{% if request.endpoint == 'nerd.headers' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/page_white_code.png') }}" class="pixel-icon-inline" alt="">Headers</a></li>
+                                <li><a href="{{ url_for('nerd.response_time') }}"{% if request.endpoint == 'nerd.response_time' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/clock_go.png') }}" class="pixel-icon-inline" alt="">{{ 'Response Time' if current_lang == 'en' else 'Tiempo de Respuesta' }}</a></li>
+                                <li><a href="{{ url_for('nerd.benchmark') }}"{% if request.endpoint == 'nerd.benchmark' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/chart_bar.png') }}" class="pixel-icon-inline" alt="">Benchmark</a></li>
+                                <li><a href="{{ url_for('nerd.carbon_footprint') }}"{% if request.endpoint == 'nerd.carbon_footprint' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/leaf_plant.png') }}" class="pixel-icon-inline" alt="">{{ 'Carbon Footprint' if current_lang == 'en' else 'Huella de Carbono' }}</a></li>
+                                <li><a href="{{ url_for('nerd.no_js') }}"{% if request.endpoint == 'nerd.no_js' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/script_delete.png') }}" class="pixel-icon-inline" alt="">No-JS</a></li>
+                                <li><a href="{{ url_for('nerd.no_css') }}"{% if request.endpoint == 'nerd.no_css' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/css.png') }}" class="pixel-icon-inline" alt="">No-CSS</a></li>
+                                <li><a href="{{ url_for('nerd.html_only') }}"{% if request.endpoint == 'nerd.html_only' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/html.png') }}" class="pixel-icon-inline" alt="">{{ 'HTML Only' if current_lang == 'en' else 'Solo HTML' }}</a></li>
+                                <li><a href="{{ url_for('nerd.text_mode') }}"{% if request.endpoint == 'nerd.text_mode' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/source_code.png') }}" class="pixel-icon-inline" alt="">{{ 'Text Mode' if current_lang == 'en' else 'Modo Texto' }}</a></li>
                             </ul>
                         </li>
                     </ul>
