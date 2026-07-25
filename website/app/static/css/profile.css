@@ -30,7 +30,7 @@
 /* ── Photo ───────────────────────────────────────────────────────────────── */
 .profile-photo-box {
     border: 1px solid var(--border-mid);
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     padding: 10px;
     margin-bottom: 20px;
     box-sizing: border-box;
@@ -57,7 +57,7 @@
 /* ── Name card ───────────────────────────────────────────────────────────── */
 .profile-namecard {
     border: 1px solid var(--accent);
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     padding: 14px;
     margin-bottom: 20px;
     box-sizing: border-box;
@@ -184,7 +184,7 @@
 }
 
 .profile-details-list li:nth-child(even) {
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
 }
 
 .profile-details-list li:last-child {
@@ -251,7 +251,7 @@
 }
 
 .comment-item:nth-child(even) {
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
 }
 
 .comment-item:last-child {

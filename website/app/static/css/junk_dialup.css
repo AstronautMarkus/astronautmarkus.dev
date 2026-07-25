@@ -5,7 +5,7 @@
 .dialup-status {
     font-family: "Courier New", monospace;
     font-size: 14px;
-    color: var(--accent-bright);
+    color: var(--accent);
     min-height: 22px;
     margin-bottom: 10px;
 }

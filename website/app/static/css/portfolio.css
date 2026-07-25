@@ -205,7 +205,7 @@
 .portfolio-cover-title {
     font-size: 26px;
     font-weight: bold;
-    color: var(--text-bright);
+    color: #f6f6f5;
     line-height: 1.2;
     letter-spacing: -0.5px;
     text-shadow: 0 1px 6px rgba(6, 7, 13, 0.8);
@@ -225,7 +225,7 @@
 #portfolio-detail-sidebar {
     width: 280px;
     float: right;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-soft);
     padding: 15px;
     box-sizing: border-box;
@@ -256,33 +256,37 @@
     display: inline-block;
     font-size: 11px;
     font-weight: bold;
-    color: var(--text-bright);
+    color: #ffffff;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border: 1px solid var(--accent-fill-border);
-    background: var(--accent-fill);
+    border-radius: 4px;
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
     padding: 6px 14px;
     transition: background 0.15s, color 0.15s;
 }
 
 .portfolio-action-btn:hover {
-    background: var(--accent-fill-hover);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient-hover);
     border-color: var(--accent-fill-hover);
-    color: var(--text-bright);
+    color: #ffffff;
     text-decoration: none;
 }
 
 .portfolio-action-btn.btn-github {
-    background: var(--bg-void);
+    background-color: var(--bg-void);
+    background-image: none;
     border-color: var(--link-alt);
     color: var(--link-alt);
 }
 
 .portfolio-action-btn.btn-github:hover {
-    background: var(--link-alt-fill);
+    background-color: var(--link-alt-fill);
+    background-image: var(--btn-gloss);
     border-color: var(--link-alt-fill);
-    color: var(--text-bright);
+    color: #ffffff;
     text-decoration: none;
 }
 

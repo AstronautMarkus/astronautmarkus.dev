@@ -45,13 +45,13 @@
 .gb-flash-success {
     color: var(--success);
     border-color: var(--success);
-    background: rgba(79, 208, 160, 0.08);
+    background: rgba(23, 138, 94, 0.10);
 }
 
 .gb-flash-error {
     color: var(--danger);
     border-color: var(--danger);
-    background: rgba(214, 69, 60, 0.08);
+    background: rgba(179, 36, 31, 0.10);
 }
 
 .gb-entry {
@@ -68,7 +68,7 @@
     justify-content: space-between;
     font-family: "Courier New", monospace;
     font-size: 12px;
-    color: var(--accent-bright);
+    color: var(--accent);
 }
 
 .gb-entry-date {

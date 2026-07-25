@@ -9,8 +9,9 @@
 }
 
 .bv-frame-titlebar {
-    background: var(--accent-fill);
-    color: var(--text-bright);
+    background-color: var(--accent-fill);
+    background-image: var(--accent-fill-gradient);
+    color: #ffffff;
     font-size: 11px;
     letter-spacing: 0.5px;
     padding: 6px 10px;

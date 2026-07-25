@@ -56,12 +56,12 @@
 
 .mode-card:hover {
     border-color: var(--accent);
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
 }
 
 .mode-card.selected {
     border-color: var(--accent);
-    background: var(--accent-fill-soft-bg);
+    background: var(--accent-soft-gradient);
 }
 
 .mode-card input[type="radio"] {
@@ -123,9 +123,11 @@
 }
 
 .btn-generate {
-    background: var(--accent-fill);
-    color: var(--text-bright);
-    border: none;
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
+    color: #ffffff;
+    border: 1px solid var(--accent-fill-border);
+    border-radius: 4px;
     padding: 11px 28px;
     font-size: 13px;
     font-weight: bold;
@@ -136,11 +138,11 @@
 }
 
 .btn-generate:hover {
-    background: var(--accent-fill-hover);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient-hover);
 }
 
 .btn-generate:active {
-    background: var(--accent-fill-active);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient-active);
 }
 
 .pdf-gen-note {
@@ -182,7 +184,7 @@
 }
 
 .pdf-gen-info .tech-list li:nth-child(even) {
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
 }
 
 .pdf-gen-info .tech-list li:last-child {

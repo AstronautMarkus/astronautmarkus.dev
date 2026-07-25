@@ -11,7 +11,7 @@
 #secondary {
     width: 280px;
     float: right;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     padding: 15px;
     box-sizing: border-box;
@@ -62,7 +62,7 @@
 }
 
 .tech-list li:nth-child(even) {
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
 }
 
 .tech-list li:last-child {
@@ -113,7 +113,7 @@
 }
 
 .about-section.contact-cta {
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--accent);
     border-bottom: 1px solid var(--accent);
     padding: 25px;

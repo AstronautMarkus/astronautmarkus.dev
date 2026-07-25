@@ -1,47 +1,59 @@
 :root {
 
-    --accent: #4f8fe0;
-    --accent-bright: #82b4f5;
-    --accent-soft-bg: #101f3a;
-    --accent-soft-border: #2c4a7c;
+    --accent: #b3241f;
+    --accent-bright: #d8433a;
+    --accent-soft-bg: #fbeceb;
+    --accent-soft-border: #f0c4c1;
 
-    --accent-fill: #2a5bb0;
-    --accent-fill-hover: #3b6fd0;
-    --accent-fill-active: #1e4488;
-    --accent-fill-border: #6699e6;
-    --accent-fill-soft-bg: #12203e;
+    --accent-fill: #b3241f;
+    --accent-fill-hover: #c9362c;
+    --accent-fill-active: #8a1a17;
+    --accent-fill-border: #e08c86;
+    --accent-fill-soft-bg: #fbeceb;
 
-    --success: #4fd0a0;
+    --success: #178a5e;
 
-    --link-alt: #6fd6e0;
-    --link-alt-dim: #142c36;
-    --link-alt-fill: #1c4a54;
+    --link-alt: #a8720f;
+    --link-alt-dim: #faf1de;
+    --link-alt-fill: #7a5308;
 
-    --danger: #d6453c;
+    --danger: #b3241f;
 
-    --bg-void: #030509;
-    --bg-base: #070a14;
-    --bg-panel: #0e1526;
-    --bg-input: #16203a;
+    --bg-void: #e7e7e8;
+    --bg-base: #f0f0f1;
+    --bg-panel: #ffffff;
+    --bg-input: #ffffff;
 
-    --border-soft: #1c2740;
-    --border-mid: #2e3b5e;
-    --border-strong: #48588c;
+    --border-soft: #e4e4e6;
+    --border-mid: #cccccf;
+    --border-strong: #a6a6ab;
 
-    --text-bright: #ffffff;
-    --text-body: #c7d3ec;
-    --text-muted: #8fa0c4;
-    --text-faint: #5c6b93;
-    --text-dim: #46527a;
+    --text-bright: #1c1c1e;
+    --text-body: #383838;
+    --text-muted: #6b6b70;
+    --text-faint: #86868c;
+    --text-dim: #a2a2a8;
+
+    /* Aero-glass button treatment: a solid tone gradient plus a translucent
+       gloss cap layered on top, so every button gets a glassy highlight. */
+    --btn-gloss: linear-gradient(to bottom, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.18) 45%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%);
+    --accent-fill-gradient: linear-gradient(to bottom, var(--accent-fill-hover) 0%, var(--accent-fill) 100%);
+    --accent-fill-gradient-hover: linear-gradient(to bottom, var(--accent-bright) 0%, var(--accent-fill-hover) 100%);
+    --accent-fill-gradient-active: linear-gradient(to bottom, var(--accent-fill) 0%, var(--accent-fill-active) 100%);
+
+    /* Subtle brushed-panel gradient for cards/sidebars, and a glassy chip
+       gradient for tags/pills. */
+    --panel-gradient: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+    --accent-soft-gradient: linear-gradient(to bottom, #ffffff 0%, var(--accent-soft-bg) 100%);
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--bg-void);
+    background-color: #0a0a0a;
     background-image:
-        linear-gradient(rgba(6, 7, 13, 0.45), rgba(6, 7, 13, 0.85)),
-        url('/static/images/background/9FUjNzR.gif');
+        linear-gradient(rgba(6, 7, 13, 0.1), rgba(6, 7, 13, 0.411)),
+        url('/static/images/background/penguin.jpg');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
@@ -64,10 +76,11 @@ a:hover {
 #wrapper {
     width: 960px;
     margin: 0 auto;
-    background: var(--bg-base);
+    background: linear-gradient(to bottom, #ffffff 0%, #f4f5f6 45%, var(--bg-base) 55%, #e5e6e8 100%);
     border-left: 1px solid var(--border-mid);
     border-right: 1px solid var(--border-mid);
     border-bottom: 1px solid var(--border-mid);
+    box-shadow: 0 12px 45px rgba(8, 8, 8, 0.5);
 }
 
 /* Header photo: "Wildlife of the Southern Ocean banner" — Christopher Michel, CC BY 2.0 */
@@ -75,11 +88,11 @@ a:hover {
     height: 120px;
     background:
         linear-gradient(90deg,
-            rgba(3, 5, 9, 0.92) 0%,
-            rgba(3, 5, 9, 0.72) 40%,
-            rgba(6, 10, 22, 0.42) 72%,
-            rgba(3, 5, 9, 0.6) 100%),
-        url('/static/images/background/channels4_banner.jpg') center 35% / cover no-repeat var(--bg-void);
+            rgba(10, 9, 8, 0.90) 0%,
+            rgba(10, 9, 8, 0.68) 40%,
+            rgba(14, 12, 11, 0.38) 72%,
+            rgba(10, 9, 8, 0.55) 100%),
+        url('/static/images/background/channels4_banner.jpg') center 35% / cover no-repeat #0b0a09;
     border-bottom: 4px solid var(--accent);
     position: relative;
 }
@@ -95,16 +108,16 @@ a:hover {
     font-size: 16px;
     line-height: 1.6;
     letter-spacing: 1px;
-    color: var(--text-bright);
+    color: #f6f6f5;
     text-shadow:
-        2px 2px 0 var(--border-strong),
+        2px 2px 0 #3a3a3a,
         4px 4px 0 rgba(0, 0, 0, 0.6);
     -webkit-font-smoothing: none;
     font-smooth: never;
 }
 
 #logo h1 span {
-    color: var(--accent);
+    color: var(--accent-bright);
     text-shadow:
         2px 2px 0 var(--accent-fill-active),
         4px 4px 0 rgba(0, 0, 0, 0.6),
@@ -124,15 +137,15 @@ a:hover {
     font-family: 'VT323', 'Lucida Grande', monospace;
     font-size: 18px;
     letter-spacing: 0.5px;
-    color: var(--link-alt);
-    text-shadow: 0 0 6px var(--link-alt-fill);
+    color: #f0c878;
+    text-shadow: 0 0 6px rgba(168, 114, 15, 0.6);
     font-style: normal;
     margin-top: 8px;
 }
 
 #tagline::after {
     content: '_';
-    color: var(--accent);
+    color: var(--accent-bright);
     margin-left: 2px;
     animation: blink-cursor 1s steps(1) infinite;
 }
@@ -161,7 +174,8 @@ a:hover {
 
 #nav {
     min-height: 40px;
-    background: var(--bg-panel);
+    background: linear-gradient(to bottom, #ffffff 0%, #f2f3f4 45%, #e2e3e5 100%);
+    box-shadow: inset 0 1px 0 #ffffff;
     border-bottom: 1px solid var(--border-mid);
     display: flex;
     justify-content: space-between;
@@ -252,8 +266,8 @@ a:hover {
 }
 
 #auth-nav #login-btn:hover {
-    background-color: var(--accent-fill);
-    color: var(--text-bright);
+    background-image: var(--accent-fill-gradient);
+    color: #ffffff;
 }
 
 #auth-nav #logout-btn:hover {
@@ -278,14 +292,15 @@ a:hover {
 #nav > ul > li > a.active,
 #nav-right > ul > li > a:hover,
 #nav-right > ul > li > a.active {
-    background-color: var(--accent-fill);
-    color: var(--text-bright);
+    background-image: var(--accent-fill-gradient);
+    color: #ffffff;
     text-decoration: none;
     text-shadow: none;
 }
 
 #footer {
-    background: var(--bg-panel);
+    background: linear-gradient(to bottom, #f7f7f8 0%, var(--bg-base) 60%, #e6e7e9 100%);
+    box-shadow: inset 0 1px 0 #ffffff;
     border-top: 1px solid var(--border-mid);
     padding: 20px;
     text-align: center;
@@ -295,7 +310,7 @@ a:hover {
 }
 
 #footer-badges {
-    background: var(--bg-void);
+    background: linear-gradient(to bottom, var(--bg-base) 0%, #e3e4e7 100%);
     border-top: 1px solid var(--border-mid);
     padding: 14px 20px;
     text-align: center;
@@ -332,7 +347,8 @@ a:hover {
 }
 
 #site-button {
-    background: var(--bg-void);
+    background: linear-gradient(to bottom, #f7f7f8 0%, var(--bg-base) 100%);
+    box-shadow: inset 0 1px 0 #ffffff;
     border-top: 1px solid var(--border-mid);
     padding: 14px;
     text-align: center;
@@ -368,9 +384,10 @@ a:hover {
     position: absolute;
     top: 100%;
     left: 0;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     border-top: none;
+    box-shadow: 0 6px 16px rgba(20, 20, 20, 0.15);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -396,8 +413,8 @@ a:hover {
 
 .dropdown-menu li a:hover,
 .dropdown-menu li a.active {
-    background-color: var(--accent-fill);
-    color: var(--text-bright);
+    background-image: var(--accent-fill-gradient);
+    color: #ffffff;
     text-decoration: none;
 }
 

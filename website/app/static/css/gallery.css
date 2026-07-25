@@ -242,7 +242,7 @@
     width: 30px;
     height: 30px;
     border: 1px solid var(--border-mid);
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     color: var(--text-bright);
     font-size: 18px;
     line-height: 1;
@@ -250,8 +250,10 @@
 }
 
 .gallery-modal-close:hover {
-    background: var(--accent-fill);
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
     border-color: var(--accent-fill-border);
+    color: #ffffff;
 }
 
 .gallery-modal-img {

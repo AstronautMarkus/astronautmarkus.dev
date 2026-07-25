@@ -2,7 +2,7 @@
    Hero
 ----------------------------------------------- */
 #hero {
-    background-image: linear-gradient(to bottom, rgba(8, 9, 18, 0.35), rgba(6, 7, 13, 0.55)), url('/static/images/home/halo-background.jpg');
+    background-image: linear-gradient(to bottom, rgba(8, 9, 18, 0.35), rgba(6, 7, 13, 0.55)), url('/static/images/home/65f6937dabcbfd4f5be94c7395aeda3f.jpg');
     background-size: cover, cover;
     background-position: center, center;
     border-bottom: 1px solid var(--accent);
@@ -28,12 +28,12 @@
     width: var(--profile-cube-size);
     height: var(--profile-cube-size);
     perspective: 900px;
-    border: 2px solid #9f9fb5;
+    border: 2px solid #a3a3a3;
     border-top-color: #ffffff;
     border-left-color: #ffffff;
-    border-right-color: #5d5d6f;
-    border-bottom-color: #5d5d6f;
-    background: linear-gradient(135deg, #151528, #090912);
+    border-right-color: #5c5c5c;
+    border-bottom-color: #5c5c5c;
+    background: linear-gradient(135deg, #201f1f, #0a0a0a);
     box-shadow: inset 1px 1px 0 #ffffff22, inset -1px -1px 0 #00000088;
 }
 
@@ -101,20 +101,20 @@
 .hero-content h2 {
     font-size: 36px;
     margin: 0 0 12px 0;
-    color: var(--text-bright);
+    color: #f6f6f5;
     font-weight: bold;
     letter-spacing: -1px;
 }
 
 .hero-content h2 span {
-    color: var(--accent);
-    text-shadow: 0px -1px 0px var(--bg-void), 0px 1px 3px rgba(255, 255, 255, 0.3);
+    color: var(--accent-bright);
+    text-shadow: 0px -1px 0px #0a0908, 0px 1px 3px rgba(255, 255, 255, 0.3);
 }
 
 .hero-content p {
     font-size: 14px;
     line-height: 1.7;
-    color: var(--text-body);
+    color: #dcdcda;
     margin-bottom: 22px;
 }
 
@@ -122,26 +122,28 @@
     display: inline-block;
     margin-right: 10px;
     padding: 10px 20px;
-    background: var(--accent-fill);
-    color: var(--text-bright) !important;
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
+    color: #ffffff !important;
     font-size: 14px;
     font-weight: bold;
     border: 1px solid var(--accent-fill-border);
-    border-radius: 5px;
+    border-radius: 6px;
     box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5);
     text-decoration: none;
 }
 
 .glossy-btn.btn-outline {
-    background: transparent;
+    background-color: transparent;
+    background-image: none;
     border-color: var(--accent);
     color: var(--accent) !important;
     box-shadow: none;
 }
 
 .glossy-btn:hover {
+    background-image: var(--btn-gloss), var(--accent-fill-gradient-hover);
     text-decoration: none;
-    opacity: 0.85;
     text-shadow: none;
 }
 
@@ -171,7 +173,7 @@
 
 #secondary {
     flex-shrink: 0;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     padding: 15px;
     box-sizing: border-box;
@@ -179,7 +181,7 @@
 
 #tertiary {
     flex-shrink: 0;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     padding: 15px;
     box-sizing: border-box;
@@ -198,7 +200,7 @@
 #quaternary {
     flex: 1;
     min-height: 0;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     padding: 15px;
     box-sizing: border-box;
@@ -332,7 +334,7 @@
 .project-card {
     display: flex;
     flex-direction: column;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     padding: 15px;
     box-sizing: border-box;
@@ -352,7 +354,7 @@
 }
 
 .project-card h4 a:hover {
-    color: var(--accent-bright);
+    color: var(--accent-fill-active);
     text-decoration: underline;
 }
 
@@ -523,7 +525,7 @@
 
 .project-tag {
     display: inline-block;
-    background: var(--accent-soft-bg);
+    background: var(--accent-soft-gradient);
     border: 1px solid var(--accent-soft-border);
     color: var(--accent);
     font-size: 10px;
@@ -566,7 +568,7 @@
    Contact CTA
 ----------------------------------------------- */
 .contact-cta {
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--accent);
     padding: 25px;
     text-align: center;
@@ -635,7 +637,7 @@
 
 .tag-pill {
     display: inline-block;
-    background: var(--accent-soft-bg);
+    background: var(--accent-soft-gradient);
     border: 1px solid var(--accent-soft-border);
     color: var(--accent);
     font-size: 10px;

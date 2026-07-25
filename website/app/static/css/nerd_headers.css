@@ -15,7 +15,7 @@
 }
 
 .nerd-header-name {
-    color: var(--accent-bright);
+    color: var(--accent);
     white-space: nowrap;
     width: 1%;
     font-weight: bold;

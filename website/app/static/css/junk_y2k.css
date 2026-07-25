@@ -10,7 +10,7 @@
 .y2k-counter {
     font-family: 'Press Start 2P', 'Lucida Grande', monospace;
     font-size: 11px;
-    color: var(--accent-bright);
+    color: var(--accent);
     line-height: 2;
     margin: 16px 0;
 }
@@ -37,6 +37,6 @@
     background: repeating-linear-gradient(45deg,
             var(--danger),
             var(--danger) 10px,
-            rgba(214, 69, 60, 0.4) 10px,
-            rgba(214, 69, 60, 0.4) 20px);
+            rgba(179, 36, 31, 0.4) 10px,
+            rgba(179, 36, 31, 0.4) 20px);
 }

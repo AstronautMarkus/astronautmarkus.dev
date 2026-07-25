@@ -7,7 +7,7 @@
     max-width: 760px;
     margin: 30px auto;
     padding: 26px 32px;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     border-top: 3px solid var(--accent);
 }
@@ -70,20 +70,22 @@
 .nerd-btn {
     display: inline-block;
     padding: 10px 24px;
-    background: var(--accent-fill);
-    color: var(--text-bright);
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
+    color: #ffffff;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border: none;
+    border: 1px solid var(--accent-fill-border);
+    border-radius: 4px;
     cursor: pointer;
     font-family: inherit;
     text-decoration: none;
 }
 
 .nerd-btn:hover {
-    background: var(--accent-fill-hover);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient-hover);
     text-decoration: none;
 }
 
@@ -132,7 +134,7 @@
 .nerd-stat-value {
     font-family: 'Press Start 2P', 'Lucida Grande', monospace;
     font-size: 16px;
-    color: var(--accent-bright);
+    color: var(--accent);
     line-height: 1.4;
 }
 

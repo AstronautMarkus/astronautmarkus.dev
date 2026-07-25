@@ -41,7 +41,7 @@
 #blog-sidebar {
     width: 280px;
     float: right;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-soft);
     padding: 15px;
     box-sizing: border-box;
@@ -377,7 +377,7 @@
 .post-cover-title {
     font-size: 24px;
     font-weight: bold;
-    color: var(--text-bright);
+    color: #f6f6f5;
     line-height: 1.25;
     letter-spacing: -0.5px;
     text-shadow: 0 1px 4px rgba(6, 7, 13, 0.8);
@@ -397,7 +397,7 @@
 #post-sidebar {
     width: 280px;
     float: right;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-soft);
     padding: 15px;
     box-sizing: border-box;
@@ -430,7 +430,7 @@
 }
 
 .post-meta-cat {
-    background: var(--accent-soft-bg);
+    background: var(--accent-soft-gradient);
     border: 1px solid var(--accent-soft-border);
     color: var(--accent);
     padding: 2px 8px;
@@ -443,8 +443,9 @@
 }
 
 .post-meta-cat:hover {
-    background: var(--accent);
-    color: var(--bg-void);
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -673,7 +674,7 @@
     font-size: 11.5px;
     background: var(--bg-base);
     border: 1px solid var(--border-mid);
-    color: #ff9944;
+    color: #b8560f;
     padding: 1px 5px;
 }
 
@@ -745,7 +746,7 @@
 }
 
 .prose th {
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     color: var(--text-bright);
     border: 1px solid var(--border-strong);
     padding: 7px 12px;

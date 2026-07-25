@@ -7,7 +7,7 @@
     max-width: 720px;
     margin: 30px auto;
     padding: 26px 32px;
-    background: var(--bg-panel);
+    background: var(--panel-gradient);
     border: 1px solid var(--border-mid);
     border-top: 3px solid var(--accent);
 }
@@ -144,23 +144,26 @@
 .junk-btn {
     display: inline-block;
     padding: 10px 24px;
-    background: var(--accent-fill);
-    color: var(--text-bright);
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
+    color: #ffffff;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border: none;
+    border: 1px solid var(--accent-fill-border);
+    border-radius: 4px;
     cursor: pointer;
     font-family: inherit;
 }
 
 .junk-btn:hover {
-    background: var(--accent-fill-hover);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient-hover);
 }
 
 .junk-btn:disabled {
-    background: var(--border-mid);
+    background-image: none;
+    background-color: var(--border-mid);
     color: var(--text-faint);
     cursor: default;
 }
