@@ -1,7 +1,7 @@
 from flask import url_for
 from app.routes.main import main_bp
 from app.i18n import get_current_language, render_localized_template
-from app.models.models import BlogPost, BlogTag, CvFile, PortfolioProject, Proyectada
+from app.models.models import BlogPost, BlogTag, CvFile, PortfolioProject, Proyectada, Visit
 
 
 @main_bp.route('/')
@@ -35,6 +35,7 @@ def home():
     )
 
     all_tags = BlogTag.query.order_by(BlogTag.name).all()
+    total_visits = Visit.query.count()
 
     return render_localized_template(
         'main/home.html',
@@ -43,4 +44,5 @@ def home():
         latest_posts=latest_posts,
         latest_proyectadas=latest_proyectadas,
         all_tags=all_tags,
+        total_visits=total_visits,
     )

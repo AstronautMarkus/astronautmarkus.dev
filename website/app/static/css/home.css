@@ -332,6 +332,7 @@
 }
 
 .project-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     background: var(--panel-gradient);
@@ -652,4 +653,121 @@
     color: var(--text-bright);
     border-color: var(--accent);
     text-decoration: none;
+}
+
+/* -----------------------------------------------
+   Y2K homepage flair
+----------------------------------------------- */
+
+/* Ticker sits flush under the nav, no gap above it */
+.home-marquee {
+    margin: 0 0 0 0;
+}
+
+/* Retro "system info" status strip under the hero */
+.sysinfo-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 26px;
+    background: var(--panel-gradient);
+    border-bottom: 1px solid var(--border-mid);
+    box-shadow: inset 0 1px 0 #ffffff;
+    padding: 9px 20px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.sysinfo-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.sysinfo-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sysinfo-value {
+    font-size: 11px;
+    color: var(--text-body);
+    font-weight: bold;
+}
+
+.sysinfo-ok {
+    color: var(--success);
+}
+
+.sysinfo-ok::before {
+    content: '\25CF ';
+    animation: junk-blink 2.4s steps(1) infinite;
+}
+
+/* Blinking tagline under the hero buttons */
+.hero-blink-tag {
+    margin: 14px 0 0 0;
+}
+
+.hero-blink-tag .junk-blink {
+    display: inline-block;
+    font-family: 'Press Start 2P', 'Lucida Grande', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--accent-bright);
+    text-shadow: 0 0 8px rgba(216, 67, 58, 0.6);
+}
+
+/* "NEW" corner ribbon on the freshest project card */
+.project-new-ribbon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 4;
+    background-color: var(--accent-fill);
+    background-image: var(--btn-gloss), var(--accent-fill-gradient);
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border: 1px solid var(--accent-fill-border);
+    text-transform: uppercase;
+}
+
+/* Compact hit-counter widget in the sidebar (the full-size version lives on /counter) */
+.hitcounter-box {
+    text-align: center;
+}
+
+.hitcounter-box .counter-display {
+    transform: none;
+    padding: 6px 0 0;
+    margin: 0;
+}
+
+.hitcounter-box .counter-caption {
+    font-size: 10px;
+    margin-top: 6px;
+}
+
+/* "Under construction" progress teaser, borrowing the /under-construction widgets */
+.home-uc-teaser {
+    margin: 30px 0 10px;
+    padding-top: 20px;
+    border-top: 1px dotted var(--border-mid);
+}
+
+.home-uc-teaser .uc-progress-wrap {
+    max-width: none;
+    margin: 10px 0;
+}
+
+/* Sidebar webring/guestbook teaser reuses .sidebar-box, this just tightens the CTA link */
+.sidebar-cta-link {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 11px;
 }

@@ -7,6 +7,10 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_marquee.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_counter.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_under_construction.css') }}">
 {% endblock %}
 
 {% block extra_js %}
@@ -43,12 +47,17 @@
 
 {% block content %}
 
+<div class="junk-marquee marquee-speed-medium home-marquee">
+    <span>⚡ BIENVENIDO A ASTRONAUTMARKUS.DEV — ERES EL VISITANTE NÚMERO {{ '{:,}'.format(total_visits) }} —{% if latest_posts %} ÚLTIMA ENTRADA: "{{ latest_posts[0].title }}" —{% endif %} FIRMA EL <a href="{{ url_for('junk.guestbook') }}">LIBRO DE VISITAS</a> — MEJOR VISTO A <a href="{{ url_for('junk.best_viewed') }}">800x600</a> EN NETSCAPE NAVIGATOR — ESTE SITIO ESTÁ SIEMPRE <a href="{{ url_for('junk.under_construction') }}">EN CONSTRUCCIÓN</a> —</span>
+</div>
+
 <div id="hero">
     <div class="hero-content">
         <h2>Hola, soy <span>Marcos</span>.</h2>
         <p>¡Bienvenidos, buscadores y bots por igual, a mi sitio web personal! Aquí comparto mis proyectos, pensamientos y algún que otro desahogo sobre el desarrollo de software. Si eres humano, siéntete libre de explorar y conectar. Si eres un bot... bueno, disfruta del jugo SEO.</p>
         <a href="{{ url_for('main.portfolio_list') }}" class="glossy-btn">Ver mi trabajo</a>
         <a href="{{ url_for('contact.contact') }}" class="glossy-btn btn-outline">Contáctame</a>
+        <p class="hero-blink-tag"><span class="junk-blink">★ AHORA 110% MÁS PIXELADO ★</span></p>
     </div>
     <div class="profile-cube-scene" role="img" aria-label="Website Art">
         <div class="profile-cube">
@@ -59,6 +68,14 @@
     </div>
 </div>
 
+<div class="sysinfo-strip">
+    <div class="sysinfo-item"><span class="sysinfo-label">Sistema</span><span class="sysinfo-value">AstronautMarkusOS 4.1</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Estado</span><span class="sysinfo-value sysinfo-ok">En línea</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Visitantes</span><span class="sysinfo-value">{{ '{:,}'.format(total_visits) }}</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Proyectos entregados</span><span class="sysinfo-value">{{ projects|length }}+</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Reproduciendo</span><span class="sysinfo-value">clicks_de_teclado.mp3</span></div>
+</div>
+
 <div id="page-content">
 
     <div id="primary">
@@ -67,6 +84,13 @@
             <h3 class="section-title"><img src="{{ url_for('static', filename='images/icons/user.png') }}" class="pixel-icon-inline" alt="">Sobre mí</h3>
             <p>Me especializo en construir aplicaciones web de alto rendimiento e infraestructura escalable. Con más de un año de experiencia en las trincheras del desarrollo de software, he perfeccionado mis habilidades en <strong>Python, JavaScript, PHP</strong> y una variedad de frameworks y herramientas. Me apasionan las interfaces web de finales de los 2000, las redes y todo lo relacionado con los sistemas distribuidos.</p>
             <p>Cuando no estoy lanzando features, experimento con hardware, trasteo con domótica, saco fotos a mis gatos o bebo demasiado café. Este sitio es un trabajo de amor, construido desde cero con Flask y un motor de blog hecho a medida. Es mi patio de recreo digital jeje.</p>
+            <div class="junk-badge-row">
+                <div class="junk-badge">MEJOR VISTO EN<br>NETSCAPE 4.7</div>
+                <div class="junk-badge">HECHO CON<br>FLASK + RABIA</div>
+                <div class="junk-badge">SIN SOBREDOSIS<br>DE FRAMEWORKS</div>
+                <div class="junk-badge">100% HUMANO<br>+ ALGO DE IA</div>
+                <div class="junk-badge">FUNCIONA CON<br>CAFE.EXE</div>
+            </div>
         </div>
 
         <div class="skills">
@@ -220,6 +244,7 @@
                     {% set proj_title = p.title_es if p.has_es and p.title_es else p.title %}
                     {% set proj_desc = p.description_es if p.has_es and p.description_es else p.description %}
                     <div class="project-card">
+                        {% if loop.first %}<span class="project-new-ribbon junk-blink">Nuevo</span>{% endif %}
                         <div class="project-card-img-wrap">
                             {% if p.image_path %}
                             <img src="{{ storage_url(p.image_path) }}"
@@ -257,6 +282,15 @@
             <a href="{{ url_for('main.portfolio_list') }}" class="view-all-link">Ver todos los proyectos »</a>
         </div>
 
+        <div class="home-uc-teaser">
+            <div class="uc-progress-label"><img src="{{ url_for('static', filename='images/icons/hourglass_go.png') }}" class="pixel-icon-inline" alt="">Progreso de expansión del portafolio</div>
+            <div class="uc-progress-wrap">
+                <div class="uc-progress"><div class="uc-progress-fill" style="width: 74%">74%</div></div>
+            </div>
+            <p class="uc-eta">Más proyectos cargando en segundo plano. Finalización estimada: cualquier día de estos. Mira el
+                <a href="{{ url_for('junk.under_construction') }}">sitio en construcción</a> completo para detalles que nadie pidió.</p>
+        </div>
+
         <div class="contact-cta">
             <h3><img src="{{ url_for('static', filename='images/icons/email.png') }}" class="pixel-icon-inline" alt="">¿Tienes un proyecto en mente?</h3>
             <p>Estoy disponible para trabajo freelance, consultoría y colaboraciones interesantes. Construyamos algo juntos.</p>
@@ -269,6 +303,14 @@
 
     <div id="secondary">
 
+        <div class="sidebar-box hitcounter-box">
+            <h4><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon-inline" alt="">Eres el visitante N°</h4>
+            <div class="counter-display">
+                <img src="{{ url_for('utils.visitor_counter') }}" alt="contador de visitas mostrando {{ total_visits }} visitas">
+            </div>
+            <p class="counter-caption">{{ '{:,}'.format(total_visits) }} visitas reales, sin números falsos. <a href="{{ url_for('junk.counter') }}" class="sidebar-cta-link">Verlo enorme »</a></p>
+        </div>
+
         <div class="sidebar-box">
             <h4><img src="{{ url_for('static', filename='images/icons/link.png') }}" class="pixel-icon-inline" alt="">Enlaces rápidos</h4>
             <ul>
@@ -278,6 +320,8 @@
                     <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Descargar CV</a></li>
                 {% endif %}
                 <li><a href="{{ url_for('contact.contact') }}">Formulario de contacto</a></li>
+                <li><a href="{{ url_for('junk.guestbook') }}">Firma mi libro de visitas</a></li>
+                <li><a href="{{ url_for('junk.webring') }}">Únete al Webring</a></li>
             </ul>
         </div>
 
@@ -286,7 +330,7 @@
             <ul>
                 {% for p in latest_posts %}
                 {% set p_title = p.title_es if p.has_es and p.title_es else p.title %}
-                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p_title | truncate(38) }}</a></li>
+                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p_title | truncate(38) }}</a>{% if loop.first %} <span class="junk-blink" style="color:var(--accent-bright);font-size:9px;font-weight:bold;">NUEVO</span>{% endif %}</li>
                 {% else %}
                 <li style="list-style:none;color:var(--text-dim)">Sin entradas aún.</li>
                 {% endfor %}

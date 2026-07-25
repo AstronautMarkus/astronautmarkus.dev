@@ -7,6 +7,10 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_marquee.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_counter.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_under_construction.css') }}">
 {% endblock %}
 
 {% block extra_js %}
@@ -43,6 +47,10 @@
 
 {% block content %}
 
+<div class="junk-marquee marquee-speed-medium home-marquee">
+    <span>⚡ WELCOME TO ASTRONAUTMARKUS.DEV — YOU ARE VISITOR NUMBER {{ '{:,}'.format(total_visits) }} —{% if latest_posts %} LATEST POST: "{{ latest_posts[0].title }}" —{% endif %} SIGN THE <a href="{{ url_for('junk.guestbook') }}">GUESTBOOK</a> — BEST VIEWED AT <a href="{{ url_for('junk.best_viewed') }}">800x600</a> ON NETSCAPE NAVIGATOR — THIS SITE IS ALWAYS <a href="{{ url_for('junk.under_construction') }}">UNDER CONSTRUCTION</a> —</span>
+</div>
+
 <div id="hero">
     <div class="hero-content">
         <h2>Hi, I'm <span>Marcos</span>.</h2>
@@ -51,6 +59,7 @@
             bot... well, enjoy the SEO juice.</p>
         <a href="{{ url_for('main.portfolio_list') }}" class="glossy-btn">View My Work</a>
         <a href="{{ url_for('contact.contact') }}" class="glossy-btn btn-outline">Contact Me</a>
+        <p class="hero-blink-tag"><span class="junk-blink">★ NOW 110% MORE PIXELATED ★</span></p>
     </div>
     <div class="profile-cube-scene" role="img" aria-label="Website Art">
         <div class="profile-cube">
@@ -59,6 +68,14 @@
             <img src="https://github.com/MarcosKingsDuoc.png" class="profile-cube-face profile-cube-face-left" aria-hidden="true">
         </div>
     </div>
+</div>
+
+<div class="sysinfo-strip">
+    <div class="sysinfo-item"><span class="sysinfo-label">System</span><span class="sysinfo-value">AstronautMarkusOS 4.1</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Status</span><span class="sysinfo-value sysinfo-ok">Online</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Visitors</span><span class="sysinfo-value">{{ '{:,}'.format(total_visits) }}</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Projects shipped</span><span class="sysinfo-value">{{ projects|length }}+</span></div>
+    <div class="sysinfo-item"><span class="sysinfo-label">Now playing</span><span class="sysinfo-value">keyboard_clacks.mp3</span></div>
 </div>
 
 <div id="page-content">
@@ -74,6 +91,13 @@
             <p>When I'm not shipping features, I'm experimenting with hardware, tinkering with home automation, taking
                 photos of my cats, or drinking way too much coffee. This site is a labor of love, built from scratch
                 with Flask and a custom-built blog engine. It's my digital playground hehe.</p>
+            <div class="junk-badge-row">
+                <div class="junk-badge">BEST VIEWED IN<br>NETSCAPE 4.7</div>
+                <div class="junk-badge">MADE WITH<br>FLASK + SPITE</div>
+                <div class="junk-badge">NO FRAMEWORK<br>OVERDOSE</div>
+                <div class="junk-badge">100% HUMAN<br>+ SOME AI</div>
+                <div class="junk-badge">RUNS ON<br>COFFEE.EXE</div>
+            </div>
         </div>
 
         <div class="skills">
@@ -225,6 +249,7 @@
                 {% if projects %}
                     {% for p in projects %}
                     <div class="project-card">
+                        {% if loop.first %}<span class="project-new-ribbon junk-blink">New</span>{% endif %}
                         <div class="project-card-img-wrap">
                             {% if p.image_path %}
                             <img src="{{ storage_url(p.image_path) }}"
@@ -262,6 +287,15 @@
             <a href="{{ url_for('main.portfolio_list') }}" class="view-all-link">View all projects »</a>
         </div>
 
+        <div class="home-uc-teaser">
+            <div class="uc-progress-label"><img src="{{ url_for('static', filename='images/icons/hourglass_go.png') }}" class="pixel-icon-inline" alt="">Portfolio expansion progress</div>
+            <div class="uc-progress-wrap">
+                <div class="uc-progress"><div class="uc-progress-fill" style="width: 74%">74%</div></div>
+            </div>
+            <p class="uc-eta">More projects loading in the background. Estimated completion: any day now. See the full
+                <a href="{{ url_for('junk.under_construction') }}">construction site</a> for details nobody asked for.</p>
+        </div>
+
         <div class="contact-cta">
             <h3><img src="{{ url_for('static', filename='images/icons/email.png') }}" class="pixel-icon-inline" alt="">Got a project in mind?</h3>
             <p>I'm available for freelance work, consulting, and interesting collaborations. Let's build something
@@ -275,6 +309,14 @@
 
     <div id="secondary">
 
+        <div class="sidebar-box hitcounter-box">
+            <h4><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon-inline" alt="">You Are Visitor #</h4>
+            <div class="counter-display">
+                <img src="{{ url_for('utils.visitor_counter') }}" alt="visitor counter showing {{ total_visits }} visits">
+            </div>
+            <p class="counter-caption">{{ '{:,}'.format(total_visits) }} real visits, no fake numbers. <a href="{{ url_for('junk.counter') }}" class="sidebar-cta-link">See it huge »</a></p>
+        </div>
+
         <div class="sidebar-box">
             <h4><img src="{{ url_for('static', filename='images/icons/link.png') }}" class="pixel-icon-inline" alt="">Quick Links</h4>
             <ul>
@@ -284,6 +326,8 @@
                     <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Download CV</a></li>
                 {% endif %}
                 <li><a href="{{ url_for('contact.contact') }}">Contact Form</a></li>
+                <li><a href="{{ url_for('junk.guestbook') }}">Sign My Guestbook</a></li>
+                <li><a href="{{ url_for('junk.webring') }}">Join The Webring</a></li>
             </ul>
         </div>
 
@@ -291,7 +335,7 @@
             <h4><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon-inline" alt="">Latest Posts</h4>
             <ul>
                 {% for p in latest_posts %}
-                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p.title | truncate(38) }}</a></li>
+                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p.title | truncate(38) }}</a>{% if loop.first %} <span class="junk-blink" style="color:var(--accent-bright);font-size:9px;font-weight:bold;">NEW</span>{% endif %}</li>
                 {% else %}
                 <li style="list-style:none;color:var(--text-dim)">No posts yet.</li>
                 {% endfor %}
