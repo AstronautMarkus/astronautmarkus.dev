@@ -178,6 +178,16 @@ a:hover {
     top: -1px;
 }
 
+.pixel-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+    margin-right: 6px;
+    position: relative;
+    top: -2px;
+}
+
 #nav > ul,
 #nav-right > ul {
     margin: 0;

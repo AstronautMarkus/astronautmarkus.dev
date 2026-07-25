@@ -86,7 +86,7 @@
 
         {% if project.extra_images %}
         <div class="portfolio-gallery">
-            <h4>Capturas / Multimedia</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/camera.png') }}" class="pixel-icon-inline" alt="">Capturas / Multimedia</h4>
             <div class="portfolio-gallery-grid">
                 {% for img in project.extra_images %}
                 <a href="{{ storage_url(img.image_path) }}" target="_blank">
@@ -104,7 +104,7 @@
     <div id="portfolio-detail-sidebar">
 
         <div class="portfolio-sidebar-box">
-            <h4>Info del Proyecto</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">Info del Proyecto</h4>
             <ul>
                 <li><span>Añadido</span> {{ project.created_at.strftime('%d/%m/%Y') }}</li>
                 {% if project.project_url %}
@@ -126,7 +126,7 @@
         </div>
 
         <div class="portfolio-sidebar-box">
-            <h4>Todos los Proyectos</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="pixel-icon-inline" alt="">Todos los Proyectos</h4>
             <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-back" style="margin-top:0">Volver al listado</a>
         </div>
 

@@ -60,7 +60,7 @@
 
         {% if post.images %}
         <div class="post-gallery">
-            <h4>{% if current_lang == 'es' %}Imágenes del Post{% else %}Post Images{% endif %}</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">{% if current_lang == 'es' %}Imágenes del Post{% else %}Post Images{% endif %}</h4>
             <div class="post-gallery-grid">
                 {% for img in post.images %}
                 <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
@@ -79,7 +79,7 @@
     <div id="post-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4>{% if current_lang == 'es' %}Info del Post{% else %}Post Info{% endif %}</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">{% if current_lang == 'es' %}Info del Post{% else %}Post Info{% endif %}</h4>
             <ul>
                 <li>{% if current_lang == 'es' %}Publicado{% else %}Published{% endif %}: {{ post.created_at.strftime('%d %b %Y') }}</li>
                 {% if post.category %}
@@ -107,14 +107,14 @@
         </div>
 
         <div class="blog-sidebar-box" id="toc-box">
-            <h4>{% if current_lang == 'es' %}Contenido{% else %}Contents{% endif %}</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="pixel-icon-inline" alt="">{% if current_lang == 'es' %}Contenido{% else %}Contents{% endif %}</h4>
             <ul id="toc-list">
                 <li class="toc-empty">{% if current_lang == 'es' %}No hay encabezados.{% else %}No headings found.{% endif %}</li>
             </ul>
         </div>
 
         <div class="blog-sidebar-box">
-            <h4>{% if current_lang == 'es' %}Compartir{% else %}Share{% endif %}</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/share.png') }}" class="pixel-icon-inline" alt="">{% if current_lang == 'es' %}Compartir{% else %}Share{% endif %}</h4>
             <ul>
                 <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
                        target="_blank" rel="noopener noreferrer">{% if current_lang == 'es' %}Compartir en Twitter/X{% else %}Share on Twitter/X{% endif %}</a></li>
