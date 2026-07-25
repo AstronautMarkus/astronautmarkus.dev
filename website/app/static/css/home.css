@@ -178,6 +178,24 @@
 }
 
 #tertiary {
+    flex-shrink: 0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-mid);
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+#tertiary .sidebar-box {
+    margin-bottom: 0;
+}
+
+#tertiary .tag-cloud {
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+#quaternary {
     flex: 1;
     min-height: 0;
     background: var(--bg-panel);
@@ -187,30 +205,50 @@
     overflow-y: auto;
 }
 
-#tertiary .sidebar-box {
+#quaternary .sidebar-box {
     margin-bottom: 0;
 }
 
-/* Themed scrollbar for the scrollable sidebar panel */
-#tertiary {
+#quaternary .ad-row {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#quaternary .ad-row:last-child {
+    margin-bottom: 0;
+}
+
+#quaternary .ad-row img {
+    max-width: 200px;
+    height: auto;
+}
+
+/* Themed scrollbar for the scrollable sidebar panels */
+#tertiary .tag-cloud,
+#quaternary {
     scrollbar-width: thin;
     scrollbar-color: var(--border-mid) transparent;
 }
 
-#tertiary::-webkit-scrollbar {
+#tertiary .tag-cloud::-webkit-scrollbar,
+#quaternary::-webkit-scrollbar {
     width: 6px;
 }
 
-#tertiary::-webkit-scrollbar-track {
+#tertiary .tag-cloud::-webkit-scrollbar-track,
+#quaternary::-webkit-scrollbar-track {
     background: transparent;
 }
 
-#tertiary::-webkit-scrollbar-thumb {
+#tertiary .tag-cloud::-webkit-scrollbar-thumb,
+#quaternary::-webkit-scrollbar-thumb {
     background-color: var(--border-mid);
     border-radius: 3px;
 }
 
-#tertiary::-webkit-scrollbar-thumb:hover {
+#tertiary .tag-cloud::-webkit-scrollbar-thumb:hover,
+#quaternary::-webkit-scrollbar-thumb:hover {
     background-color: var(--accent);
 }
 
