@@ -294,6 +294,43 @@ a:hover {
     clear: both;
 }
 
+#footer-badges {
+    background: var(--bg-void);
+    border-top: 1px solid var(--border-mid);
+    padding: 14px 20px;
+    text-align: center;
+}
+
+#footer-badges .footer-badges-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+}
+
+#footer-badges .footer-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+#footer-badges .footer-badges-row img {
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid var(--border-mid);
+    opacity: 0.85;
+    filter: grayscale(35%);
+    transition: opacity 0.15s ease, filter 0.15s ease;
+}
+
+#footer-badges .footer-badges-row img:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+}
+
 #site-button {
     background: var(--bg-void);
     border-top: 1px solid var(--border-mid);

@@ -133,6 +133,35 @@
             current_lang == 'es' %} Rechaza la complejidad moderna y abraza la libertad de lo sencillo. {% endif %} <br>
         </div>
 
+        <div id="footer-badges">
+            <div class="footer-badges-label">{{ 'Powered by / running on' if current_lang == 'en' else 'Funciona con' }}</div>
+            <div class="footer-badges-row">
+                <img src="{{ url_for('static', filename='images/88-31/badges/linux.gif') }}" width="88" height="31" alt="Linux" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/gnu-linux.gif') }}" width="88" height="31" alt="GNU/Linux" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/debian.gif') }}" width="88" height="30" alt="Debian" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/apache-powered.gif') }}" width="88" height="31" alt="Apache" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/mysql-88x31.gif') }}" width="88" height="31" alt="MySQL" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/php.gif') }}" width="88" height="31" alt="PHP" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/html.gif') }}" width="88" height="31" alt="HTML" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/css.gif') }}" width="88" height="31" alt="CSS" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/javascript.gif') }}" width="88" height="31" alt="JavaScript" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/github.gif') }}" width="88" height="31" alt="GitHub" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/firefox.gif') }}" width="88" height="31" alt="Firefox" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/netscape_now.gif') }}" width="88" height="31" alt="Netscape Now" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/notepad.gif') }}" width="88" height="31" alt="Created with Notepad" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/coffee.gif') }}" width="88" height="31" alt="Fueled by Coffee" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/y2k.gif') }}" width="88" height="31" alt="Y2K" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/best_viewed_with_eyes.gif') }}" width="88" height="31" alt="Best Viewed With Eyes" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/retrosite.gif') }}" width="88" height="31" alt="Retro Site" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/designedbymac.gif') }}" width="88" height="31" alt="Designed by Macintosh" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/macmade-wht.gif') }}" width="88" height="31" alt="Made with Macintosh" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/stop.gif') }}" width="88" height="31" alt="Stop" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/vocaloid.gif') }}" width="88" height="31" alt="Vocaloid Now" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/jesus_now.gif') }}" width="88" height="31" alt="Jesus Now" loading="lazy">
+                <img src="{{ url_for('static', filename='images/88-31/badges/ralseismokingadart.gif') }}" width="88" height="31" alt="Ralsei Smoking a Dart" loading="lazy">
+            </div>
+        </div>
+
         <div id="site-button">
             <a href="{{ url_for('junk.links') }}" title="{{ 'Grab my 88x31 button' if current_lang == 'en' else 'Llévate mi botón 88x31' }}">
                 <img src="{{ url_for('static', filename='images/88-31/button.png') }}" width="88" height="31" alt="AstronautMarkus.dev">
