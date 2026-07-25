@@ -48,7 +48,7 @@
 {% block content %}
 
 <div class="junk-marquee marquee-speed-medium home-marquee">
-    <span>⚡ WELCOME TO ASTRONAUTMARKUS.DEV — YOU ARE VISITOR NUMBER {{ '{:,}'.format(total_visits) }} —{% if latest_posts %} LATEST POST: "{{ latest_posts[0].title }}" —{% endif %} SIGN THE <a href="{{ url_for('junk.guestbook') }}">GUESTBOOK</a> — BEST VIEWED AT <a href="{{ url_for('junk.best_viewed') }}">800x600</a> ON NETSCAPE NAVIGATOR — THIS SITE IS ALWAYS <a href="{{ url_for('junk.under_construction') }}">UNDER CONSTRUCTION</a> —</span>
+    <span>WELCOME TO ASTRONAUTMARKUS.DEV — YOU ARE VISITOR NUMBER {{ '{:,}'.format(total_visits) }} —{% if latest_posts %} LATEST POST: "{{ latest_posts[0].title }}" —{% endif %} SIGN THE <a href="{{ url_for('junk.guestbook') }}">GUESTBOOK</a> — BEST VIEWED AT <a href="{{ url_for('junk.best_viewed') }}">800x600</a> ON NETSCAPE NAVIGATOR — THIS SITE IS ALWAYS <a href="{{ url_for('junk.under_construction') }}">UNDER CONSTRUCTION</a> —</span>
 </div>
 
 <div id="hero">
@@ -389,7 +389,10 @@
             <h4><img src="{{ url_for('static', filename='images/icons/advertising.png') }}" class="pixel-icon-inline" alt="">Ads</h4>
             <div class="ad-row">
                 <a href="https://www.youtube.com/watch?v=12TIMWyGjfs" target="_blank" rel="noopener noreferrer">
-                    <img src="{{ url_for('static', filename='images/announce.png') }}" alt="Announcement">
+                    <img src="{{ url_for('static', filename='images/announce.png') }}">
+                </a>
+                <a href="https://youtu.be/35SrRXNMeF0?si=WS8525kfaLjqjJo5" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url_for('static', filename='images/N6KVmek.gif') }}">
                 </a>
             </div>
         </div>
