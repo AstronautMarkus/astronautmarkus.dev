@@ -79,7 +79,7 @@ a:hover {
             rgba(3, 5, 9, 0.72) 40%,
             rgba(6, 10, 22, 0.42) 72%,
             rgba(3, 5, 9, 0.6) 100%),
-        url('/static/images/background/penguins-banner.jpg') center 35% / cover no-repeat var(--bg-void);
+        url('/static/images/background/channels4_banner.jpg') center 35% / cover no-repeat var(--bg-void);
     border-bottom: 4px solid var(--accent);
     position: relative;
 }
