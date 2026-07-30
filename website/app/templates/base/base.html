@@ -29,7 +29,7 @@
         </header>
 
         <nav class="main-nav">
-            <a href="#">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif %}</a>
+            <a href="{{ url_for('main.about_me') }}">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Projects & Portfolio{% else %}Proyectos y Portafolio{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
@@ -40,6 +40,7 @@
 
         <div class="content-container">
             <aside class="sidebar">
+                {% if request.endpoint == 'main.home' %}
                 <div class="panel-box">
                     <div class="panel-header">{% if current_lang == 'en' %}Index{% else %}Índice{% endif %}</div>
                     <ul class="menu-list">
@@ -59,6 +60,14 @@
                         <div class="spotlight-img"></div>
                     </div>
                 </div>
+                {% else %}
+                <div class="panel-box">
+                    <div class="panel-header">{% if current_lang == 'en' %}Exit{% else %}Salir{% endif %}</div>
+                    <ul class="menu-list">
+                        <li><a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Back Home{% else %}Volver al Inicio{% endif %}</a></li>
+                    </ul>
+                </div>
+                {% endif %}
             </aside>
 
             <main class="main-content">
