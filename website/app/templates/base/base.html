@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}AstronautMarkus.Dev{% endblock %}</title>
+    <title>{% block title %}AstronautMarkus.Dev{% endblock %} | AstronautMarkus.Dev</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
@@ -43,7 +43,7 @@
                 <div class="panel-box">
                     <div class="panel-header">{% if current_lang == 'en' %}Index{% else %}Índice{% endif %}</div>
                     <ul class="menu-list">
-                        <li><a href="{{ cv_url }}">{% if current_lang == 'en' %}Download CV{% else %}Descargar CV{% endif %}</a></li>
+                        <li><a target="_blank" href="{{ cv_url }}">{% if current_lang == 'en' %}Download CV{% else %}Descargar CV{% endif %}</a></li>
                         <li><a href="#">Homelab</a></li>
                         <li><a href="#">{% if current_lang == 'en' %}Tech Stack{% else %}Pila Tecnológica{% endif %}</a></li>
                         <li><a href="#">{% if current_lang == 'en' %}Timeline{% else %}Cronología{% endif %}</a></li>
