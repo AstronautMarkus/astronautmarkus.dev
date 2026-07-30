@@ -2,406 +2,53 @@
 
 {% block title %}Home{% endblock %}
 
-{% block description %}Marcos Reyes - Personal website and tech portfolio{% endblock %}
-{% block keywords %}Marcos Reyes, developer, portfolio, tech, software, personal website{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/junk.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_marquee.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_counter.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/junk_under_construction.css') }}">
-{% endblock %}
-
-{% block extra_js %}
-<script>
-(function () {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var thumbs = document.querySelectorAll('.project-card-img');
-    if (!thumbs.length) return;
-
-    /* CRT power-on flicker, staggered, the first time each thumbnail enters view */
-    var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            var el = entry.target;
-            observer.unobserve(el);
-            var idx = Array.prototype.indexOf.call(thumbs, el);
-            setTimeout(function () { el.classList.add('crt-power-on'); }, Math.min(idx, 10) * 90);
-        });
-    }, { threshold: 0.2 });
-    thumbs.forEach(function (img) { observer.observe(img); });
-
-    /* occasional ambient glitch on a random thumbnail */
-    setInterval(function () {
-        if (Math.random() > 0.35) return;
-        var img = thumbs[Math.floor(Math.random() * thumbs.length)];
-        img.classList.remove('crt-glitch');
-        void img.offsetWidth;
-        img.classList.add('crt-glitch');
-    }, 2600);
-})();
-</script>
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
 {% block content %}
-
-<div class="junk-marquee marquee-speed-medium home-marquee">
-    <span>WELCOME TO ASTRONAUTMARKUS.DEV — YOU ARE VISITOR NUMBER {{ '{:,}'.format(total_visits) }} —{% if latest_posts %} LATEST POST: "{{ latest_posts[0].title }}" —{% endif %} SIGN THE <a href="{{ url_for('junk.guestbook') }}">GUESTBOOK</a> — BEST VIEWED AT <a href="{{ url_for('junk.best_viewed') }}">800x600</a> ON NETSCAPE NAVIGATOR — THIS SITE IS ALWAYS <a href="{{ url_for('junk.under_construction') }}">UNDER CONSTRUCTION</a> —</span>
-</div>
-
-<div id="hero">
-    <div class="hero-content">
-        <h2>Hi, I'm <span>Marcos</span>.</h2>
-        <p>Welcome, seekers and bots alike to my personal website! This is where I share my projects, thoughts, and the
-            occasional rant about software development. If you're a human, feel free to explore and connect. If you're a
-            bot... well, enjoy the SEO juice.</p>
-        <a href="{{ url_for('main.portfolio_list') }}" class="glossy-btn">View My Work</a>
-        <a href="{{ url_for('contact.contact') }}" class="glossy-btn btn-outline">Contact Me</a>
-        <p class="hero-blink-tag"><span class="junk-blink">★ NOW 110% MORE PIXELATED ★</span></p>
+<section class="welcome-card">
+    <div class="card-header">
+        &#9654; Welcome to the AstronautMarkus.Dev Site
     </div>
-    <div class="profile-cube-scene" role="img" aria-label="Website Art">
-        <div class="profile-cube">
-            <img style="background-color: white;" src="{{ url_for('static', filename='images/home/astronautmarkus-tux.png') }}" class="profile-cube-face profile-cube-face-front" aria-hidden="true">
-            <img src="https://github.com/AstronautMarkus.png" class="profile-cube-face profile-cube-face-right" aria-hidden="true">
-            <img src="https://github.com/MarcosKingsDuoc.png" class="profile-cube-face profile-cube-face-left" aria-hidden="true">
+    <div class="card-body">
+        <div class="card-text">
+            During the mid 1990's, there were far too many "accessory supply" shops working under the
+            guile of being "professional tuners". As a result, high performance enthusiasts were
+            subjected to the endless problems resulting from the poor workmanship done by these
+            accessory shops.<br><br>
+            Realizing the need for a quality and professional import tuner in Southern California, XS
+            Engineering, Inc. was founded. During 1996 we entered the market, at first only building
+            turbochargers, but soon thereafter developing through full project car work. Today, we
+            handle most everything inside and out, from turbo and fuel injection systems to complete
+            engine building. Our qualified and expert staff has well over 8 years experience tuning
+            Japanese and German vehicles.<br><br>
+            No doubt, this is why XS Engineering customers have labeled us among the elite for high
+            performance tuning in Southern California.
+        </div>
+        <div class="feature-image">
+            <div style="margin-bottom: auto; font-size: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">DEV</div>
+            <p style="margin: 0; font-size: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">ASTRONAUTMARKUS</p>
         </div>
     </div>
-</div>
+</section>
 
-<div class="sysinfo-strip">
-    <div class="sysinfo-item"><span class="sysinfo-label">System</span><span class="sysinfo-value">AstronautMarkusOS 4.1</span></div>
-    <div class="sysinfo-item"><span class="sysinfo-label">Status</span><span class="sysinfo-value sysinfo-ok">Online</span></div>
-    <div class="sysinfo-item"><span class="sysinfo-label">Visitors</span><span class="sysinfo-value">{{ '{:,}'.format(total_visits) }}</span></div>
-    <div class="sysinfo-item"><span class="sysinfo-label">Projects shipped</span><span class="sysinfo-value">{{ projects|length }}+</span></div>
-    <div class="sysinfo-item"><span class="sysinfo-label">Now playing</span><span class="sysinfo-value">keyboard_clacks.mp3</span></div>
-</div>
-
-<div id="page-content">
-
-    <div id="primary">
-
-        <div class="about-text">
-            <h3 class="section-title"><img src="{{ url_for('static', filename='images/icons/user.png') }}" class="pixel-icon-inline" alt="">About Me</h3>
-            <p>I specialize in building high-performance web applications and scalable infrastructure. With over a years
-                of experience in the trenches of software development, I've honed my skills in <strong>Python,
-                    JavaScript, PHP</strong>, and a variety of frameworks and tools. I have a passion for late 2000s web
-                UIs, Networking, and all things distributed systems.</p>
-            <p>When I'm not shipping features, I'm experimenting with hardware, tinkering with home automation, taking
-                photos of my cats, or drinking way too much coffee. This site is a labor of love, built from scratch
-                with Flask and a custom-built blog engine. It's my digital playground hehe.</p>
-            <div class="junk-badge-row">
-                <div class="junk-badge">BEST VIEWED IN<br>NETSCAPE 4.7</div>
-                <div class="junk-badge">MADE WITH<br>FLASK + SPITE</div>
-                <div class="junk-badge">NO FRAMEWORK<br>OVERDOSE</div>
-                <div class="junk-badge">100% HUMAN<br>+ SOME AI</div>
-                <div class="junk-badge">RUNS ON<br>COFFEE.EXE</div>
-            </div>
-        </div>
-
-        <div class="skills">
-            <h3 class="section-title"><img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="pixel-icon-inline" alt="">Skills &amp; Stack</h3>
-            <div class="skill-group">
-                <span class="skill-group-label">Languages &amp; Scripting</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Python</span>
-                    <span class="tag-pill">PHP</span>
-                    <span class="tag-pill">HTML</span>
-                    <span class="tag-pill">CSS</span>
-                    <span class="tag-pill">JavaScript</span>
-                    <span class="tag-pill">TypeScript</span>
-                    <span class="tag-pill">SQL</span>
-                    <span class="tag-pill">Bash</span>
-                    <span class="tag-pill">Dockerfile</span>
-                    <span class="tag-pill">Arduino</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Frameworks &amp; Libraries</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">React</span>
-                    <span class="tag-pill">React Router</span>
-                    <span class="tag-pill">Laravel</span>
-                    <span class="tag-pill">Laravel Reverb</span>
-                    <span class="tag-pill">Livewire</span>
-                    <span class="tag-pill">Tailwind CSS</span>
-                    <span class="tag-pill">Vue.js</span>
-                    <span class="tag-pill">Node.js</span>
-                    <span class="tag-pill">Flask</span>
-                    <span class="tag-pill">Django</span>
-                    <span class="tag-pill">FastAPI</span>
-                    <span class="tag-pill">Alpine.js</span>
-                    <span class="tag-pill">Chart.js</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Artificial Intelligence</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Google Gemini API</span>
-                    <span class="tag-pill">Gemini Live API</span>
-                    <span class="tag-pill">Function Calling / Tool Use</span>
-                    <span class="tag-pill">RAG</span>
-                    <span class="tag-pill">OCR</span>
-                    <span class="tag-pill">TTS</span>
-                    <span class="tag-pill">Prompt Engineering</span>
-                    <span class="tag-pill">Strategy Pattern for AI Reports</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Methodologies &amp; Leadership</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Agile</span>
-                    <span class="tag-pill">Scrum</span>
-                    <span class="tag-pill">Kanban</span>
-                    <span class="tag-pill">Sprints</span>
-                    <span class="tag-pill">SDLC</span>
-                    <span class="tag-pill">Technical Leadership</span>
-                    <span class="tag-pill">Mentoring</span>
-                    <span class="tag-pill">Problem Solving</span>
-                    <span class="tag-pill">Troubleshooting</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Testing &amp; Quality</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Unit Testing</span>
-                    <span class="tag-pill">Integration Testing</span>
-                    <span class="tag-pill">TDD</span>
-                    <span class="tag-pill">Jest</span>
-                    <span class="tag-pill">PHPUnit</span>
-                    <span class="tag-pill">PyTest</span>
-                    <span class="tag-pill">Software Quality</span>
-                    <span class="tag-pill">Code Review</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Infrastructure &amp; Tools</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Apache</span>
-                    <span class="tag-pill">Nginx</span>
-                    <span class="tag-pill">Linux (Ubuntu/Debian/RHEL)</span>
-                    <span class="tag-pill">VPS</span>
-                    <span class="tag-pill">Cloudflare</span>
-                    <span class="tag-pill">SSL</span>
-                    <span class="tag-pill">DNS</span>
-                    <span class="tag-pill">Git</span>
-                    <span class="tag-pill">GitHub</span>
-                    <span class="tag-pill">GitHub Actions</span>
-                    <span class="tag-pill">CI/CD</span>
-                    <span class="tag-pill">RESTful APIs</span>
-                    <span class="tag-pill">Docker</span>
-                    <span class="tag-pill">System Administration</span>
-                    <span class="tag-pill">systemd</span>
-                    <span class="tag-pill">WebSockets</span>
-                    <span class="tag-pill">Queue Workers</span>
-                    <span class="tag-pill">Web Security</span>
-                    <span class="tag-pill">2FA/TOTP</span>
-                    <span class="tag-pill">SEO</span>
-                    <span class="tag-pill">Microservices Architecture</span>
-                    <span class="tag-pill">Multi-tenant SaaS Architecture</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Databases</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">MySQL</span>
-                    <span class="tag-pill">MariaDB</span>
-                    <span class="tag-pill">SQLite</span>
-                    <span class="tag-pill">Redis</span>
-                    <span class="tag-pill">Oracle Database</span>
-                    <span class="tag-pill">Cassandra</span>
-                    <span class="tag-pill">MongoDB</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Platforms &amp; Services</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">AWS S3</span>
-                    <span class="tag-pill">AWS EC2</span>
-                    <span class="tag-pill">AWS SES</span>
-                    <span class="tag-pill">Hostinger</span>
-                    <span class="tag-pill">WebPay</span>
-                    <span class="tag-pill">Stripe</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Networking &amp; Security</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Fortinet</span>
-                    <span class="tag-pill">FortiGate</span>
-                    <span class="tag-pill">Firewalls</span>
-                    <span class="tag-pill">VPN</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="skills">
-            <h3 class="section-title"><img src="{{ url_for('static', filename='images/icons/layers.png') }}" class="pixel-icon-inline" alt="">Full Stack</h3>
-            <ul class="skills-list">
-                <li>I have a lot of experience with various technologies and frameworks, but if I told you the truth, would you believe me?</li>
-            </ul>
-        </div>
-
-        <div class="projects">
-            <h3 class="section-title"><img src="{{ url_for('static', filename='images/icons/folder_image.png') }}" class="pixel-icon-inline" alt="">Latest Projects</h3>
-            <div class="projects-grid">
-                {% if projects %}
-                    {% for p in projects %}
-                    <div class="project-card">
-                        {% if loop.first %}<span class="project-new-ribbon junk-blink">New</span>{% endif %}
-                        <div class="project-card-img-wrap">
-                            {% if p.image_path %}
-                            <img src="{{ storage_url(p.image_path) }}"
-                                 class="project-card-img"
-                                 alt="{{ p.title }}">
-                            {% else %}
-                            <div class="project-card-img-placeholder">[ no image ]</div>
-                            {% endif %}
-                        </div>
-                        <h4><a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}">{{ p.title }}</a></h4>
-                        {% if p.description %}
-                        <p>{{ p.description | truncate(110) }}</p>
-                        {% endif %}
-                        {% if p.project_url or p.github_repo_url %}
-                        <div class="project-card-links">
-                            {% if p.project_url %}
-                            <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
-                               class="project-link">Visit</a>
-                            {% endif %}
-                            {% if p.github_repo_url %}
-                            <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
-                               class="project-link">GitHub</a>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                {% else %}
-                <p style="color:var(--text-faint);font-size:12px">No projects yet. Check back soon.</p>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="projects-view-all">
-            <a href="{{ url_for('main.portfolio_list') }}" class="view-all-link">View all projects »</a>
-        </div>
-
-        <div class="home-uc-teaser">
-            <div class="uc-progress-label"><img src="{{ url_for('static', filename='images/icons/hourglass_go.png') }}" class="pixel-icon-inline" alt="">Portfolio expansion progress</div>
-            <div class="uc-progress-wrap">
-                <div class="uc-progress"><div class="uc-progress-fill" style="width: 74%">74%</div></div>
-            </div>
-            <p class="uc-eta">More projects loading in the background. Estimated completion: any day now. See the full
-                <a href="{{ url_for('junk.under_construction') }}">construction site</a> for details nobody asked for.</p>
-        </div>
-
-        <div class="contact-cta">
-            <h3><img src="{{ url_for('static', filename='images/icons/email.png') }}" class="pixel-icon-inline" alt="">Got a project in mind?</h3>
-            <p>I'm available for freelance work, consulting, and interesting collaborations. Let's build something
-                together.</p>
-            <a href="{{ url_for('contact.contact') }}" class="glossy-btn">Send a Message</a>
-        </div>
-
+<section class="welcome-card">
+    <div class="card-header">
+        &#9654; XS NEWS
     </div>
-
-    <div id="sidebar-column">
-
-    <div id="secondary">
-
-        <div class="sidebar-box hitcounter-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon-inline" alt="">You Are Visitor #</h4>
-            <div class="counter-display">
-                <img src="{{ url_for('utils.visitor_counter') }}" alt="visitor counter showing {{ total_visits }} visits">
-            </div>
-            <p class="counter-caption">{{ '{:,}'.format(total_visits) }} real visits, no fake numbers. <a href="{{ url_for('junk.counter') }}" class="sidebar-cta-link">See it huge »</a></p>
-        </div>
-
-        <div class="sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/link.png') }}" class="pixel-icon-inline" alt="">Quick Links</h4>
-            <ul>
-                <li><a href="{{ url_for('main.blog_list') }}">Development Blog</a></li>
-                <li><a href="https://github.com/astronautmarkus" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
-                {% if cv_url %}
-                    <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Download CV</a></li>
-                {% endif %}
-                <li><a href="{{ url_for('contact.contact') }}">Contact Form</a></li>
-                <li><a href="{{ url_for('junk.guestbook') }}">Sign My Guestbook</a></li>
-                <li><a href="{{ url_for('junk.webring') }}">Join The Webring</a></li>
-            </ul>
-        </div>
-
-        <div class="sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon-inline" alt="">Latest Posts</h4>
-            <ul>
-                {% for p in latest_posts %}
-                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p.title | truncate(38) }}</a>{% if loop.first %} <span class="junk-blink" style="color:var(--accent-bright);font-size:9px;font-weight:bold;">NEW</span>{% endif %}</li>
-                {% else %}
-                <li style="list-style:none;color:var(--text-dim)">No posts yet.</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/lightbulb.png') }}" class="pixel-icon-inline" alt="">Proyectadas (personal reflections)</h4>
-            {% if latest_proyectadas %}
-            <ul>
-                {% for item in latest_proyectadas %}
-                <li style="list-style:none;font-size:0.85rem;color:var(--text-body);margin-bottom:0.5rem"><a href="{{ url_for('main.proyectadas_list')}}">{{ item.text | truncate(67) }}</a></li>
-                {% endfor %}
-            </ul>
-            <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">See all proyectadas »</a>
-            {% else %}
-            <p style="font-size:0.82rem;color:var(--text-faint)">No proyectadas yet.</p>
-            {% endif %}
-        </div>
-
-        <div class="sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/status_online.png') }}" class="pixel-icon-inline" alt="">Status</h4>
-            <p>Currently: <strong style="color: var(--accent);">Saturdays and Sundays only</strong><br>Open to new projects.</p>
-            <p>Location: Remote<br>Response time: &lt; 48h</p>
-        </div>
-
+    <table class="news-table">
+        <tr>
+            <td class="news-date">9/12/2002</td>
+            <td>XS Engineering officially launches its Third Generation Web Presence.</td>
+        </tr>
+        <tr>
+            <td class="news-date">6/25/2002</td>
+            <td>XS Engineering, Inc. has just acquired a new building.</td>
+        </tr>
+    </table>
+    <div class="news-footer">
+        <a href="#">MORE NEWS &#9654;</a>
     </div>
-
-
-    <div id="tertiary">
-
-        <div class="sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/label.png') }}" class="pixel-icon-inline" alt="">Tags</h4>
-            {% if all_tags %}
-            <div class="tag-cloud">
-                {% for tag in all_tags %}
-                <a href="{{ url_for('main.blog_list', tag=tag.id) }}" class="tag-pill">{{ tag.name }}</a>
-                {% endfor %}
-            </div>
-            {% else %}
-            <p style="font-size:0.82rem;color:var(--text-faint)">No tags yet.</p>
-            {% endif %}
-        </div>
-
-    </div>
-
-
-    <div id="quaternary">
-
-        <div class="sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/advertising.png') }}" class="pixel-icon-inline" alt="">Ads</h4>
-            <div class="ad-row">
-                <a href="https://www.youtube.com/watch?v=12TIMWyGjfs" target="_blank" rel="noopener noreferrer">
-                    <img src="{{ url_for('static', filename='images/announce.png') }}">
-                </a>
-                <a href="https://youtu.be/35SrRXNMeF0?si=WS8525kfaLjqjJo5" target="_blank" rel="noopener noreferrer">
-                    <img src="{{ url_for('static', filename='images/N6KVmek.gif') }}">
-                </a>
-            </div>
-        </div>
-
-    </div>
-
-    </div>
-
-
-</div>
-
+</section>
 {% endblock %}

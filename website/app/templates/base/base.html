@@ -1,207 +1,78 @@
-{% macro nav_link(endpoint, label, icon=none) %}
-<li><a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} class="active"{% endif %}>{% if icon %}<img src="{{ url_for('static', filename='images/icons/' ~ icon) }}" class="pixel-icon-inline" alt="">{% endif %}{{ label }}</a></li>
-{% endmacro %}
-
 <!DOCTYPE html>
-<html lang="{{ current_lang }}">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %} - AstronautMarkus.dev</title>
-    <meta name="description" content="{% block description %}Marcos Reyes - Personal website and tech portfolio{% endblock %}">
-    <meta name="keywords" content="{% block keywords %}Marcos Reyes, developer, portfolio, tech{% endblock %}">
-    <meta name="author" content="Marcos Reyes">
-
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-96x96.png') }}" sizes="96x96">
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
-    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="{{ self.title() | striptags | trim }}">
-    <meta property="og:description" content="{{ self.description() | striptags | trim }}">
-    <meta property="og:url" content="{{ request.url }}">
-    <meta property="og:image" content="{{ url_for('static', filename='og-image.jpg', _external=True) }}">
-    <meta property="og:image:width" content="640">
-    <meta property="og:image:height" content="480">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ self.title() | striptags | trim }}">
-    <meta name="twitter:description" content="{{ self.description() | striptags | trim }}">
-    <meta name="twitter:image" content="{{ url_for('static', filename='og-image.jpg', _external=True) }}">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-
+    <title>{% block title %}AstronautMarkus.Dev{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    {% block extra_css %}{% endblock %}
-    <meta name="theme-color" content="#11141f">
+    {% block head %}{% endblock %}
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 
 <body>
 
-    <div id="wrapper">
-
-        <div id="header">
-            <div id="logo">
-                <h1>ASTRONAUT<span>MARKUS</span>.DEV</h1>
-                <div id="tagline">Taking the chance, taking the dream, taking the world.</div>
-            </div>
-            <img src="{{ url_for('utils.visitor_counter') }}" alt="visitor counter">
+    <div class="page-wrapper">
+        <div class="header-top-nav">
+            <a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
+            <a href="/lang/en?next={{ request.path }}"{% if current_lang == 'en' %} class="active"{% endif %}>{% if current_lang == 'en' %}English{% else %}Inglés{% endif %}</a>
+            <a href="/lang/es?next={{ request.path }}"{% if current_lang == 'es' %} class="active"{% endif %}>{% if current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a>
         </div>
 
-        <div id="nav">
-            <ul>
-                {{ nav_link('main.home', 'Home' if current_lang == 'en' else 'Inicio', 'house.png') }}
-                {{ nav_link('main.about', 'About' if current_lang == 'en' else 'Sobre', 'user.png') }}
-                {{ nav_link('main.portfolio_list', 'Portfolio' if current_lang == 'en' else 'Portafolio', 'briefcase.png') }}
-                {{ nav_link('main.gallery_list', 'Gallery' if current_lang == 'en' else 'Galería', 'photos.png') }}
-                {{ nav_link('main.blog_list', 'Blog' if current_lang == 'en' else 'Blog', 'note.png') }}
-                {{ nav_link('contact.contact', 'Contact' if current_lang == 'en' else 'Contacto', 'email.png') }}
-                <li class="nav-dropdown">
-                    <a href="#"><img src="{{ url_for('static', filename='images/icons/package.png') }}" class="pixel-icon-inline" alt="">{{ 'Extras' }}</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('main.proyectadas_list') }}"{% if request.endpoint == 'main.proyectadas_list' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/brain.png') }}" class="pixel-icon-inline" alt="">{{ 'Proyectadas (personal reflections)' if current_lang == 'en' else 'Proyectadas' }}</a></li>
-                        <li><a href="{{ url_for('extras.pdf_generator') }}"{% if request.endpoint == 'extras.pdf_generator' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="pixel-icon-inline" alt="">{{ 'PDF Generator' if current_lang == 'en' else 'Generador de PDF' }}</a></li>
-                        <li><a href="{{ url_for('main.profile') }}"{% if request.endpoint == 'main.profile' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/user.png') }}" class="pixel-icon-inline" alt="">{{ 'Profile (myspace throwback)' if current_lang == 'en' else 'Perfil (al estilo myspace)' }}</a></li>
+        <header class="header-main">
+            <div class="logo-area">
+                <div>
+                    <span class="logo-title">AstronautMarkus.Dev</span>
+                    <span class="logo-subtitle">Endless Seeker</span>
+                </div>
+            </div>
+
+        </header>
+
+        <nav class="main-nav">
+            <a href="#">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif %}</a>
+            <a href="#">{% if current_lang == 'en' %}Projects & Portfolio{% else %}Proyectos y Portafolio{% endif %}</a>
+            <a href="#">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
+            <a href="#">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
+            <a href="#">{% if current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
+            <a href="#">{% if current_lang == 'en' %}Extras{% else %}Extras{% endif %}</a>
+            <a href="#">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
+        </nav>
+
+        <div class="content-container">
+            <aside class="sidebar">
+                <div class="panel-box">
+                    <div class="panel-header">{% if current_lang == 'en' %}Index{% else %}Índice{% endif %}</div>
+                    <ul class="menu-list">
+                        <li><a href="{{ cv_url }}">{% if current_lang == 'en' %}Download CV{% else %}Descargar CV{% endif %}</a></li>
+                        <li><a href="#">Homelab</a></li>
+                        <li><a href="#">{% if current_lang == 'en' %}Tech Stack{% else %}Pila Tecnológica{% endif %}</a></li>
+                        <li><a href="#">{% if current_lang == 'en' %}Timeline{% else %}Cronología{% endif %}</a></li>
+                        <li><a href="#">{% if current_lang == 'en' %}Career{% else %}Carrera{% endif %}</a></li>
+                        <li><a href="#">{% if current_lang == 'en' %}Guestbook{% else %}Libro de Visitas{% endif %}</a></li>
                     </ul>
-                </li>
-                <li class="nav-dropdown">
-                    <a href="#"><img src="{{ url_for('static', filename='images/icons/bin_closed.png') }}" class="pixel-icon-inline" alt="">{{ 'Junk' if current_lang == 'en' else 'Basura' }}</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('junk.best_viewed') }}"{% if request.endpoint == 'junk.best_viewed' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/monitor.png') }}" class="pixel-icon-inline" alt="">{{ 'Best Viewed In 800x600' if current_lang == 'en' else 'Mejor Visto en 800x600' }}</a></li>
-                        <li><a href="{{ url_for('junk.geocities') }}"{% if request.endpoint == 'junk.geocities' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/earth_night.png') }}" class="pixel-icon-inline" alt="">{{ 'GeoCities Homepage' if current_lang == 'en' else 'Página GeoCities' }}</a></li>
-                        <li><a href="{{ url_for('junk.y2k') }}"{% if request.endpoint == 'junk.y2k' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/bug.png') }}" class="pixel-icon-inline" alt="">{{ 'Y2K Bug Tracker' if current_lang == 'en' else 'Rastreador Y2K' }}</a></li>
-                        <li><a href="{{ url_for('junk.blink') }}"{% if request.endpoint == 'junk.blink' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon-inline" alt="">{{ 'Blink Tag Shrine' if current_lang == 'en' else 'Santuario del Blink' }}</a></li>
-                        <li><a href="{{ url_for('junk.marquee') }}"{% if request.endpoint == 'junk.marquee' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon-inline" alt="">{{ 'Marquee Ticker' if current_lang == 'en' else 'Ticker Marquee' }}</a></li>
-                        <li><a href="{{ url_for('junk.dialup') }}"{% if request.endpoint == 'junk.dialup' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/phone_vintage.png') }}" class="pixel-icon-inline" alt="">{{ 'Dial-Up Simulator' if current_lang == 'en' else 'Simulador Dial-Up' }}</a></li>
-                        <li><a href="{{ url_for('junk.under_construction') }}"{% if request.endpoint == 'junk.under_construction' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/construction.png') }}" class="pixel-icon-inline" alt="">{{ 'Under Construction' if current_lang == 'en' else 'En Construcción' }}</a></li>
-                        <li><a href="{{ url_for('junk.guestbook') }}"{% if request.endpoint == 'junk.guestbook' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/book_edit.png') }}" class="pixel-icon-inline" alt="">{{ 'Guestbook' if current_lang == 'en' else 'Libro de Visitas' }}</a></li>
-                        <li><a href="{{ url_for('junk.links') }}"{% if request.endpoint == 'junk.links' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/link.png') }}" class="pixel-icon-inline" alt="">{{ 'Link Exchange' if current_lang == 'en' else 'Intercambio de Links' }}</a></li>
-                        <li><a href="{{ url_for('junk.webring') }}"{% if request.endpoint == 'junk.webring' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/world_link.png') }}" class="pixel-icon-inline" alt="">{{ 'Webring' if current_lang == 'en' else 'Webring' }}</a></li>
-                        <li><a href="{{ url_for('junk.counter') }}"{% if request.endpoint == 'junk.counter' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/eye.png') }}" class="pixel-icon-inline" alt="">{{ 'Hit Counter' if current_lang == 'en' else 'Contador de Visitas' }}</a></li>
-                        <li class="nav-subdropdown">
-                            <a href="#"><img src="{{ url_for('static', filename='images/icons/terminal.png') }}" class="pixel-icon-inline" alt="">Nerd</a>
-                            <ul class="dropdown-menu dropdown-submenu">
-                                <li><a href="{{ url_for('nerd.performance') }}"{% if request.endpoint == 'nerd.performance' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/speedometer.png') }}" class="pixel-icon-inline" alt="">{{ 'Performance' if current_lang == 'en' else 'Rendimiento' }}</a></li>
-                                <li><a href="{{ url_for('nerd.lighthouse') }}"{% if request.endpoint == 'nerd.lighthouse' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/lightbulb.png') }}" class="pixel-icon-inline" alt="">Lighthouse</a></li>
-                                <li><a href="{{ url_for('nerd.metrics') }}"{% if request.endpoint == 'nerd.metrics' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/database.png') }}" class="pixel-icon-inline" alt="">{{ 'Metrics' if current_lang == 'en' else 'Métricas' }}</a></li>
-                                <li><a href="{{ url_for('nerd.size') }}"{% if request.endpoint == 'nerd.size' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/disk_space.png') }}" class="pixel-icon-inline" alt="">{{ 'Size' if current_lang == 'en' else 'Tamaño' }}</a></li>
-                                <li><a href="{{ url_for('nerd.payload') }}"{% if request.endpoint == 'nerd.payload' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/package.png') }}" class="pixel-icon-inline" alt="">Payload</a></li>
-                                <li><a href="{{ url_for('nerd.headers') }}"{% if request.endpoint == 'nerd.headers' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/page_white_code.png') }}" class="pixel-icon-inline" alt="">Headers</a></li>
-                                <li><a href="{{ url_for('nerd.response_time') }}"{% if request.endpoint == 'nerd.response_time' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/clock_go.png') }}" class="pixel-icon-inline" alt="">{{ 'Response Time' if current_lang == 'en' else 'Tiempo de Respuesta' }}</a></li>
-                                <li><a href="{{ url_for('nerd.benchmark') }}"{% if request.endpoint == 'nerd.benchmark' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/chart_bar.png') }}" class="pixel-icon-inline" alt="">Benchmark</a></li>
-                                <li><a href="{{ url_for('nerd.carbon_footprint') }}"{% if request.endpoint == 'nerd.carbon_footprint' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/leaf_plant.png') }}" class="pixel-icon-inline" alt="">{{ 'Carbon Footprint' if current_lang == 'en' else 'Huella de Carbono' }}</a></li>
-                                <li><a href="{{ url_for('nerd.no_js') }}"{% if request.endpoint == 'nerd.no_js' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/script_delete.png') }}" class="pixel-icon-inline" alt="">No-JS</a></li>
-                                <li><a href="{{ url_for('nerd.no_css') }}"{% if request.endpoint == 'nerd.no_css' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/css.png') }}" class="pixel-icon-inline" alt="">No-CSS</a></li>
-                                <li><a href="{{ url_for('nerd.html_only') }}"{% if request.endpoint == 'nerd.html_only' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/html.png') }}" class="pixel-icon-inline" alt="">{{ 'HTML Only' if current_lang == 'en' else 'Solo HTML' }}</a></li>
-                                <li><a href="{{ url_for('nerd.text_mode') }}"{% if request.endpoint == 'nerd.text_mode' %} class="active"{% endif %}><img src="{{ url_for('static', filename='images/icons/source_code.png') }}" class="pixel-icon-inline" alt="">{{ 'Text Mode' if current_lang == 'en' else 'Modo Texto' }}</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <div id="nav-right">
-                <ul id="lang-switcher">
-                    <li><a href="/lang/en?next={{ request.path }}"{% if current_lang=='en' %} class="active"{% endif %}>{% if current_lang == 'en' %}English{% else %}Inglés{% endif %}</a></li>
-                    <li><a href="/lang/es?next={{ request.path }}"{% if current_lang=='es' %} class="active"{% endif %}>{% if current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a></li>
-                </ul>
-                <ul id="auth-nav">
-                    {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('auth.logout') }}" id="logout-btn">{{ 'Logout' if current_lang == 'en' else 'Salir' }}</a></li>
-                    {% else %}
-                    <li><a href="{{ url_for('auth.login') }}" id="login-btn">{{ 'Login' if current_lang == 'en' else 'Entrar' }}</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+                </div>
+
+                <div class="panel-box">
+                    <div class="panel-header">Spotlight</div>
+                    <div class="spotlight-content">
+                        <div>XS Engineering, Inc. has just acquired a new building.</div>
+                        <div class="spotlight-img"></div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                {% block content %}{% endblock %}
+            </main>
         </div>
 
-        {% block content %}
-        {% endblock %}
-
-        <div id="footer">
-            &copy; {{ current_year }} AstronautMarkus.dev. {% if current_lang == 'en' %} All rights reserved. {% elif
-            current_lang == 'es' %} Todos los derechos reservados. {% endif %} <br>
-            {% if current_lang == 'en' %} Reject modern complexity and embrace the freedom of simplicity. {% elif
-            current_lang == 'es' %} Rechaza la complejidad moderna y abraza la libertad de lo sencillo. {% endif %} <br>
-        </div>
-
-        <div id="footer-badges">
-            <div class="footer-badges-label">{{ 'Powered by / running on' if current_lang == 'en' else 'Funciona con' }}</div>
-            <div class="footer-badges-row">
-                <img src="{{ url_for('static', filename='images/88-31/badges/linux.gif') }}" width="88" height="31" alt="Linux" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/gnu-linux.gif') }}" width="88" height="31" alt="GNU/Linux" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/debian.gif') }}" width="88" height="30" alt="Debian" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/apache-powered.gif') }}" width="88" height="31" alt="Apache" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/mysql-88x31.gif') }}" width="88" height="31" alt="MySQL" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/php.gif') }}" width="88" height="31" alt="PHP" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/html.gif') }}" width="88" height="31" alt="HTML" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/css.gif') }}" width="88" height="31" alt="CSS" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/javascript.gif') }}" width="88" height="31" alt="JavaScript" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/github.gif') }}" width="88" height="31" alt="GitHub" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/firefox.gif') }}" width="88" height="31" alt="Firefox" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/netscape_now.gif') }}" width="88" height="31" alt="Netscape Now" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/notepad.gif') }}" width="88" height="31" alt="Created with Notepad" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/coffee.gif') }}" width="88" height="31" alt="Fueled by Coffee" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/y2k.gif') }}" width="88" height="31" alt="Y2K" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/best_viewed_with_eyes.gif') }}" width="88" height="31" alt="Best Viewed With Eyes" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/retrosite.gif') }}" width="88" height="31" alt="Retro Site" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/designedbymac.gif') }}" width="88" height="31" alt="Designed by Macintosh" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/macmade-wht.gif') }}" width="88" height="31" alt="Made with Macintosh" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/stop.gif') }}" width="88" height="31" alt="Stop" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/vocaloid.gif') }}" width="88" height="31" alt="Vocaloid Now" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/jesus_now.gif') }}" width="88" height="31" alt="Jesus Now" loading="lazy">
-                <img src="{{ url_for('static', filename='images/88-31/badges/ralseismokingadart.gif') }}" width="88" height="31" alt="Ralsei Smoking a Dart" loading="lazy">
-            </div>
-        </div>
-
-        <div id="site-button">
-            <a href="{{ url_for('junk.links') }}" title="{{ 'Grab my 88x31 button' if current_lang == 'en' else 'Llévate mi botón 88x31' }}">
-                <img src="{{ url_for('static', filename='images/88-31/button.png') }}" width="88" height="31" alt="AstronautMarkus.dev">
-            </a>
-        </div>
-
-
+        <footer>
+            <div>&copy;2024 - {{ current_year }} AstronautMarkus.Dev - ALL RIGHTS RESERVED</div>
+            <div>POWERED BY: <a href="https://flask.palletsprojects.com/" target="_blank">Flask</a>, <a
+                    href="https://caddyserver.com/" target="_blank">Caddy Http Server</a>, <a
+                    href="https://www.oracle.com/linux/" target="_blank">Oracle Linux</a></div>
+        </footer>
     </div>
-
-    <img id="corner-mascot" src="{{ url_for('static', filename='images/icons/astronaut-tux.png') }}" alt="">
-
-
-
-    {% block extra_js %}{% endblock %}
-    <script>
-        document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
-            var toggle = dropdown.querySelector(':scope > a');
-            var menu = dropdown.querySelector(':scope > .dropdown-menu');
-            toggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                menu.classList.toggle('open');
-            });
-        });
-        document.querySelectorAll('.nav-subdropdown').forEach(function(sub) {
-            var toggle = sub.querySelector(':scope > a');
-            var menu = sub.querySelector(':scope > .dropdown-submenu');
-            toggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                menu.classList.toggle('open');
-            });
-        });
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.nav-dropdown')) {
-                document.querySelectorAll('.dropdown-menu.open').forEach(function(m) {
-                    m.classList.remove('open');
-                });
-            }
-        });
-    </script>
 
 </body>
 
