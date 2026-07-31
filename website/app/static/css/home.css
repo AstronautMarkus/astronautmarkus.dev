@@ -1,3 +1,92 @@
+.alert-card {
+    border-color: #d1a13a;
+}
+
+.alert-header {
+    background: linear-gradient(to bottom, #8a5a12, #c17f1e);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.alert-stripe {
+    height: 4px;
+    background: repeating-linear-gradient(45deg, #f0b429 0, #f0b429 8px, #2a2a2a 8px, #2a2a2a 16px);
+}
+
+.alert-body {
+    padding: 12px;
+    background: #fff8e6;
+}
+
+.alert-intro {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.alert-list {
+    list-style: none;
+    font-size: 10px;
+    color: #333;
+}
+
+.alert-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px dashed #e0c88a;
+}
+
+.alert-list li:last-child {
+    border-bottom: none;
+}
+
+.alert-tag {
+    display: inline-block;
+    flex-shrink: 0;
+    min-width: 62px;
+    text-align: center;
+    font-size: 8.5px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    background: #1c3b68;
+}
+
+.alert-tag.security {
+    background: #8a1c1c;
+}
+
+.alert-tag.new {
+    background: #1c6b3b;
+}
+
+.alert-tag.fixed {
+    background: #1c3b68;
+}
+
+.alert-tag.removed {
+    background: #6b1c8a;
+}
+
+.alert-tag.improved {
+    background: #b5651d;
+}
+
+.alert-footer {
+    background: #f0dca0;
+    text-align: right;
+    padding: 4px 8px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #6b4a12;
+}
+
 .welcome-card {
     background: #e2eaf2;
     border: 1px solid #b0c4de;
