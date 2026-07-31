@@ -13,7 +13,6 @@
 
     <div class="page-wrapper">
         <div class="header-top-nav">
-            <a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
             <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}>{% if
                 current_lang == 'en' %}English{% else %}Inglés{% endif %}</a>
             <a href="/lang/es?next={{ request.path }}" {% if current_lang=='es' %} class="active" {% endif %}>{% if
@@ -31,6 +30,7 @@
         </header>
 
         <nav class="main-nav">
+            <a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
             <a href="{{ url_for('main.about_me') }}">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif
                 %}</a>
             <a href="#">{% if current_lang == 'en' %}Projects & Portfolio{% else %}Proyectos y Portafolio{% endif %}</a>
@@ -44,8 +44,8 @@
         <div class="content-container">
             <aside class="sidebar">
                 <div class="panel-box">
-                    <div class="panel-header">{% if current_lang == 'en' %}Index{% else %}Índice{% endif %}</div>
                     <ul class="menu-list">
+                        <li><a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a></li>
                         <li><a target="_blank" href="{{ cv_url }}">{% if current_lang == 'en' %}Download CV{% else
                                 %}Descargar CV{% endif %}</a></li>
                         <li><a href="#">Homelab</a></li>

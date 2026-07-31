@@ -201,7 +201,8 @@ body {
 .spotlight-img {
     width: 70px;
     height: 45px;
-    background: #888;
+    background: url('/static/images/announces/beercat-banner.png') no-repeat center center;
+    background-size: cover;
     border: 1px solid #fff;
     flex-shrink: 0;
     object-fit: cover;
