@@ -228,3 +228,13 @@ footer a {
     color: #1c3b68;
     text-decoration: none;
 }
+
+.announcement-image {
+    width: 200px;
+    display: block;
+    margin: 0 auto;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    margin-bottom: 10px;
+}

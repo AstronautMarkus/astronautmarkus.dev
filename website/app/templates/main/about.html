@@ -1,9 +1,140 @@
 {% extends "base/base.html" %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about_me.css') }}">
+{% endblock %}
+
 {% block title %}About me{% endblock %}
 
 {% block content %}
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; About Me
+    </div>
+    <div class="about-card-body profile-body">
+        <div class="profile-photo"></div>
+        <div class="bio-text">
+            <p>
+                Hi, I'm Markus — a full-cycle software developer (SDLC) with experience building web
+                and mobile applications, as well as desktop software. I go by "Endless Seeker" because
+                I'm always chasing the next thing worth learning, whether that's a new language, a
+                weird corner of the stack, or just a better way to solve an old problem.
+            </p>
+            <p>
+                Outside of client work, I run a small homelab, tinker with self-hosted services, and
+                keep this site as a personal playground for whatever design or tech experiment I'm
+                into that month.
+            </p>
+        </div>
+    </div>
+</section>
 
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Tech Stack
+    </div>
+    <div class="about-card-body stack-grid">
+        <div>
+            <div class="stack-group-title">Languages</div>
+            <div class="tag-list">
+                <span class="tag">Python</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">C#</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Frameworks</div>
+            <div class="tag-list">
+                <span class="tag">Flask</span>
+                <span class="tag">Django</span>
+                <span class="tag">React</span>
+                <span class="tag">.NET</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Infra &amp; Tools</div>
+            <div class="tag-list">
+                <span class="tag">Docker</span>
+                <span class="tag">Linux</span>
+                <span class="tag">Caddy</span>
+                <span class="tag">Git</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Databases</div>
+            <div class="tag-list">
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">MySQL</span>
+                <span class="tag">SQLite</span>
+                <span class="tag">Redis</span>
+            </div>
+        </div>
+    </div>
+</section>
 
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Timeline
+    </div>
+    <div class="about-card-body">
+        <ul class="timeline">
+            <li class="timeline-item">
+                <div class="timeline-year">Now</div>
+                <div class="timeline-text"><strong>Full-cycle developer</strong> — building web,
+                    mobile, and desktop apps across the full SDLC.</div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-text"><strong>Went full-stack</strong> — picked up frontend
+                    frameworks to ship complete products end to end.</div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-text"><strong>First professional projects</strong> — started
+                    building real software for real users.</div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">Early</div>
+                <div class="timeline-text"><strong>Wrote my first lines of code</strong> — and got
+                    hooked on making computers do things.</div>
+            </li>
+        </ul>
+    </div>
+</section>
 
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Fun Facts
+    </div>
+    <div class="about-card-body facts-grid">
+        <div class="fact-item">
+            <span class="fact-label">OS of Choice</span>
+            Linux, tinkered into submission.
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Homelab</span>
+            Self-hosted services running around the clock.
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Philosophy</span>
+            Development isn't just work, it's a lifestyle.
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Always Learning</span>
+            There's always one more rabbit hole worth exploring.
+        </div>
+    </div>
+</section>
+
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Connect
+    </div>
+    <div class="connect-body">
+        <a class="connect-link" href="https://github.com/astronautmarkus" target="_blank">GitHub</a>
+        <a class="connect-link" href="#">Contact Me</a>
+        <a class="connect-link" href="{{ url_for('main.home') }}">Back Home</a>
+    </div>
+</section>
 {% endblock %}

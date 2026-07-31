@@ -14,8 +14,10 @@
     <div class="page-wrapper">
         <div class="header-top-nav">
             <a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
-            <a href="/lang/en?next={{ request.path }}"{% if current_lang == 'en' %} class="active"{% endif %}>{% if current_lang == 'en' %}English{% else %}Inglés{% endif %}</a>
-            <a href="/lang/es?next={{ request.path }}"{% if current_lang == 'es' %} class="active"{% endif %}>{% if current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a>
+            <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}>{% if
+                current_lang == 'en' %}English{% else %}Inglés{% endif %}</a>
+            <a href="/lang/es?next={{ request.path }}" {% if current_lang=='es' %} class="active" {% endif %}>{% if
+                current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a>
         </div>
 
         <header class="header-main">
@@ -29,7 +31,8 @@
         </header>
 
         <nav class="main-nav">
-            <a href="{{ url_for('main.about_me') }}">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif %}</a>
+            <a href="{{ url_for('main.about_me') }}">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif
+                %}</a>
             <a href="#">{% if current_lang == 'en' %}Projects & Portfolio{% else %}Proyectos y Portafolio{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
@@ -40,34 +43,37 @@
 
         <div class="content-container">
             <aside class="sidebar">
-                {% if request.endpoint == 'main.home' %}
                 <div class="panel-box">
                     <div class="panel-header">{% if current_lang == 'en' %}Index{% else %}Índice{% endif %}</div>
                     <ul class="menu-list">
-                        <li><a target="_blank" href="{{ cv_url }}">{% if current_lang == 'en' %}Download CV{% else %}Descargar CV{% endif %}</a></li>
+                        <li><a target="_blank" href="{{ cv_url }}">{% if current_lang == 'en' %}Download CV{% else
+                                %}Descargar CV{% endif %}</a></li>
                         <li><a href="#">Homelab</a></li>
-                        <li><a href="#">{% if current_lang == 'en' %}Tech Stack{% else %}Pila Tecnológica{% endif %}</a></li>
+                        <li><a href="#">{% if current_lang == 'en' %}Tech Stack{% else %}Pila Tecnológica{% endif %}</a>
+                        </li>
                         <li><a href="#">{% if current_lang == 'en' %}Timeline{% else %}Cronología{% endif %}</a></li>
                         <li><a href="#">{% if current_lang == 'en' %}Career{% else %}Carrera{% endif %}</a></li>
-                        <li><a href="#">{% if current_lang == 'en' %}Guestbook{% else %}Libro de Visitas{% endif %}</a></li>
+                        <li><a href="#">{% if current_lang == 'en' %}Guestbook{% else %}Libro de Visitas{% endif %}</a>
+                        </li>
                     </ul>
                 </div>
 
                 <div class="panel-box">
-                    <div class="panel-header">Spotlight</div>
+                    <div class="panel-header">{% if current_lang == 'en' %}BeerCat Project{% else %}Proyecto BeerCat{%
+                        endif %}</div>
                     <div class="spotlight-content">
-                        <div>XS Engineering, Inc. has just acquired a new building.</div>
+                        <div>{% if current_lang == 'en' %}Visit our official website for more information about this
+                            project: <a href="https://beercat.cl" target="_blank">BeerCat</a>{% else %}Visita nuestro
+                            sitio web oficial para obtener más información sobre este proyecto: <a
+                                href="https://beercat.cl" target="_blank">BeerCat</a>{% endif %}</div>
                         <div class="spotlight-img"></div>
                     </div>
                 </div>
-                {% else %}
-                <div class="panel-box">
-                    <div class="panel-header">{% if current_lang == 'en' %}Exit{% else %}Salir{% endif %}</div>
-                    <ul class="menu-list">
-                        <li><a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Back Home{% else %}Volver al Inicio{% endif %}</a></li>
-                    </ul>
-                </div>
-                {% endif %}
+
+                <img src="{{ url_for('static', filename='images/announces/announce.png') }}" class="announcement-image">
+
+                <img src="{{ url_for('static', filename='images/announces/N6KVmek.gif') }}" class="announcement-image">
+
             </aside>
 
             <main class="main-content">
