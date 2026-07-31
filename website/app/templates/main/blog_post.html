@@ -54,7 +54,7 @@
             {% if content_html %}
                 {{ content_html }}
             {% else %}
-            <p style="color:var(--text-faint);font-style:italic">{% if current_lang == 'es' %}No hay contenido disponible para este post aún.{% else %}No content available for this post yet.{% endif %}</p>
+            <p style="color:#7a8a9a;font-style:italic">{% if current_lang == 'es' %}No hay contenido disponible para este post aún.{% else %}No content available for this post yet.{% endif %}</p>
             {% endif %}
         </div>
 
@@ -80,7 +80,7 @@
 
         <div class="blog-sidebar-box">
             <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">{% if current_lang == 'es' %}Info del Post{% else %}Post Info{% endif %}</h4>
-            <ul>
+            <ul class="sidebar-info-list">
                 <li>{% if current_lang == 'es' %}Publicado{% else %}Published{% endif %}: {{ post.created_at.strftime('%d %b %Y') }}</li>
                 {% if post.category %}
                 <li>
@@ -183,7 +183,7 @@
     if (empty) tocList.removeChild(empty);
 
     /* show the TOC box */
-    tocBox.style.display = 'block';
+    tocBox.style.display = 'flex';
 
     /* active-heading tracking on scroll */
     function onScroll() {

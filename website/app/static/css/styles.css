@@ -5,6 +5,16 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
 body {
     background-color: #c0c8d0;
     background-image: radial-gradient(#9ca6b5 1px, transparent 0);
@@ -210,6 +220,7 @@ body {
 
 .main-content {
     flex: 1;
+    min-width: 0;
     padding: 15px;
     background: radial-gradient(circle at center, #ffffff 0%, #e2e8f0 100%);
 }

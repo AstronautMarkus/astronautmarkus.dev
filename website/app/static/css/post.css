@@ -1,0 +1,732 @@
+/* ── Blog: list + post detail ──────────────────────────────────────────────
+   Reuses the exact tokens already in styles.css / home.css: navy header
+   gradient (#1c3b68 → #2a5288), panel-box light-blue containers, hard-coded
+   colors (no CSS vars site-wide), 6-8px radius only on outer card/panel
+   containers, small 9-11px bold labels. No new breakpoints: the rest of the
+   site is a fixed 820px desktop-only layout, so this doesn't add any either.
+*/
+
+/* ── Banner ─────────────────────────────────────────────────────────────── */
+
+#blog-banner {
+    background: linear-gradient(to bottom, #1c3b68, #2a5288);
+    border-radius: 6px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+    padding: 8px 12px;
+}
+
+.blog-banner-inner h2 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.blog-banner-inner p {
+    margin-top: 3px;
+    color: #d5e1ed;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.pixel-icon {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+}
+
+.pixel-icon-inline {
+    width: 12px;
+    height: 12px;
+    image-rendering: pixelated;
+    vertical-align: -1px;
+    margin-right: 4px;
+}
+
+/* ── Two-column blog layout (list + post share this shell) ───────────────── */
+
+#blog-content,
+#post-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+#blog-main,
+#post-main {
+    flex: 1;
+    min-width: 0;
+}
+
+#blog-sidebar,
+#post-sidebar {
+    width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: sticky;
+    top: 10px;
+    align-self: flex-start;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+}
+
+/* Post page: #toc-list handles its own internal scroll (below), so the
+   column itself shouldn't also scroll — that would let Info/Share drift
+   out of view above/below instead of staying put. The blog-list sidebar
+   has no such per-box scroll, so it keeps overflow-y: auto above. */
+#post-sidebar {
+    overflow-y: hidden;
+}
+
+/* ── Sidebar boxes (shared by list + post) — clone of .panel-box/.panel-header */
+
+.blog-sidebar-box {
+    background: #d8e2ed;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    /* Flex children of the sticky column default to flex-shrink: 1, which
+       squeezes this box below its content height (clipped by overflow:
+       hidden above) once the column runs out of room. Only #toc-box should
+       shrink/scroll internally — it overrides this via its higher-
+       specificity ID rule below. */
+    flex-shrink: 0;
+}
+
+.blog-sidebar-box h4 {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to bottom, #1c3b68, #2a5288);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 8px;
+    border-bottom: 1px solid #fff;
+}
+
+.blog-sidebar-box ul {
+    list-style: none;
+}
+
+.blog-sidebar-box li {
+    border-bottom: 1px solid #b8c8d8;
+}
+
+.blog-sidebar-box li:last-child {
+    border-bottom: none;
+}
+
+.blog-sidebar-box a {
+    display: block;
+    padding: 5px 8px;
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #1a2a3a;
+    text-decoration: none;
+    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
+    text-transform: uppercase;
+}
+
+.blog-sidebar-box a:hover {
+    background: #fff;
+    color: #000;
+}
+
+.blog-sidebar-box a.blog-cat-active {
+    background: #1c3b68;
+    color: #fff;
+}
+
+/* "Post Info" box: plain label/value lines, some with an inline link mixed
+   into the same <li> as text — these can't use the block pill-button style
+   above (that's for lists made of one <a> per <li>, like Categories/Share). */
+.sidebar-info-list li {
+    padding: 5px 8px;
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #1a2a3a;
+    text-transform: uppercase;
+}
+
+.sidebar-info-list a {
+    display: inline;
+    padding: 0;
+    background: none;
+    color: #1c3b68;
+    text-decoration: underline;
+}
+
+.sidebar-info-list a:hover {
+    color: #000;
+}
+
+/* ── Post cards (blog list) ────────────────────────────────────────────── */
+
+.blog-card {
+    display: flex;
+    background: #fff;
+    border: 1px solid #b0c4de;
+    border-radius: 6px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.blog-card-cover-link {
+    flex-shrink: 0;
+    display: block;
+}
+
+.blog-card-cover {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    display: block;
+    border-right: 1px solid #b0c4de;
+}
+
+.blog-card-cover-placeholder {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    background: linear-gradient(to right, #507299, #7092b9);
+    border-right: 1px solid #b0c4de;
+}
+
+.blog-card-body {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card-meta {
+    font-size: 9px;
+    font-weight: bold;
+    color: #5a7a9e;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.blog-card-meta a {
+    color: #1c3b68;
+    text-decoration: none;
+}
+
+.blog-card-meta a:hover {
+    text-decoration: underline;
+}
+
+.blog-card-body h3 {
+    font-size: 11.5px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.blog-card-body h3 a {
+    color: #16233a;
+    text-decoration: none;
+}
+
+.blog-card-body h3 a:hover {
+    color: #1c3b68;
+    text-decoration: underline;
+}
+
+.blog-card-excerpt {
+    font-size: 10px;
+    line-height: 1.4;
+    color: #444;
+    flex: 1;
+}
+
+.blog-read-more {
+    align-self: flex-start;
+    margin-top: 6px;
+    font-size: 8.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background: #1c3b68;
+    border-radius: 3px;
+    padding: 3px 8px;
+    text-decoration: none;
+}
+
+.blog-read-more:hover {
+    background: #2a5288;
+}
+
+/* ── Pagination ────────────────────────────────────────────────────────── */
+
+.blog-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.blog-page-btn {
+    display: inline-block;
+    min-width: 22px;
+    text-align: center;
+    padding: 3px 7px;
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #1c3b68;
+    background: #d8e2ed;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.blog-page-btn:hover {
+    background: #fff;
+}
+
+.blog-page-btn.current {
+    background: #1c3b68;
+    border-color: #1c3b68;
+    color: #fff;
+}
+
+.blog-page-btn.disabled {
+    color: #9aa8b8;
+    background: #eef2f6;
+    pointer-events: none;
+}
+
+/* ── Post cover ────────────────────────────────────────────────────────── */
+/* Kept small and fixed-height, styled like .feature-image (white border,
+   soft shadow, no rounding) so it can never overflow its column. */
+
+.post-cover-wrap {
+    position: relative;
+    margin-bottom: 12px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.post-cover-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.post-cover-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px 10px;
+    background: linear-gradient(to top, rgba(10, 20, 35, 0.85), rgba(10, 20, 35, 0));
+}
+
+.post-cover-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.3;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ── Post header / meta ────────────────────────────────────────────────── */
+
+.post-header h1 {
+    font-size: 15px;
+    color: #16233a;
+    margin-bottom: 5px;
+}
+
+.post-meta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #5a7a9e;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d0d8e0;
+}
+
+.post-meta-cat {
+    color: #1c3b68;
+    background: #d8e2ed;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 2px 6px;
+    text-decoration: none;
+}
+
+.post-meta-cat:hover {
+    background: #fff;
+}
+
+.post-meta-lang a {
+    color: #1c3b68;
+    text-decoration: underline;
+}
+
+/* ── Prose (rendered markdown content) ────────────────────────────────── */
+
+.prose {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #222;
+}
+
+.prose>*+* {
+    margin-top: 10px;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+    color: #16233a;
+    font-weight: bold;
+    line-height: 1.3;
+    scroll-margin-top: 15px;
+}
+
+.prose h1 {
+    font-size: 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #1c3b68;
+}
+
+.prose h2 {
+    font-size: 13px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #d0d8e0;
+}
+
+.prose h3 {
+    font-size: 12px;
+    color: #1c3b68;
+}
+
+.prose h4,
+.prose h5,
+.prose h6 {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #2a5288;
+}
+
+.prose p {
+    text-align: justify;
+}
+
+.prose a {
+    color: #1c3b68;
+}
+
+.prose a:hover {
+    color: #2a5288;
+}
+
+.prose strong {
+    color: #16233a;
+}
+
+.prose ul,
+.prose ol {
+    padding-left: 20px;
+}
+
+.prose li+li {
+    margin-top: 3px;
+}
+
+.prose blockquote {
+    border-left: 3px solid #1c3b68;
+    background: #eef4f8;
+    color: #3a4a5a;
+    padding: 6px 10px;
+}
+
+.prose blockquote>*+* {
+    margin-top: 6px;
+}
+
+.prose hr {
+    border: none;
+    border-top: 1px dashed #b0c4de;
+    margin: 2px 0;
+}
+
+.prose img {
+    display: block;
+    max-width: 100%;
+    max-height: 420px;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.prose code {
+    font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 10px;
+    background: #eef2f6;
+    border: 1px solid #d8e0e8;
+    padding: 1px 4px;
+    color: #8a1c1c;
+}
+
+.prose pre {
+    background: #16233a;
+    padding: 10px 12px;
+    overflow-x: auto;
+    border: 1px solid #0a1626;
+}
+
+.prose pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #dce8f5;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+}
+
+.prose th,
+.prose td {
+    border: 1px solid #d0d8e0;
+    padding: 5px 7px;
+    text-align: left;
+}
+
+.prose th {
+    background: #d8e2ed;
+    color: #16233a;
+}
+
+.prose tr:nth-child(even) td {
+    background: #f4f6f8;
+}
+
+/* ── Post gallery ──────────────────────────────────────────────────────── */
+
+.post-gallery {
+    margin-top: 18px;
+}
+
+.post-gallery h4 {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #1c3b68;
+    margin-bottom: 6px;
+}
+
+.post-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 6px;
+}
+
+.post-gallery-grid img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* CRT power-on flicker, staggered per-thumbnail as it enters view */
+.post-gallery-grid img.crt-power-on {
+    animation: crt-power-on 0.5s steps(12) 1;
+}
+
+.post-gallery-grid img.crt-glitch {
+    animation: crt-glitch 0.35s steps(3) 1;
+}
+
+@keyframes crt-power-on {
+    0% {
+        filter: brightness(3) contrast(0.4) saturate(0);
+        transform: scaleY(0.05);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+        transform: scaleY(1.02);
+    }
+
+    30% {
+        filter: brightness(0.4) contrast(1.6) saturate(0.2);
+        transform: scaleY(0.85);
+    }
+
+    45% {
+        filter: brightness(2) contrast(1.2) saturate(0.6);
+        transform: scaleY(1);
+    }
+
+    100% {
+        filter: brightness(1) contrast(1) saturate(1);
+        transform: scaleY(1);
+    }
+}
+
+@keyframes crt-glitch {
+    0% {
+        filter: brightness(1) saturate(1);
+        transform: translateX(0);
+    }
+
+    30% {
+        filter: brightness(1.6) saturate(0.3) hue-rotate(10deg);
+        transform: translateX(-2px);
+    }
+
+    60% {
+        filter: brightness(0.8) saturate(1.4) hue-rotate(-8deg);
+        transform: translateX(2px);
+    }
+
+    100% {
+        filter: brightness(1) saturate(1);
+        transform: translateX(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .post-gallery-grid img.crt-power-on,
+    .post-gallery-grid img.crt-glitch {
+        animation: none;
+    }
+}
+
+/* ── Back link ─────────────────────────────────────────────────────────── */
+
+.post-back {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 9.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #1c3b68;
+    background: #d8e2ed;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.post-back:hover {
+    background: #fff;
+}
+
+/* ── Table of contents ────────────────────────────────────────────────── */
+/* The whole #post-sidebar column (Post Info + Contents + Share) is sticky
+   as one unit (see above) so they all travel down/up together and stop
+   together at the end of the article — not just this box on its own. */
+
+#toc-box {
+    /* JS un-hides this once headings are found; hidden by default so a
+       post with no headings doesn't leave an empty "Contents" box. Grows to
+       fill the leftover sticky-column space, so long TOCs scroll internally
+       instead of pushing Info/Share out of the viewport. */
+    display: none;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+}
+
+#toc-list {
+    flex: 1;
+    min-height: 40px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #1c3b68 #d8e2ed;
+}
+
+#toc-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#toc-list::-webkit-scrollbar-track {
+    background: #d8e2ed;
+}
+
+#toc-list::-webkit-scrollbar-thumb {
+    background: #1c3b68;
+    border-radius: 3px;
+}
+
+#toc-list::-webkit-scrollbar-thumb:hover {
+    background: #2a5288;
+}
+
+#toc-list li {
+    border-bottom: none !important;
+}
+
+#toc-list a {
+    background: none !important;
+    padding: 3px 8px !important;
+    font-size: 9px !important;
+    font-weight: normal !important;
+    color: #3a4a5a !important;
+    text-transform: none !important;
+    border-left: 2px solid transparent;
+}
+
+#toc-list li[data-level="3"] a {
+    padding-left: 16px !important;
+}
+
+#toc-list li[data-level="4"] a,
+#toc-list li[data-level="5"] a,
+#toc-list li[data-level="6"] a {
+    padding-left: 24px !important;
+}
+
+#toc-list a:hover {
+    background: #fff !important;
+    color: #1c3b68 !important;
+}
+
+#toc-list a.toc-active {
+    border-left-color: #1c3b68;
+    background: #fff !important;
+    color: #1c3b68 !important;
+    font-weight: bold !important;
+}
+
+.toc-empty {
+    padding: 6px 8px;
+    font-size: 9.5px;
+    color: #5a6a7a;
+    font-style: italic;
+}

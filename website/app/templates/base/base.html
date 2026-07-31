@@ -6,6 +6,7 @@
     <title>{% block title %}AstronautMarkus.Dev{% endblock %} | AstronautMarkus.Dev</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
+    {% block extra_css %}{% endblock %}
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 
@@ -35,7 +36,7 @@
                 %}</a>
             <a href="#">{% if current_lang == 'en' %}Projects & Portfolio{% else %}Proyectos y Portafolio{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
-            <a href="#">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
+            <a href="{{ url_for('main.blog_list') }}">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Extras{% else %}Extras{% endif %}</a>
             <a href="#">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
@@ -88,6 +89,8 @@
                     href="https://www.oracle.com/linux/" target="_blank">Oracle Linux</a></div>
         </footer>
     </div>
+
+    {% block extra_js %}{% endblock %}
 
 </body>
 
