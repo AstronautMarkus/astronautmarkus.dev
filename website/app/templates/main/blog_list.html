@@ -5,6 +5,7 @@
 {% block keywords %}blog, development, tech, python, flask, devops, linux, networking{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
 {% endblock %}
 
@@ -13,7 +14,7 @@
 (function () {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var thumbs = document.querySelectorAll('.blog-card-cover');
+    var thumbs = document.querySelectorAll('.blog-post-thumb');
     if (!thumbs.length) return;
 
     /* CRT power-on flicker, staggered, the first time each thumbnail enters view */
@@ -42,23 +43,32 @@
 
 {% block content %}
 
-<div id="blog-banner">
-    <div class="blog-banner-inner">
-        <h2><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon" alt="">Blog</h2>
-        <p>
+<section class="welcome-card">
+    <div class="card-header blog-banner-title">
+        <img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon" alt="">
+        &#9654; Blog
+    </div>
+    <div class="card-body">
+        <div class="blog-banner-intro">
             {% if current_lang == 'es' %}
             Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja.
             {% else %}
-            Development notes, system deep-dives, and the occasional rant.</p>
+            Development notes, system deep-dives, and the occasional rant.
             {% endif %}
+        </div>
     </div>
-</div>
+</section>
 
 <div id="blog-content">
 
     <div id="blog-main">
 
         {% if posts %}
+        <section class="welcome-card">
+            <div class="card-header">
+                &#9654; {% if current_lang == 'es' %}Publicaciones{% else %}Posts{% endif %}
+            </div>
+
             {% for post in posts %}
             {% if current_lang == 'es' and post.has_es %}
                 {% set p_title = post.title_es or post.title %}
@@ -68,18 +78,18 @@
                 {% set p_desc  = post.description %}
             {% endif %}
 
-            <div class="blog-card">
+            <div class="blog-post-row">
                 {% if post.cover_image_path %}
-                <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-card-cover-link">
+                <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-post-thumb-link">
                     <img src="{{ storage_url(post.cover_image_path) }}"
-                         class="blog-card-cover" alt="{{ p_title }}">
+                         class="blog-post-thumb" alt="{{ p_title }}">
                 </a>
                 {% else %}
-                <div class="blog-card-cover-placeholder"></div>
+                <div class="blog-post-thumb-placeholder"></div>
                 {% endif %}
 
-                <div class="blog-card-body">
-                    <div class="blog-card-meta">
+                <div class="blog-post-body">
+                    <div class="blog-post-meta">
                         {{ post.created_at.strftime('%B %d, %Y') }}
                         {% if post.category %}
                         &nbsp;·&nbsp;
@@ -98,7 +108,7 @@
                     </h3>
 
                     {% if p_desc %}
-                    <p class="blog-card-excerpt">{{ p_desc | truncate(160) }}</p>
+                    <p class="blog-post-excerpt">{{ p_desc | truncate(160) }}</p>
                     {% endif %}
 
                     <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-read-more">
@@ -110,30 +120,40 @@
             {% endfor %}
 
             {% if pagination.pages > 1 %}
-            <div class="blog-pagination">
-                <a href="{{ url_for('main.blog_list', page=pagination.prev_num, cat=current_cat, tag=current_tag) }}"
-                   class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">{% if current_lang == 'es' %}Anterior{% else %}Prev{% endif %}</a>
+            <div class="blog-pagination-footer">
+                <div class="blog-pagination">
+                    <a href="{{ url_for('main.blog_list', page=pagination.prev_num, cat=current_cat, tag=current_tag) }}"
+                       class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">{% if current_lang == 'es' %}Anterior{% else %}Prev{% endif %}</a>
 
-                {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
-                    {% if p %}
-                    <a href="{{ url_for('main.blog_list', page=p, cat=current_cat, tag=current_tag) }}"
-                       class="blog-page-btn{% if p == pagination.page %} current{% endif %}">{{ p }}</a>
-                    {% else %}
-                    <span class="blog-page-btn disabled">&hellip;</span>
-                    {% endif %}
-                {% endfor %}
+                    {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                        {% if p %}
+                        <a href="{{ url_for('main.blog_list', page=p, cat=current_cat, tag=current_tag) }}"
+                           class="blog-page-btn{% if p == pagination.page %} current{% endif %}">{{ p }}</a>
+                        {% else %}
+                        <span class="blog-page-btn disabled">&hellip;</span>
+                        {% endif %}
+                    {% endfor %}
 
-                <a href="{{ url_for('main.blog_list', page=pagination.next_num, cat=current_cat, tag=current_tag) }}"
-                   class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">{% if current_lang == 'es' %}Siguiente{% else %}Next{% endif %}</a>
+                    <a href="{{ url_for('main.blog_list', page=pagination.next_num, cat=current_cat, tag=current_tag) }}"
+                       class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">{% if current_lang == 'es' %}Siguiente{% else %}Next{% endif %}</a>
+                </div>
             </div>
             {% endif %}
+        </section>
 
         {% else %}
-            {% if current_lang == 'es' %}
-            <p style="color:var(--text-faint);font-size:12px;padding:6px 0">No hay publicaciones todavía. Vuelve pronto.</p>
-            {% else %}
-            <p style="color:var(--text-faint);font-size:12px;padding:6px 0">No posts yet. Check back soon.</p>
-            {% endif %}
+        <section class="welcome-card">
+            <div class="card-header">
+                &#9654; {% if current_lang == 'es' %}Publicaciones{% else %}Posts{% endif %}
+            </div>
+            <div class="card-body">
+                {% if current_lang == 'es' %}
+                <div class="card-text">No hay publicaciones todavía. Vuelve pronto.</div>
+                {% else %}
+                <div class="card-text">No posts yet. Check back soon.</div>
+                {% endif %}
+            </div>
+        </section>
         {% endif %}
 
     </div>
