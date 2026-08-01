@@ -146,7 +146,7 @@ body {
 }
 
 .content-container {
-    display: flex;
+    position: relative;
     background: #f4f6f8;
 }
 
@@ -220,10 +220,34 @@ body {
 }
 
 .main-content {
-    flex: 1;
-    min-width: 0;
+    position: absolute;
+    top: 0;
+    left: 250px;
+    right: 0;
+    bottom: 0;
     padding: 15px;
+    overflow-y: auto;
     background: radial-gradient(circle at center, #ffffff 0%, #e2e8f0 100%);
+    scrollbar-width: thin;
+    scrollbar-color: #507299 #e2e8f0;
+}
+
+.main-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: #e2e8f0;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #7092b9, #2a5288);
+    border-radius: 5px;
+    border: 2px solid #e2e8f0;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #88a6c9, #1c3b68);
 }
 
 footer {
