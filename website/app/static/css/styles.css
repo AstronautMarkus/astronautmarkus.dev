@@ -258,3 +258,20 @@ footer a {
     margin-right: 4px;
     pointer-events: none;
 }
+
+.nav-icon {
+    width: 12px;
+    height: 12px;
+    image-rendering: pixelated;
+    vertical-align: -1px;
+    margin-right: 4px;
+    pointer-events: none;
+}
+
+.logo-icon {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+    margin-bottom: 4px;
+    pointer-events: none;
+}

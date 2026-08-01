@@ -31,36 +31,36 @@
         </header>
 
         <nav class="main-nav">
-            <a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
-            <a href="{{ url_for('main.about_me') }}">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif
+            <a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
+            <a href="{{ url_for('main.about_me') }}"><img src="{{ url_for('static', filename='images/icons/vcard.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif
                 %}</a>
-            <a href="#">{% if current_lang == 'en' %}Projects & Portfolio{% else %}Proyectos y Portafolio{% endif %}</a>
-            <a href="#">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
-            <a href="{{ url_for('main.blog_list') }}">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
-            <a href="#">{% if current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
-            <a href="#">{% if current_lang == 'en' %}Extras{% else %}Extras{% endif %}</a>
-            <a href="#">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
+            <a href="#"><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Portfolio{% else %}Portafolio{% endif %}</a>
+            <a href="#"><img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
+            <a href="{{ url_for('main.blog_list') }}"><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
+            <a href="#"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
+            <a href="#"><img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Extras{% else %}Extras{% endif %}</a>
+            <a href="#"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
         </nav>
 
         <div class="content-container">
             <aside class="sidebar">
                 <div class="panel-box">
                     <ul class="menu-list">
-                        <li><a href="{{ url_for('main.home') }}">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a></li>
-                        <li><a target="_blank" href="{{ cv_url }}">{% if current_lang == 'en' %}Download CV{% else
+                        <li><a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a></li>
+                        <li><a target="_blank" href="{{ cv_url }}"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Download CV{% else
                                 %}Descargar CV{% endif %}</a></li>
-                        <li><a href="#">Homelab</a></li>
-                        <li><a href="#">{% if current_lang == 'en' %}Tech Stack{% else %}Pila Tecnológica{% endif %}</a>
+                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="" class="nav-icon">Homelab</a></li>
+                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/wrench.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Tech Stack{% else %}Pila Tecnológica{% endif %}</a>
                         </li>
-                        <li><a href="#">{% if current_lang == 'en' %}Timeline{% else %}Cronología{% endif %}</a></li>
-                        <li><a href="#">{% if current_lang == 'en' %}Career{% else %}Carrera{% endif %}</a></li>
-                        <li><a href="#">{% if current_lang == 'en' %}Guestbook{% else %}Libro de Visitas{% endif %}</a>
+                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/timeline.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Timeline{% else %}Cronología{% endif %}</a></li>
+                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/medal_award_gold.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Career{% else %}Carrera{% endif %}</a></li>
+                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/book_open.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Guestbook{% else %}Libro de Visitas{% endif %}</a>
                         </li>
                     </ul>
                 </div>
 
                 <div class="panel-box">
-                    <div class="panel-header">{% if current_lang == 'en' %}BeerCat Project{% else %}Proyecto BeerCat{%
+                    <div class="panel-header"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}BeerCat Project{% else %}Proyecto BeerCat{%
                         endif %}</div>
                     <div class="spotlight-content">
                         <div>{% if current_lang == 'en' %}Visit our official website for more information about this
