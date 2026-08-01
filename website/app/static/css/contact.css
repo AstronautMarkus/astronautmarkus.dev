@@ -1,0 +1,159 @@
+/* ── Contact: form + anti-spam UI ────────────────────────────────────────────
+   Reuses the same tokens as home.css/portfolio.css: navy header gradient
+   (#1c3b68 → #2a5288), .welcome-card/.card-header banner. Only the form
+   fields, alerts, and submit button are new here. No new breakpoints, same
+   fixed 820px desktop layout.
+*/
+
+/* ── Banner (matches gallery/portfolio banners) ────────────────────────── */
+
+.contact-banner-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.contact-banner-intro {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: #222;
+}
+
+/* ── Alerts ─────────────────────────────────────────────────────────────── */
+
+.contact-alert {
+    font-size: 10.5px;
+    line-height: 1.4;
+    font-weight: bold;
+    padding: 8px 10px;
+    margin: 10px 12px 0;
+    border-left: 3px solid;
+    border-radius: 2px;
+}
+
+.contact-alert-success {
+    color: #146c43;
+    background: rgba(20, 108, 67, 0.08);
+    border-color: #146c43;
+}
+
+.contact-alert-error {
+    color: #a12622;
+    background: rgba(161, 38, 34, 0.08);
+    border-color: #a12622;
+}
+
+/* ── Honeypot (bot trap, kept off-screen instead of display:none) ───────── */
+
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+/* ── Form layout ────────────────────────────────────────────────────────── */
+
+.contact-form {
+    padding: 12px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 9.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #1c3b68;
+    margin-bottom: 4px;
+}
+
+.form-group .required {
+    color: #a12622;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    padding: 7px 9px;
+    background: #fff;
+    border: 1px solid #b0c4de;
+    border-radius: 3px;
+    color: #16233a;
+    font-size: 11px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #1c3b68;
+    box-shadow: 0 0 0 2px rgba(28, 59, 104, 0.12);
+}
+
+.form-group.has-error input,
+.form-group.has-error textarea {
+    border-color: #a12622;
+}
+
+.field-error {
+    font-size: 9.5px;
+    color: #a12622;
+    margin-top: 3px;
+}
+
+/* ── Turnstile ──────────────────────────────────────────────────────────── */
+
+.cf-turnstile {
+    display: table;
+    margin: 6px 0 12px;
+}
+
+/* ── Submit button ──────────────────────────────────────────────────────── */
+
+.contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #fff;
+    background: #1c3b68;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.contact-btn:hover {
+    background: #2a5288;
+}
+
+.contact-btn:disabled {
+    background: #9aa8bb;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
