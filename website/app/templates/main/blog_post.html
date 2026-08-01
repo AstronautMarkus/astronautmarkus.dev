@@ -150,6 +150,11 @@
     var tocList = document.getElementById('toc-list');
     var tocBox  = document.getElementById('toc-box');
 
+    /* the actual scrolling viewport is .main-content (see base.html), not
+       the window — headings must be brought into view inside it, and its
+       scroll position (not window.scrollY) drives the active-heading state */
+    var scroller = document.querySelector('.main-content') || window;
+
     if (!prose || !tocList || !tocBox) return;
 
     var headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -171,6 +176,22 @@
         return id;
     }
 
+    /* scroll a heading to the top of .main-content without touching
+       window scroll or the URL hash (#id) */
+    function scrollToHeading(h) {
+        if (scroller === window) {
+            h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+        var headingTop   = h.getBoundingClientRect().top;
+        var containerTop = scroller.getBoundingClientRect().top;
+        var offset = 15; /* matches .prose heading scroll-margin-top */
+        scroller.scrollTo({
+            top: scroller.scrollTop + (headingTop - containerTop) - offset,
+            behavior: 'smooth'
+        });
+    }
+
     /* assign IDs and build TOC items */
     var items = [];
     headings.forEach(function (h) {
@@ -185,6 +206,12 @@
         var a = document.createElement('a');
         a.href = '#' + id;
         a.textContent = text;
+        a.addEventListener('click', function (e) {
+            /* let modified/middle clicks behave natively (open in new tab, etc.) */
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            scrollToHeading(h);
+        });
         li.appendChild(a);
         items.push({ el: h, link: a });
         tocList.appendChild(li);
@@ -197,13 +224,67 @@
     /* show the TOC box */
     tocBox.style.display = 'flex';
 
+    /* .main-content's scrollable range is capped at scrollHeight - clientHeight,
+       so a heading near the very end of a post can run out of room to reach
+       the top offset before the click even starts (nothing trails it to
+       "push" it up). Pad the bottom with just enough blank space for the
+       last heading specifically — recomputed on load too, since images
+       finishing can change scrollHeight. */
+    var scrollSpacer = null;
+    function ensureScrollRoom() {
+        if (scroller === window) return;
+        var last = items[items.length - 1].el;
+        var maxScrollTop = scroller.scrollHeight - scroller.clientHeight - (scrollSpacer ? parseFloat(scrollSpacer.style.height) : 0);
+        var desiredScrollTop = last.offsetTop - 15;
+        var shortfall = Math.ceil(desiredScrollTop - maxScrollTop);
+        if (shortfall > 0) {
+            if (!scrollSpacer) {
+                scrollSpacer = document.createElement('div');
+                scrollSpacer.setAttribute('aria-hidden', 'true');
+                (document.getElementById('post-main') || prose.parentNode).appendChild(scrollSpacer);
+            }
+            scrollSpacer.style.height = shortfall + 'px';
+        }
+    }
+    ensureScrollRoom();
+    window.addEventListener('load', ensureScrollRoom);
+
+    /* deep link support: if the page was opened with #some-heading, jump to
+       it, then strip the hash so the URL stays clean (matches the
+       no-visible-# behavior of TOC clicks). The browser's own native
+       fragment-scroll keeps retrying as late-loading images resize the
+       page, racing our own positioning — so strip the hash first (removing
+       the target it retries against) and re-assert our own instant jump on
+       'load' as the final, authoritative correction. */
+    if (location.hash.length > 1) {
+        var target = null;
+        for (var j = 0; j < items.length; j++) {
+            if ('#' + items[j].el.id === location.hash) { target = items[j].el; break; }
+        }
+        if (target) {
+            history.replaceState(null, '', location.pathname + location.search);
+            var jumpToTarget = function () {
+                ensureScrollRoom();
+                var headingTop   = target.getBoundingClientRect().top;
+                var containerTop = scroller === window ? 0 : scroller.getBoundingClientRect().top;
+                if (scroller === window) {
+                    window.scrollTo(0, headingTop + window.scrollY - 15);
+                } else {
+                    scroller.scrollTop = scroller.scrollTop + (headingTop - containerTop) - 15;
+                }
+            };
+            jumpToTarget();
+            window.addEventListener('load', jumpToTarget);
+        }
+    }
+
     /* active-heading tracking on scroll */
     function onScroll() {
-        var scrollY = window.scrollY || window.pageYOffset;
-        var active  = null;
+        var containerTop = scroller === window ? 0 : scroller.getBoundingClientRect().top;
+        var active = null;
         for (var i = 0; i < items.length; i++) {
-            var top = items[i].el.getBoundingClientRect().top + scrollY;
-            if (top <= scrollY + 80) {
+            var top = items[i].el.getBoundingClientRect().top - containerTop;
+            if (top <= 80) {
                 active = items[i];
             }
         }
@@ -212,8 +293,65 @@
         });
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    scroller.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+})();
+</script>
+<script>
+(function () {
+    var blocks = document.querySelectorAll('.prose pre');
+    if (!blocks.length) return;
+
+    var copyLabel   = {{ ('Copiar' if current_lang == 'es' else 'Copy') | tojson }};
+    var copiedLabel = {{ ('¡Copiado!' if current_lang == 'es' else 'Copied!') | tojson }};
+
+    function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+    }
+
+    blocks.forEach(function (pre) {
+        var code = pre.querySelector('code');
+        if (!code) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block-wrap';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy-btn';
+        btn.textContent = copyLabel;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+            var text = code.textContent;
+            var done = function () {
+                btn.textContent = copiedLabel;
+                btn.classList.add('copied');
+                setTimeout(function () {
+                    btn.textContent = copyLabel;
+                    btn.classList.remove('copied');
+                }, 1500);
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(done, function () {
+                    fallbackCopy(text);
+                    done();
+                });
+            } else {
+                fallbackCopy(text);
+                done();
+            }
+        });
+    });
 })();
 </script>
 <script>
