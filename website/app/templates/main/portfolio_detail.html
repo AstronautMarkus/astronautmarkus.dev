@@ -1,0 +1,118 @@
+{% extends "base/base.html" %}
+
+{% if current_lang == 'es' and project.has_es %}
+    {% set p_title = project.title_es or project.title %}
+    {% set p_desc  = project.description_es or project.description %}
+{% else %}
+    {% set p_title = project.title %}
+    {% set p_desc  = project.description %}
+{% endif %}
+
+{% block title %}{{ p_title }}{% endblock %}
+{% block description %}{{ p_desc or p_title }}{% endblock %}
+{% block keywords %}portfolio, {{ p_title }}, AstronautMarkus.dev{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% if project.image_path %}
+<div class="post-cover-wrap">
+    <img src="{{ storage_url(project.image_path) }}" class="post-cover-img" alt="{{ p_title }}">
+    <div class="post-cover-overlay">
+        <div class="post-cover-title">{{ p_title }}</div>
+    </div>
+</div>
+{% endif %}
+
+<div class="portfolio-header">
+    {% if not project.image_path %}
+    <h1>{{ p_title }}</h1>
+    {% endif %}
+    <div class="portfolio-meta-row">
+        <span>{{ project.created_at.strftime('%B %d, %Y') }}</span>
+        {% if project.has_es %}
+        <span class="portfolio-meta-lang">
+            {% if current_lang == 'es' %}
+            <a href="/lang/en?next={{ request.path }}">EN</a>
+            {% else %}
+            <a href="/lang/es?next={{ request.path }}">ES</a>
+            {% endif %}
+        </span>
+        {% endif %}
+    </div>
+</div>
+
+{% if project.project_url or project.github_repo_url %}
+<div class="portfolio-links-bar">
+    {% if project.project_url %}
+    <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn">
+        <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
+        {% if current_lang == 'es' %}Visitar Proyecto{% else %}Visit Project{% endif %}
+    </a>
+    {% endif %}
+    {% if project.github_repo_url %}
+    <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn source">
+        <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="">
+        {% if current_lang == 'es' %}Ver Código{% else %}View Source{% endif %}
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if p_desc %}
+<div class="portfolio-desc">{{ p_desc }}</div>
+{% endif %}
+
+{% if project.extra_images %}
+<div class="post-gallery">
+    <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">{% if current_lang == 'es' %}Capturas del Proyecto{% else %}Project Screenshots{% endif %}</h4>
+    <div class="post-gallery-grid">
+        {% for img in project.extra_images %}
+        <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
+           title="{% if current_lang == 'es' %}Imagen{% else %}Image{% endif %} {{ loop.index }}">
+            <img src="{{ storage_url(img.image_path) }}" alt="{% if current_lang == 'es' %}Imagen{% else %}Image{% endif %} {{ loop.index }}">
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<a href="{{ url_for('main.portfolio_list') }}" class="post-back">{% if current_lang == 'es' %}Volver al Portafolio{% else %}Back to Portfolio{% endif %}</a>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var thumbs = document.querySelectorAll('.post-gallery-grid img');
+    if (!thumbs.length) return;
+
+    /* CRT power-on flicker, staggered, the first time each thumbnail enters view */
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            observer.unobserve(el);
+            var idx = Array.prototype.indexOf.call(thumbs, el);
+            setTimeout(function () { el.classList.add('crt-power-on'); }, Math.min(idx, 10) * 90);
+        });
+    }, { threshold: 0.2 });
+    thumbs.forEach(function (img) { observer.observe(img); });
+
+    /* occasional ambient glitch on a random thumbnail */
+    setInterval(function () {
+        if (Math.random() > 0.35) return;
+        var img = thumbs[Math.floor(Math.random() * thumbs.length)];
+        img.classList.remove('crt-glitch');
+        void img.offsetWidth;
+        img.classList.add('crt-glitch');
+    }, 2600);
+})();
+</script>
+{% endblock %}
