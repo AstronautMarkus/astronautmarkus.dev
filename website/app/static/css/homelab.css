@@ -50,14 +50,6 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-.homelab-hero-caption {
-    font-size: 8.5px;
-    color: #5a7a9e;
-    text-align: center;
-    margin-top: 4px;
-    font-style: italic;
-}
-
 .homelab-hero-text {
     font-size: 10.5px;
     line-height: 1.5;
@@ -101,81 +93,174 @@
     margin-top: 1px;
 }
 
-/* ── Network topology diagram ────────────────────────────────────────── */
+/* ── Network topology diagram (draggable 2D canvas) ──────────────────── */
 
-.topology {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 14px 8px 6px;
+.topology-canvas-hint {
+    font-size: 8.5px;
+    color: #5a7a9e;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 6px;
 }
 
-.topology-node {
-    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
+.topology-canvas-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
     border: 1px solid #b0c4de;
-    border-radius: 5px;
-    padding: 6px 14px;
-    font-size: 9.5px;
+    border-radius: 6px;
+    background-color: #eef3f8;
+    background-image: radial-gradient(#c7d5e5 1px, transparent 0);
+    background-size: 14px 14px;
+    scrollbar-width: thin;
+    scrollbar-color: #2e5984 #d8e2ed;
+}
+
+.topology-canvas-wrap::-webkit-scrollbar {
+    height: 12px;
+}
+
+.topology-canvas-wrap::-webkit-scrollbar-track {
+    background: #d8e2ed;
+    border-top: 1px solid #b0c4de;
+    border-radius: 0 0 5px 5px;
+}
+
+.topology-canvas-wrap::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #2e5984, #1c3b68);
+    border: 2px solid #d8e2ed;
+    border-radius: 6px;
+}
+
+.topology-canvas-wrap::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #3a6298, #24466f);
+}
+
+.topology-canvas-wrap::-webkit-scrollbar-corner {
+    background: #d8e2ed;
+}
+
+.topology-canvas {
+    position: relative;
+    width: 1040px;
+    height: 440px;
+}
+
+.topo-zone {
+    position: absolute;
+    border: 1px dashed #a8bdd4;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.topo-zone-label {
+    position: absolute;
+    top: -9px;
+    left: 10px;
+    background: #5a7a9e;
+    color: #fff;
+    font-size: 8px;
     font-weight: bold;
-    color: #1a2a3a;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 3px;
     white-space: nowrap;
 }
 
-.topology-node img {
-    width: 13px;
-    height: 13px;
+.topo-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
 }
 
-.topology-node.wan {
+.topo-node {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    cursor: grab;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
+    border: 1px solid #b0c4de;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #1a2a3a;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.topo-node img {
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+}
+
+.topo-node.dragging {
+    cursor: grabbing;
+    box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.35);
+    z-index: 4;
+}
+
+.topo-node.wan {
     background: linear-gradient(to bottom, #f0dca0, #dcae3a);
     border-color: #b5651d;
 }
 
-.topology-node.security {
+.topo-node.security {
     background: linear-gradient(to bottom, #f3c9c9, #d68d8d);
     border-color: #8a1c1c;
 }
 
-.topology-node.core {
+.topo-node.core {
     background: linear-gradient(to bottom, #cfe0f0, #a9c6e3);
     border-color: #3a5270;
 }
 
-.topology-connector {
-    width: 2px;
-    height: 16px;
-    background: #7092b9;
-}
-
-.topology-branches {
+.topology-legend-canvas {
     display: flex;
-    gap: 8px;
     flex-wrap: wrap;
-    justify-content: center;
-}
-
-.topology-branch {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-}
-
-.topology-node.vlan {
+    gap: 14px;
     font-size: 8.5px;
-    padding: 5px 9px;
+    color: #444;
+    margin-top: 8px;
+    line-height: 1.5;
 }
 
-.topology-legend {
-    margin-top: 12px;
-    font-size: 9px;
-    color: #444;
-    text-align: center;
-    line-height: 1.5;
+.topology-legend-canvas .swatch {
+    display: inline-block;
+    width: 18px;
+    height: 0;
+    border-top: 3px solid #7092b9;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.topology-legend-canvas .swatch.direct {
+    border-top-color: #b5651d;
+}
+
+.topology-reset-btn {
+    font-size: 8.5px;
+    font-weight: bold;
+    color: #1c3b68;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: auto;
+    font-family: inherit;
 }
 
 /* VLAN breakdown table */
@@ -210,42 +295,6 @@
     font-weight: bold;
     color: #1c3b68;
     white-space: nowrap;
-}
-
-/* ── Two-floor topology blocks ───────────────────────────────────────── */
-
-.floor-label {
-    font-size: 8.5px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #fff;
-    background: #5a7a9e;
-    padding: 3px 10px;
-    border-radius: 3px;
-    margin: 14px 0 8px;
-    display: inline-block;
-}
-
-.topology-connector.planned {
-    background-image: linear-gradient(to bottom, #7092b9 0, #7092b9 4px, transparent 4px, transparent 8px);
-    background-size: 2px 8px;
-    background-repeat: repeat-y;
-    background-color: transparent;
-    width: 2px;
-}
-
-.topology-node.planned {
-    border-style: dashed;
-    opacity: 0.85;
-}
-
-.topology-uplink-label {
-    font-size: 8px;
-    color: #5a7a9e;
-    font-style: italic;
-    margin: 2px 0;
-    text-align: center;
 }
 
 /* ── Hardware component grid ─────────────────────────────────────────── */
@@ -327,22 +376,6 @@
     font-weight: bold;
     padding: 2px 6px;
     border-radius: 3px;
-}
-
-.homelab-item-photo-placeholder {
-    width: 100%;
-    height: 120px;
-    background: linear-gradient(to right, #507299, #7092b9);
-    border-bottom: 1px solid #d0d8e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.homelab-item-photo-placeholder img {
-    width: 34px;
-    height: 34px;
-    opacity: 0.85;
 }
 
 .homelab-item-floor {
