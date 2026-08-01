@@ -1,6 +1,8 @@
 {% extends "base/base.html" %}
 
 {% block title %}{{ 'Login' if current_lang == 'en' else 'Iniciar sesión' }}{% endblock %}
+{% block description %}{{ 'Admin sign-in for AstronautMarkus.dev.' if current_lang == 'en' else 'Inicio de sesión de administrador para AstronautMarkus.dev.' }}{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">

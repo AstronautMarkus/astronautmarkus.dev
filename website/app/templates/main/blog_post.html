@@ -4,6 +4,18 @@
 {% block description %}{{ post.description or title }}{% endblock %}
 {% block keywords %}{{ post.category.name ~ ', ' if post.category else '' }}blog, development, AstronautMarkus.dev{% endblock %}
 
+{% block og_type %}article{% endblock %}
+
+{% block og_image %}
+{% if post.cover_image_path %}
+{% set og_img = storage_url(post.cover_image_path) %}
+<meta property="og:image" content="{{ og_img if og_img.startswith('http') else request.url_root.rstrip('/') + og_img }}">
+<meta name="twitter:image" content="{{ og_img if og_img.startswith('http') else request.url_root.rstrip('/') + og_img }}">
+{% else %}
+{{ super() }}
+{% endif %}
+{% endblock %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
 {% endblock %}

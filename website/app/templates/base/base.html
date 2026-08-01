@@ -3,7 +3,38 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% set page_title = self.title() %}
     <title>{% block title %}AstronautMarkus.Dev{% endblock %} | AstronautMarkus.Dev</title>
+
+    <meta name="description" content="{% block description %}{% if current_lang == 'es' %}Portafolio y blog personal de AstronautMarkus: proyectos, artículos técnicos y experimentos de desarrollo.{% else %}Personal portfolio and blog of AstronautMarkus: projects, technical articles, and development experiments.{% endif %}{% endblock %}">
+
+    <meta name="keywords" content="{% block keywords %}AstronautMarkus, developer, desarrollador, portfolio, blog, python, flask{% endblock %}">
+
+    <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+
+    {% block canonical %}<link rel="canonical" href="{{ request.url }}">{% endblock %}
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="AstronautMarkus.Dev">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:title" content="{{ page_title }}">
+    <meta property="og:description" content="{{ self.description() }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:locale" content="{{ 'es_CL' if current_lang == 'es' else 'en_US' }}">
+    {% block og_image %}
+    <meta property="og:image" content="{{ url_for('static', filename='images/og.jpg', _external=True) }}">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/og.jpg', _external=True) }}">
+    {% endblock %}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title }}">
+    <meta name="twitter:description" content="{{ self.description() }}">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
     {% block extra_css %}{% endblock %}

@@ -12,6 +12,18 @@
 {% block description %}{{ p_desc or p_title }}{% endblock %}
 {% block keywords %}portfolio, {{ p_title }}, AstronautMarkus.dev{% endblock %}
 
+{% block og_type %}article{% endblock %}
+
+{% block og_image %}
+{% if project.image_path %}
+{% set og_img = storage_url(project.image_path) %}
+<meta property="og:image" content="{{ og_img if og_img.startswith('http') else request.url_root.rstrip('/') + og_img }}">
+<meta name="twitter:image" content="{{ og_img if og_img.startswith('http') else request.url_root.rstrip('/') + og_img }}">
+{% else %}
+{{ super() }}
+{% endif %}
+{% endblock %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
