@@ -1,0 +1,153 @@
+{% extends "base/base.html" %}
+
+{% block title %}{% if current_lang == 'es' %}Galería{% else %}Gallery{% endif %}{% endblock %}
+{% block description %}{% if current_lang == 'es' %}Fotografías e imágenes compartidas por AstronautMarkus.dev.{% else %}Photos and images shared by AstronautMarkus.dev.{% endif %}{% endblock %}
+{% block keywords %}gallery, galeria, photos, fotos, images{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="welcome-card">
+    <div class="card-header gallery-banner-title">
+        <img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="icon" alt="">
+        &#9654; {% if current_lang == 'es' %}Galería{% else %}Gallery{% endif %}
+    </div>
+    <div class="card-body">
+        <div class="gallery-banner-intro">
+            {% if current_lang == 'es' %}
+            Fotos, capturas y momentos que he ido guardando por aquí.
+            {% else %}
+            Photos, screenshots, and moments I've collected along the way.
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="welcome-card">
+    <div class="card-header">
+        &#9654; {% if current_lang == 'es' %}Fotos{% else %}Photos{% endif %}
+    </div>
+
+    {% if photos %}
+    <div class="gallery-grid" id="gallery-grid">
+        {% for photo in photos %}
+        {% if current_lang == 'es' and photo.has_es %}
+            {% set p_title = photo.title_es or photo.title %}
+            {% set p_desc  = photo.description_es or photo.description %}
+        {% else %}
+            {% set p_title = photo.title %}
+            {% set p_desc  = photo.description %}
+        {% endif %}
+        <button type="button" class="gallery-item" data-full="{{ storage_url(photo.image_path) }}"
+                data-title="{{ p_title }}" data-desc="{{ p_desc or '' }}">
+            <img src="{{ storage_url(photo.image_path) }}" class="gallery-item-thumb" alt="{{ p_title }}" loading="lazy">
+            <span class="gallery-item-overlay">
+                <span class="gallery-item-title">{{ p_title }}</span>
+            </span>
+        </button>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="gallery-empty">
+        {% if current_lang == 'es' %}
+        <div class="card-text">No hay fotos todavía. Vuelve pronto.</div>
+        {% else %}
+        <div class="card-text">No photos yet. Check back soon.</div>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+
+<div class="gallery-modal-overlay" id="gallery-modal-overlay">
+    <div class="gallery-modal" role="dialog" aria-modal="true" aria-label="{% if current_lang == 'es' %}Visor de fotos{% else %}Photo viewer{% endif %}">
+        <div class="gallery-modal-header">
+            <span class="gallery-modal-counter" id="gallery-modal-counter"></span>
+            <button type="button" class="gallery-modal-close" id="gallery-modal-close" aria-label="{% if current_lang == 'es' %}Cerrar{% else %}Close{% endif %}">&#10005;</button>
+        </div>
+        <div class="gallery-modal-body">
+            <button type="button" class="gallery-modal-nav prev" id="gallery-modal-prev" aria-label="{% if current_lang == 'es' %}Anterior{% else %}Previous{% endif %}">&#10094;</button>
+            <img src="" alt="" class="gallery-modal-img" id="gallery-modal-img">
+            <button type="button" class="gallery-modal-nav next" id="gallery-modal-next" aria-label="{% if current_lang == 'es' %}Siguiente{% else %}Next{% endif %}">&#10095;</button>
+        </div>
+        <div class="gallery-modal-caption">
+            <div class="gallery-modal-title" id="gallery-modal-title"></div>
+            <div class="gallery-modal-desc" id="gallery-modal-desc"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll('#gallery-grid .gallery-item'));
+    if (!items.length) return;
+
+    var overlay  = document.getElementById('gallery-modal-overlay');
+    var imgEl    = document.getElementById('gallery-modal-img');
+    var titleEl  = document.getElementById('gallery-modal-title');
+    var descEl   = document.getElementById('gallery-modal-desc');
+    var counterEl = document.getElementById('gallery-modal-counter');
+    var closeBtn = document.getElementById('gallery-modal-close');
+    var prevBtn  = document.getElementById('gallery-modal-prev');
+    var nextBtn  = document.getElementById('gallery-modal-next');
+
+    var current = -1;
+
+    function show(index) {
+        if (index < 0) index = items.length - 1;
+        if (index >= items.length) index = 0;
+        current = index;
+
+        var item = items[current];
+        imgEl.src = item.getAttribute('data-full');
+        imgEl.alt = item.getAttribute('data-title') || '';
+        titleEl.textContent = item.getAttribute('data-title') || '';
+        var desc = item.getAttribute('data-desc') || '';
+        descEl.textContent = desc;
+        descEl.style.display = desc ? '' : 'none';
+        counterEl.textContent = (current + 1) + ' / ' + items.length;
+
+        var multiple = items.length > 1;
+        prevBtn.style.display = multiple ? '' : 'none';
+        nextBtn.style.display = multiple ? '' : 'none';
+    }
+
+    function open(index) {
+        show(index);
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        imgEl.src = '';
+    }
+
+    items.forEach(function (item, index) {
+        item.addEventListener('click', function () { open(index); });
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', function () { show(current - 1); });
+    nextBtn.addEventListener('click', function () { show(current + 1); });
+
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (!overlay.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') show(current - 1);
+        else if (e.key === 'ArrowRight') show(current + 1);
+    });
+})();
+</script>
+{% endblock %}

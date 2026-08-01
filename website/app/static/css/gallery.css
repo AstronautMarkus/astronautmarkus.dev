@@ -1,0 +1,217 @@
+/* ── Gallery: photo grid + lightbox modal ───────────────────────────────────
+   Reuses the same tokens as home.css/portfolio.css: navy header gradient
+   (#1c3b68 → #2a5288), .welcome-card/.card-header banner. Only the photo
+   grid tiles and the lightbox modal are new here. No new breakpoints, same
+   fixed 820px desktop layout.
+*/
+
+/* ── Banner (list page) ────────────────────────────────────────────────── */
+
+.gallery-banner-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.gallery-banner-intro {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: #222;
+}
+
+/* ── Photo grid ─────────────────────────────────────────────────────────── */
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 12px;
+}
+
+.gallery-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: 1px solid #d0d8e0;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #10182a;
+}
+
+.gallery-item-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.gallery-item:hover .gallery-item-thumb {
+    transform: scale(1.06);
+}
+
+.gallery-item-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 6px 8px;
+    background: linear-gradient(to top, rgba(10, 20, 40, 0.85) 0%, rgba(10, 20, 40, 0) 55%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.gallery-item:hover .gallery-item-overlay,
+.gallery-item:focus-visible .gallery-item-overlay {
+    opacity: 1;
+}
+
+.gallery-item-title {
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.3;
+    text-align: left;
+}
+
+/* ── Empty state ───────────────────────────────────────────────────────── */
+
+.gallery-empty {
+    padding: 12px;
+}
+
+/* ── Lightbox modal ────────────────────────────────────────────────────── */
+
+.gallery-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: rgba(8, 14, 28, 0.88);
+}
+
+.gallery-modal-overlay.open {
+    display: flex;
+}
+
+.gallery-modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    max-height: 100%;
+    width: 100%;
+    background: #e2eaf2;
+    border: 1px solid #b0c4de;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.gallery-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: linear-gradient(to bottom, #1c3b68, #2e5984);
+    color: #fff;
+    padding: 6px 6px 6px 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.gallery-modal-counter {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.gallery-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.gallery-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gallery-modal-body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0b1220;
+    min-height: 200px;
+}
+
+.gallery-modal-img {
+    display: block;
+    max-width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+}
+
+.gallery-modal-nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    border: none;
+    background: rgba(0, 0, 0, 0.25);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.gallery-modal-nav:hover {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.gallery-modal-nav.prev {
+    left: 0;
+}
+
+.gallery-modal-nav.next {
+    right: 0;
+}
+
+.gallery-modal-caption {
+    padding: 10px 12px;
+}
+
+.gallery-modal-title {
+    font-size: 11.5px;
+    font-weight: bold;
+    color: #16233a;
+    margin-bottom: 4px;
+}
+
+.gallery-modal-desc {
+    font-size: 10px;
+    line-height: 1.5;
+    color: #444;
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
