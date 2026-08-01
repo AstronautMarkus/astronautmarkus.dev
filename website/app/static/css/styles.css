@@ -30,6 +30,7 @@ body {
     background-color: #ffffff;
     border: 1px solid #708090;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    zoom: 1.1;
 }
 
 .header-top-nav {
