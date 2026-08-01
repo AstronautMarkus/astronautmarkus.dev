@@ -1,7 +1,7 @@
 {% extends "base/base.html" %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/about_me.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about_me.css') }}">
 {% endblock %}
 
 {% block title %}About me{% endblock %}
@@ -15,15 +15,23 @@
         <div class="profile-photo"></div>
         <div class="bio-text">
             <p>
-                Hi, I'm Markus — a full-cycle software developer (SDLC) with experience building web
-                and mobile applications, as well as desktop software. I go by "Endless Seeker" because
-                I'm always chasing the next thing worth learning, whether that's a new language, a
-                weird corner of the stack, or just a better way to solve an old problem.
+                My name is <strong>Marcos Andrés Alberto Reyes Martínez</strong> — a bit too long to fit on a business
+                card — so I go by "Markus". It's a common enough name that I feel comfortable using it as a handle for
+                my online presence. I am a <strong>full-cycle software developer</strong>
+                <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="Software Developer"
+                    class="icon"> with a passion for building web, mobile, and desktop applications. I enjoy working on
+                projects that challenge me to learn new technologies and improve my skills.
             </p>
             <p>
-                Outside of client work, I run a small homelab, tinker with self-hosted services, and
-                keep this site as a personal playground for whatever design or tech experiment I'm
-                into that month.
+                I work on <strong>private projects</strong> for clients, building <strong>CRM</strong>,
+                <strong>ERP</strong>
+                <img src="{{ url_for('static', filename='images/icons/server_database.png') }}" alt="Business Software"
+                    class="icon">, and other business software. It's a rewarding experience, but the hardest part is
+                understanding the <strong>business needs</strong> and translating them into software solutions. I am
+                always looking for new opportunities to collaborate on interesting projects and contribute to the
+                <strong>open-source community</strong>.
+                <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="Open Source"
+                    class="icon">
             </p>
         </div>
     </div>
@@ -35,39 +43,135 @@
     </div>
     <div class="about-card-body stack-grid">
         <div>
-            <div class="stack-group-title">Languages</div>
+            <div class="stack-group-title">Programming Languages &amp; Scripting</div>
             <div class="tag-list">
                 <span class="tag">Python</span>
+                <span class="tag">PHP</span>
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
                 <span class="tag">JavaScript</span>
                 <span class="tag">TypeScript</span>
-                <span class="tag">C#</span>
+                <span class="tag">SQL</span>
+                <span class="tag">Bash</span>
+                <span class="tag">Dockerfile</span>
+                <span class="tag">Arduino</span>
             </div>
         </div>
         <div>
-            <div class="stack-group-title">Frameworks</div>
+            <div class="stack-group-title">Frameworks &amp; Libraries</div>
             <div class="tag-list">
+                <span class="tag">React</span>
+                <span class="tag">React Router</span>
+                <span class="tag">Laravel</span>
+                <span class="tag">Laravel Reverb</span>
+                <span class="tag">Livewire</span>
+                <span class="tag">TailwindCSS</span>
+                <span class="tag">Vue.js</span>
+                <span class="tag">Node.js</span>
                 <span class="tag">Flask</span>
                 <span class="tag">Django</span>
-                <span class="tag">React</span>
-                <span class="tag">.NET</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">Alpine.js</span>
+                <span class="tag">Chart.js</span>
             </div>
         </div>
         <div>
-            <div class="stack-group-title">Infra &amp; Tools</div>
+            <div class="stack-group-title">Artificial Intelligence</div>
             <div class="tag-list">
-                <span class="tag">Docker</span>
-                <span class="tag">Linux</span>
-                <span class="tag">Caddy</span>
+                <span class="tag">Google Gemini API</span>
+                <span class="tag">Gemini Live API</span>
+                <span class="tag">Function Calling / Tool Use</span>
+                <span class="tag">RAG</span>
+                <span class="tag">OCR</span>
+                <span class="tag">TTS</span>
+                <span class="tag">Prompt Engineering</span>
+                <span class="tag">Strategy Pattern for AI Report Generation</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Methodologies &amp; Management</div>
+            <div class="tag-list">
+                <span class="tag">Agile</span>
+                <span class="tag">Scrum</span>
+                <span class="tag">Kanban</span>
+                <span class="tag">Sprints</span>
+                <span class="tag">SDLC</span>
+                <span class="tag">Technical Leadership</span>
+                <span class="tag">Mentoring</span>
+                <span class="tag">Problem Solving</span>
+                <span class="tag">Troubleshooting</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Testing &amp; Quality</div>
+            <div class="tag-list">
+                <span class="tag">Unit Testing</span>
+                <span class="tag">Integration Testing</span>
+                <span class="tag">TDD</span>
+                <span class="tag">Jest</span>
+                <span class="tag">PHPUnit</span>
+                <span class="tag">PyTest</span>
+                <span class="tag">Software Quality</span>
+                <span class="tag">Code Review</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Infrastructure &amp; Tools</div>
+            <div class="tag-list">
+                <span class="tag">Apache</span>
+                <span class="tag">Nginx</span>
+                <span class="tag">Linux (Ubuntu/Debian/RHEL)</span>
+                <span class="tag">VPS</span>
+                <span class="tag">Cloudflare</span>
+                <span class="tag">SSL</span>
+                <span class="tag">DNS</span>
                 <span class="tag">Git</span>
+                <span class="tag">GitHub</span>
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">CI/CD</span>
+                <span class="tag">RESTful APIs</span>
+                <span class="tag">Docker</span>
+                <span class="tag">System Administration</span>
+                <span class="tag">systemd</span>
+                <span class="tag">WebSockets</span>
+                <span class="tag">Queue Workers</span>
+                <span class="tag">Web Security</span>
+                <span class="tag">2FA/TOTP</span>
+                <span class="tag">SEO</span>
+                <span class="tag">Microservices Architecture</span>
+                <span class="tag">Multi-tenant SaaS Architecture</span>
             </div>
         </div>
         <div>
             <div class="stack-group-title">Databases</div>
             <div class="tag-list">
-                <span class="tag">PostgreSQL</span>
                 <span class="tag">MySQL</span>
+                <span class="tag">MariaDB</span>
                 <span class="tag">SQLite</span>
                 <span class="tag">Redis</span>
+                <span class="tag">Oracle Database</span>
+                <span class="tag">Cassandra</span>
+                <span class="tag">MongoDB</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Platform Deployment</div>
+            <div class="tag-list">
+                <span class="tag">AWS S3</span>
+                <span class="tag">AWS EC2</span>
+                <span class="tag">AWS SES</span>
+                <span class="tag">Hostinger</span>
+                <span class="tag">WebPay</span>
+                <span class="tag">Stripe</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Networking &amp; Security</div>
+            <div class="tag-list">
+                <span class="tag">Fortinet</span>
+                <span class="tag">FortiGate</span>
+                <span class="tag">Firewalls</span>
+                <span class="tag">VPN</span>
             </div>
         </div>
     </div>
@@ -80,24 +184,49 @@
     <div class="about-card-body">
         <ul class="timeline">
             <li class="timeline-item">
-                <div class="timeline-year">Now</div>
-                <div class="timeline-text"><strong>Full-cycle developer</strong> — building web,
-                    mobile, and desktop apps across the full SDLC.</div>
+                <div class="timeline-year">2026</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="Working"
+                        class="icon"> <strong>Working</strong> — I started working at a school — not the same one where
+                    I wrote that .vbs script, by the way — building a <strong>CRM + SaaS school management
+                        platform</strong>. I'm also working on a personal project, a <strong>SaaS for managing
+                        e-commerce stores</strong>
+                    <img src="{{ url_for('static', filename='images/icons/shop_network.png') }}" alt="E-commerce SaaS"
+                        class="icon">.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/medal_gold_blue.png') }}" alt="Career Degree"
+                        class="icon"> <strong>Career Degree</strong> — Expected to graduate with a degree in
+                    <strong>Computer Science</strong>, with a perfect score on my final software project. Hehe.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/ecommerce_server.png') }}"
+                        alt="Professional Practice" class="icon"> <strong>Professional Practice</strong> — I started
+                    working on real-world projects, building an <strong>ERP</strong> to manage e-commerce stores and
+                    integrating with the <strong>MercadoLibre API</strong>.
+                </div>
             </li>
             <li class="timeline-item">
                 <div class="timeline-year">2022</div>
-                <div class="timeline-text"><strong>Went full-stack</strong> — picked up frontend
-                    frameworks to ship complete products end to end.</div>
-            </li>
-            <li class="timeline-item">
-                <div class="timeline-year">2020</div>
-                <div class="timeline-text"><strong>First professional projects</strong> — started
-                    building real software for real users.</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="Started a career"
+                        class="icon"> <strong>Started a career</strong> — started building real software for real
+                    users. <strong>I have a dream.</strong>
+                </div>
             </li>
             <li class="timeline-item">
                 <div class="timeline-year">Early</div>
-                <div class="timeline-text"><strong>Wrote my first lines of code</strong> — and got
-                    hooked on making computers do things.</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/computer_error.png') }}" alt="First Script"
+                        class="icon"> <strong>I wrote my first .vbs script</strong> — a simple "troll" script to shut
+                    down the Windows computers at my school. I got banned from using the school computers, lmao.
+                </div>
             </li>
         </ul>
     </div>
@@ -109,32 +238,22 @@
     </div>
     <div class="about-card-body facts-grid">
         <div class="fact-item">
-            <span class="fact-label">OS of Choice</span>
-            Linux, tinkered into submission.
+            <span class="fact-label">Banned from School Computers... then admin</span>
+            In primary school, I was banned from using the school computers for writing a simple .vbs script that shut them down. Now I'm the <strong>admin</strong> of the school's network and servers <img src="{{ url_for('static', filename='images/icons/administrator.png') }}" alt="Administrator" class="icon"> — and I'm the one banning students who try to hack the school computers. <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" alt="Prohibition Button" class="icon">
         </div>
         <div class="fact-item">
-            <span class="fact-label">Homelab</span>
-            Self-hosted services running around the clock.
+            <span class="fact-label">Bye bye Windows, Hello Unix</span>
+            In 2024, midway through my degree, after a tense situation and a failed first attempt with <strong>Ubuntu</strong> <img src="{{ url_for('static', filename='images/icons/ubuntu.png') }}" alt="Ubuntu" class="icon">, I gave it another shot — but this time with more thought. The change was radical: the optimization, the experience, everything. I was learning it all — the terminal, commands, the filesystem, the philosophy behind it. I finally understood what a <strong>kernel</strong> really is, what <strong>Unix</strong> is, the difference between <strong>Linux</strong> and <strong>Windows NT</strong>, what <strong>GNU/Linux</strong> means, and more. I was learning, and I was loving it. I was finally free from the chains of Windows, and I was ready to embrace the power of Unix. <img src="{{ url_for('static', filename='images/icons/download_for_linux.png') }}" alt="Embrace Unix" class="icon">
         </div>
         <div class="fact-item">
-            <span class="fact-label">Philosophy</span>
-            Development isn't just work, it's a lifestyle.
+            <span class="fact-label">Then Linux, Now Darwin</span>
+            <strong>Linux</strong> <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt="Linux" class="icon"> is unique, great, and powerful, but I wanted to try something new, something different. Philosophy matters, but you also need to get things done at work, so I decided to buy an Intel <strong>MacBook Air 2017</strong>, the A1466 <img src="{{ url_for('static', filename='images/icons/apple.png') }}" alt="Apple" class="icon"> — and I was amazed: the experience, the optimization, the performance, the battery life, everything. Then I bought a <strong>Mac Mini M1</strong>, and I was amazed again: the experience, the optimization, the performance, the energy efficiency, everything. Finally, I bought a <strong>MacBook Neo</strong>, the "iPhone" of laptops, and I was amazed all over again. For day-to-day use, I'd definitely go with a Mac; it's second to none for work. But for the real me — the sysadmin, the hacker, the tinkerer, the one who loves to explore and learn — Linux is still my first love. I'll always have a special place in my heart for both Linux and Darwin. By the way, who the hell is this "Windows" guy?
         </div>
         <div class="fact-item">
             <span class="fact-label">Always Learning</span>
-            There's always one more rabbit hole worth exploring.
+            "There is knowledge that is not power" - Ralph Waldo Emerson. I am always learning, always exploring, always tinkering. I am a lifelong learner, and I will never stop learning. I am a hacker, a tinkerer, a sysadmin, a developer, a student, a teacher, a mentor, a friend, a human being. I am <strong>Markus</strong>. <strong>AstronautMarkusDev</strong>. <img src="{{ url_for('static', filename='images/icons/brain.png') }}" alt="Always Learning" class="icon"> <br><br>Life is hard, but it is beautiful. Be strong, be kind, be humble, be honest, be brave, be curious, be creative, be passionate, be patient, be persistent, be resilient, be resourceful, be respectful, be responsible, be self-aware, be self-disciplined, be self-motivated, be self-reliant, be self-sufficient, be selfless, be empathetic, be compassionate, be generous, be grateful, be happy, be healthy, be humble, be kind, be loving, be mindful, be optimistic, be positive, be proactive, be productive, be purposeful, be resilient, be resourceful, be respectful, be responsible, and most importantly... be yourself.
         </div>
     </div>
 </section>
 
-<section class="about-card">
-    <div class="about-card-header">
-        &#9654; Connect
-    </div>
-    <div class="connect-body">
-        <a class="connect-link" href="https://github.com/astronautmarkus" target="_blank">GitHub</a>
-        <a class="connect-link" href="#">Contact Me</a>
-        <a class="connect-link" href="{{ url_for('main.home') }}">Back Home</a>
-    </div>
-</section>
 {% endblock %}

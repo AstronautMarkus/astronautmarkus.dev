@@ -1,11 +1,261 @@
 {% extends "base/base.html" %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/about_me.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about_me.css') }}">
 {% endblock %}
 
 {% block title %}Sobre Mí{% endblock %}
 
 {% block content %}
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Sobre Mí
+    </div>
+    <div class="about-card-body profile-body">
+        <div class="profile-photo"></div>
+        <div class="bio-text">
+            <p>
+                Mi nombre es <strong>Marcos Andrés Alberto Reyes Martínez</strong> — un poco largo para una tarjeta de
+                presentación — así que uso "Markus". Es un nombre lo bastante común como para sentirme cómodo
+                usándolo como identidad para mi presencia en línea. Soy un <strong>desarrollador de software
+                    full-cycle</strong>
+                <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="Desarrollador de Software"
+                    class="icon"> apasionado por construir aplicaciones web, móviles y de escritorio. Disfruto
+                trabajar en proyectos que me desafíen a aprender nuevas tecnologías y mejorar mis habilidades.
+            </p>
+            <p>
+                Trabajo en <strong>proyectos privados</strong> para clientes, construyendo <strong>CRM</strong>,
+                <strong>ERP</strong>
+                <img src="{{ url_for('static', filename='images/icons/server_database.png') }}"
+                    alt="Software de Negocios" class="icon">, y otro software de negocios. Es una experiencia
+                gratificante, pero la parte más difícil es entender las <strong>necesidades del negocio</strong> y
+                traducirlas en soluciones de software. Siempre estoy buscando nuevas oportunidades para colaborar en
+                proyectos interesantes y contribuir a la <strong>comunidad de código abierto</strong>.
+                <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="Código Abierto"
+                    class="icon">
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Stack Tecnológico
+    </div>
+    <div class="about-card-body stack-grid">
+        <div>
+            <div class="stack-group-title">Lenguajes de Programación &amp; Scripting</div>
+            <div class="tag-list">
+                <span class="tag">Python</span>
+                <span class="tag">PHP</span>
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">SQL</span>
+                <span class="tag">Bash</span>
+                <span class="tag">Dockerfile</span>
+                <span class="tag">Arduino</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Frameworks &amp; Librerías</div>
+            <div class="tag-list">
+                <span class="tag">React</span>
+                <span class="tag">React Router</span>
+                <span class="tag">Laravel</span>
+                <span class="tag">Laravel Reverb</span>
+                <span class="tag">Livewire</span>
+                <span class="tag">TailwindCSS</span>
+                <span class="tag">Vue.js</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">Flask</span>
+                <span class="tag">Django</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">Alpine.js</span>
+                <span class="tag">Chart.js</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Inteligencia Artificial</div>
+            <div class="tag-list">
+                <span class="tag">Google Gemini API</span>
+                <span class="tag">Gemini Live API</span>
+                <span class="tag">Function Calling / Tool Use</span>
+                <span class="tag">RAG</span>
+                <span class="tag">OCR</span>
+                <span class="tag">TTS</span>
+                <span class="tag">Prompt Engineering</span>
+                <span class="tag">Strategy Pattern for AI Report Generation</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Metodologías &amp; Gestión</div>
+            <div class="tag-list">
+                <span class="tag">Agile</span>
+                <span class="tag">Scrum</span>
+                <span class="tag">Kanban</span>
+                <span class="tag">Sprints</span>
+                <span class="tag">SDLC</span>
+                <span class="tag">Liderazgo Técnico</span>
+                <span class="tag">Mentoring</span>
+                <span class="tag">Resolución de Problemas</span>
+                <span class="tag">Troubleshooting</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Testing &amp; Calidad</div>
+            <div class="tag-list">
+                <span class="tag">Unit Testing</span>
+                <span class="tag">Integration Testing</span>
+                <span class="tag">TDD</span>
+                <span class="tag">Jest</span>
+                <span class="tag">PHPUnit</span>
+                <span class="tag">PyTest</span>
+                <span class="tag">Calidad de Software</span>
+                <span class="tag">Code Review</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Infraestructura &amp; Herramientas</div>
+            <div class="tag-list">
+                <span class="tag">Apache</span>
+                <span class="tag">Nginx</span>
+                <span class="tag">Linux (Ubuntu/Debian/RHEL)</span>
+                <span class="tag">VPS</span>
+                <span class="tag">Cloudflare</span>
+                <span class="tag">SSL</span>
+                <span class="tag">DNS</span>
+                <span class="tag">Git</span>
+                <span class="tag">GitHub</span>
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">CI/CD</span>
+                <span class="tag">RESTful APIs</span>
+                <span class="tag">Docker</span>
+                <span class="tag">Administración de Sistemas</span>
+                <span class="tag">systemd</span>
+                <span class="tag">WebSockets</span>
+                <span class="tag">Queue Workers</span>
+                <span class="tag">Seguridad Web</span>
+                <span class="tag">2FA/TOTP</span>
+                <span class="tag">SEO</span>
+                <span class="tag">Arquitectura de Microservicios</span>
+                <span class="tag">Arquitectura SaaS Multi-tenant</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Bases de Datos</div>
+            <div class="tag-list">
+                <span class="tag">MySQL</span>
+                <span class="tag">MariaDB</span>
+                <span class="tag">SQLite</span>
+                <span class="tag">Redis</span>
+                <span class="tag">Oracle Database</span>
+                <span class="tag">Cassandra</span>
+                <span class="tag">MongoDB</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Despliegue de Plataformas</div>
+            <div class="tag-list">
+                <span class="tag">AWS S3</span>
+                <span class="tag">AWS EC2</span>
+                <span class="tag">AWS SES</span>
+                <span class="tag">Hostinger</span>
+                <span class="tag">WebPay</span>
+                <span class="tag">Stripe</span>
+            </div>
+        </div>
+        <div>
+            <div class="stack-group-title">Redes &amp; Seguridad</div>
+            <div class="tag-list">
+                <span class="tag">Fortinet</span>
+                <span class="tag">FortiGate</span>
+                <span class="tag">Firewalls</span>
+                <span class="tag">VPN</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Cronología
+    </div>
+    <div class="about-card-body">
+        <ul class="timeline">
+            <li class="timeline-item">
+                <div class="timeline-year">2026</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="Trabajando"
+                        class="icon"> <strong>Trabajando</strong> — Empecé a trabajar en un colegio — no el mismo
+                    colegio donde escribí ese script .vbs, por cierto — construyendo una <strong>plataforma CRM +
+                        SaaS de gestión escolar</strong>. También estoy trabajando en un proyecto personal, un
+                    <strong>SaaS para gestionar tiendas de e-commerce</strong>
+                    <img src="{{ url_for('static', filename='images/icons/shop_network.png') }}" alt="SaaS E-commerce"
+                        class="icon">.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/medal_gold_blue.png') }}" alt="Título Profesional"
+                        class="icon"> <strong>Título Profesional</strong> — Se espera que me titule con un grado en
+                    <strong>Ingeniería en Informática</strong>, con puntaje perfecto en mi proyecto de título. Jeje.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/ecommerce_server.png') }}"
+                        alt="Práctica Profesional" class="icon"> <strong>Práctica Profesional</strong> — Empecé a
+                    trabajar en proyectos reales, construyendo un <strong>ERP</strong> para gestionar tiendas de
+                    e-commerce e integrándolo con la <strong>API de MercadoLibre</strong>.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="Comencé una carrera"
+                        class="icon"> <strong>Comencé una carrera</strong> — empecé a construir software real para
+                    usuarios reales. <strong>Tengo un sueño.</strong>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">Antes</div>
+                <div class="timeline-text">
+                    <img src="{{ url_for('static', filename='images/icons/computer_error.png') }}" alt="Primer Script"
+                        class="icon"> <strong>Escribí mi primer script .vbs</strong> — un simple script "troll" para
+                    apagar los computadores con Windows de mi colegio. Me prohibieron usar los computadores del
+                    colegio, jaja.
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="about-card">
+    <div class="about-card-header">
+        &#9654; Datos Curiosos
+    </div>
+    <div class="about-card-body facts-grid">
+        <div class="fact-item">
+            <span class="fact-label">Prohibido de los Computadores del Colegio... y después admin</span>
+            En la básica, me prohibieron usar los computadores del colegio por escribir un simple script .vbs que los apagaba. Ahora soy el <strong>administrador</strong> de la red y los servidores del colegio <img src="{{ url_for('static', filename='images/icons/administrator.png') }}" alt="Administrador" class="icon"> — y soy yo quien prohíbe a los estudiantes que intentan hackear los computadores del colegio. <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" alt="Prohibido" class="icon">
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Chao Windows, Hola Unix</span>
+            En 2024, a mitad de la carrera, después de una situación tensa y un primer intento fallido con <strong>Ubuntu</strong> <img src="{{ url_for('static', filename='images/icons/ubuntu.png') }}" alt="Ubuntu" class="icon">, le di otra oportunidad — pero esta vez con más cabeza. El cambio fue radical: la optimización, la experiencia, todo. Estaba aprendiendo de todo — la terminal, los comandos, el sistema de archivos, la filosofía detrás. Finalmente entendí qué es realmente un <strong>kernel</strong>, qué es <strong>Unix</strong>, la diferencia entre <strong>Linux</strong> y <strong>Windows NT</strong>, qué significa <strong>GNU/Linux</strong>, y más. Estaba aprendiendo, y me encantaba. Finalmente estaba libre de las cadenas de Windows, y listo para abrazar el poder de Unix. <img src="{{ url_for('static', filename='images/icons/download_for_linux.png') }}" alt="Abrazando Unix" class="icon">
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Después Linux, Ahora Darwin</span>
+            <strong>Linux</strong> <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt="Linux" class="icon"> es único, genial y poderoso, pero quería probar algo nuevo, algo diferente. La filosofía importa, pero en el trabajo también hay que hacer las cosas, así que decidí comprarme un Intel <strong>MacBook Air 2017</strong>, el A1466 <img src="{{ url_for('static', filename='images/icons/apple.png') }}" alt="Apple" class="icon"> — y quedé impresionado: la experiencia, la optimización, el rendimiento, la batería, todo. Después me compré un <strong>Mac Mini M1</strong>, y quedé impresionado de nuevo: la experiencia, la optimización, el rendimiento, la eficiencia energética, todo. Finalmente, me compré un <strong>MacBook Neo</strong>, el "iPhone" de los laptops, y quedé impresionado otra vez. Para el día a día, definitivamente elegiría un Mac; no hay nada mejor para trabajar. Pero para el verdadero yo — el sysadmin, el hacker, el tinkerer, el que ama explorar y aprender — Linux sigue siendo mi primer amor. Siempre voy a tener un lugar especial en mi corazón tanto para Linux como para Darwin. Por cierto, ¿quién diablos es ese tipo "Windows"?
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Siempre Aprendiendo</span>
+            "Hay conocimiento que no es poder" - Ralph Waldo Emerson. Siempre estoy aprendiendo, siempre explorando, siempre toqueteando cosas. Soy un aprendiz de por vida, y nunca voy a dejar de aprender. Soy un hacker, un tinkerer, un sysadmin, un desarrollador, un estudiante, un profesor, un mentor, un amigo, un ser humano. Soy Markus. AstronautMarkusDev. <img src="{{ url_for('static', filename='images/icons/brain.png') }}" alt="Siempre Aprendiendo" class="icon"> <br><br>La vida es difícil, pero es hermosa. Sé fuerte, sé amable, sé humilde, sé honesto, sé valiente, sé curioso, sé creativo, sé apasionado, sé paciente, sé persistente, sé resiliente, sé recursivo, sé respetuoso, sé responsable, sé consciente de ti mismo, sé autodisciplinado, sé automotivado, sé autosuficiente, sé desprendido, sé empático, sé compasivo, sé generoso, sé agradecido, sé feliz, sé saludable, sé humilde, sé amable, sé cariñoso, sé consciente, sé optimista, sé positivo, sé proactivo, sé productivo, sé decidido, sé resiliente, sé recursivo, sé respetuoso, sé responsable, y lo más importante... sé tú mismo.
+        </div>
+    </div>
+</section>
 
 {% endblock %}

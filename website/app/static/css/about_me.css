@@ -150,31 +150,3 @@
     text-transform: uppercase;
     margin-bottom: 3px;
 }
-
-/* Connect / social links */
-.connect-body {
-    padding: 8px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.connect-link {
-    flex: 1;
-    min-width: 130px;
-    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
-    border: 1px solid #b0c4de;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 10px;
-    font-weight: bold;
-    color: #1a2a3a;
-    text-decoration: none;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.connect-link:hover {
-    background: #ffffff;
-    color: #000;
-}

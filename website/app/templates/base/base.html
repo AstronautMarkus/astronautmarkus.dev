@@ -14,9 +14,9 @@
 
     <div class="page-wrapper">
         <div class="header-top-nav">
-            <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}>{% if
+            <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}><img src="{{ url_for('static', filename='images/icons/flag_usa.png') }}" alt="English" class="icon">{% if
                 current_lang == 'en' %}English{% else %}Inglés{% endif %}</a>
-            <a href="/lang/es?next={{ request.path }}" {% if current_lang=='es' %} class="active" {% endif %}>{% if
+            <a href="/lang/es?next={{ request.path }}" {% if current_lang=='es' %} class="active" {% endif %}><img src="{{ url_for('static', filename='images/icons/flag_chile.png') }}" alt="Español" class="icon">{% if
                 current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a>
         </div>
 
