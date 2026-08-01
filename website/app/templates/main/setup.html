@@ -1,0 +1,235 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/setup.css') }}">
+{% endblock %}
+
+{% block title %}Setup{% endblock %}
+{% block description %}The desk, not the rack — AstronautMarkus's daily-driver computers, monitor, and peripherals.{% endblock %}
+{% block keywords %}AstronautMarkus, setup, battlestation, Mac Mini M1, HP OMEN, mechanical keyboard, Logitech G502, Sony MDR-7506{% endblock %}
+
+{% block content %}
+
+<section class="setup-card">
+    <div class="setup-card-header">
+        <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt="">
+        &#9654; Setup
+    </div>
+    <div class="setup-card-body setup-hero">
+        <div class="setup-hero-photo-wrap">
+            <img src="{{ url_for('static', filename='images/setup/mac-mini.jpg') }}" class="setup-hero-photo" alt="Mac Mini M1 desktop">
+        </div>
+        <div class="setup-hero-text">
+            <p>
+                The <a href="{{ url_for('main.homelab') }}">Homelab</a> page is the server side of things — this one
+                is the desk. What I actually sit in front of every day: the desktop, the laptops, and the
+                keyboard/mouse/headphones I've landed on after way too many swaps.
+            </p>
+            <p>
+                No tech stack talk here — that's already covered on the <a href="{{ url_for('main.about_me') }}">About
+                Me</a> page. This is just the hardware: what it is, what it's for, and why it's still on the desk.
+            </p>
+        </div>
+    </div>
+    <div class="setup-card-body" style="padding-top:0;">
+        <div class="setup-notice">
+            <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="Note">
+            <div>
+                <strong>About the photos:</strong> reference photos for now, not actual shots of my desk — same deal
+                as the homelab page. Real photos coming whenever I get around to it.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="setup-card">
+    <div class="setup-card-header">
+        <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="icon" alt="">
+        &#9654; The Gear
+    </div>
+
+    <div class="setup-grid">
+
+        <div class="setup-item">
+            <img src="{{ url_for('static', filename='images/setup/mac-mini.jpg') }}" class="setup-item-photo" alt="Mac Mini M1">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt="">
+                    Mac Mini M1
+                </div>
+                <span class="setup-item-role">Desktop</span>
+                <div class="setup-item-desc">
+                    The main desk machine. Quiet, small, and still hasn't broken a sweat — daily driver for
+                    everything that isn't gaming or lab work.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Apple M1</span>
+                    <span class="setup-tag">Daily Driver</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ url_for('static', filename='images/setup/monitor.jpg') }}" class="setup-item-photo" alt="Samsung ViewFinity S7 monitor">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="icon" alt="">
+                    Samsung ViewFinity S7
+                </div>
+                <span class="setup-item-role">Monitor</span>
+                <div class="setup-item-desc">
+                    The screen everything above lands on. Feeds the Mac Mini and doubles as the display for whichever
+                    laptop is on desk duty that day.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Samsung</span>
+                    <span class="setup-tag">Display</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ url_for('static', filename='images/setup/macbook.png') }}" class="setup-item-photo" alt="MacBook Neo work laptop">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="icon" alt="">
+                    MacBook Neo
+                </div>
+                <span class="setup-item-role">Work Laptop</span>
+                <div class="setup-item-desc">
+                    The "iPhone of laptops," as I put it on the About Me page — the one that travels, the one client
+                    work actually happens on.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Apple Silicon</span>
+                    <span class="setup-tag">Work</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ url_for('static', filename='images/setup/omen-laptop.jpg') }}" class="setup-item-photo" alt="HP OMEN 16 gaming laptop">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" class="icon" alt="">
+                    HP OMEN 16
+                </div>
+                <span class="setup-item-role">Gaming Laptop</span>
+                <div class="setup-item-desc">
+                    The Windows machine — gaming first, but it also picks up the slack for anything the Mac Mini
+                    would rather not deal with.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Windows</span>
+                    <span class="setup-tag">Gaming</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ url_for('static', filename='images/setup/keyboard.jpg') }}" class="setup-item-photo" alt="Ajazz AK820 Pro mechanical keyboard">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+                    Ajazz AK820 Pro
+                </div>
+                <span class="setup-item-role">Keyboard</span>
+                <div class="setup-item-desc">
+                    Mechanical, and the thing every other keyboard in the house now gets compared against — usually
+                    unfavorably.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Mechanical</span>
+                    <span class="setup-tag">Hot-Swap</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ url_for('static', filename='images/setup/mouse.jpg') }}" class="setup-item-photo" alt="Logitech G502 KDA Edition mouse">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="icon" alt="">
+                    Logitech G502 KDA Edition
+                </div>
+                <span class="setup-item-role">Mouse</span>
+                <div class="setup-item-desc">
+                    The K/DA edition of Logitech's most reliable shape. Been through more mice than I'd like to
+                    admit; this one stuck.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Logitech G502</span>
+                    <span class="setup-tag">K/DA Edition</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ url_for('static', filename='images/setup/headphones.jpg') }}" class="setup-item-photo" alt="Sony MDR-7506 headphones">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/note.png') }}" class="icon" alt="">
+                    Sony MDR-7506
+                </div>
+                <span class="setup-item-role">Headphones</span>
+                <div class="setup-item-desc">
+                    Studio monitoring headphones that somehow became the everyday pair — coding, calls, and music,
+                    all on the same set of cans.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Studio Monitor</span>
+                    <span class="setup-tag">Wired</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="setup-card">
+    <div class="setup-card-header">
+        <img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="icon" alt="">
+        &#9654; Daily Driver, at a Glance
+    </div>
+    <div class="setup-card-body" style="padding-top:0;">
+        <table class="setup-table">
+            <tr>
+                <th>Role</th>
+                <th>Device</th>
+                <th>Note</th>
+            </tr>
+            <tr>
+                <td class="setup-role-id">Desktop</td>
+                <td>Mac Mini M1</td>
+                <td>Main desk machine, on the ViewFinity S7</td>
+            </tr>
+            <tr>
+                <td class="setup-role-id">Work Laptop</td>
+                <td>MacBook Neo</td>
+                <td>Client work, on the go</td>
+            </tr>
+            <tr>
+                <td class="setup-role-id">Gaming Laptop</td>
+                <td>HP OMEN 16</td>
+                <td>Gaming + overflow compute</td>
+            </tr>
+            <tr>
+                <td class="setup-role-id">Keyboard</td>
+                <td>Ajazz AK820 Pro</td>
+                <td>Mechanical, hot-swap</td>
+            </tr>
+            <tr>
+                <td class="setup-role-id">Mouse</td>
+                <td>Logitech G502 KDA Edition</td>
+                <td>Survivor of many mouse swaps</td>
+            </tr>
+            <tr>
+                <td class="setup-role-id">Audio</td>
+                <td>Sony MDR-7506</td>
+                <td>Studio cans, doing everyday duty</td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+{% endblock %}
