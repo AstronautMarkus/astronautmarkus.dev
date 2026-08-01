@@ -69,8 +69,7 @@
             <a href="{{ url_for('main.gallery_list') }}"><img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
             <a href="{{ url_for('main.blog_list') }}"><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
             <a href="{{ url_for('contact.contact') }}"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
-            <a href="#"><img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Extras{% else %}Extras{% endif %}</a>
-            <a href="#"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
+            <a href="{{ url_for('main.beercat') }}"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
         </nav>
 
         <div class="content-container">
@@ -92,9 +91,9 @@
                     <div class="panel-header"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}BeerCat Project{% else %}Proyecto BeerCat{%
                         endif %}</div>
                     <div class="spotlight-content">
-                        <div>{% if current_lang == 'en' %}Visit our official website for more information about this
-                            project: <a href="https://beercat.cl" target="_blank">BeerCat</a>{% else %}Visita nuestro
-                            sitio web oficial para obtener más información sobre este proyecto: <a
+                        <div>{% if current_lang == 'en' %}Learn more about this project on our
+                            <a href="{{ url_for('main.beercat') }}">dedicated page</a>, or visit the official site: <a href="https://beercat.cl" target="_blank">BeerCat</a>{% else %}Conoce más sobre este proyecto en nuestra
+                            <a href="{{ url_for('main.beercat') }}">página dedicada</a>, o visita el sitio oficial: <a
                                 href="https://beercat.cl" target="_blank">BeerCat</a>{% endif %}</div>
                         <div class="spotlight-img"></div>
                     </div>

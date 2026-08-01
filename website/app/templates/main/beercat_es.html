@@ -1,0 +1,160 @@
+{% extends "base/base.html" %}
+
+{% block title %}Proyecto BeerCat{% endblock %}
+{% block description %}BeerCat — Informática: soporte técnico, desarrollo de software, redes, IA y servicios en la nube para empresas en Chile.{% endblock %}
+{% block keywords %}BeerCat, Informática BeerCat, beercat.cl, servicios TI, desarrollo de software, Chile{% endblock %}
+
+{% block og_image %}
+<meta property="og:image" content="{{ url_for('static', filename='images/announces/beercat-banner.png', _external=True) }}">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="200">
+<meta name="twitter:image" content="{{ url_for('static', filename='images/announces/beercat-banner.png', _external=True) }}">
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/beercat.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="beercat-hero-wrap">
+    <img src="{{ url_for('static', filename='images/announces/beercat-banner.png') }}" class="beercat-hero-img" alt="BeerCat">
+    <div class="beercat-hero-overlay">
+        <div class="beercat-hero-title">BeerCat — Informática</div>
+        <div class="beercat-hero-tagline">"Tecnología que impulsa tu empresa hacia adelante"</div>
+    </div>
+    <a href="https://www.beercat.cl" target="_blank" rel="noopener noreferrer" class="beercat-hero-external">
+        <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" class="icon" alt="">
+        beercat.cl
+    </a>
+</div>
+
+<section class="welcome-card">
+    <div class="card-header beercat-intro-title">
+        <img src="{{ url_for('static', filename='images/icons/beer.png') }}" class="icon" alt="">
+        &#9654; ¿Qué es BeerCat?
+    </div>
+    <div class="card-body">
+        <div class="beercat-intro-text">
+            <p>
+                BeerCat (Informática BeerCat) es mi propia empresa de servicios TI, con base en Chile. Nació en
+                2025 bajo el nombre de Reyes&amp;Friends, desarrollando software a medida para clientes locales, y
+                en 2026 se transformó en Informática BeerCat — ofreciendo el mismo nivel de servicio a empresas de
+                cualquier tamaño, sin complicaciones.
+            </p>
+            <p>
+                Ningún cliente recibe una solución genérica — cada proyecto se cotiza por escrito y se construye en
+                torno a lo que la empresa realmente necesita.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="welcome-card">
+    <div class="card-header">
+        &#9654; Servicios
+    </div>
+    <div class="card-body">
+        <div class="beercat-services-grid">
+            <div class="beercat-service-item">
+                <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="beercat-service-icon" alt="">
+                <div>
+                    <div class="beercat-service-title">Soporte Técnico</div>
+                    <div class="beercat-service-desc">Asistencia remota y presencial, con disponibilidad 24/7 para soporte remoto.</div>
+                </div>
+            </div>
+            <div class="beercat-service-item">
+                <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" class="beercat-service-icon" alt="">
+                <div>
+                    <div class="beercat-service-title">Desarrollo Web y de Software</div>
+                    <div class="beercat-service-desc">Aplicaciones a medida, e-commerce e integraciones construidas según lo que necesitas.</div>
+                </div>
+            </div>
+            <div class="beercat-service-item">
+                <img src="{{ url_for('static', filename='images/icons/servers.png') }}" class="beercat-service-icon" alt="">
+                <div>
+                    <div class="beercat-service-title">Redes y Conectividad</div>
+                    <div class="beercat-service-desc">Infraestructura LAN/WiFi y sistemas de seguridad, bien instalados.</div>
+                </div>
+            </div>
+            <div class="beercat-service-item">
+                <img src="{{ url_for('static', filename='images/icons/timeline.png') }}" class="beercat-service-icon" alt="">
+                <div>
+                    <div class="beercat-service-title">Migración de Software</div>
+                    <div class="beercat-service-desc">Convertimos aplicaciones de escritorio antiguas en soluciones web modernas y mantenibles.</div>
+                </div>
+            </div>
+            <div class="beercat-service-item">
+                <img src="{{ url_for('static', filename='images/icons/brain.png') }}" class="beercat-service-icon" alt="">
+                <div>
+                    <div class="beercat-service-title">Soluciones de IA</div>
+                    <div class="beercat-service-desc">Automatización, análisis predictivo y chatbots para flujos de trabajo reales.</div>
+                </div>
+            </div>
+            <div class="beercat-service-item">
+                <img src="{{ url_for('static', filename='images/icons/ecommerce_server.png') }}" class="beercat-service-icon" alt="">
+                <div>
+                    <div class="beercat-service-title">Servicios en la Nube</div>
+                    <div class="beercat-service-desc">Migración a AWS y gestión continua de infraestructura.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="welcome-card">
+    <div class="card-header">
+        &#9654; ¿Por qué BeerCat?
+    </div>
+    <div class="card-body">
+        <div class="beercat-facts-grid">
+            <div class="beercat-fact-item">
+                <span class="beercat-fact-label">A medida</span>
+                "Nunca realizamos lo mismo dos veces" — cada proyecto es único y tiene su propia solución.
+            </div>
+            <div class="beercat-fact-item">
+                <span class="beercat-fact-label">Sin letra chica</span>
+                Cotización clara por escrito antes de comenzar cualquier trabajo — sin contratos complicados.
+            </div>
+            <div class="beercat-fact-item">
+                <span class="beercat-fact-label">Cobertura nacional</span>
+                Soporte presencial en la Región Metropolitana y soporte remoto para todo Chile sin costo adicional.
+            </div>
+            <div class="beercat-fact-item">
+                <span class="beercat-fact-label">Pensado para la nube</span>
+                Flexibilidad, escalabilidad y seguridad incorporadas en cada migración a la nube.
+            </div>
+        </div>
+        <div class="beercat-tag-list">
+            <span class="beercat-tag">Laravel</span>
+            <span class="beercat-tag">React</span>
+            <span class="beercat-tag">Node.js</span>
+            <span class="beercat-tag">AWS</span>
+            <span class="beercat-tag">Docker</span>
+        </div>
+    </div>
+</section>
+
+
+<section class="welcome-card">
+    <div class="card-header">
+        &#9654; Contáctanos
+    </div>
+    <div class="beercat-cta-body">
+        <div class="beercat-cta-text">
+            ¿Necesitas soporte técnico, un sistema a medida o ayuda para migrar a la nube? BeerCat se encarga de la
+            tecnología para que tú te enfoques en tu negocio.
+        </div>
+        <a href="https://www.beercat.cl" target="_blank" rel="noopener noreferrer" class="beercat-cta-btn">
+            <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
+            Visitar BeerCat.cl
+        </a>
+    </div>
+    <ul class="beercat-contact-list">
+        <li><strong>Correo:</strong> contacto@beercat.cl</li>
+        <li><strong>Cobertura:</strong> Nacional, con soporte presencial en la Región Metropolitana (RM)</li>
+    </ul>
+</section>
+
+{% endblock %}
