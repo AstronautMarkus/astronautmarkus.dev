@@ -80,7 +80,7 @@
                         <li><a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a></li>
                         <li><a target="_blank" href="{{ cv_url }}"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Download CV{% else
                                 %}Descargar CV{% endif %}</a></li>
-                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="" class="nav-icon">Homelab</a></li>
+                        <li><a href="{{ url_for('main.homelab') }}"><img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="" class="nav-icon">Homelab</a></li>
                         <li><a href="#"><img src="{{ url_for('static', filename='images/icons/wrench.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Tech Stack{% else %}Pila Tecnológica{% endif %}</a>
                         </li>
                         <li><a href="#"><img src="{{ url_for('static', filename='images/icons/timeline.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Timeline{% else %}Cronología{% endif %}</a></li>

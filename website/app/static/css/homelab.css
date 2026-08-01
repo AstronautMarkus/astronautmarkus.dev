@@ -1,0 +1,527 @@
+/* ── Homelab page ───────────────────────────────────────────────────────
+   Same navy-header/card tokens as about_me.css (#1c3b68 → #2e5984,
+   .about-card-style boxes) but kept under its own homelab- prefix since
+   about_me.css isn't loaded on this page.
+*/
+
+.homelab-card {
+    background: #e2eaf2;
+    border: 1px solid #b0c4de;
+    border-radius: 8px;
+    padding: 2px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.homelab-card-header {
+    background: linear-gradient(to bottom, #1c3b68, #2e5984);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.homelab-card-body {
+    padding: 12px;
+}
+
+/* ── Hero / intro ─────────────────────────────────────────────────────── */
+
+.homelab-hero {
+    display: flex;
+    gap: 14px;
+}
+
+.homelab-hero-photo-wrap {
+    flex-shrink: 0;
+    width: 220px;
+}
+
+.homelab-hero-photo {
+    width: 220px;
+    height: 165px;
+    object-fit: cover;
+    display: block;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.homelab-hero-caption {
+    font-size: 8.5px;
+    color: #5a7a9e;
+    text-align: center;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.homelab-hero-text {
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: #222;
+    text-align: justify;
+}
+
+.homelab-hero-text::first-letter {
+    font-size: 14px;
+    font-weight: bold;
+    color: #1c3b68;
+}
+
+.homelab-hero-text p {
+    margin-bottom: 8px;
+}
+
+.homelab-hero-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Under-construction / placeholder notice */
+.homelab-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #fff8e6;
+    border: 1px dashed #d1a13a;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: #6b4a12;
+    margin-top: 10px;
+}
+
+.homelab-notice img {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── Network topology diagram ────────────────────────────────────────── */
+
+.topology {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 8px 6px;
+}
+
+.topology-node {
+    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
+    border: 1px solid #b0c4de;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #1a2a3a;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+}
+
+.topology-node img {
+    width: 13px;
+    height: 13px;
+}
+
+.topology-node.wan {
+    background: linear-gradient(to bottom, #f0dca0, #dcae3a);
+    border-color: #b5651d;
+}
+
+.topology-node.security {
+    background: linear-gradient(to bottom, #f3c9c9, #d68d8d);
+    border-color: #8a1c1c;
+}
+
+.topology-node.core {
+    background: linear-gradient(to bottom, #cfe0f0, #a9c6e3);
+    border-color: #3a5270;
+}
+
+.topology-connector {
+    width: 2px;
+    height: 16px;
+    background: #7092b9;
+}
+
+.topology-branches {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.topology-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topology-node.vlan {
+    font-size: 8.5px;
+    padding: 5px 9px;
+}
+
+.topology-legend {
+    margin-top: 12px;
+    font-size: 9px;
+    color: #444;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* VLAN breakdown table */
+.vlan-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5px;
+    background: #ffffff;
+    margin-top: 4px;
+}
+
+.vlan-table th {
+    background: #1c3b68;
+    color: #fff;
+    text-align: left;
+    padding: 5px 8px;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.vlan-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #d0d8e0;
+}
+
+.vlan-table tr:nth-child(even) td {
+    background: #f0f4f8;
+}
+
+.vlan-id {
+    font-weight: bold;
+    color: #1c3b68;
+    white-space: nowrap;
+}
+
+/* ── Two-floor topology blocks ───────────────────────────────────────── */
+
+.floor-label {
+    font-size: 8.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #fff;
+    background: #5a7a9e;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin: 14px 0 8px;
+    display: inline-block;
+}
+
+.topology-connector.planned {
+    background-image: linear-gradient(to bottom, #7092b9 0, #7092b9 4px, transparent 4px, transparent 8px);
+    background-size: 2px 8px;
+    background-repeat: repeat-y;
+    background-color: transparent;
+    width: 2px;
+}
+
+.topology-node.planned {
+    border-style: dashed;
+    opacity: 0.85;
+}
+
+.topology-uplink-label {
+    font-size: 8px;
+    color: #5a7a9e;
+    font-style: italic;
+    margin: 2px 0;
+    text-align: center;
+}
+
+/* ── Hardware component grid ─────────────────────────────────────────── */
+
+.homelab-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+}
+
+.homelab-item {
+    background: #ffffff;
+    border: 1px solid #d0d8e0;
+    border-radius: 6px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.homelab-item-photo {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #d0d8e0;
+    background: #e8eef4;
+}
+
+.homelab-item-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.homelab-item-title {
+    font-size: 11px;
+    font-weight: bold;
+    color: #16233a;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.homelab-item-role {
+    font-size: 8.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #fff;
+    background: #5a7a9e;
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    align-self: flex-start;
+}
+
+.homelab-item-desc {
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: #333;
+    flex: 1;
+}
+
+.homelab-item-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.homelab-tag {
+    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
+    border: 1px solid #b0c4de;
+    color: #1a2a3a;
+    font-size: 8.5px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.homelab-item-photo-placeholder {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to right, #507299, #7092b9);
+    border-bottom: 1px solid #d0d8e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.homelab-item-photo-placeholder img {
+    width: 34px;
+    height: 34px;
+    opacity: 0.85;
+}
+
+.homelab-item-floor {
+    font-size: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #5a7a9e;
+}
+
+/* ── Software / services stack ───────────────────────────────────────── */
+
+.homelab-stack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.homelab-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.homelab-stack-title {
+    font-size: 9px;
+    font-weight: bold;
+    color: #1c3b68;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #b8c8d8;
+    padding-bottom: 3px;
+}
+
+/* ── Roadmap ──────────────────────────────────────────────────────────── */
+
+.homelab-roadmap {
+    list-style: none;
+}
+
+.homelab-roadmap-item {
+    display: flex;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid #d0d8e0;
+    align-items: flex-start;
+}
+
+.homelab-roadmap-item:last-child {
+    border-bottom: none;
+}
+
+.homelab-roadmap-status {
+    flex-shrink: 0;
+    width: 78px;
+    font-size: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-align: center;
+    background: #5a7a9e;
+}
+
+.homelab-roadmap-status.done {
+    background: #1c6b3b;
+}
+
+.homelab-roadmap-status.progress {
+    background: #b5651d;
+}
+
+.homelab-roadmap-status.planned {
+    background: #1c3b68;
+}
+
+.homelab-roadmap-text {
+    font-size: 10px;
+    line-height: 1.4;
+    color: #333;
+}
+
+.homelab-roadmap-text strong {
+    color: #111;
+}
+
+/* ── Power / UPS breakdown ───────────────────────────────────────────── */
+
+.power-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.power-box {
+    background: #ffffff;
+    border: 1px solid #d0d8e0;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.power-box-title {
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #1c3b68;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.power-box-desc {
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: #333;
+}
+
+/* ── Dream Homelab (wishlist) ────────────────────────────────────────── */
+
+.homelab-dream-card {
+    border: 2px dashed #7a4fb5;
+}
+
+.homelab-dream-header {
+    background: linear-gradient(to bottom, #4a2e7a, #6b3fa0);
+}
+
+.homelab-dream-intro {
+    font-size: 10px;
+    line-height: 1.4;
+    color: #3a2a4a;
+    padding: 0 12px 8px;
+}
+
+.homelab-dream-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 4px 12px 12px;
+}
+
+.homelab-dream-item {
+    background: #f6f1fb;
+    border: 1px solid #d8c8ea;
+    border-radius: 5px;
+    padding: 8px 10px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.homelab-dream-item img {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.homelab-dream-item-text {
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: #3a2a4a;
+}
+
+.homelab-dream-item-text strong {
+    color: #4a2e7a;
+}
+
+/* ── Photo credits ────────────────────────────────────────────────────── */
+
+.homelab-credits {
+    font-size: 8.5px;
+    line-height: 1.6;
+    color: #667;
+}
+
+.homelab-credits a {
+    color: #1c3b68;
+}

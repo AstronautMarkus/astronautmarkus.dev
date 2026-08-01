@@ -1,0 +1,643 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/homelab.css') }}">
+{% endblock %}
+
+{% block title %}Homelab{% endblock %}
+{% block description %}Un recorrido por el homelab real de AstronautMarkus — dos ISP, un FortiGate 60D, una cadena de reverse proxy repartida en dos pisos, y el dream build en el que podría convertirse.{% endblock %}
+{% block keywords %}AstronautMarkus, homelab, FortiGate 60D, dual WAN, TP-Link, ProLiant DL360, Caddy reverse proxy, self-hosted{% endblock %}
+
+{% block content %}
+
+<section class="homelab-card">
+    <div class="homelab-card-header">
+        <img src="{{ url_for('static', filename='images/icons/servers.png') }}" class="icon" alt="">
+        &#9654; Homelab
+    </div>
+    <div class="homelab-card-body homelab-hero">
+        <div class="homelab-hero-photo-wrap">
+            <img src="{{ url_for('static', filename='images/homelab/rack-hero.jpg') }}" class="homelab-hero-photo" alt="Rack de servidores casero">
+            <div class="homelab-hero-caption">El rack — equipo real, foto de referencia</div>
+        </div>
+        <div class="homelab-hero-text">
+            <p>
+                Esto es real, no un montaje. Tengo <strong>dos ISP</strong> entrando a la casa: Entel por un ONT
+                Huawei que modifiqué para escapar del CG-NAT y tener una IP realmente alcanzable, y Mundo Pacífico
+                — supuestamente el internet más rápido de Latinoamérica — sobre un ONT FiberHome capaz de 10 Gigabit,
+                por ahora con un plan de 2 Gbps mientras termino de preparar el cableado para aprovecharlo en toda la
+                casa.
+            </p>
+            <p>
+                Todo lo que está detrás de esos dos enlaces pasa por un <strong>FortiGate 60D</strong> que encontré
+                por ahí — no daré más detalles — que por ahora solo ocupa la DMZ, conectado a un switch TP-Link de 24
+                puertos donde vive cada servidor y lab. La arquitectura está pensada para repartir la carga a
+                propósito: un viejo Core 2 Duo no hace nada más que servir de reverse proxy con <strong>Caddy</strong>
+                para que ningún equipo sea un punto único de falla, un Ryzen 5 hace el trabajo pesado de verdad, y un
+                viejo HP ProLiant queda casi siempre en reposo como músculo de respaldo. Todo esto está repartido en
+                <strong>dos plantas</strong>: el rack principal vive en la sala central, y hay un segundo montaje más
+                chico arriba, en mi habitación.
+            </p>
+        </div>
+    </div>
+    <div class="homelab-card-body" style="padding-top:0;">
+        <div class="homelab-notice">
+            <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="Nota">
+            <div>
+                <strong>Sobre las fotos:</strong> el hardware y la red que se describen acá son reales. Las fotos son
+                imágenes de referencia (créditos al final) — el modelo exacto o el equivalente genérico más cercano
+                que encontré, porque todavía no le he sacado fotos al rack de verdad.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="homelab-card">
+    <div class="homelab-card-header">
+        <img src="{{ url_for('static', filename='images/icons/share.png') }}" class="icon" alt="">
+        &#9654; Topología de Red
+    </div>
+    <div class="homelab-card-body">
+        <div class="topology">
+
+            <span class="floor-label">Planta Baja · Sala Central</span>
+
+            <div class="topology-branches">
+                <div class="topology-branch">
+                    <div class="topology-node wan">
+                        <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="">
+                        WAN1 · Entel (Huawei HG8145X6, CG-NAT evadido)
+                    </div>
+                </div>
+                <div class="topology-branch">
+                    <div class="topology-node wan">
+                        <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="">
+                        WAN2 · Mundo Pacífico (FiberHome HG5853SF, 2 Gbps / puerto 10G)
+                    </div>
+                </div>
+            </div>
+            <div class="topology-connector"></div>
+            <div class="topology-node security">
+                <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" alt="">
+                FortiGate 60D — DMZ
+            </div>
+            <div class="topology-connector"></div>
+            <div class="topology-node core">
+                <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
+                TP-Link TL-SG1024 — Switch Gigabit 24 Puertos
+            </div>
+            <div class="topology-connector"></div>
+            <div class="topology-branches">
+                <div class="topology-branch">
+                    <div class="topology-node vlan">
+                        <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
+                        ThinkCentre M70e — Gateway / Caddy
+                    </div>
+                </div>
+                <div class="topology-branch">
+                    <div class="topology-node vlan">
+                        <img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="">
+                        "La Bestia" — Lab Ryzen 5 5500
+                    </div>
+                </div>
+                <div class="topology-branch">
+                    <div class="topology-node vlan">
+                        <img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="">
+                        HP ProLiant DL360
+                    </div>
+                </div>
+                <div class="topology-branch">
+                    <div class="topology-node vlan">
+                        <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt="">
+                        Raspberry Pi 4B (repuesto)
+                    </div>
+                </div>
+            </div>
+
+            <div class="topology-connector planned"></div>
+            <div class="topology-uplink-label">Planeado: transceptor RJ45 10G/2.5G desde el puerto 10G del router Mundo Pacífico</div>
+            <div class="topology-node planned">
+                <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
+                Uplink a 2do Piso
+            </div>
+            <div class="topology-connector planned"></div>
+
+            <span class="floor-label">Planta Alta · Habitación (bastidor de 2 postes)</span>
+
+            <div class="topology-node vlan">
+                <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
+                Linksys SE3005 — Switch 5 Puertos
+            </div>
+            <div class="topology-connector"></div>
+            <div class="topology-branches">
+                <div class="topology-branch">
+                    <div class="topology-node vlan">Mac Mini M1</div>
+                </div>
+                <div class="topology-branch">
+                    <div class="topology-node vlan">PC de mi hermana (vía patch panel)</div>
+                </div>
+                <div class="topology-branch">
+                    <div class="topology-node vlan">Cámara de la planta alta</div>
+                </div>
+            </div>
+
+            <div class="topology-legend">
+                Hoy, doble WAN entrando a una sola DMZ del FortiGate; el uplink de 10G/2.5G planificado es lo que
+                falta para que el bastidor de arriba sea un segmento de red de verdad y no algo improvisado.
+            </div>
+        </div>
+
+        <table class="vlan-table">
+            <tr>
+                <th>Segmento</th>
+                <th>Equipo</th>
+                <th>Propósito</th>
+            </tr>
+            <tr>
+                <td class="vlan-id">WAN1</td>
+                <td>Entel · Huawei HG8145X6</td>
+                <td>Internet primario, CG-NAT evadido para tener IP pública alcanzable</td>
+            </tr>
+            <tr>
+                <td class="vlan-id">WAN2</td>
+                <td>Mundo Pacífico · FiberHome HG5853SF</td>
+                <td>2 Gbps de una línea capaz de 10G; hoy secundario/failover, primario cuando el cableado lo permita</td>
+            </tr>
+            <tr>
+                <td class="vlan-id">DMZ</td>
+                <td>FortiGate 60D + TP-Link TL-SG1024</td>
+                <td>Todos los servidores y labs viven acá — todavía sin más segmentación</td>
+            </tr>
+            <tr>
+                <td class="vlan-id">2P</td>
+                <td>Linksys SE3005 + patch panel</td>
+                <td>Rack de la habitación — se conectará de vuelta por 10G/2.5G cuando llegue el transceptor</td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+<section class="homelab-card">
+    <div class="homelab-card-header">
+        <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="icon" alt="">
+        &#9654; Componentes de Hardware
+    </div>
+
+    <div class="homelab-grid">
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/huawei-ont.jpg') }}" class="homelab-item-photo" alt="Router ONT Huawei HG8145X6">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/information.png') }}" class="icon" alt="">
+                    WAN1 — Huawei HG8145X6
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">ONT/Router Entel</span>
+                <div class="homelab-item-desc">
+                    El ONT gigabit de Entel, conectado directo al WAN1 del firewall. Modificado para escapar del
+                    CG-NAT y tener una IP pública de verdad, en vez de compartir una con medio barrio.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">GPON</span>
+                    <span class="homelab-tag">Bypass CG-NAT</span>
+                    <span class="homelab-tag">WAN1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <div class="homelab-item-photo-placeholder">
+                <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="">
+            </div>
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/information.png') }}" class="icon" alt="">
+                    WAN2 — FiberHome HG5853SF
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">ONT Mundo Pacífico</span>
+                <div class="homelab-item-desc">
+                    Un ONT capaz de 10 Gigabit corriendo hoy un plan de 2 Gbps — supuestamente el internet residencial
+                    más rápido de LatAm. El cuello de botella ahora mismo no es la línea, es recablear la casa para
+                    de verdad llevar esa velocidad a todos lados.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Puerto 10G</span>
+                    <span class="homelab-tag">Plan 2 Gbps</span>
+                    <span class="homelab-tag">WAN2</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <div class="homelab-item-photo-placeholder">
+                <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" alt="">
+            </div>
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" class="icon" alt="">
+                    FortiGate 60D
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Firewall</span>
+                <div class="homelab-item-desc">
+                    Lo encontré por ahí — hasta ahí lo dejo. Está entre ambos WAN y la DMZ, hoy con una sola zona de
+                    red mientras el resto del lab va creciendo hacia necesitar más segmentación.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Dual WAN</span>
+                    <span class="homelab-tag">DMZ</span>
+                    <span class="homelab-tag">Hallazgo de Segunda Mano</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/switch.jpg') }}" class="homelab-item-photo" alt="Switch gigabit de 24 puertos para rack">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/share.png') }}" class="icon" alt="">
+                    TP-Link TL-SG1024
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Switch Core</span>
+                <div class="homelab-item-desc">
+                    Switch Gigabit de 24 puertos para montaje en rack, colgado del puerto DMZ del FortiGate. Todos los
+                    demás servidores y labs de la casa cuelgan de acá.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">24 Puertos</span>
+                    <span class="homelab-tag">Gigabit</span>
+                    <span class="homelab-tag">Rack</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/thinkcentre.png') }}" class="homelab-item-photo" alt="Torre de escritorio pequeña Lenovo ThinkCentre">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/share.png') }}" class="icon" alt="">
+                    Lenovo ThinkCentre M70e
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Gateway</span>
+                <div class="homelab-item-desc">
+                    LGA775, Core 2 Duo E7500, 4 GB de RAM, 500 GB de disco — viejísimo, y apenas usa nada de eso,
+                    porque su único trabajo es correr <strong>Caddy</strong> como reverse proxy delante de todo lo
+                    demás. Separar el ruteo del cómputo hace que si un equipo se cae, no se caiga todo el lab con él.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Core 2 Duo E7500</span>
+                    <span class="homelab-tag">4 GB RAM</span>
+                    <span class="homelab-tag">Reverse Proxy Caddy</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/lab-pc.jpg') }}" class="homelab-item-photo" alt="Gabinete de torre para el servidor de lab">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/servers.png') }}" class="icon" alt="">
+                    "La Bestia" — Servidor Lab
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Cómputo</span>
+                <div class="homelab-item-desc">
+                    Ryzen 5 5500, 24 GB de RAM. Antes se pagaba solo vendiendo hosting de servidores de Minecraft —
+                    eso está pausado por ahora — y hoy corre las páginas y servicios que sigo teniendo activos.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Ryzen 5 5500</span>
+                    <span class="homelab-tag">24 GB RAM</span>
+                    <span class="homelab-tag">Ex-Hosting Minecraft</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/dl360.jpg') }}" class="homelab-item-photo" alt="Servidor de rack HP ProLiant DL360">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/servers.png') }}" class="icon" alt="">
+                    HP ProLiant DL360
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Hierro Viejo</span>
+                <div class="homelab-item-desc">
+                    Un viejo titán — 64 GB de RAM y varios CPU — que la mayoría del tiempo está en reposo. No lo
+                    necesito seguido, pero cuando sí, se agradece tener ese margen guardado en el rack.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">64 GB RAM</span>
+                    <span class="homelab-tag">Multi-CPU</span>
+                    <span class="homelab-tag">Mayormente en Reposo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/raspberry-pi.jpg') }}" class="homelab-item-photo" alt="Placa Raspberry Pi 4">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt="">
+                    Raspberry Pi 4B
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Repuesto</span>
+                <div class="homelab-item-desc">
+                    Antes era el servidor proxy, antes de escalar a la ThinkCentre. Se retiró de ese puesto y ahora
+                    queda de repuesto para lo próxima tarea chica y siempre encendida que aparezca.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Ex-Proxy</span>
+                    <span class="homelab-tag">ARM/Linux</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/ups.jpg') }}" class="homelab-item-photo" alt="Unidad de respaldo UPS">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+                    UPS — Hikvision
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Energía</span>
+                <div class="homelab-item-desc">
+                    Todo lo que corre en AC en el rack — ambos ONT, el firewall, el switch, los cuatro servidores —
+                    pasa por un UPS Hikvision, para que un corte breve no se traduzca en un servidor caído.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Respaldo AC</span>
+                    <span class="homelab-tag">Todo el Rack</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/switch5.jpg') }}" class="homelab-item-photo" alt="Switch chico gigabit de 5 puertos">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/share.png') }}" class="icon" alt="">
+                    Linksys SE3005
+                </div>
+                <span class="homelab-item-floor">Planta Alta</span>
+                <span class="homelab-item-role">Switch Habitación</span>
+                <div class="homelab-item-desc">
+                    Un switch Gigabit chico de 5 puertos en el bastidor de 2 postes de arriba, que alimenta al Mac
+                    Mini M1, a la computadora de mi hermana a través del patch panel, y a la cámara de la planta alta.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">5 Puertos</span>
+                    <span class="homelab-tag">Gigabit</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/patch-panel.jpg') }}" class="homelab-item-photo" alt="Patch panel">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/category.png') }}" class="icon" alt="">
+                    Patch Panel — Habitación
+                </div>
+                <span class="homelab-item-floor">Planta Alta</span>
+                <span class="homelab-item-role">Cableado</span>
+                <div class="homelab-item-desc">
+                    Por ahora, tiradas Gigabit básicas. El plan es expandirlo a un backbone de 10G de verdad (o al
+                    menos 2.5G) para que el bastidor de arriba pueda aprovechar lo que ofrece la línea de Mundo
+                    Pacífico.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Expansión Planeada</span>
+                    <span class="homelab-tag">Meta 2.5G/10G</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="homelab-card">
+    <div class="homelab-card-header">
+        <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+        &#9654; Energía y UPS
+    </div>
+    <div class="homelab-card-body">
+        <div class="power-grid">
+            <div class="power-box">
+                <div class="power-box-title">
+                    <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+                    AC — UPS Hikvision
+                </div>
+                <div class="power-box-desc">
+                    Todo lo que corre en 220V — ambos ONT, el FortiGate, el switch TP-Link y los cuatro servidores de
+                    la planta baja — queda respaldado por un UPS Hikvision.
+                </div>
+            </div>
+            <div class="power-box">
+                <div class="power-box-title">
+                    <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+                    DC — UPS de 12V para Cámaras
+                </div>
+                <div class="power-box-desc">
+                    Las cargas más chicas en DC, como las cámaras IP, van con un UPS de 12V dedicado — unos 2.0A, más
+                    o menos 24W. Una amiga de la universidad me explicó por qué dimensionarlo así tiene sentido, y
+                    desde entonces ha funcionado muy bien.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="homelab-card">
+    <div class="homelab-card-header">
+        <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" class="icon" alt="">
+        &#9654; Qué Corre Dónde
+    </div>
+    <div class="homelab-card-body homelab-stack-grid">
+        <div>
+            <div class="homelab-stack-title">ThinkCentre M70e — Gateway</div>
+            <div class="homelab-tag-list">
+                <span class="homelab-tag">Caddy</span>
+                <span class="homelab-tag">Reverse Proxy</span>
+                <span class="homelab-tag">Solo Ruteo</span>
+            </div>
+        </div>
+        <div>
+            <div class="homelab-stack-title">"La Bestia" — Servidor Lab</div>
+            <div class="homelab-tag-list">
+                <span class="homelab-tag">Páginas y Servicios Activos</span>
+                <span class="homelab-tag">Ex-Hosting Minecraft</span>
+            </div>
+        </div>
+        <div>
+            <div class="homelab-stack-title">HP ProLiant DL360</div>
+            <div class="homelab-tag-list">
+                <span class="homelab-tag">Pruebas Puntuales</span>
+                <span class="homelab-tag">Cargas Pesadas</span>
+            </div>
+        </div>
+        <div>
+            <div class="homelab-stack-title">Raspberry Pi 4B</div>
+            <div class="homelab-tag-list">
+                <span class="homelab-tag">Repuesto en Frío</span>
+                <span class="homelab-tag">Ex-Proxy</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="homelab-card">
+    <div class="homelab-card-header">
+        <img src="{{ url_for('static', filename='images/icons/timeline.png') }}" class="icon" alt="">
+        &#9654; Roadmap
+    </div>
+    <div class="homelab-card-body">
+        <ul class="homelab-roadmap">
+            <li class="homelab-roadmap-item">
+                <span class="homelab-roadmap-status done">Listo</span>
+                <div class="homelab-roadmap-text">
+                    <strong>Bypass de CG-NAT en Entel</strong> — conseguí una IP pública de verdad alcanzable en el
+                    WAN1, en vez de compartir una detrás del NAT del carrier.
+                </div>
+            </li>
+            <li class="homelab-roadmap-item">
+                <span class="homelab-roadmap-status done">Listo</span>
+                <div class="homelab-roadmap-text">
+                    <strong>Separar gateway de cómputo</strong> — moví el rol de reverse proxy a su propio equipo
+                    dedicado (la ThinkCentre) para que si se cae el servidor de lab, no se caiga el ruteo con él.
+                </div>
+            </li>
+            <li class="homelab-roadmap-item">
+                <span class="homelab-roadmap-status progress">En Progreso</span>
+                <div class="homelab-roadmap-text">
+                    <strong>Cablear la casa para 2 Gbps</strong> — la línea de Mundo Pacífico ya puede darlos; el
+                    cableado interno, todavía no.
+                </div>
+            </li>
+            <li class="homelab-roadmap-item">
+                <span class="homelab-roadmap-status planned">Planeado</span>
+                <div class="homelab-roadmap-text">
+                    <strong>Transceptor RJ45 10G/2.5G</strong> — desde el puerto 10G del router de Mundo Pacífico,
+                    para por fin darle al bastidor del segundo piso un uplink de verdad en vez de depender del Wi-Fi.
+                </div>
+            </li>
+            <li class="homelab-roadmap-item">
+                <span class="homelab-roadmap-status planned">Planeado</span>
+                <div class="homelab-roadmap-text">
+                    <strong>Expandir el patch panel de la habitación</strong> — para estar a la altura de lo que
+                    termine entregando la mejora del transceptor.
+                </div>
+            </li>
+            <li class="homelab-roadmap-item">
+                <span class="homelab-roadmap-status planned">Idea</span>
+                <div class="homelab-roadmap-text">
+                    <strong>Segmentar la DMZ</strong> — a medida que el lab crece más allá de "una sola zona plana",
+                    VLANs de verdad son el siguiente paso obvio. Todavía sin comprometerme.
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="homelab-card homelab-dream-card">
+    <div class="homelab-card-header homelab-dream-header">
+        <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" class="icon" alt="">
+        &#9654; Dream Homelab
+    </div>
+    <div class="homelab-dream-intro">
+        La versión honesta: ando en un dilema constante entre querer más poder y más juguetes, y saber perfectamente
+        que quizás no le saque provecho ni a la mitad. Esta sección es esa lista de deseos igual — el build "si el
+        dinero y el tiempo no importaran".
+    </div>
+    <div class="homelab-dream-grid">
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Centralita VoIP</strong> — un Asterisk/FreePBX autoalojado con anexos de verdad por toda la
+                casa, principalmente porque suena como un rabbit hole entretenido.
+            </div>
+        </div>
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Wi-Fi mesh de verdad</strong> — access points de nivel empresarial con roaming real entre
+                ambos pisos, en vez de repetidores y fe.
+            </div>
+        </div>
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Una impresora de red como corresponde</strong> — láser más una etiquetadora, con su propio
+                print server, para que imprimir deje de ser un evento.
+            </div>
+        </div>
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Un cluster de mini PCs</strong> — un puñado de equipos estilo NUC corriendo Proxmox, para que
+                "La Bestia" deje de ser lo único entre yo y el downtime.
+            </div>
+        </div>
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/server_database.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Un NAS dedicado</strong> — RAID más backups programados fuera del sitio, en vez de confiar en
+                discos repartidos entre cuatro equipos distintos.
+            </div>
+        </div>
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/timeline.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Grafana + Prometheus + Uptime Kuma</strong> — dashboards y alertas de verdad, en vez de
+                enterarme de que algo se cayó porque alguien me escribió.
+            </div>
+        </div>
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Un backbone de 10G de verdad</strong> — ambos pisos, ambos WAN, sin cuellos de botella — el
+                transceptor planeado llevado a su conclusión lógica.
+            </div>
+        </div>
+        <div class="homelab-dream-item">
+            <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" alt="">
+            <div class="homelab-dream-item-text">
+                <strong>Un UPS online de doble conversión como corresponde</strong> — con tarjeta de red, para que los
+                apagados durante un corte real sean automáticos y no una notificación en el celular y una corrida.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="homelab-card">
+    <div class="homelab-card-header">
+        <img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="icon" alt="">
+        &#9654; Créditos de Fotos
+    </div>
+    <div class="homelab-card-body homelab-credits">
+        Fotos de referencia de Wikimedia Commons, redimensionadas, usadas hasta que le saque fotos al equipo real. El
+        ONT Huawei y el DL360 son el modelo exacto; el resto son los equivalentes más cercanos que encontré (el
+        FortiGate 60D y el ONT FiberHome no tienen una foto libre decente, así que esas tarjetas usan un ícono de
+        placeholder):
+        <ul>
+            <li>Rack — "Server Rack" por Tony Webster, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a> (<a href="https://commons.wikimedia.org/wiki/File:Server_Rack_(54126210834).jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>Huawei HG8145X6 (WAN1) — "Huawei HG8145X6-6Te" por Milicevic01, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> (<a href="https://commons.wikimedia.org/wiki/File:Huawei_HG8145X6-6Te.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>TP-Link TL-SG1024 (referencia) — "Refurbished 16 Port Managed Switch" por Hans Haase, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> (<a href="https://commons.wikimedia.org/wiki/File:Refurbished_16_Port_Managed_Switch_IMG_7903.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>ThinkCentre M70e (referencia) — "Lenovo ThinkCentre" por Dnh24, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> (<a href="https://commons.wikimedia.org/wiki/File:Lenovo_ThinkCentre.png" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>Servidor lab "La Bestia" (referencia) — "Midi tower PC case" por Simon A. Eugster, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a> (<a href="https://commons.wikimedia.org/wiki/File:Midi_tower_PC_case.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>HP ProLiant DL360 — "DL360 Front Left" por Melee, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a> (<a href="https://commons.wikimedia.org/wiki/File:DL360_Front_Left.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>Raspberry Pi 4B — "Raspberry Pi 4 Model B - Top" por Laserlicht, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> (<a href="https://commons.wikimedia.org/wiki/File:Raspberry_Pi_4_Model_B_-_Top.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>UPS (referencia) — "APC BR700G-TW" por MiNe, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a> (<a href="https://commons.wikimedia.org/wiki/File:APC_BR700G-TW_20140114.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>Linksys SE3005 (referencia) — "Netgear Gigabit Switch 5-port" — Creative Commons (<a href="https://commons.wikimedia.org/wiki/File:Netgear_Gigabit_Switch_5-port.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+            <li>Patch panel — "19-inch rackmount Ethernet switches and patch panels" por Dsimic, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> (<a href="https://commons.wikimedia.org/wiki/File:19-inch_rackmount_Ethernet_switches_and_patch_panels.jpg" target="_blank" rel="noopener noreferrer">fuente</a>)</li>
+        </ul>
+    </div>
+</section>
+
+{% endblock %}
