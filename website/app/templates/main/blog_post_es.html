@@ -2,7 +2,7 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block description %}{{ description or title }}{% endblock %}
-{% block keywords %}{{ post.category.name ~ ', ' if post.category else '' }}blog, development, AstronautMarkus.dev{% endblock %}
+{% block keywords %}{{ post.category.name ~ ', ' if post.category else '' }}blog, desarrollo, AstronautMarkus.dev{% endblock %}
 
 {% block og_type %}article{% endblock %}
 
@@ -43,12 +43,16 @@
                 <span>{{ post.created_at.strftime('%B %d, %Y') }}</span>
                 {% if post.category %}
                 <a href="{{ url_for('main.blog_list', cat=post.category_id) }}" class="post-meta-cat">
-                    {{ post.category.name }}
+                    {% if post.category.has_es and post.category.name_es %}
+                        {{ post.category.name_es }}
+                    {% else %}
+                        {{ post.category.name }}
+                    {% endif %}
                 </a>
                 {% endif %}
                 {% if post.has_es %}
                 <span class="post-meta-lang">
-                    <a href="/lang/es?next={{ request.path }}">ES</a>
+                    <a href="/lang/en?next={{ request.path }}">EN</a>
                 </span>
                 {% endif %}
             </div>
@@ -58,66 +62,70 @@
             {% if content_html %}
                 {{ content_html }}
             {% else %}
-            <p style="color:#7a8a9a;font-style:italic">No content available for this post yet.</p>
+            <p style="color:#7a8a9a;font-style:italic">No hay contenido disponible para este post aún.</p>
             {% endif %}
         </div>
 
         {% if post.images %}
         <div class="post-gallery">
-            <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Post Images</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Imágenes del Post</h4>
             <div class="post-gallery-grid">
                 {% for img in post.images %}
                 <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
-                   title="Image {{ loop.index }}">
-                    <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}">
+                   title="Imagen {{ loop.index }}">
+                    <img src="{{ storage_url(img.image_path) }}" alt="Imagen {{ loop.index }}">
                 </a>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
 
-        <a href="{{ url_for('main.blog_list') }}" class="post-back">Back to Blog</a>
+        <a href="{{ url_for('main.blog_list') }}" class="post-back">Volver al Blog</a>
 
     </div>
 
     <div id="post-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">Post Info</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">Info del Post</h4>
             <ul class="sidebar-info-list">
-                <li>Published: {{ post.created_at.strftime('%d %b %Y') }}</li>
+                <li>Publicado: {{ post.created_at.strftime('%d %b %Y') }}</li>
                 {% if post.category %}
                 <li>
-                    Category:
+                    Categoría:
                     <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
-                        {{ post.category.name }}
+                        {% if post.category.has_es and post.category.name_es %}
+                            {{ post.category.name_es }}
+                        {% else %}
+                            {{ post.category.name }}
+                        {% endif %}
                     </a>
                 </li>
                 {% endif %}
                 {% if post.has_es %}
                 <li>
-                    <a href="/lang/es?next={{ request.path }}">Leer en Español</a>
+                    <a href="/lang/en?next={{ request.path }}">Read in English</a>
                 </li>
                 {% endif %}
             </ul>
         </div>
 
         <div class="blog-sidebar-box" id="toc-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="pixel-icon-inline" alt="">Contents</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="pixel-icon-inline" alt="">Contenido</h4>
             <ul id="toc-list">
-                <li class="toc-empty">No headings found.</li>
+                <li class="toc-empty">No hay encabezados.</li>
             </ul>
         </div>
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/share.png') }}" class="pixel-icon-inline" alt="">Share</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/share.png') }}" class="pixel-icon-inline" alt="">Compartir</h4>
             <ul>
                 <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">Share on Twitter/X</a></li>
+                       target="_blank" rel="noopener noreferrer">Compartir en Twitter/X</a></li>
                 <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">Share on LinkedIn</a></li>
+                       target="_blank" rel="noopener noreferrer">Compartir en LinkedIn</a></li>
                 <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">Share on Facebook</a></li>
+                       target="_blank" rel="noopener noreferrer">Compartir en Facebook</a></li>
             </ul>
         </div>
 
@@ -286,8 +294,8 @@
     var blocks = document.querySelectorAll('.prose pre');
     if (!blocks.length) return;
 
-    var copyLabel   = 'Copy';
-    var copiedLabel = 'Copied!';
+    var copyLabel   = 'Copiar';
+    var copiedLabel = '¡Copiado!';
 
     function fallbackCopy(text) {
         var ta = document.createElement('textarea');

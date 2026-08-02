@@ -1,8 +1,8 @@
 {% extends "base/base.html" %}
 
 {% block title %}Blog{% endblock %}
-{% block description %}Development notes, system deep-dives, and the occasional rant — AstronautMarkus.dev{% endblock %}
-{% block keywords %}blog, development, tech, python, flask, devops, linux, networking{% endblock %}
+{% block description %}Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja — AstronautMarkus.dev{% endblock %}
+{% block keywords %}blog, desarrollo, tecnología, python, flask, devops, linux, redes{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
@@ -50,7 +50,7 @@
     </div>
     <div class="card-body">
         <div class="blog-banner-intro">
-            Development notes, system deep-dives, and the occasional rant.
+            Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja.
         </div>
     </div>
 </section>
@@ -62,15 +62,17 @@
         {% if posts %}
         <section class="welcome-card">
             <div class="card-header">
-                &#9654; Posts
+                &#9654; Publicaciones
             </div>
 
             {% for post in posts %}
+            {% set p_title = post.title_es if post.has_es and post.title_es else post.title %}
+            {% set p_desc  = post.description_es if post.has_es and post.description_es else post.description %}
             <div class="blog-post-row">
                 {% if post.cover_image_path %}
                 <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-post-thumb-link">
                     <img src="{{ storage_url(post.cover_image_path) }}"
-                         class="blog-post-thumb" alt="{{ post.title }}">
+                         class="blog-post-thumb" alt="{{ p_title }}">
                 </a>
                 {% else %}
                 <div class="blog-post-thumb-placeholder"></div>
@@ -82,21 +84,25 @@
                         {% if post.category %}
                         &nbsp;·&nbsp;
                         <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
-                            {{ post.category.name }}
+                            {% if post.category.has_es and post.category.name_es %}
+                                {{ post.category.name_es }}
+                            {% else %}
+                                {{ post.category.name }}
+                            {% endif %}
                         </a>
                         {% endif %}
                     </div>
 
                     <h3>
-                        <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ post.title }}</a>
+                        <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ p_title }}</a>
                     </h3>
 
-                    {% if post.description %}
-                    <p class="blog-post-excerpt">{{ post.description | truncate(160) }}</p>
+                    {% if p_desc %}
+                    <p class="blog-post-excerpt">{{ p_desc | truncate(160) }}</p>
                     {% endif %}
 
                     <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-read-more">
-                        Read more
+                        Leer más
                     </a>
                 </div>
             </div>
@@ -107,7 +113,7 @@
             <div class="blog-pagination-footer">
                 <div class="blog-pagination">
                     <a href="{{ url_for('main.blog_list', page=pagination.prev_num, cat=current_cat, tag=current_tag) }}"
-                       class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">Prev</a>
+                       class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">Anterior</a>
 
                     {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
                         {% if p %}
@@ -119,7 +125,7 @@
                     {% endfor %}
 
                     <a href="{{ url_for('main.blog_list', page=pagination.next_num, cat=current_cat, tag=current_tag) }}"
-                       class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">Next</a>
+                       class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">Siguiente</a>
                 </div>
             </div>
             {% endif %}
@@ -128,10 +134,10 @@
         {% else %}
         <section class="welcome-card">
             <div class="card-header">
-                &#9654; Posts
+                &#9654; Publicaciones
             </div>
             <div class="card-body">
-                <div class="card-text">No posts yet. Check back soon.</div>
+                <div class="card-text">No hay publicaciones todavía. Vuelve pronto.</div>
             </div>
         </section>
         {% endif %}
@@ -141,19 +147,23 @@
     <div id="blog-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/category.png') }}" class="pixel-icon-inline" alt="">Categories</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/category.png') }}" class="pixel-icon-inline" alt="">Categorías</h4>
             <ul>
                 <li>
                     <a href="{{ url_for('main.blog_list') }}"
                        {% if not current_cat %}class="blog-cat-active"{% endif %}>
-                        All posts
+                        Todas las publicaciones
                     </a>
                 </li>
                 {% for cat in categories %}
                 <li>
                     <a href="{{ url_for('main.blog_list', cat=cat.id) }}"
                        {% if current_cat == cat.id %}class="blog-cat-active"{% endif %}>
-                        {{ cat.name }}
+                        {% if cat.has_es and cat.name_es %}
+                            {{ cat.name_es }}
+                        {% else %}
+                            {{ cat.name }}
+                        {% endif %}
                     </a>
                 </li>
                 {% endfor %}
@@ -161,11 +171,12 @@
         </div>
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/note.png') }}" class="pixel-icon-inline" alt="">Recent Posts</h4>
+            <h4><img src="{{ url_for('static', filename='images/icons/note.png') }}" class="pixel-icon-inline" alt="">Publicaciones recientes</h4>
             <ul>
                 {% for post in posts[:5] %}
+                {% set p_title = post.title_es if post.has_es and post.title_es else post.title %}
                 <li>
-                    <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ post.title | truncate(42) }}</a>
+                    <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ p_title | truncate(42) }}</a>
                 </li>
                 {% endfor %}
             </ul>

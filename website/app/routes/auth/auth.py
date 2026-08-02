@@ -1,5 +1,6 @@
-from flask import render_template, redirect, url_for, request, flash
+from flask import redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required, current_user
+from app.i18n import render_localized_template
 from app.models.models import User
 from app.routes.auth import auth_bp
 
@@ -23,7 +24,7 @@ def login():
 
         flash('invalid_credentials')
 
-    return render_template('auth/login.html')
+    return render_localized_template('auth/login.html')
 
 
 @auth_bp.route('/logout')

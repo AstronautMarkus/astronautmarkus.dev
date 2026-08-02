@@ -1,7 +1,7 @@
 {% extends "base/base.html" %}
 
-{% block title %}Login{% endblock %}
-{% block description %}Admin sign-in for AstronautMarkus.dev.{% endblock %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block description %}Inicio de sesión de administrador para AstronautMarkus.dev.{% endblock %}
 {% block robots %}noindex, nofollow{% endblock %}
 
 {% block extra_css %}
@@ -14,35 +14,35 @@
     <section class="welcome-card">
         <div class="card-header login-banner-title">
             <img src="{{ url_for('static', filename='images/icons/administrator.png') }}" class="icon" alt="">
-            &#9654; Login
+            &#9654; Iniciar sesión
         </div>
         <div class="login-card-body">
             <p class="login-subtitle">
-                Restricted area. Sign in with your admin credentials to continue.
+                Área restringida. Inicia sesión con tus credenciales de administrador para continuar.
             </p>
 
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             <p class="login-error">
-                Invalid username or password.
+                Usuario o contraseña incorrectos.
             </p>
             {% endif %}
             {% endwith %}
 
             <form method="POST" action="{{ url_for('auth.login') }}">
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username">Usuario</label>
                     <input type="text" id="username" name="username" autocomplete="username"
-                        placeholder="Enter your username"
+                        placeholder="Ingrese su usuario"
                         required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Contraseña</label>
                     <input type="password" id="password" name="password" autocomplete="current-password"
-                        placeholder="Enter your password"
+                        placeholder="Ingrese su contraseña"
                         required>
                 </div>
-                <button type="submit" class="login-btn">Sign In</button>
+                <button type="submit" class="login-btn">Entrar</button>
             </form>
         </div>
     </section>

@@ -1,8 +1,11 @@
 {% extends "base/base.html" %}
 
-{% block title %}{{ project.title }}{% endblock %}
-{% block description %}{{ project.description or project.title }}{% endblock %}
-{% block keywords %}portfolio, {{ project.title }}, AstronautMarkus.dev{% endblock %}
+{% set p_title = project.title_es if project.has_es and project.title_es else project.title %}
+{% set p_desc  = project.description_es if project.has_es and project.description_es else project.description %}
+
+{% block title %}{{ p_title }}{% endblock %}
+{% block description %}{{ p_desc or p_title }}{% endblock %}
+{% block keywords %}portafolio, {{ p_title }}, AstronautMarkus.dev{% endblock %}
 
 {% block og_type %}article{% endblock %}
 
@@ -25,22 +28,22 @@
 
 {% if project.image_path %}
 <div class="post-cover-wrap">
-    <img src="{{ storage_url(project.image_path) }}" class="post-cover-img" alt="{{ project.title }}">
+    <img src="{{ storage_url(project.image_path) }}" class="post-cover-img" alt="{{ p_title }}">
     <div class="post-cover-overlay">
-        <div class="post-cover-title">{{ project.title }}</div>
+        <div class="post-cover-title">{{ p_title }}</div>
     </div>
 </div>
 {% endif %}
 
 <div class="portfolio-header">
     {% if not project.image_path %}
-    <h1>{{ project.title }}</h1>
+    <h1>{{ p_title }}</h1>
     {% endif %}
     <div class="portfolio-meta-row">
         <span>{{ project.created_at.strftime('%B %d, %Y') }}</span>
         {% if project.has_es %}
         <span class="portfolio-meta-lang">
-            <a href="/lang/es?next={{ request.path }}">ES</a>
+            <a href="/lang/en?next={{ request.path }}">EN</a>
         </span>
         {% endif %}
     </div>
@@ -51,37 +54,37 @@
     {% if project.project_url %}
     <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn">
         <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
-        Visit Project
+        Visitar Proyecto
     </a>
     {% endif %}
     {% if project.github_repo_url %}
     <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn source">
         <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="">
-        View Source
+        Ver Código
     </a>
     {% endif %}
 </div>
 {% endif %}
 
-{% if project.description %}
-<div class="portfolio-desc">{{ project.description }}</div>
+{% if p_desc %}
+<div class="portfolio-desc">{{ p_desc }}</div>
 {% endif %}
 
 {% if project.extra_images %}
 <div class="post-gallery">
-    <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Project Screenshots</h4>
+    <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Capturas del Proyecto</h4>
     <div class="post-gallery-grid">
         {% for img in project.extra_images %}
         <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
-           title="Image {{ loop.index }}">
-            <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}">
+           title="Imagen {{ loop.index }}">
+            <img src="{{ storage_url(img.image_path) }}" alt="Imagen {{ loop.index }}">
         </a>
         {% endfor %}
     </div>
 </div>
 {% endif %}
 
-<a href="{{ url_for('main.portfolio_list') }}" class="post-back">Back to Portfolio</a>
+<a href="{{ url_for('main.portfolio_list') }}" class="post-back">Volver al Portafolio</a>
 
 {% endblock %}
 

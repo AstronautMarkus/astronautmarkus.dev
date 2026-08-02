@@ -1,6 +1,6 @@
-from flask import abort, render_template, request
+from flask import abort, request
 
-from app.i18n import get_current_language
+from app.i18n import get_current_language, render_localized_template
 from app.models.models import BlogCategory, BlogPost, BlogTag
 from app.routes.main import main_bp
 from app.storage import storage
@@ -27,7 +27,7 @@ def blog_list():
 
     categories = BlogCategory.query.order_by(BlogCategory.name).all()
 
-    return render_template(
+    return render_localized_template(
         'main/blog_list.html',
         pagination=pagination,
         posts=pagination.items,
@@ -54,7 +54,7 @@ def blog_post_detail(slug):
             text = expand_post_images(raw.decode('utf-8'), post.slug)
             content_html = render_markdown(text)
 
-    return render_template(
+    return render_localized_template(
         'main/blog_post.html',
         post=post,
         title=title,
