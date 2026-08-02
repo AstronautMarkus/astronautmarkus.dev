@@ -49,22 +49,22 @@
     </div>
 </section>
 
+{% if latest_posts %}
 <section class="welcome-card">
     <div class="card-header">
         &#9654; News
     </div>
     <table class="news-table">
+        {% for post in latest_posts %}
         <tr>
-            <td class="news-date">9/12/2024</td>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+            <td class="news-date">{{ post.created_at.strftime('%b %d, %Y') }}</td>
+            <td><a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ post.title }}</a></td>
         </tr>
-        <tr>
-            <td class="news-date">6/25/2024</td>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-        </tr>
+        {% endfor %}
     </table>
     <div class="news-footer">
-        <a href="#">More News &#9654;</a>
+        <a href="{{ url_for('main.blog_list') }}">More News &#9654;</a>
     </div>
 </section>
+{% endif %}
 {% endblock %}

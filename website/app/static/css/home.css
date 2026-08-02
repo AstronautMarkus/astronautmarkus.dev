@@ -166,6 +166,16 @@
     width: 70px;
 }
 
+.news-table td a {
+    color: #222;
+    text-decoration: none;
+}
+
+.news-table td a:hover {
+    color: #1c3b68;
+    text-decoration: underline;
+}
+
 .news-footer {
     background: #d8e2ed;
     text-align: right;
