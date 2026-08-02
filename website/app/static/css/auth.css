@@ -1,0 +1,95 @@
+/* ── Auth: login form ────────────────────────────────────────────────────
+   Reuses the same tokens as home.css/contact.css: navy header gradient
+   (#1c3b68 → #2e5984), .welcome-card/.card-header banner. Only the login
+   box, fields, and button are new here.
+*/
+
+#login-wrap {
+    max-width: 320px;
+    margin: 20px auto;
+}
+
+.login-banner-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.login-card-body {
+    padding: 14px 12px;
+}
+
+.login-subtitle {
+    font-size: 10px;
+    line-height: 1.5;
+    color: #444;
+    text-align: center;
+    margin: 0 0 14px;
+}
+
+.login-error {
+    font-size: 10.5px;
+    font-weight: bold;
+    color: #a12622;
+    background: rgba(161, 38, 34, 0.08);
+    border-left: 3px solid #a12622;
+    padding: 8px 10px;
+    margin: 0 0 14px;
+    border-radius: 2px;
+}
+
+.login-card-body .form-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-card-body label {
+    font-size: 9.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #1c3b68;
+    margin-bottom: 4px;
+}
+
+.login-card-body input[type="text"],
+.login-card-body input[type="password"] {
+    padding: 7px 9px;
+    background: #fff;
+    border: 1px solid #b0c4de;
+    border-radius: 3px;
+    color: #16233a;
+    font-size: 11px;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.login-card-body input:focus {
+    border-color: #1c3b68;
+    box-shadow: 0 0 0 2px rgba(28, 59, 104, 0.12);
+}
+
+.login-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #fff;
+    background: #1c3b68;
+    border: none;
+    border-radius: 3px;
+    padding: 9px 18px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 2px;
+}
+
+.login-btn:hover {
+    background: #2a5288;
+}

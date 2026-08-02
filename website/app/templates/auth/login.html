@@ -5,37 +5,46 @@
 {% block robots %}noindex, nofollow{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
 {% endblock %}
 
 {% block content %}
-<div id="page-content">
-    <div id="login-wrap">
-        <h2>{{ 'Login' if current_lang == 'en' else 'Iniciar sesión' }}</h2>
+<div id="login-wrap">
+    <section class="welcome-card">
+        <div class="card-header login-banner-title">
+            <img src="{{ url_for('static', filename='images/icons/administrator.png') }}" class="icon" alt="">
+            &#9654; {{ 'Login' if current_lang == 'en' else 'Iniciar sesión' }}
+        </div>
+        <div class="login-card-body">
+            <p class="login-subtitle">
+                {{ 'Restricted area. Sign in with your admin credentials to continue.' if current_lang == 'en' else 'Área restringida. Inicia sesión con tus credenciales de administrador para continuar.' }}
+            </p>
 
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <p class="login-error">
-            {{ 'Invalid username or password.' if current_lang == 'en' else 'Usuario o contraseña incorrectos.' }}
-        </p>
-        {% endif %}
-        {% endwith %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <p class="login-error">
+                {{ 'Invalid username or password.' if current_lang == 'en' else 'Usuario o contraseña incorrectos.' }}
+            </p>
+            {% endif %}
+            {% endwith %}
 
-        <form method="POST" action="{{ url_for('auth.login') }}">
-            <div class="form-group">
-                <label for="username">{{ 'Username' if current_lang == 'en' else 'Usuario' }}</label>
-                <input type="text" id="username" name="username" autocomplete="username"
-                    placeholder="{{ 'Enter your username' if current_lang == 'en' else 'Ingrese su usuario' }}"
-                    required>
-            </div>
-            <div class="form-group">
-                <label for="password">{{ 'Password' if current_lang == 'en' else 'Contraseña' }}</label>
-                <input type="password" id="password" name="password" autocomplete="current-password"
-                    placeholder="{{ 'Enter your password' if current_lang == 'en' else 'Ingrese su contraseña' }}"
-                    required>
-            </div>
-            <button type="submit" class="login-btn">{{ 'Sign In' if current_lang == 'en' else 'Entrar' }}</button>
-        </form>
-    </div>
+            <form method="POST" action="{{ url_for('auth.login') }}">
+                <div class="form-group">
+                    <label for="username">{{ 'Username' if current_lang == 'en' else 'Usuario' }}</label>
+                    <input type="text" id="username" name="username" autocomplete="username"
+                        placeholder="{{ 'Enter your username' if current_lang == 'en' else 'Ingrese su usuario' }}"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="password">{{ 'Password' if current_lang == 'en' else 'Contraseña' }}</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password"
+                        placeholder="{{ 'Enter your password' if current_lang == 'en' else 'Ingrese su contraseña' }}"
+                        required>
+                </div>
+                <button type="submit" class="login-btn">{{ 'Sign In' if current_lang == 'en' else 'Entrar' }}</button>
+            </form>
+        </div>
+    </section>
 </div>
 {% endblock %}

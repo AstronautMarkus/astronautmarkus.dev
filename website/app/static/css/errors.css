@@ -1,0 +1,105 @@
+/* ── Errors: 404/500 ──────────────────────────────────────────────────────
+   Reuses the same tokens as home.css: navy header gradient (#1c3b68 →
+   #2e5984), .welcome-card/.card-header banner. Only the error code,
+   message, and actions are new here.
+*/
+
+.error-banner-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 26px 16px 22px;
+}
+
+.error-code {
+    font-size: 64px;
+    font-weight: 900;
+    color: #1c3b68;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -2px;
+    text-shadow: 1px 1px 0 #fff, 2px 2px 3px rgba(0, 0, 0, 0.25);
+}
+
+.error-code-danger {
+    color: #a12622;
+}
+
+.error-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #16233a;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 6px 0 10px;
+}
+
+.error-subtitle {
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: #444;
+    max-width: 420px;
+    margin: 0 0 18px;
+}
+
+.error-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.error-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #fff !important;
+    background: #1c3b68;
+    border: 1px solid #1c3b68;
+    border-radius: 3px;
+    padding: 8px 18px;
+    text-decoration: none;
+}
+
+.error-btn:hover {
+    background: #2a5288;
+    border-color: #2a5288;
+    text-decoration: none;
+}
+
+.error-btn-outline {
+    background: transparent;
+    color: #1c3b68 !important;
+    border-color: #b0c4de;
+}
+
+.error-btn-outline:hover {
+    background: #eef4f8;
+    border-color: #1c3b68;
+}
+
+.error-hint {
+    font-size: 9.5px;
+    color: #777;
+}
+
+.error-hint code {
+    color: #a12622;
+    font-family: "Courier New", Courier, monospace;
+    background: #f0f4f8;
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid #d0d8e0;
+}

@@ -1,7 +1,7 @@
 {% extends "base/base.html" %}
 
-{% block title %}404 - Not Found{% endblock %}
-{% block description %}Page not found — AstronautMarkus.dev{% endblock %}
+{% block title %}500 - Internal Server Error{% endblock %}
+{% block description %}Internal server error — AstronautMarkus.dev{% endblock %}
 {% block robots %}noindex, follow{% endblock %}
 
 {% block extra_css %}
@@ -13,20 +13,19 @@
 <section class="welcome-card">
     <div class="card-header error-banner-title">
         <img src="{{ url_for('static', filename='images/icons/computer_error.png') }}" class="icon" alt="">
-        &#9654; Error 404
+        &#9654; Error 500
     </div>
     <div id="error-page">
-        <p class="error-code">404</p>
-        <h2 class="error-title">Page Not Found</h2>
+        <p class="error-code error-code-danger">500</p>
+        <h2 class="error-title">Internal Server Error</h2>
         <p class="error-subtitle">
-            Houston, we have a problem. The page you're looking for drifted into
-            deep space and is no longer at these coordinates.<br>
-            Maybe it was deleted, maybe it never existed, or maybe you just typed the URL wrong.
+            Houston, we have a bigger problem. Something broke on our end,
+            not yours — the crew has already been notified and is looking into it.
         </p>
 
         <div class="error-actions">
             <a href="{{ url_for('main.home') }}" class="error-btn">Back to Home</a>
-            <a href="{{ url_for('main.blog_list') }}" class="error-btn error-btn-outline">Read the Blog</a>
+            <a href="{{ url_for('contact.contact') }}" class="error-btn error-btn-outline">Contact Me</a>
         </div>
 
         <p class="error-hint">
