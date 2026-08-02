@@ -1,8 +1,8 @@
 {% extends "base/base.html" %}
 
-{% block title %}Portfolio{% endblock %}
-{% block description %}Web, mobile, and desktop projects built by AstronautMarkus.dev.{% endblock %}
-{% block keywords %}portfolio, projects, web development, python, flask, react{% endblock %}
+{% block title %}Portafolio{% endblock %}
+{% block description %}Páginas web, aplicaciones y proyectos personales construidos por AstronautMarkus.dev.{% endblock %}
+{% block keywords %}portafolio, proyectos, desarrollo web, python, flask, react{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
@@ -14,27 +14,29 @@
 <section class="welcome-card">
     <div class="card-header portfolio-banner-title">
         <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="icon" alt="">
-        &#9654; Portfolio
+        &#9654; Portafolio
     </div>
     <div class="card-body">
         <div class="portfolio-banner-intro">
-            Web pages, applications, and personal projects I've built over time.
+            Páginas web, aplicaciones y proyectos personales que he construido a lo largo del tiempo.
         </div>
     </div>
 </section>
 
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; Projects
+        &#9654; Proyectos
     </div>
 
     {% if projects %}
     <div class="portfolio-grid">
         {% for project in projects %}
+        {% set p_title = project.title_es if project.has_es and project.title_es else project.title %}
+        {% set p_desc  = project.description_es if project.has_es and project.description_es else project.description %}
         <div class="portfolio-card">
             {% if project.image_path %}
             <a href="{{ url_for('main.portfolio_detail', project_id=project.id) }}" class="portfolio-card-thumb-link">
-                <img src="{{ storage_url(project.image_path) }}" class="portfolio-card-thumb" alt="{{ project.title }}">
+                <img src="{{ storage_url(project.image_path) }}" class="portfolio-card-thumb" alt="{{ p_title }}">
             </a>
             {% else %}
             <a href="{{ url_for('main.portfolio_detail', project_id=project.id) }}" class="portfolio-card-thumb-link">
@@ -44,24 +46,24 @@
 
             <div class="portfolio-card-body">
                 <h3 class="portfolio-card-title">
-                    <a href="{{ url_for('main.portfolio_detail', project_id=project.id) }}">{{ project.title }}</a>
+                    <a href="{{ url_for('main.portfolio_detail', project_id=project.id) }}">{{ p_title }}</a>
                 </h3>
 
-                {% if project.description %}
-                <p class="portfolio-card-desc">{{ project.description | truncate(120) }}</p>
+                {% if p_desc %}
+                <p class="portfolio-card-desc">{{ p_desc | truncate(120) }}</p>
                 {% endif %}
 
                 <div class="portfolio-card-links">
                     {% if project.project_url %}
                     <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn">
                         <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
-                        Visit
+                        Ver Proyecto
                     </a>
                     {% endif %}
                     {% if project.github_repo_url %}
                     <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn source">
                         <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="">
-                        Source
+                        Código
                     </a>
                     {% endif %}
                 </div>
@@ -71,7 +73,7 @@
     </div>
     {% else %}
     <div class="portfolio-empty">
-        <div class="card-text">No projects yet. Check back soon.</div>
+        <div class="card-text">No hay proyectos todavía. Vuelve pronto.</div>
     </div>
     {% endif %}
 </section>

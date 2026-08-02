@@ -1,8 +1,8 @@
 {% extends "base/base.html" %}
 
-{% block title %}Gallery{% endblock %}
-{% block description %}Photos and images shared by AstronautMarkus.dev.{% endblock %}
-{% block keywords %}gallery, photos, images{% endblock %}
+{% block title %}Galería{% endblock %}
+{% block description %}Fotografías e imágenes compartidas por AstronautMarkus.dev.{% endblock %}
+{% block keywords %}galería, fotos, imágenes{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
@@ -14,49 +14,51 @@
 <section class="welcome-card">
     <div class="card-header gallery-banner-title">
         <img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="icon" alt="">
-        &#9654; Gallery
+        &#9654; Galería
     </div>
     <div class="card-body">
         <div class="gallery-banner-intro">
-            Photos, screenshots, and moments I've collected along the way.
+            Fotos, capturas y momentos que he ido guardando por aquí.
         </div>
     </div>
 </section>
 
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; Photos
+        &#9654; Fotos
     </div>
 
     {% if photos %}
     <div class="gallery-grid" id="gallery-grid">
         {% for photo in photos %}
+        {% set p_title = photo.title_es if photo.has_es and photo.title_es else photo.title %}
+        {% set p_desc  = photo.description_es if photo.has_es and photo.description_es else photo.description %}
         <button type="button" class="gallery-item" data-full="{{ storage_url(photo.image_path) }}"
-                data-title="{{ photo.title }}" data-desc="{{ photo.description or '' }}">
-            <img src="{{ storage_url(photo.image_path) }}" class="gallery-item-thumb" alt="{{ photo.title }}" loading="lazy">
+                data-title="{{ p_title }}" data-desc="{{ p_desc or '' }}">
+            <img src="{{ storage_url(photo.image_path) }}" class="gallery-item-thumb" alt="{{ p_title }}" loading="lazy">
             <span class="gallery-item-overlay">
-                <span class="gallery-item-title">{{ photo.title }}</span>
+                <span class="gallery-item-title">{{ p_title }}</span>
             </span>
         </button>
         {% endfor %}
     </div>
     {% else %}
     <div class="gallery-empty">
-        <div class="card-text">No photos yet. Check back soon.</div>
+        <div class="card-text">No hay fotos todavía. Vuelve pronto.</div>
     </div>
     {% endif %}
 </section>
 
 <div class="gallery-modal-overlay" id="gallery-modal-overlay">
-    <div class="gallery-modal" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <div class="gallery-modal" role="dialog" aria-modal="true" aria-label="Visor de fotos">
         <div class="gallery-modal-header">
             <span class="gallery-modal-counter" id="gallery-modal-counter"></span>
-            <button type="button" class="gallery-modal-close" id="gallery-modal-close" aria-label="Close">&#10005;</button>
+            <button type="button" class="gallery-modal-close" id="gallery-modal-close" aria-label="Cerrar">&#10005;</button>
         </div>
         <div class="gallery-modal-body">
-            <button type="button" class="gallery-modal-nav prev" id="gallery-modal-prev" aria-label="Previous">&#10094;</button>
+            <button type="button" class="gallery-modal-nav prev" id="gallery-modal-prev" aria-label="Anterior">&#10094;</button>
             <img src="" alt="" class="gallery-modal-img" id="gallery-modal-img">
-            <button type="button" class="gallery-modal-nav next" id="gallery-modal-next" aria-label="Next">&#10095;</button>
+            <button type="button" class="gallery-modal-nav next" id="gallery-modal-next" aria-label="Siguiente">&#10095;</button>
         </div>
         <div class="gallery-modal-caption">
             <div class="gallery-modal-title" id="gallery-modal-title"></div>
