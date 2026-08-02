@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     {% set page_title = self.title() %}
     <title>{% block title %}AstronautMarkus.Dev{% endblock %} | AstronautMarkus.Dev</title>
 
@@ -77,7 +75,7 @@
                 <div class="panel-box">
                     <ul class="menu-list">
                         <li><a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a></li>
-                        <li><a target="_blank" href="{{ cv_url }}"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Download CV{% else
+                        <li><a href="{{ cv_url }}"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Download CV{% else
                                 %}Descargar CV{% endif %}</a></li>
                         <li><a href="{{ url_for('main.homelab') }}"><img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="" class="nav-icon">Homelab</a></li>
                         <li><a href="{{ url_for('main.setup') }}"><img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt="" class="nav-icon">Setup</a></li>
