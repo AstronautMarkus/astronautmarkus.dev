@@ -176,12 +176,23 @@ def create_app():
 			)
 		return url_for('serve_media', file_path=path)
 
+	def _cv_url():
+		from app.models.models import CvFile
+		cv = (
+			CvFile.query
+			.filter_by(language=get_current_language())
+			.order_by(CvFile.uploaded_at.desc())
+			.first()
+		)
+		return url_for('serve_media', file_path=cv.file_path) if cv else None
+
 	@app.context_processor
 	def inject_globals():
 		return {
 			'current_year': datetime.now().year,
 			'current_lang': get_current_language(),
 			'storage_url': _storage_url,
+			'cv_url': _cv_url(),
 		}
 
 	# ── Error handlers ────────────────────────────────────────────
