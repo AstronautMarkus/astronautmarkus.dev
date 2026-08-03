@@ -67,6 +67,12 @@
             <a href="{{ url_for('main.gallery_list') }}"><img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
             <a href="{{ url_for('main.blog_list') }}"><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
             <a href="{{ url_for('contact.contact') }}"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
+            <div class="nav-dropdown">
+                <a href="#" class="nav-dropdown-toggle"><img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt="" class="nav-icon">Extras <span class="nav-caret">&#9662;</span></a>
+                <div class="nav-dropdown-menu">
+                    <a href="{{ url_for('extras.pdf_generator') }}"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}PDF Generator{% else %}Generador de PDF{% endif %}</a>
+                </div>
+            </div>
             <a href="{{ url_for('main.beercat') }}"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
         </nav>
 

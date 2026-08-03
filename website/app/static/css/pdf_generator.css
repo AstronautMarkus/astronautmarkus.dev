@@ -1,0 +1,170 @@
+/* ── PDF Generator page ─────────────────────────────────────────────────
+   Same navy-header/card tokens as home.css / homelab.css
+   (#1c3b68 → #2e5984, .welcome-card boxes) kept under its own pdfgen-
+   prefix since home.css isn't loaded on this page.
+*/
+
+.pdfgen-card {
+    background: #e2eaf2;
+    border: 1px solid #b0c4de;
+    border-radius: 8px;
+    padding: 2px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.pdfgen-card-header {
+    background: linear-gradient(to bottom, #1c3b68, #2e5984);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pdfgen-card-body {
+    padding: 12px;
+}
+
+.pdfgen-intro {
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: #222;
+    text-align: justify;
+    margin: 0;
+}
+
+/* ── Mode selector ─────────────────────────────────────────────────────── */
+
+.pdfgen-mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.pdfgen-mode-card {
+    position: relative;
+    display: block;
+    background: #e2eaf2;
+    border: 1px solid #b0c4de;
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pdfgen-mode-card input[type="radio"] {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    margin: 0;
+}
+
+.pdfgen-mode-card:hover {
+    border-color: #7092b9;
+}
+
+.pdfgen-mode-card.selected {
+    border-color: #1c3b68;
+    box-shadow: 0 0 0 2px rgba(28, 59, 104, 0.35), 2px 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.pdfgen-mode-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #1c3b68;
+    margin-bottom: 6px;
+    padding-right: 20px;
+}
+
+.pdfgen-mode-desc {
+    font-size: 10px;
+    line-height: 1.45;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.pdfgen-mode-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.pdfgen-tag {
+    display: inline-block;
+    font-size: 8.5px;
+    font-weight: bold;
+    color: #1c3b68;
+    background: #cddaea;
+    border: 1px solid #b0c4de;
+    border-radius: 10px;
+    padding: 2px 8px;
+}
+
+/* ── Submit ──────────────────────────────────────────────────────────── */
+
+.pdfgen-submit-row {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.pdfgen-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #fff;
+    background: #1c3b68;
+    border: none;
+    border-radius: 3px;
+    padding: 9px 20px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.pdfgen-btn:hover {
+    background: #2a5288;
+}
+
+.pdfgen-btn img.icon {
+    margin-right: 0;
+}
+
+.pdfgen-note {
+    font-size: 9px;
+    color: #555;
+    margin: 8px 0 0;
+}
+
+/* ── About list ──────────────────────────────────────────────────────── */
+
+.pdfgen-tech-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+    line-height: 1.9;
+    color: #222;
+}
+
+.pdfgen-tech-list li {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 600px) {
+    .pdfgen-mode-grid {
+        grid-template-columns: 1fr;
+    }
+}

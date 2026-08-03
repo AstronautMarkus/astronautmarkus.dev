@@ -1,0 +1,113 @@
+{% extends "base/base.html" %}
+
+{% block title %}Generador de PDF{% endblock %}
+{% block description %}Genera un documento PDF de relleno — informe ligero o corporativo completo — para pruebas y demostración.{% endblock %}
+{% block keywords %}generador PDF, PDF de prueba, PDF de relleno, AstronautMarkus{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pdf_generator.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="pdfgen-card">
+    <div class="pdfgen-card-header">
+        <img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="icon" alt="">
+        &#9654; Generador de PDF
+    </div>
+    <div class="pdfgen-card-body">
+        <p class="pdfgen-intro">
+            Genera un documento PDF de relleno para pruebas, integración o demostración.
+            Elige entre un informe ligero de una página o un completo documento corporativo de varias hojas.
+        </p>
+    </div>
+</section>
+
+<form method="POST" action="{{ url_for('extras.pdf_generator') }}" id="pdf-gen-form">
+
+    <div class="pdfgen-mode-grid">
+
+        <label class="pdfgen-mode-card" id="pdfgen-card-light">
+            <input type="radio" name="mode" value="light" checked>
+            <div class="pdfgen-mode-title">
+                <img src="{{ url_for('static', filename='images/icons/note.png') }}" class="icon" alt="">
+                Ligero
+            </div>
+            <div class="pdfgen-mode-desc">
+                Documento de una sola página. Encabezado corporativo mínimo, tres secciones cortas
+                y sello de confidencialidad. Rápido de generar, sin complicaciones.
+            </div>
+            <div class="pdfgen-mode-tags">
+                <span class="pdfgen-tag">1 página</span>
+                <span class="pdfgen-tag">Solo texto</span>
+                <span class="pdfgen-tag">~10 KB</span>
+            </div>
+        </label>
+
+        <label class="pdfgen-mode-card" id="pdfgen-card-heavy">
+            <input type="radio" name="mode" value="heavy">
+            <div class="pdfgen-mode-title">
+                <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="icon" alt="">
+                Pesado
+            </div>
+            <div class="pdfgen-mode-desc">
+                Informe corporativo completo. Portada azul marino con el Tux mascota,
+                tabla de contenidos, resumen ejecutivo, tablas financieras,
+                especificaciones técnicas y aviso legal. El paquete completo.
+            </div>
+            <div class="pdfgen-mode-tags">
+                <span class="pdfgen-tag">6 páginas</span>
+                <span class="pdfgen-tag">Tablas + imagen</span>
+                <span class="pdfgen-tag">~150 KB</span>
+            </div>
+        </label>
+
+    </div>
+
+    <div class="pdfgen-submit-row">
+        <button type="submit" class="pdfgen-btn">
+            <img src="{{ url_for('static', filename='images/icons/download_for_linux.png') }}" class="icon" alt="">
+            Generar y Descargar PDF
+        </button>
+        <p class="pdfgen-note">
+            El documento se genera en el servidor y se descarga inmediatamente.
+            El idioma sigue la selección de idioma actual del sitio.
+        </p>
+    </div>
+
+</form>
+
+<section class="pdfgen-card">
+    <div class="pdfgen-card-header">
+        <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+        &#9654; Sobre Esta Herramienta
+    </div>
+    <div class="pdfgen-card-body">
+        <ul class="pdfgen-tech-list">
+            <li><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="icon" alt=""><strong>Librería:</strong> ReportLab (Python)</li>
+            <li><img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="icon" alt=""><strong>Formato:</strong> A4, PDF 1.4</li>
+            <li><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="icon" alt=""><strong>Contenido:</strong> Completamente ficticio — sin datos reales</li>
+            <li><img src="{{ url_for('static', filename='images/icons/flag_chile.png') }}" class="icon" alt=""><strong>Idiomas:</strong> Español / English (sigue el idioma del sitio)</li>
+            <li><img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt=""><strong>Mascota:</strong> Tux el Pingüino de Linux</li>
+        </ul>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.pdfgen-mode-card input[type="radio"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            document.querySelectorAll('.pdfgen-mode-card').forEach(function (c) {
+                c.classList.remove('selected');
+            });
+            if (this.checked) {
+                this.closest('.pdfgen-mode-card').classList.add('selected');
+            }
+        });
+    });
+    var checked = document.querySelector('.pdfgen-mode-card input[type="radio"]:checked');
+    if (checked) checked.closest('.pdfgen-mode-card').classList.add('selected');
+</script>
+{% endblock %}

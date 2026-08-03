@@ -1,0 +1,113 @@
+{% extends "base/base.html" %}
+
+{% block title %}PDF Generator{% endblock %}
+{% block description %}Generate a dummy PDF document — lightweight or heavy corporate report — for testing and demonstration purposes.{% endblock %}
+{% block keywords %}PDF generator, dummy PDF, test PDF, AstronautMarkus{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pdf_generator.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="pdfgen-card">
+    <div class="pdfgen-card-header">
+        <img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="icon" alt="">
+        &#9654; PDF Generator
+    </div>
+    <div class="pdfgen-card-body">
+        <p class="pdfgen-intro">
+            Generate a dummy PDF document for testing, integration, or demonstration purposes.
+            Choose between a lightweight single-page report or a full corporate multi-page document.
+        </p>
+    </div>
+</section>
+
+<form method="POST" action="{{ url_for('extras.pdf_generator') }}" id="pdf-gen-form">
+
+    <div class="pdfgen-mode-grid">
+
+        <label class="pdfgen-mode-card" id="pdfgen-card-light">
+            <input type="radio" name="mode" value="light" checked>
+            <div class="pdfgen-mode-title">
+                <img src="{{ url_for('static', filename='images/icons/note.png') }}" class="icon" alt="">
+                Light
+            </div>
+            <div class="pdfgen-mode-desc">
+                Single-page document. Minimal corporate header, three short sections,
+                and a confidential stamp. Fast to generate, easy on the eyes.
+            </div>
+            <div class="pdfgen-mode-tags">
+                <span class="pdfgen-tag">1 page</span>
+                <span class="pdfgen-tag">Text only</span>
+                <span class="pdfgen-tag">~10 KB</span>
+            </div>
+        </label>
+
+        <label class="pdfgen-mode-card" id="pdfgen-card-heavy">
+            <input type="radio" name="mode" value="heavy">
+            <div class="pdfgen-mode-title">
+                <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="icon" alt="">
+                Heavy
+            </div>
+            <div class="pdfgen-mode-desc">
+                Full corporate report. Navy cover page with the Tux mascot,
+                table of contents, executive summary, financial tables, tech specs,
+                and a legal notice. The real deal.
+            </div>
+            <div class="pdfgen-mode-tags">
+                <span class="pdfgen-tag">6 pages</span>
+                <span class="pdfgen-tag">Tables + image</span>
+                <span class="pdfgen-tag">~150 KB</span>
+            </div>
+        </label>
+
+    </div>
+
+    <div class="pdfgen-submit-row">
+        <button type="submit" class="pdfgen-btn">
+            <img src="{{ url_for('static', filename='images/icons/download_for_linux.png') }}" class="icon" alt="">
+            Generate &amp; Download PDF
+        </button>
+        <p class="pdfgen-note">
+            The document is generated server-side and downloaded immediately.
+            Language matches your current site language selection.
+        </p>
+    </div>
+
+</form>
+
+<section class="pdfgen-card">
+    <div class="pdfgen-card-header">
+        <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+        &#9654; About This Tool
+    </div>
+    <div class="pdfgen-card-body">
+        <ul class="pdfgen-tech-list">
+            <li><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" class="icon" alt=""><strong>Library:</strong> ReportLab (Python)</li>
+            <li><img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="icon" alt=""><strong>Format:</strong> A4, PDF 1.4</li>
+            <li><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="icon" alt=""><strong>Content:</strong> Entirely fictional — no real data</li>
+            <li><img src="{{ url_for('static', filename='images/icons/flag_usa.png') }}" class="icon" alt=""><strong>Languages:</strong> English / Español (follows site language)</li>
+            <li><img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt=""><strong>Mascot:</strong> Tux the Linux Penguin</li>
+        </ul>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.pdfgen-mode-card input[type="radio"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            document.querySelectorAll('.pdfgen-mode-card').forEach(function (c) {
+                c.classList.remove('selected');
+            });
+            if (this.checked) {
+                this.closest('.pdfgen-mode-card').classList.add('selected');
+            }
+        });
+    });
+    var checked = document.querySelector('.pdfgen-mode-card input[type="radio"]:checked');
+    if (checked) checked.closest('.pdfgen-mode-card').classList.add('selected');
+</script>
+{% endblock %}
