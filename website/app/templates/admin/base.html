@@ -6,10 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>{% block title %}Admin{% endblock %} · AstronautMarkus</title>
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-    crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-96x96.png') }}" sizes="96x96">
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
@@ -34,8 +30,8 @@
     </div>
     <div class="topbar-user">
       <span class="topbar-username">Signed in as <strong>{{ current_user.username }}</strong></span>
-      <a href="{{ url_for('main.home') }}" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
-      <a href="{{ url_for('auth.logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      <a href="{{ url_for('main.home') }}" target="_blank"><img src="{{ url_for('static', filename='images/icons/external.png') }}" alt="" class="nav-icon"> View Site</a>
+      <a href="{{ url_for('auth.logout') }}"><img src="{{ url_for('static', filename='images/icons/door_out.png') }}" alt="" class="nav-icon"> Logout</a>
     </div>
   </div>
 
@@ -46,78 +42,78 @@
     <aside class="sidebar">
 
       <div class="sidebar-box">
-        <div class="sidebar-title"><i class="fa-solid fa-house"></i> Main</div>
+        <div class="sidebar-title"><img src="{{ url_for('static', filename='images/icons/house.png') }}" alt="" class="nav-icon"> Main</div>
         <ul class="menu">
           <li>
             <a href="{{ url_for('admin.dashboard') }}"
               class="{{ 'active' if request.endpoint == 'admin.dashboard' else '' }}">
-              <i class="fa-solid fa-gauge"></i> Dashboard
+              <img src="{{ url_for('static', filename='images/icons/dashboard.png') }}" alt="" class="nav-icon"> Dashboard
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.visits_list') }}"
               class="{{ 'active' if request.endpoint and 'visit' in request.endpoint else '' }}">
-              <i class="fa-solid fa-chart-line"></i> Visits
+              <img src="{{ url_for('static', filename='images/icons/chart_line.png') }}" alt="" class="nav-icon"> Visits
             </a>
           </li>
         </ul>
       </div>
 
       <div class="sidebar-box">
-        <div class="sidebar-title blue"><i class="fa-solid fa-layer-group"></i> Content</div>
+        <div class="sidebar-title blue"><img src="{{ url_for('static', filename='images/icons/layer.png') }}" alt="" class="nav-icon"> Content</div>
         <ul class="menu">
           <li>
             <a href="{{ url_for('admin.projects_list') }}"
               class="{{ 'active' if request.endpoint and 'project' in request.endpoint else '' }}">
-              <i class="fa-solid fa-briefcase"></i> Portfolio
+              <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon"> Portfolio
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.gallery_list') }}"
               class="{{ 'active' if request.endpoint and 'gallery' in request.endpoint else '' }}">
-              <i class="fa-solid fa-images"></i> Gallery
+              <img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon"> Gallery
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.cv_list') }}"
               class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
-              <i class="fa-solid fa-file-pdf"></i> CV Files
+              <img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon"> CV Files
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.blog_posts_list') }}"
               class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_post') else '' }}">
-              <i class="fa-solid fa-pen-nib"></i> Blog Posts
+              <img src="{{ url_for('static', filename='images/icons/quill.png') }}" alt="" class="nav-icon"> Blog Posts
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.blog_categories_list') }}"
               class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
-              <i class="fa-solid fa-tags"></i> Categories
+              <img src="{{ url_for('static', filename='images/icons/three_tags.png') }}" alt="" class="nav-icon"> Categories
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.proyectadas_list') }}"
               class="{{ 'active' if request.endpoint and 'proyectada' in request.endpoint else '' }}">
-              <i class="fa-solid fa-rocket"></i> Proyectadas
+              <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="" class="nav-icon"> Proyectadas
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.guestbook_list') }}"
               class="{{ 'active' if request.endpoint and 'guestbook' in request.endpoint else '' }}">
-              <i class="fa-solid fa-book"></i> Guestbook
+              <img src="{{ url_for('static', filename='images/icons/book_open.png') }}" alt="" class="nav-icon"> Guestbook
             </a>
           </li>
         </ul>
       </div>
 
       <div class="sidebar-box">
-        <div class="sidebar-title red"><i class="fa-solid fa-address-book"></i> Contact</div>
+        <div class="sidebar-title red"><img src="{{ url_for('static', filename='images/icons/book_addresses.png') }}" alt="" class="nav-icon"> Contact</div>
         <ul class="menu">
           <li>
             <a href="{{ url_for('admin.contact_inbox') }}"
               class="{{ 'active' if request.endpoint == 'admin.contact_inbox' or request.endpoint == 'admin.contact_message_detail' else '' }}">
-              <i class="fa-solid fa-envelope"></i> Inbox
+              <img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Inbox
               {% if admin_unread_contact %}
               <span class="lang-badge lang-badge-danger">
                 {{ admin_unread_contact }}
@@ -128,32 +124,32 @@
           <li>
             <a href="{{ url_for('admin.contact_mail_templates') }}"
               class="{{ 'active' if request.endpoint and 'mail_template' in request.endpoint else '' }}">
-              <i class="fa-solid fa-envelope-open-text"></i> Mail Templates
+              <img src="{{ url_for('static', filename='images/icons/email_open.png') }}" alt="" class="nav-icon"> Mail Templates
             </a>
           </li>
           <li>
             <a href="{{ url_for('admin.blocked_senders') }}"
               class="{{ 'active' if request.endpoint == 'admin.blocked_senders' else '' }}">
-              <i class="fa-solid fa-ban"></i> Blocked Senders
+              <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" alt="" class="nav-icon"> Blocked Senders
             </a>
           </li>
         </ul>
       </div>
 
       <div class="sidebar-box">
-        <div class="sidebar-title green"><i class="fa-solid fa-server"></i> System</div>
+        <div class="sidebar-title green"><img src="{{ url_for('static', filename='images/icons/server.png') }}" alt="" class="nav-icon"> System</div>
         <div class="sidebar-content">
-          <div class="status-box ok"><i class="fa-solid fa-circle-check"></i> DB Connected</div>
-          <div class="status-box ok"><i class="fa-solid fa-circle-check"></i> Storage OK</div>
+          <div class="status-box ok"><img src="{{ url_for('static', filename='images/icons/tick_circle_frame.png') }}" alt="" class="nav-icon"> DB Connected</div>
+          <div class="status-box ok"><img src="{{ url_for('static', filename='images/icons/tick_circle_frame.png') }}" alt="" class="nav-icon"> Storage OK</div>
         </div>
       </div>
 
       {% if admin_unread_contact %}
       <div class="sidebar-box">
-        <div class="sidebar-title red"><i class="fa-solid fa-bell"></i> Alerts</div>
+        <div class="sidebar-title red"><img src="{{ url_for('static', filename='images/icons/bell.png') }}" alt="" class="nav-icon"> Alerts</div>
         <div class="sidebar-content">
           <div class="status-box warn">
-            <i class="fa-solid fa-triangle-exclamation"></i>
+            <img src="{{ url_for('static', filename='images/icons/warning.png') }}" alt="" class="nav-icon">
             {{ admin_unread_contact }} unread
             <a href="{{ url_for('admin.contact_inbox') }}">→ Inbox</a>
           </div>

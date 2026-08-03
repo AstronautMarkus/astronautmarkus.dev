@@ -14,7 +14,7 @@
 <section class="welcome-card">
     <div class="card-header gallery-banner-title">
         <img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="icon" alt="">
-        &#9654; Gallery
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Gallery
     </div>
     <div class="card-body">
         <div class="gallery-banner-intro">
@@ -25,7 +25,7 @@
 
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; Photos
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Photos
     </div>
 
     {% if photos %}
@@ -51,12 +51,12 @@
     <div class="gallery-modal" role="dialog" aria-modal="true" aria-label="Photo viewer">
         <div class="gallery-modal-header">
             <span class="gallery-modal-counter" id="gallery-modal-counter"></span>
-            <button type="button" class="gallery-modal-close" id="gallery-modal-close" aria-label="Close">&#10005;</button>
+            <button type="button" class="gallery-modal-close" id="gallery-modal-close" aria-label="Close"><img src="{{ url_for('static', filename='images/icons/cross.png') }}" alt="" class="nav-icon"></button>
         </div>
         <div class="gallery-modal-body">
-            <button type="button" class="gallery-modal-nav prev" id="gallery-modal-prev" aria-label="Previous">&#10094;</button>
+            <button type="button" class="gallery-modal-nav prev" id="gallery-modal-prev" aria-label="Previous"><img src="{{ url_for('static', filename='images/icons/resultset_previous.png') }}" alt="" class="nav-icon"></button>
             <img src="" alt="" class="gallery-modal-img" id="gallery-modal-img">
-            <button type="button" class="gallery-modal-nav next" id="gallery-modal-next" aria-label="Next">&#10095;</button>
+            <button type="button" class="gallery-modal-nav next" id="gallery-modal-next" aria-label="Next"><img src="{{ url_for('static', filename='images/icons/resultset_next.png') }}" alt="" class="nav-icon"></button>
         </div>
         <div class="gallery-modal-caption">
             <div class="gallery-modal-title" id="gallery-modal-title"></div>

@@ -14,7 +14,7 @@
 <section class="welcome-card">
     <div class="card-header portfolio-banner-title">
         <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="icon" alt="">
-        &#9654; Portfolio
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Portfolio
     </div>
     <div class="card-body">
         <div class="portfolio-banner-intro">
@@ -25,7 +25,7 @@
 
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; Projects
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Projects
     </div>
 
     {% if projects %}

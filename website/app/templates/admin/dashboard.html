@@ -5,10 +5,10 @@
 {% block page_title %}Dashboard{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-sm" href="{{ url_for('admin.projects_create') }}"><i class="fa-solid fa-plus"></i> Portfolio</a>
-  <a class="btn btn-sm" href="{{ url_for('admin.blog_post_create') }}"><i class="fa-solid fa-plus"></i> Post</a>
+  <a class="btn btn-sm" href="{{ url_for('admin.projects_create') }}"><img src="{{ url_for('static', filename='images/icons/plus_button.png') }}" alt="" class="nav-icon"> Portfolio</a>
+  <a class="btn btn-sm" href="{{ url_for('admin.blog_post_create') }}"><img src="{{ url_for('static', filename='images/icons/plus_button.png') }}" alt="" class="nav-icon"> Post</a>
   <a class="btn btn-primary btn-sm" href="{{ url_for('admin.contact_inbox') }}">
-    <i class="fa-solid fa-envelope"></i> Inbox{% if unread_messages %} ({{ unread_messages }}){% endif %}
+    <img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Inbox{% if unread_messages %} ({{ unread_messages }}){% endif %}
   </a>
 {% endblock %}
 
@@ -17,27 +17,27 @@
 <!-- ── Stats ── -->
 <div class="stat-grid">
   <div class="stat-box accent">
-    <div class="stat-box-label"><i class="fa-solid fa-briefcase"></i> Portfolio Projects</div>
+    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon"> Portfolio Projects</div>
     <div class="stat-box-value">{{ total_projects }}</div>
     <div class="stat-box-sub"><a href="{{ url_for('admin.projects_list') }}">View all →</a></div>
   </div>
   <div class="stat-box">
-    <div class="stat-box-label"><i class="fa-solid fa-file-pdf"></i> CV Files</div>
+    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon"> CV Files</div>
     <div class="stat-box-value">{{ total_cvs }}</div>
     <div class="stat-box-sub"><a href="{{ url_for('admin.cv_list') }}">View all →</a></div>
   </div>
   <div class="stat-box accent">
-    <div class="stat-box-label"><i class="fa-solid fa-pen-nib"></i> Blog Posts</div>
+    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/quill.png') }}" alt="" class="nav-icon"> Blog Posts</div>
     <div class="stat-box-value">{{ total_posts }}</div>
     <div class="stat-box-sub">{{ total_categories }} categor{{ 'y' if total_categories == 1 else 'ies' }}</div>
   </div>
   <div class="stat-box">
-    <div class="stat-box-label"><i class="fa-solid fa-tags"></i> Categories</div>
+    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/three_tags.png') }}" alt="" class="nav-icon"> Categories</div>
     <div class="stat-box-value">{{ total_categories }}</div>
     <div class="stat-box-sub"><a href="{{ url_for('admin.blog_categories_list') }}">Manage →</a></div>
   </div>
   <div class="stat-box {{ 'accent-red' if unread_messages else '' }}">
-    <div class="stat-box-label"><i class="fa-solid fa-envelope"></i> Messages</div>
+    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Messages</div>
     <div class="stat-box-value">{{ total_messages }}</div>
     <div class="stat-box-sub">
       {% if unread_messages %}
@@ -48,7 +48,7 @@
     </div>
   </div>
   <div class="stat-box accent-green">
-    <div class="stat-box-label"><i class="fa-solid fa-chart-line"></i> Total Visits</div>
+    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/chart_line.png') }}" alt="" class="nav-icon"> Total Visits</div>
     <div class="stat-box-value">{{ total_visits }}</div>
     <div class="stat-box-sub"><a href="{{ url_for('admin.visits_list') }}">Analytics →</a></div>
   </div>
@@ -59,7 +59,7 @@
 
   <!-- Recent messages -->
   <div class="card">
-    <div class="card-title red"><i class="fa-solid fa-envelope"></i> Recent Messages</div>
+    <div class="card-title red"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Recent Messages</div>
     {% if recent_messages %}
     <table>
       <thead>
@@ -98,7 +98,7 @@
 
   <!-- Recent posts -->
   <div class="card">
-    <div class="card-title"><i class="fa-solid fa-pen-nib"></i> Recent Blog Posts</div>
+    <div class="card-title"><img src="{{ url_for('static', filename='images/icons/quill.png') }}" alt="" class="nav-icon"> Recent Blog Posts</div>
     {% if recent_posts %}
     <table>
       <thead>
@@ -139,7 +139,7 @@
 
 <!-- ── Recent projects table ── -->
 <div class="card">
-  <div class="card-title"><i class="fa-solid fa-briefcase"></i> Recent Projects</div>
+  <div class="card-title"><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon"> Recent Projects</div>
   {% if recent_projects %}
   <table>
     <thead>
@@ -158,7 +158,7 @@
       <td class="text-muted text-sm">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
       <td>
         <div class="td-actions">
-          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}"><i class="fa-solid fa-pen"></i> Edit</a>
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}"><img src="{{ url_for('static', filename='images/icons/pencil.png') }}" alt="" class="nav-icon"> Edit</a>
         </div>
       </td>
     </tr>

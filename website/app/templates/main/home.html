@@ -11,7 +11,7 @@
 {% block content %}
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
-        &#9888; AstronautMarkusDev 2.0 Website Update
+        <img src="{{ url_for('static', filename='images/icons/warning.png') }}" alt="" class="nav-icon"> AstronautMarkusDev 2.0 Website Update
     </div>
     <div class="alert-stripe"></div>
     <div class="alert-body">
@@ -27,12 +27,12 @@
             <li><span class="alert-tag fixed">PATCHED</span> Mainframe hardened against dial-up gremlins.</li>
         </ul>
     </div>
-    <div class="alert-footer">Update log maintained since 2026 &#9654;</div>
+    <div class="alert-footer">Update log maintained since 2026 <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
 </section>
 
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; Welcome to the AstronautMarkus.Dev Site
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Welcome to the AstronautMarkus.Dev Site
     </div>
     <div class="card-body">
         <div class="card-text">
@@ -52,7 +52,7 @@
 {% if latest_posts %}
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; News
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> News
     </div>
     <table class="news-table">
         {% for post in latest_posts %}
@@ -63,7 +63,7 @@
         {% endfor %}
     </table>
     <div class="news-footer">
-        <a href="{{ url_for('main.blog_list') }}">More News &#9654;</a>
+        <a href="{{ url_for('main.blog_list') }}">More News <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></a>
     </div>
 </section>
 {% endif %}

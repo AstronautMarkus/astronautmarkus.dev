@@ -46,7 +46,7 @@
 <section class="welcome-card">
     <div class="card-header blog-banner-title">
         <img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon" alt="">
-        &#9654; Blog
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Blog
     </div>
     <div class="card-body">
         <div class="blog-banner-intro">
@@ -62,7 +62,7 @@
         {% if posts %}
         <section class="welcome-card">
             <div class="card-header">
-                &#9654; Posts
+                <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Posts
             </div>
 
             {% for post in posts %}
@@ -128,7 +128,7 @@
         {% else %}
         <section class="welcome-card">
             <div class="card-header">
-                &#9654; Posts
+                <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Posts
             </div>
             <div class="card-body">
                 <div class="card-text">No posts yet. Check back soon.</div>

@@ -11,7 +11,7 @@
 {% block content %}
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
-        &#9888; Actualización de AstronautMarkusDev 2.0
+        <img src="{{ url_for('static', filename='images/icons/warning.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.0
     </div>
     <div class="alert-stripe"></div>
     <div class="alert-body">
@@ -27,12 +27,12 @@
             <li><span class="alert-tag fixed">PARCHEADO</span> Mainframe blindado contra duendes del dial-up.</li>
         </ul>
     </div>
-    <div class="alert-footer">Registro de actualizaciones desde 2026 &#9654;</div>
+    <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
 </section>
 
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; Te damos la bienvenida al sitio web de AstronautMarkus.Dev
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Te damos la bienvenida al sitio web de AstronautMarkus.Dev
     </div>
     <div class="card-body">
         <div class="card-text">
@@ -52,7 +52,7 @@
 {% if latest_posts %}
 <section class="welcome-card">
     <div class="card-header">
-        &#9654; Noticias
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Noticias
     </div>
     <table class="news-table">
         {% for post in latest_posts %}
@@ -64,7 +64,7 @@
         {% endfor %}
     </table>
     <div class="news-footer">
-        <a href="{{ url_for('main.blog_list') }}">Ver Más &#9654;</a>
+        <a href="{{ url_for('main.blog_list') }}">Ver Más <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></a>
     </div>
 </section>
 {% endif %}

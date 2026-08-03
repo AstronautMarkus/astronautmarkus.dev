@@ -156,6 +156,8 @@ a:hover { text-decoration: underline; }
     text-decoration: none;
 }
 
+.topbar-user a img.nav-icon { margin-right: 0; }
+
 /* ── Hamburger button ────────────────────────────────────────────────────── */
 .hamburger {
     display: none;
@@ -273,9 +275,7 @@ a:hover { text-decoration: underline; }
     letter-spacing: 0.1em;
 }
 
-.sidebar-title i { font-size: 10px; width: 12px; text-align: center; color: var(--c-faint); }
-.sidebar-title.red i,
-.sidebar-title.blue i  { color: var(--c-primary); }
+.sidebar-title img.nav-icon { margin-right: 0; }
 
 .sidebar-content { padding: 0 4px; display: flex; flex-direction: column; gap: 6px; }
 
@@ -297,16 +297,14 @@ a:hover { text-decoration: underline; }
     min-height: 38px;
 }
 
-.menu li a i { width: 15px; text-align: center; color: var(--sidebar-text-soft); flex-shrink: 0; transition: color var(--transition); }
+.menu li a img.nav-icon { flex-shrink: 0; margin-right: 0; }
 
 .menu li a:hover { background: var(--sidebar-bg-2); color: #ffffff; text-decoration: none; }
-.menu li a:hover i { color: var(--c-primary); }
 .menu li a.active {
     background: rgba(179, 36, 31, 0.16);
     color: #ffffff;
     border-left-color: var(--c-primary);
 }
-.menu li a.active i { color: var(--c-primary); }
 
 /* ── Sidebar status boxes ────────────────────────────────────────────────── */
 .status-box {
@@ -320,11 +318,11 @@ a:hover { text-decoration: underline; }
 }
 
 .status-box.ok   { background: var(--sidebar-bg-2); color: var(--sidebar-text); }
-.status-box.ok i { color: #9a9aa2; }
 .status-box.warn { background: var(--c-primary-soft); color: var(--c-primary-dark); }
 .status-box.err  { background: var(--c-danger); color: #ffffff; }
 .status-box a    { color: inherit; font-weight: 700; text-decoration: none; }
 .status-box a:hover { text-decoration: underline; }
+.status-box img.nav-icon { margin-right: 0; }
 
 /* ── Cards / Panels ──────────────────────────────────────────────────────── */
 .card {
@@ -398,9 +396,9 @@ a:hover { text-decoration: underline; }
     margin-bottom: 6px;
 }
 
-.stat-box-label i { margin-right: 5px; color: var(--c-faint); }
+.stat-box-label img.nav-icon { margin-right: 5px; }
 
-.card-title i { margin-right: 7px; }
+.card-title img.nav-icon { margin-right: 7px; }
 
 .stat-box-value {
     font-size: clamp(22px, 4vw, 28px);
@@ -484,6 +482,7 @@ a:hover { text-decoration: underline; }
 .btn:hover   { background: var(--c-surface-2); color: var(--c-ink); text-decoration: none; box-shadow: var(--shadow-xs); }
 .btn:active  { transform: translateY(1px); }
 .btn:disabled{ opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+.btn img.nav-icon { margin-right: 0; }
 
 .btn-primary {
     background: var(--c-primary);
