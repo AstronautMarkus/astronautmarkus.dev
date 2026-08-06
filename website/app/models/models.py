@@ -211,3 +211,21 @@ class GuestbookEntry(db.Model):
     ip_address = db.Column(db.String(45), nullable=True)
     approved = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class HoneypotHit(db.Model):
+    """Records every request that hits a kanarianlintu decoy route, for threat intel purposes."""
+    id = db.Column(db.Integer, primary_key=True)
+    ip_address = db.Column(db.String(45), nullable=False, index=True)
+    x_forwarded_for = db.Column(db.String(500), nullable=True)
+    user_agent = db.Column(db.String(500), nullable=True)
+    method = db.Column(db.String(10), nullable=False)
+    endpoint = db.Column(db.String(80), nullable=True)
+    path = db.Column(db.String(300), nullable=False)
+    query_string = db.Column(db.String(500), nullable=True)
+    resource = db.Column(db.String(200), nullable=True, index=True)
+    referrer = db.Column(db.String(500), nullable=True)
+    accept_language = db.Column(db.String(200), nullable=True)
+    headers = db.Column(db.Text, nullable=True)
+    body = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(), index=True)

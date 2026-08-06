@@ -52,6 +52,11 @@
     <div class="stat-box-value">{{ total_visits }}</div>
     <div class="stat-box-sub"><a href="{{ url_for('admin.visits_list') }}">Analytics →</a></div>
   </div>
+  <div class="stat-box {{ 'accent-red' if total_honeypot_hits else '' }}">
+    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/computer_error.png') }}" alt="" class="nav-icon"> Honeypot Hits</div>
+    <div class="stat-box-value">{{ total_honeypot_hits }}</div>
+    <div class="stat-box-sub"><a href="{{ url_for('admin.honeypot_list') }}">View log →</a></div>
+  </div>
 </div>
 
 <!-- ── Two-col grid: recent messages + recent posts ── -->

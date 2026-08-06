@@ -13,4 +13,4 @@ def inject_admin_globals():
     return {'admin_unread_contact': unread}
 
 
-from app.routes.admin import dashboard, projects, cv, blog, contact, visits, proyectadas, gallery, guestbook  # noqa: E402, F401
+from app.routes.admin import dashboard, projects, cv, blog, contact, visits, proyectadas, gallery, guestbook, honeypot  # noqa: E402, F401

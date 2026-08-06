@@ -1,6 +1,8 @@
-from . import kanarianlintu_bp
-from flask import redirect, url_for
+from . import kanarianlintu_bp, log_hit
+from flask import Response, render_template
 
 @kanarianlintu_bp.route('/.env')
 def env():
-    return redirect("https://www.youtube.com/watch?v=eIYSSaWHqSM", code=302)
+    log_hit('.env')
+    content = render_template('kanarianlintu/env.txt')
+    return Response(content, mimetype='text/plain')

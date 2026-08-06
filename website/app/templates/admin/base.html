@@ -56,6 +56,12 @@
               <img src="{{ url_for('static', filename='images/icons/chart_line.png') }}" alt="" class="nav-icon"> Visits
             </a>
           </li>
+          <li>
+            <a href="{{ url_for('admin.honeypot_list') }}"
+              class="{{ 'active' if request.endpoint and 'honeypot' in request.endpoint else '' }}">
+              <img src="{{ url_for('static', filename='images/icons/computer_error.png') }}" alt="" class="nav-icon"> Honeypot
+            </a>
+          </li>
         </ul>
       </div>
 

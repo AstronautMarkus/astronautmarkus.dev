@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, g, abort, send_file
+from flask import Flask, render_template, request, redirect, url_for, g, abort, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail
@@ -150,6 +150,15 @@ def create_app():
 			as_attachment=False,
 		)
 
+	# ── Apache icons (kanarianlintu honeypot) ──────────────────────
+	# Real Apache's mod_autoindex serves its default icon set from /icons/ —
+	# reproducing that exact path keeps the fake directory listings pixel-for-pixel authentic.
+	@app.get('/icons/<path:filename>')
+	def serve_apache_icon(filename):
+		import os
+		icons_dir = os.path.join(app.static_folder, 'apache_icons')
+		return send_from_directory(icons_dir, filename)
+
 	# ── Template filters ──────────────────────────────────────────
 	def _dtfmt(value, fmt='%b %d, %Y'):
 		if isinstance(value, str):
@@ -209,5 +218,10 @@ def create_app():
 	@app.errorhandler(500)
 	def internal_server_error(e):
 		return render_localized_template('errors/500.html'), 500
+
+	# Scanner-bait paths (/wp-admin, /.git/config, etc.) — registered last so
+	# app.url_map already reflects every real route; conflicts are skipped.
+	from app.routes.kanarianlintu.decoys import register_decoy_routes
+	register_decoy_routes(app)
 
 	return app
