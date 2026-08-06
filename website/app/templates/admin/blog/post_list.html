@@ -39,11 +39,9 @@
       </td>
       <td>
         {% if p.category %}
-          <span style="font-size:11px;background:#eef3fb;border:1px solid #c8d8f0;padding:2px 7px;color:#2b5797">
-            {{ p.category.name }}
-          </span>
+          <span class="tag-pill">{{ p.category.name }}</span>
         {% else %}
-          <span style="color:#aaaaaa">—</span>
+          <span class="text-muted">—</span>
         {% endif %}
       </td>
       <td>

@@ -33,7 +33,7 @@
     <div class="bar-chart">
       {% for day in chart_data %}
       <div class="bar-day">
-        <div class="bar-fill" style="height:{{ ((day.count / max_count) * 100)|int }}%">
+        <div class="bar-fill danger" style="height:{{ ((day.count / max_count) * 100)|int }}%">
           {% if day.count > 0 %}
           <span class="bar-val">{{ day.count }}</span>
           {% endif %}
@@ -153,17 +153,17 @@
 
   <!-- ── Pagination ── -->
   {% if pagination.pages > 1 %}
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid #ddd;background:#fafafa;gap:8px;flex-wrap:wrap">
-    <div style="font-size:11px;color:#666">
+  <div class="pagination">
+    <div class="pagination-info">
       Showing <strong>{{ (pagination.page - 1) * 50 + 1 }}–{{ (pagination.page - 1) * 50 + (pagination.items | length) }}</strong>
       of <strong>{{ '{:,}'.format(pagination.total) }}</strong>
     </div>
-    <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+    <div class="pagination-pages">
       {# Prev #}
       {% if pagination.has_prev %}
         <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list', page=pagination.prev_num, ip=ip_filter, resource=resource_filter) }}">← Prev</a>
       {% else %}
-        <span class="btn btn-ghost btn-sm" style="opacity:0.35;cursor:default">← Prev</span>
+        <span class="btn btn-ghost btn-sm btn-disabled">← Prev</span>
       {% endif %}
 
       {# Page numbers – show up to 7 around current #}
@@ -172,12 +172,12 @@
       {% for p in range(1, pages + 1) %}
         {% if p == 1 or p == pages or (p >= cur - 2 and p <= cur + 2) %}
           {% if p == cur %}
-            <span class="btn btn-primary btn-sm" style="cursor:default">{{ p }}</span>
+            <span class="btn btn-primary btn-sm btn-static">{{ p }}</span>
           {% else %}
             <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list', page=p, ip=ip_filter, resource=resource_filter) }}">{{ p }}</a>
           {% endif %}
         {% elif p == cur - 3 or p == cur + 3 %}
-          <span style="font-size:11px;color:#aaa;padding:0 2px">…</span>
+          <span class="pagination-ellipsis">…</span>
         {% endif %}
       {% endfor %}
 
@@ -185,7 +185,7 @@
       {% if pagination.has_next %}
         <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list', page=pagination.next_num, ip=ip_filter, resource=resource_filter) }}">Next →</a>
       {% else %}
-        <span class="btn btn-ghost btn-sm" style="opacity:0.35;cursor:default">Next →</span>
+        <span class="btn btn-ghost btn-sm btn-disabled">Next →</span>
       {% endif %}
     </div>
   </div>

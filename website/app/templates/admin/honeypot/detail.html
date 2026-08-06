@@ -14,60 +14,60 @@
 
 {% block content %}
 <div class="card">
-  <table class="table-light" style="width:100%;border-collapse:collapse">
+  <table class="table-light">
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;width:150px;background:#f7f7f7;border-right:1px solid #e4e4e4">IP Address</td>
-      <td style="padding:8px 12px;font-family:'Courier New',monospace;font-weight:700">
+      <td class="kv-label">IP Address</td>
+      <td class="mono" style="font-weight:700">
         <a href="{{ url_for('admin.honeypot_list', ip=hit.ip_address) }}">{{ hit.ip_address }}</a>
       </td>
     </tr>
     {% if hit.x_forwarded_for %}
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">X-Forwarded-For</td>
-      <td style="padding:8px 12px;font-family:'Courier New',monospace">{{ hit.x_forwarded_for }}</td>
+      <td class="kv-label">X-Forwarded-For</td>
+      <td class="mono">{{ hit.x_forwarded_for }}</td>
     </tr>
     {% endif %}
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Target Resource</td>
-      <td style="padding:8px 12px">
+      <td class="kv-label">Target Resource</td>
+      <td>
         {% if hit.resource %}
           <span class="lang-badge lang-badge-danger">{{ hit.resource }}</span>
         {% else %}
-          <span style="color:#bbb">—</span>
+          <span class="text-muted">—</span>
         {% endif %}
       </td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Method / Path</td>
-      <td style="padding:8px 12px;font-family:'Courier New',monospace">
+      <td class="kv-label">Method / Path</td>
+      <td class="mono">
         {{ hit.method }} {{ hit.path }}{% if hit.query_string %}?{{ hit.query_string }}{% endif %}
       </td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Endpoint</td>
-      <td style="padding:8px 12px;color:#777">{{ hit.endpoint or '—' }}</td>
+      <td class="kv-label">Endpoint</td>
+      <td class="text-muted">{{ hit.endpoint or '—' }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">User Agent</td>
-      <td style="padding:8px 12px;word-break:break-all">{{ hit.user_agent or '—' }}</td>
+      <td class="kv-label">User Agent</td>
+      <td style="word-break:break-all">{{ hit.user_agent or '—' }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Referrer</td>
-      <td style="padding:8px 12px;word-break:break-all">{{ hit.referrer or '—' }}</td>
+      <td class="kv-label">Referrer</td>
+      <td style="word-break:break-all">{{ hit.referrer or '—' }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Accept-Language</td>
-      <td style="padding:8px 12px">{{ hit.accept_language or '—' }}</td>
+      <td class="kv-label">Accept-Language</td>
+      <td>{{ hit.accept_language or '—' }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Time</td>
-      <td style="padding:8px 12px;color:#777">{{ hit.created_at | dtfmt('%B %d, %Y at %H:%M:%S') }} UTC</td>
+      <td class="kv-label">Time</td>
+      <td class="text-muted">{{ hit.created_at | dtfmt('%B %d, %Y at %H:%M:%S') }} UTC</td>
     </tr>
   </table>
 </div>
 
 <div class="card" style="margin-top:14px">
   <div class="card-title">Raw Request Headers</div>
-  <pre style="white-space:pre-wrap;word-break:break-all;font-size:11px;line-height:1.7;color:#333;margin:0;padding:12px 14px;font-family:'Courier New',monospace">{{ hit.headers or '—' }}</pre>
+  <pre class="mono" style="white-space:pre-wrap;word-break:break-all;font-size:11px;line-height:1.7;color:var(--c-ink-soft);margin:0;padding:12px 14px">{{ hit.headers or '—' }}</pre>
 </div>
 {% endblock %}

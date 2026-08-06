@@ -17,34 +17,34 @@
 
 {% block content %}
 <div class="card">
-  <table class="table-light" style="width:100%;border-collapse:collapse">
+  <table class="table-light">
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;width:110px;background:#f7f7f7;border-right:1px solid #e4e4e4">From</td>
-      <td style="padding:8px 12px;font-weight:700">{{ entry.name }}</td>
+      <td class="kv-label">From</td>
+      <td style="font-weight:700">{{ entry.name }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Email</td>
-      <td style="padding:8px 12px"><a href="mailto:{{ entry.email }}">{{ entry.email }}</a></td>
+      <td class="kv-label">Email</td>
+      <td><a href="mailto:{{ entry.email }}">{{ entry.email }}</a></td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Subject</td>
-      <td style="padding:8px 12px">{{ entry.subject }}</td>
+      <td class="kv-label">Subject</td>
+      <td>{{ entry.subject }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Language</td>
-      <td style="padding:8px 12px">
+      <td class="kv-label">Language</td>
+      <td>
         <span class="lang-badge lang-badge-{{ entry.language }}">{{ entry.language | upper }}</span>
       </td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Received</td>
-      <td style="padding:8px 12px;color:#777">{{ entry.created_at | dtfmt('%B %d, %Y at %H:%M') }}</td>
+      <td class="kv-label">Received</td>
+      <td class="text-muted">{{ entry.created_at | dtfmt('%B %d, %Y at %H:%M') }}</td>
     </tr>
   </table>
 </div>
 
 <div class="card" style="margin-top:14px">
   <div class="card-title">Message</div>
-  <div style="white-space:pre-wrap;line-height:1.7;color:#333">{{ entry.message }}</div>
+  <div style="white-space:pre-wrap;line-height:1.7;color:var(--c-ink-soft)">{{ entry.message }}</div>
 </div>
 {% endblock %}

@@ -5,7 +5,7 @@
 
 {% block topbar_actions %}
   {% if unread > 0 %}
-  <span style="font-size:11px;background:#cc0000;color:#fff;padding:3px 8px;border-radius:2px;font-weight:700">
+  <span class="lang-badge lang-badge-danger" style="margin-left:0">
     {{ unread }} unread
   </span>
   {% endif %}
@@ -34,16 +34,12 @@
       </thead>
       <tbody>
       {% for m in messages %}
-      <tr {% if not m.is_read %}style="background:#fffbe6;border-left:3px solid #cc0000"{% endif %}>
+      <tr class="{{ 'row-unread' if not m.is_read else '' }}">
         <td style="padding-left:10px">
           <input type="checkbox" class="row-checkbox" name="message_ids" value="{{ m.id }}">
         </td>
         <td>
-          {% if not m.is_read %}
-          <span style="display:inline-block;width:7px;height:7px;background:#cc0000;border-radius:50%;vertical-align:middle"></span>
-          {% else %}
-          <span style="display:inline-block;width:7px;height:7px;background:#ccc;border-radius:50%;vertical-align:middle"></span>
-          {% endif %}
+          <span class="status-dot {{ 'unread' if not m.is_read else '' }}"></span>
         </td>
         <td style="{% if not m.is_read %}font-weight:700{% endif %}">
           {{ m.name }}<br>
