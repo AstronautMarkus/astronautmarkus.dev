@@ -4,7 +4,7 @@ from app.i18n import get_current_language, render_localized_template
 from app.models.models import BlogCategory, BlogPost, BlogTag
 from app.routes.main import main_bp
 from app.storage import storage
-from app.utils import expand_post_images, render_markdown
+from app.utils import expand_media_shorthand, render_markdown
 
 
 @main_bp.get('/blog/')
@@ -51,7 +51,7 @@ def blog_post_detail(slug):
     if md_path and storage.exists(md_path):
         raw = storage.get(md_path)
         if raw:
-            text = expand_post_images(raw.decode('utf-8'), post.slug)
+            text = expand_media_shorthand(raw.decode('utf-8'), f'blog/posts/{post.slug}/images')
             content_html = render_markdown(text)
 
     return render_localized_template(

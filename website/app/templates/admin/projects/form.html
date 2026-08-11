@@ -42,6 +42,20 @@
           <textarea id="description" name="description"
                     rows="4"
                     placeholder="A short description of the project…">{{ project.description if is_edit and project.description else '' }}</textarea>
+          <span class="form-hint">Short excerpt shown in listings and meta tags.</span>
+        </div>
+        <div class="form-group">
+          <label for="markdown_file">Markdown Content (EN)</label>
+          {% if is_edit and project.markdown_path %}
+          <div class="file-current-row">
+            <span>Current file:</span>
+            <a href="{{ storage_url(project.markdown_path) }}" target="_blank"
+               rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Download EN .md</a>
+            <span class="form-hint">Upload a new file to replace it.</span>
+          </div>
+          {% endif %}
+          <input type="file" id="markdown_file" name="markdown_file" accept=".md,.markdown">
+          <span class="form-hint">.md or .markdown — max 2 MB. Full, detailed write-up shown on the project page.</span>
         </div>
       </div>
 
@@ -67,6 +81,19 @@
             <textarea id="description_es" name="description_es"
                       rows="4"
                       placeholder="Una breve descripción del proyecto…">{{ project.description_es if is_edit and project.description_es else '' }}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="markdown_file_es">Contenido Markdown (ES)</label>
+            {% if is_edit and project.markdown_path_es %}
+            <div class="file-current-row">
+              <span>Archivo actual:</span>
+              <a href="{{ storage_url(project.markdown_path_es) }}" target="_blank"
+                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Descargar ES .md</a>
+              <span class="form-hint">Sube un archivo nuevo para reemplazarlo.</span>
+            </div>
+            {% endif %}
+            <input type="file" id="markdown_file_es" name="markdown_file_es" accept=".md,.markdown">
+            <span class="form-hint">.md o .markdown — máx. 2 MB</span>
           </div>
         </div>
       </div>
@@ -120,7 +147,12 @@
 <!-- ── Extra Images (edit mode only) ──────────────────────── -->
 {% if is_edit %}
 <div class="card" id="extra-images-card">
-  <div class="card-title">Extra Images</div>
+  <div class="card-title">
+    Extra Images
+    <span style="font-size:10px;font-weight:normal;color:#888888;text-transform:none;letter-spacing:0;margin-left:8px">
+      Also shown in the screenshots gallery. Copy a URL to embed it in your Markdown, or use the <code>@filename.ext</code> shorthand.
+    </span>
+  </div>
 
   <div id="ajax-flash-container"></div>
 
@@ -128,8 +160,13 @@
     {% for img in extra_images %}
     <div class="img-item" id="img-{{ img.id }}">
       <img src="{{ storage_url(img.image_path) }}" alt="Image {{ img.id }}">
-      <button type="button" class="del-img" title="Remove"
-              onclick="Projects.deleteImage({{ img.id }}, this.closest('.img-item'))">×</button>
+      <div class="blog-img-actions">
+        <button type="button" class="copy-url-btn"
+                data-url="{{ storage_url(img.image_path) }}"
+                title="Copy URL to clipboard">Copy URL</button>
+        <button type="button" class="del-img" title="Remove"
+                onclick="Projects.deleteImage({{ img.id }}, this.closest('.img-item'))">×</button>
+      </div>
     </div>
     {% endfor %}
     {% if not extra_images %}
@@ -280,17 +317,14 @@
     var div = document.createElement('div');
     div.className = 'img-item';
     div.id = 'img-' + id;
-    var img = document.createElement('img');
-    img.src = url;
-    img.alt = 'Image ' + id;
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'del-img';
-    btn.title = 'Remove';
-    btn.textContent = '×';
-    btn.addEventListener('click', function () { Projects.deleteImage(id, div); });
-    div.appendChild(img);
-    div.appendChild(btn);
+    div.innerHTML =
+      '<img src="' + url + '" alt="Image ' + id + '">' +
+      '<div class="blog-img-actions">' +
+        '<button type="button" class="copy-url-btn" data-url="' + url + '" title="Copy URL to clipboard">Copy URL</button>' +
+        '<button type="button" class="del-img" title="Remove" ' +
+          'onclick="Projects.deleteImage(' + id + ', this.closest(\'.img-item\'))">×</button>' +
+      '</div>';
+    div.querySelector('.copy-url-btn').addEventListener('click', handleCopy);
     return div;
   }
 
@@ -302,6 +336,41 @@
     container.appendChild(div);
     setTimeout(function () { div.remove(); }, 5000);
   }
+
+  // Copy URL to clipboard
+  function handleCopy(e) {
+    var btn = e.currentTarget;
+    var url = btn.dataset.url;
+    if (!navigator.clipboard) {
+      var ta = document.createElement('textarea');
+      ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      flashCopied(btn);
+      return;
+    }
+    navigator.clipboard.writeText(url).then(function () { flashCopied(btn); });
+  }
+
+  function flashCopied(btn) {
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.background = '#44aa44';
+    btn.style.color = '#fff';
+    btn.style.borderColor = '#44aa44';
+    setTimeout(function () {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1800);
+  }
+
+  // Wire up existing copy buttons on page load
+  document.querySelectorAll('.copy-url-btn').forEach(function (btn) {
+    btn.addEventListener('click', handleCopy);
+  });
 
   // Expose on Projects namespace for inline onclick handlers
   window.Projects = window.Projects || {};

@@ -170,7 +170,7 @@ def render_markdown(md: str) -> Markup:
 
 # ── Image shorthand expander ──────────────────────────────────────────────────
 
-def expand_post_images(text: str, post_slug: str) -> str:
+def expand_media_shorthand(text: str, base_path: str) -> str:
     """
     Replace ``@filename.ext`` shorthands in markdown with full /media/ URLs.
 
@@ -178,9 +178,9 @@ def expand_post_images(text: str, post_slug: str) -> str:
     function rewrites every occurrence so the browser sees real URLs.
 
     Pattern matched:  @<filename>.<extension>
-    Expands to:       /media/blog/posts/<post-slug>/images/<filename>.<extension>
+    Expands to:       /media/<base_path>/<filename>.<extension>
 
-    Example in the .md file:
+    Example in the .md file (base_path='blog/posts/how-dns-works/images'):
         ![DNS Flow diagram](@dns-flow.png)
         ![Server setup](@server-setup.jpg)
 
@@ -190,7 +190,7 @@ def expand_post_images(text: str, post_slug: str) -> str:
     """
     def _replace(m: re.Match) -> str:
         filename = m.group(1)
-        path = f'blog/posts/{post_slug}/images/{filename}'
+        path = f'{base_path}/{filename}'
         return url_for('serve_media', file_path=path)
 
     # Match @word[word/-/.]*.ext — must start with word char, must have extension

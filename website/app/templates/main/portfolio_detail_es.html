@@ -66,7 +66,11 @@
 </div>
 {% endif %}
 
-{% if p_desc %}
+{% if content_html %}
+<div class="prose">
+    {{ content_html }}
+</div>
+{% elif p_desc %}
 <div class="portfolio-desc">{{ p_desc }}</div>
 {% endif %}
 
@@ -89,6 +93,63 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+(function () {
+    var blocks = document.querySelectorAll('.prose pre');
+    if (!blocks.length) return;
+
+    var copyLabel   = 'Copiar';
+    var copiedLabel = '¡Copiado!';
+
+    function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+    }
+
+    blocks.forEach(function (pre) {
+        var code = pre.querySelector('code');
+        if (!code) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block-wrap';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy-btn';
+        btn.textContent = copyLabel;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+            var text = code.textContent;
+            var done = function () {
+                btn.textContent = copiedLabel;
+                btn.classList.add('copied');
+                setTimeout(function () {
+                    btn.textContent = copyLabel;
+                    btn.classList.remove('copied');
+                }, 1500);
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(done, function () {
+                    fallbackCopy(text);
+                    done();
+                });
+            } else {
+                fallbackCopy(text);
+                done();
+            }
+        });
+    });
+})();
+</script>
 <script>
 (function () {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

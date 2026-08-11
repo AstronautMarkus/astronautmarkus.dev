@@ -8,11 +8,17 @@ from app.routes.admin import admin_bp
 from app.storage import storage
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
+ALLOWED_MD = {'md', 'markdown'}
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
+MAX_MD_BYTES = 2 * 1024 * 1024     # 2 MB
 
 
 def _allowed(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def _allowed_md(filename: str) -> bool:
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_MD
 
 
 def _store_image(file, dest_path: str) -> bool:
@@ -25,6 +31,19 @@ def _store_image(file, dest_path: str) -> bool:
     if len(content) > MAX_IMAGE_BYTES:
         return False
     storage.put(dest_path, content, content_type=file.content_type or 'image/jpeg')
+    return True
+
+
+def _store_md(file, dest_path: str) -> bool:
+    """Validate and persist an uploaded Markdown file. Returns True on success."""
+    if not file or not file.filename:
+        return False
+    if not _allowed_md(file.filename):
+        return False
+    content = file.read()
+    if len(content) > MAX_MD_BYTES:
+        return False
+    storage.put(dest_path, content, content_type='text/markdown; charset=utf-8')
     return True
 
 
@@ -77,9 +96,28 @@ def projects_create():
             else:
                 flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
 
+        # Markdown EN
+        md_en = request.files.get('markdown_file')
+        if md_en and md_en.filename:
+            path_en = f'portfolio/markdown/{project.id}/content_en.md'
+            if _store_md(md_en, path_en):
+                project.markdown_path = path_en
+            else:
+                flash('EN Markdown rejected — must be a .md file under 2 MB.', 'error')
+
+        # Markdown ES
+        if has_es:
+            md_es = request.files.get('markdown_file_es')
+            if md_es and md_es.filename:
+                path_es = f'portfolio/markdown/{project.id}/content_es.md'
+                if _store_md(md_es, path_es):
+                    project.markdown_path_es = path_es
+                else:
+                    flash('ES Markdown rejected — must be a .md file under 2 MB.', 'error')
+
         db.session.commit()
         flash(f'Project "{project.title}" created.', 'success')
-        return redirect(url_for('admin.projects_list'))
+        return redirect(url_for('admin.projects_edit', project_id=project.id))
 
     return render_template('admin/projects/form.html', project=None, extra_images=[])
 
@@ -124,6 +162,25 @@ def projects_edit(project_id):
             else:
                 flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
 
+        # Markdown EN
+        md_en = request.files.get('markdown_file')
+        if md_en and md_en.filename:
+            path_en = f'portfolio/markdown/{project.id}/content_en.md'
+            if _store_md(md_en, path_en):
+                project.markdown_path = path_en
+            else:
+                flash('EN Markdown rejected — must be a .md file under 2 MB.', 'error')
+
+        # Markdown ES
+        if has_es:
+            md_es = request.files.get('markdown_file_es')
+            if md_es and md_es.filename:
+                path_es = f'portfolio/markdown/{project.id}/content_es.md'
+                if _store_md(md_es, path_es):
+                    project.markdown_path_es = path_es
+                else:
+                    flash('ES Markdown rejected — must be a .md file under 2 MB.', 'error')
+
         db.session.commit()
         flash('Project updated.', 'success')
         return redirect(url_for('admin.projects_edit', project_id=project.id))
@@ -144,6 +201,10 @@ def projects_delete(project_id):
 
     if project.image_path:
         storage.delete(project.image_path)
+    if project.markdown_path:
+        storage.delete(project.markdown_path)
+    if project.markdown_path_es:
+        storage.delete(project.markdown_path_es)
     for img in project.extra_images:
         storage.delete(img.image_path)
 

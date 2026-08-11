@@ -29,9 +29,11 @@ class PortfolioProject(db.Model):
     # English content (required)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    markdown_path = db.Column(db.String(200), nullable=True)
     # Spanish content (optional)
     title_es = db.Column(db.String(200), nullable=True)
     description_es = db.Column(db.Text, nullable=True)
+    markdown_path_es = db.Column(db.String(200), nullable=True)
     has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
     # Shared fields
     image_path = db.Column(db.String(200), nullable=True)
