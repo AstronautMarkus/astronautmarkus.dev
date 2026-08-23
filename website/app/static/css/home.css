@@ -87,6 +87,330 @@
     color: #6b4a12;
 }
 
+/* ── Featured project: PAYDAY BANK ──────────────────────────────────────
+   Dedicated banner + tech tags + feature grid + photo gallery w/ lightbox.
+   Green/gold "bank vault" palette to stand apart from the navy card-header
+   and gold alert-card already on this page. Gallery/lightbox markup and
+   behavior mirror gallery.css so any future project can reuse the pattern.
+*/
+
+.payday-card {
+    border-color: #1c5c3a;
+}
+
+.payday-header {
+    background: linear-gradient(to bottom, #0f4a2e, #1c7048);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.payday-ribbon {
+    margin-left: auto;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+    color: #14301f;
+    background: #f0b429;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid #b5811d;
+}
+
+.payday-stripe {
+    height: 4px;
+    background: repeating-linear-gradient(45deg, #f0b429 0, #f0b429 8px, #14301f 8px, #14301f 16px);
+}
+
+.payday-body {
+    padding: 12px;
+    background: #eef7f1;
+}
+
+.payday-lead {
+    margin-bottom: 12px;
+}
+
+.payday-intro {
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: #222;
+    margin: 0 0 10px;
+}
+
+.payday-intro strong {
+    color: #0f4a2e;
+}
+
+.payday-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.payday-tag {
+    font-size: 9px;
+    font-weight: bold;
+    color: #fff;
+    background: #1c3b68;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+}
+
+.payday-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.payday-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #cfe3d7;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.payday-feature-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.payday-feature-title {
+    font-size: 10px;
+    font-weight: bold;
+    color: #0f4a2e;
+    margin-bottom: 2px;
+}
+
+.payday-feature-desc {
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: #444;
+}
+
+.payday-gallery-wrap {
+    margin-bottom: 14px;
+}
+
+.payday-gallery-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    font-weight: bold;
+    color: #0f4a2e;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed #b7d6c2;
+}
+
+.payday-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.payday-gallery-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: 1px solid #cfe3d7;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #0b1f14;
+}
+
+.payday-gallery-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.payday-gallery-item:hover .payday-gallery-thumb {
+    transform: scale(1.06);
+}
+
+.payday-gallery-empty {
+    font-size: 10px;
+    color: #4a6b58;
+    font-style: italic;
+    background: #fff;
+    border: 1px dashed #b7d6c2;
+    border-radius: 4px;
+    padding: 14px;
+    text-align: center;
+}
+
+.payday-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.payday-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9.5px;
+    font-weight: bold;
+    color: #fff;
+    background: #1c7048;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    border: 1px solid #0f4a2e;
+}
+
+.payday-link-btn:hover {
+    background: #23895a;
+}
+
+.payday-link-btn.source {
+    background: #3a3a3a;
+    border-color: #222;
+}
+
+.payday-link-btn.source:hover {
+    background: #555;
+}
+
+/* Lightbox modal, same behavior/markup pattern as .gallery-modal-* */
+
+.payday-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: rgba(8, 14, 28, 0.88);
+}
+
+.payday-modal-overlay.open {
+    display: flex;
+}
+
+.payday-modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    max-height: 100%;
+    width: 100%;
+    background: #e2eaf2;
+    border: 1px solid #b0c4de;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.payday-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: linear-gradient(to bottom, #0f4a2e, #1c7048);
+    color: #fff;
+    padding: 6px 6px 6px 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.payday-modal-counter {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.payday-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.payday-modal-close img.nav-icon,
+.payday-modal-nav img.nav-icon {
+    margin-right: 0;
+}
+
+.payday-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.payday-modal-body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0b1220;
+    min-height: 200px;
+}
+
+.payday-modal-img {
+    display: block;
+    max-width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+}
+
+.payday-modal-nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    border: none;
+    background: rgba(0, 0, 0, 0.25);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.payday-modal-nav:hover {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.payday-modal-nav.prev {
+    left: 0;
+}
+
+.payday-modal-nav.next {
+    right: 0;
+}
+
+@media (max-width: 480px) {
+    .payday-features {
+        grid-template-columns: 1fr;
+    }
+
+    .payday-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 .welcome-card {
     background: #e2eaf2;
     border: 1px solid #b0c4de;

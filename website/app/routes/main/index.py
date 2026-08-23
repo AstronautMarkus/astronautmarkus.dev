@@ -1,6 +1,23 @@
+import os
+
+from flask import current_app
+
 from app.routes.main import main_bp
 from app.i18n import render_localized_template
 from app.models.models import BlogPost, BlogTag, PortfolioProject, Proyectada, Visit
+
+PAYDAY_SCREENSHOTS_DIR = 'images/home/payday-bank'
+PAYDAY_SCREENSHOT_EXTS = ('.png', '.jpg', '.jpeg', '.webp')
+
+
+def _payday_screenshots():
+    folder = os.path.join(current_app.static_folder, *PAYDAY_SCREENSHOTS_DIR.split('/'))
+    if not os.path.isdir(folder):
+        return []
+    return sorted(
+        f for f in os.listdir(folder)
+        if f.lower().endswith(PAYDAY_SCREENSHOT_EXTS)
+    )
 
 
 @main_bp.route('/')
@@ -38,4 +55,6 @@ def home():
         latest_proyectadas=latest_proyectadas,
         all_tags=all_tags,
         total_visits=total_visits,
+        payday_screenshots=_payday_screenshots(),
+        payday_screenshots_dir=PAYDAY_SCREENSHOTS_DIR,
     )

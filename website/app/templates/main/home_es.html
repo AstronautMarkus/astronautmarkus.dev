@@ -9,6 +9,106 @@
 {% endblock %}
 
 {% block content %}
+<section class="welcome-card payday-card">
+    <div class="card-header payday-header">
+        <img src="{{ url_for('static', filename='images/icons/ecommerce_server.png') }}" alt="" class="nav-icon"> Proyecto Destacado
+        <span class="payday-ribbon">PAYDAY BANK</span>
+    </div>
+    <div class="payday-stripe"></div>
+    <div class="payday-body">
+        <div class="payday-lead">
+            <p class="payday-intro">
+                Desarrollé un proyecto de banco ficticio llamado <strong>PAYDAY BANK</strong>, un ejemplo de extremo a extremo de mis habilidades en desarrollo web y seguridad. Un subproceso en COBOL simula el núcleo bancario original, mientras que una capa web moderna gestiona cuentas, transacciones y autenticación por encima. El resultado combina tecnología legada con herramientas actuales, con foco en seguridad y eficiencia.
+            </p>
+            <div class="payday-tags">
+                <span class="payday-tag">Python</span>
+                <span class="payday-tag">Flask</span>
+                <span class="payday-tag">COBOL</span>
+                <span class="payday-tag">PostgreSQL</span>
+                <span class="payday-tag">Seguridad</span>
+            </div>
+        </div>
+
+        <div class="payday-features">
+            <div class="payday-feature">
+                <img src="{{ url_for('static', filename='images/icons/server_database.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Núcleo bancario en COBOL</div>
+                    <div class="payday-feature-desc">Subproceso legado que procesa cuentas y transacciones como un sistema real.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ url_for('static', filename='images/icons/tick_circle_frame.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Seguridad primero</div>
+                    <div class="payday-feature-desc">Autenticación, validaciones y buenas prácticas contra vulnerabilidades comunes.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ url_for('static', filename='images/icons/chart_line.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Gestión de transacciones</div>
+                    <div class="payday-feature-desc">Transferencias, historial y saldos en tiempo real entre cuentas.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ url_for('static', filename='images/icons/layer.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Arquitectura híbrida</div>
+                    <div class="payday-feature-desc">Un puente entre tecnología antigua y moderna dentro de una sola aplicación.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payday-gallery-wrap">
+            <div class="payday-gallery-title">
+                <img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon"> Capturas del Proyecto
+            </div>
+            {% if payday_screenshots %}
+            <div class="payday-gallery-grid" id="payday-gallery-grid">
+                {% for shot in payday_screenshots %}
+                <button type="button" class="payday-gallery-item"
+                        data-full="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
+                        data-title="PAYDAY BANK">
+                    <img src="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
+                         class="payday-gallery-thumb" alt="Captura de PAYDAY BANK" loading="lazy">
+                </button>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="payday-gallery-empty">Capturas próximamente.</div>
+            {% endif %}
+        </div>
+
+        <div class="payday-links">
+            <a href="https://payday-bank.astronautmarkus.dev" target="_blank" rel="noopener noreferrer" class="payday-link-btn">
+                <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
+                Ver Sitio Web
+            </a>
+            <a href="https://github.com/astronautmarkus/payday-bank" target="_blank" rel="noopener noreferrer" class="payday-link-btn source">
+                <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="">
+                Ver Repositorio
+            </a>
+        </div>
+    </div>
+</section>
+
+{% if payday_screenshots %}
+<div class="payday-modal-overlay" id="payday-modal-overlay">
+    <div class="payday-modal" role="dialog" aria-modal="true" aria-label="Capturas de PAYDAY BANK">
+        <div class="payday-modal-header">
+            <span class="payday-modal-counter" id="payday-modal-counter"></span>
+            <button type="button" class="payday-modal-close" id="payday-modal-close" aria-label="Cerrar"><img src="{{ url_for('static', filename='images/icons/cross.png') }}" alt="" class="nav-icon"></button>
+        </div>
+        <div class="payday-modal-body">
+            <button type="button" class="payday-modal-nav prev" id="payday-modal-prev" aria-label="Anterior"><img src="{{ url_for('static', filename='images/icons/resultset_previous.png') }}" alt="" class="nav-icon"></button>
+            <img src="" alt="" class="payday-modal-img" id="payday-modal-img">
+            <button type="button" class="payday-modal-nav next" id="payday-modal-next" aria-label="Siguiente"><img src="{{ url_for('static', filename='images/icons/resultset_next.png') }}" alt="" class="nav-icon"></button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
         <img src="{{ url_for('static', filename='images/icons/warning.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.0
@@ -67,5 +167,71 @@
         <a href="{{ url_for('main.blog_list') }}">Ver Más <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></a>
     </div>
 </section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if payday_screenshots %}
+<script>
+(function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll('#payday-gallery-grid .payday-gallery-item'));
+    if (!items.length) return;
+
+    var overlay   = document.getElementById('payday-modal-overlay');
+    var imgEl     = document.getElementById('payday-modal-img');
+    var counterEl = document.getElementById('payday-modal-counter');
+    var closeBtn  = document.getElementById('payday-modal-close');
+    var prevBtn   = document.getElementById('payday-modal-prev');
+    var nextBtn   = document.getElementById('payday-modal-next');
+
+    var current = -1;
+
+    function show(index) {
+        if (index < 0) index = items.length - 1;
+        if (index >= items.length) index = 0;
+        current = index;
+
+        var item = items[current];
+        imgEl.src = item.getAttribute('data-full');
+        imgEl.alt = item.getAttribute('data-title') || '';
+        counterEl.textContent = (current + 1) + ' / ' + items.length;
+
+        var multiple = items.length > 1;
+        prevBtn.style.display = multiple ? '' : 'none';
+        nextBtn.style.display = multiple ? '' : 'none';
+    }
+
+    function open(index) {
+        show(index);
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        imgEl.src = '';
+    }
+
+    items.forEach(function (item, index) {
+        item.addEventListener('click', function () { open(index); });
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', function () { show(current - 1); });
+    nextBtn.addEventListener('click', function () { show(current + 1); });
+
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (!overlay.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') show(current - 1);
+        else if (e.key === 'ArrowRight') show(current + 1);
+    });
+})();
+</script>
 {% endif %}
 {% endblock %}
