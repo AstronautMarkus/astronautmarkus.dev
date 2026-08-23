@@ -47,7 +47,10 @@ def create_app():
 		from app.models.models import User
 		return db.session.get(User, int(user_id))
 
-	app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
+	# Two reverse-proxy hops in front of gunicorn: Caddy (edge, public-facing)
+	# -> Apache2 (lab-01). Each hop appends its own IP to X-Forwarded-For,
+	# so both must be trusted or the visitor's real IP gets discarded.
+	app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2, x_proto=2)
 	from app.middleware.register_visit import init_visit_middleware
 	init_visit_middleware(app)
 
