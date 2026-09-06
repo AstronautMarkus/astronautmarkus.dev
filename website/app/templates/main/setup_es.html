@@ -6,18 +6,20 @@
 
 {% block title %}Setup{% endblock %}
 {% block description %}El escritorio, no el rack — los equipos, monitor y periféricos que uso a diario, por AstronautMarkus.{% endblock %}
-{% block keywords %}AstronautMarkus, setup, escritorio, Mac Mini M1, HP OMEN, teclado mecánico, Logitech G502, Sony MDR-7506{% endblock %}
+{% block keywords %}AstronautMarkus, setup, battlestation, Mac Mini M1, HP OMEN, teclado mecánico, Logitech G502, Sony MDR-7506{% endblock %}
 
 {% block content %}
 
 <section class="setup-card">
     <div class="setup-card-header">
         <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Setup
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon">
+        Setup
     </div>
     <div class="setup-card-body setup-hero">
         <div class="setup-hero-photo-wrap">
-            <img src="{{ url_for('static', filename='images/setup/mac-mini.jpg') }}" class="setup-hero-photo" alt="Mac Mini M1 de escritorio">
+            <img src="{{ url_for('static', filename='images/setup/the-setup.jpg') }}" class="setup-hero-photo"
+                alt="El setup">
         </div>
         <div class="setup-hero-text">
             <p>
@@ -32,27 +34,19 @@
             </p>
         </div>
     </div>
-    <div class="setup-card-body" style="padding-top:0;">
-        <div class="setup-notice">
-            <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="Nota">
-            <div>
-                <strong>Sobre las fotos:</strong> fotos de referencia por ahora, no capturas reales de mi escritorio
-                — mismo trato que la página de Homelab. Las fotos reales llegan cuando me acuerde de sacarlas.
-            </div>
-        </div>
-    </div>
 </section>
 
 <section class="setup-card">
     <div class="setup-card-header">
         <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> El Equipo
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Lista de Setup
     </div>
 
     <div class="setup-grid">
 
         <div class="setup-item">
-            <img src="{{ url_for('static', filename='images/setup/mac-mini.jpg') }}" class="setup-item-photo" alt="Mac Mini M1">
+            <img src="{{ url_for('static', filename='images/setup/mac-mini-m1.jpg') }}" class="setup-item-photo"
+                alt="Mac Mini M1">
             <div class="setup-item-body">
                 <div class="setup-item-title">
                     <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt="">
@@ -71,7 +65,8 @@
         </div>
 
         <div class="setup-item">
-            <img src="{{ url_for('static', filename='images/setup/monitor.jpg') }}" class="setup-item-photo" alt="Monitor Samsung ViewFinity S7">
+            <img src="{{ url_for('static', filename='images/setup/samsung-monitor.jpg') }}" class="setup-item-photo"
+                alt="Monitor Samsung ViewFinity S7">
             <div class="setup-item-body">
                 <div class="setup-item-title">
                     <img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="icon" alt="">
@@ -79,18 +74,19 @@
                 </div>
                 <span class="setup-item-role">Monitor</span>
                 <div class="setup-item-desc">
-                    La pantalla donde cae todo lo de arriba. Alimenta al Mac Mini y también hace de display para el
-                    laptop que esté de turno ese día.
+                    4K, buenos colores, pero solo 60Hz. Aun así, cumple con lo que necesito.
                 </div>
                 <div class="setup-item-specs">
                     <span class="setup-tag">Samsung</span>
-                    <span class="setup-tag">Display</span>
+                    <span class="setup-tag">4K</span>
+                    <span class="setup-tag">60Hz</span>
                 </div>
             </div>
         </div>
 
         <div class="setup-item">
-            <img src="{{ url_for('static', filename='images/setup/macbook.png') }}" class="setup-item-photo" alt="Laptop de trabajo MacBook Neo">
+            <img src="{{ url_for('static', filename='images/setup/macbook-neo.jpg') }}" class="setup-item-photo"
+                alt="Laptop de trabajo MacBook Neo">
             <div class="setup-item-body">
                 <div class="setup-item-title">
                     <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="icon" alt="">
@@ -109,26 +105,8 @@
         </div>
 
         <div class="setup-item">
-            <img src="{{ url_for('static', filename='images/setup/omen-laptop.jpg') }}" class="setup-item-photo" alt="Laptop gamer HP OMEN 16">
-            <div class="setup-item-body">
-                <div class="setup-item-title">
-                    <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" class="icon" alt="">
-                    HP OMEN 16
-                </div>
-                <span class="setup-item-role">Laptop Gamer</span>
-                <div class="setup-item-desc">
-                    El equipo con Windows — primero para jugar, pero también se hace cargo de lo que el Mac Mini
-                    prefiere no tocar.
-                </div>
-                <div class="setup-item-specs">
-                    <span class="setup-tag">Windows</span>
-                    <span class="setup-tag">Gaming</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="setup-item">
-            <img src="{{ url_for('static', filename='images/setup/keyboard.jpg') }}" class="setup-item-photo" alt="Teclado mecánico Ajazz AK820 Pro">
+            <img src="{{ url_for('static', filename='images/setup/ajazz-keyboard.jpg') }}" class="setup-item-photo"
+                alt="Teclado mecánico Ajazz AK820 Pro">
             <div class="setup-item-body">
                 <div class="setup-item-title">
                     <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
@@ -136,18 +114,20 @@
                 </div>
                 <span class="setup-item-role">Teclado</span>
                 <div class="setup-item-desc">
-                    Mecánico, y el que ahora sirve de vara de medir para cualquier otro teclado de la casa —
-                    normalmente les va mal en la comparación.
+                    Mi teclado mecánico personalizado con estilo Mac. Lo uso para trabajar desde casa, jugar, y
+                    tareas generales de escritura.
                 </div>
                 <div class="setup-item-specs">
                     <span class="setup-tag">Mecánico</span>
                     <span class="setup-tag">Hot-Swap</span>
+                    <span class="setup-tag">Estilo Mac</span>
                 </div>
             </div>
         </div>
 
         <div class="setup-item">
-            <img src="{{ url_for('static', filename='images/setup/mouse.jpg') }}" class="setup-item-photo" alt="Mouse Logitech G502 KDA Edition">
+            <img src="{{ url_for('static', filename='images/setup/g502.jpg') }}" class="setup-item-photo"
+                alt="Mouse Logitech G502 KDA Edition">
             <div class="setup-item-body">
                 <div class="setup-item-title">
                     <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="icon" alt="">
@@ -165,72 +145,9 @@
             </div>
         </div>
 
-        <div class="setup-item">
-            <img src="{{ url_for('static', filename='images/setup/headphones.jpg') }}" class="setup-item-photo" alt="Audífonos Sony MDR-7506">
-            <div class="setup-item-body">
-                <div class="setup-item-title">
-                    <img src="{{ url_for('static', filename='images/icons/note.png') }}" class="icon" alt="">
-                    Sony MDR-7506
-                </div>
-                <span class="setup-item-role">Audífonos</span>
-                <div class="setup-item-desc">
-                    Audífonos de estudio que de alguna manera terminaron siendo el par de todos los días — código,
-                    llamadas y música, todo con los mismos cascos.
-                </div>
-                <div class="setup-item-specs">
-                    <span class="setup-tag">Estudio</span>
-                    <span class="setup-tag">Cableados</span>
-                </div>
-            </div>
-        </div>
-
     </div>
 </section>
 
-<section class="setup-card">
-    <div class="setup-card-header">
-        <img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Daily Driver, de un Vistazo
-    </div>
-    <div class="setup-card-body" style="padding-top:0;">
-        <table class="setup-table">
-            <tr>
-                <th>Rol</th>
-                <th>Equipo</th>
-                <th>Nota</th>
-            </tr>
-            <tr>
-                <td class="setup-role-id">Escritorio</td>
-                <td>Mac Mini M1</td>
-                <td>Equipo principal, sobre el ViewFinity S7</td>
-            </tr>
-            <tr>
-                <td class="setup-role-id">Laptop Trabajo</td>
-                <td>MacBook Neo</td>
-                <td>Trabajo con clientes, en movimiento</td>
-            </tr>
-            <tr>
-                <td class="setup-role-id">Laptop Gamer</td>
-                <td>HP OMEN 16</td>
-                <td>Gaming + cómputo de respaldo</td>
-            </tr>
-            <tr>
-                <td class="setup-role-id">Teclado</td>
-                <td>Ajazz AK820 Pro</td>
-                <td>Mecánico, hot-swap</td>
-            </tr>
-            <tr>
-                <td class="setup-role-id">Mouse</td>
-                <td>Logitech G502 KDA Edition</td>
-                <td>Sobreviviente de varios cambios de mouse</td>
-            </tr>
-            <tr>
-                <td class="setup-role-id">Audio</td>
-                <td>Sony MDR-7506</td>
-                <td>Cascos de estudio, en turno de todos los días</td>
-            </tr>
-        </table>
-    </div>
-</section>
+
 
 {% endblock %}
