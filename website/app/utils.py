@@ -56,6 +56,48 @@ def _inline(text: str) -> str:
     return ''.join(result)
 
 
+def _split_table_row(line: str) -> list[str]:
+    """Split a GFM table row on unescaped '|' into trimmed cell strings."""
+    s = line.strip()
+    if s.startswith('|'):
+        s = s[1:]
+    if s.endswith('|') and not s.endswith('\\|'):
+        s = s[:-1]
+    cells: list[str] = []
+    cur: list[str] = []
+    i = 0
+    while i < len(s):
+        c = s[i]
+        if c == '\\' and i + 1 < len(s) and s[i + 1] == '|':
+            cur.append('|')
+            i += 2
+            continue
+        if c == '|':
+            cells.append(''.join(cur).strip())
+            cur = []
+            i += 1
+            continue
+        cur.append(c)
+        i += 1
+    cells.append(''.join(cur).strip())
+    return cells
+
+
+def _table_alignments(sep_line: str) -> list[str] | None:
+    """Parse a '|---|:---:|---:|' separator row into alignments, or None if invalid."""
+    cells = _split_table_row(sep_line)
+    if not cells:
+        return None
+    aligns: list[str] = []
+    for cell in cells:
+        c = cell.strip()
+        if not re.match(r'^:?-{1,}:?$', c):
+            return None
+        left, right = c.startswith(':'), c.endswith(':')
+        aligns.append('center' if left and right else 'right' if right else 'left' if left else '')
+    return aligns
+
+
 def render_markdown(md: str) -> Markup:
     """Convert a markdown string to safe HTML (markupsafe.Markup)."""
     if not md:
@@ -145,6 +187,38 @@ def render_markdown(md: str) -> Markup:
             out.append('<ol>\n' + '\n'.join(items) + '\n</ol>')
             continue
 
+        # ── Table (GFM) ──────────────────────────────────────────
+        if '|' in stripped and i + 1 < n:
+            aligns = _table_alignments(lines[i + 1].strip())
+            if aligns is not None:
+                header_cells = _split_table_row(line)
+                i += 2
+                body_rows: list[list[str]] = []
+                while i < n and lines[i].strip() and '|' in lines[i]:
+                    body_rows.append(_split_table_row(lines[i]))
+                    i += 1
+
+                def _style(idx: int) -> str:
+                    if idx < len(aligns) and aligns[idx]:
+                        return f' style="text-align:{aligns[idx]}"'
+                    return ''
+
+                thead = '<tr>' + ''.join(
+                    f'<th{_style(idx)}>{_inline(c)}</th>' for idx, c in enumerate(header_cells)
+                ) + '</tr>'
+                tbody_rows = []
+                for row in body_rows:
+                    cells_html = []
+                    for idx in range(len(header_cells)):
+                        c = row[idx] if idx < len(row) else ''
+                        cells_html.append(f'<td{_style(idx)}>{_inline(c)}</td>')
+                    tbody_rows.append('<tr>' + ''.join(cells_html) + '</tr>')
+                out.append(
+                    '<table>\n<thead>\n' + thead + '\n</thead>\n<tbody>\n'
+                    + '\n'.join(tbody_rows) + '\n</tbody>\n</table>'
+                )
+                continue
+
         # ── Paragraph ────────────────────────────────────────────
         para: list[str] = []
         while i < n:
@@ -157,7 +231,8 @@ def render_markdown(md: str) -> Markup:
                     or re.match(r'^[\*\-\+]\s', s)
                     or re.match(r'^\d+\.\s', s)
                     or re.match(r'^(\*{3,}|-{3,}|_{3,})\s*$', s)
-                    or s.startswith('>')):
+                    or s.startswith('>')
+                    or ('|' in s and i + 1 < n and _table_alignments(lines[i + 1].strip()) is not None)):
                 break
             para.append(_inline(l))
             i += 1
