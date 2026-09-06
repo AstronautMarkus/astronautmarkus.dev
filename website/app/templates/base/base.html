@@ -6,13 +6,16 @@
     {% set page_title = self.title() %}
     <title>{% block title %}AstronautMarkus.Dev{% endblock %} | AstronautMarkus.Dev</title>
 
-    <meta name="description" content="{% block description %}{% if current_lang == 'es' %}Portafolio y blog personal de AstronautMarkus: proyectos, artículos técnicos y experimentos de desarrollo.{% else %}Personal portfolio and blog of AstronautMarkus: projects, technical articles, and development experiments.{% endif %}{% endblock %}">
+    <meta name="description"
+        content="{% block description %}{% if current_lang == 'es' %}Portafolio y blog personal de AstronautMarkus: proyectos, artículos técnicos y experimentos de desarrollo.{% else %}Personal portfolio and blog of AstronautMarkus: projects, technical articles, and development experiments.{% endif %}{% endblock %}">
 
-    <meta name="keywords" content="{% block keywords %}AstronautMarkus, developer, desarrollador, portfolio, blog, python, flask{% endblock %}">
+    <meta name="keywords"
+        content="{% block keywords %}AstronautMarkus, developer, desarrollador, portfolio, blog, python, flask{% endblock %}">
 
     <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
 
-    {% block canonical %}<link rel="canonical" href="{{ request.url }}">{% endblock %}
+    {% block canonical %}
+    <link rel="canonical" href="{{ request.url }}">{% endblock %}
 
     <!-- Open Graph -->
     <meta property="og:site_name" content="AstronautMarkus.Dev">
@@ -35,7 +38,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
     {% block extra_css %}{% endblock %}
@@ -46,9 +50,12 @@
 
     <div class="page-wrapper">
         <div class="header-top-nav">
-            <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}><img src="{{ url_for('static', filename='images/icons/flag_usa.png') }}" alt="English" class="icon">{% if
+            <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}><img
+                    src="{{ url_for('static', filename='images/icons/flag_usa.png') }}" alt="English" class="icon">{% if
                 current_lang == 'en' %}English{% else %}Inglés{% endif %}</a>
-            <a href="/lang/es?next={{ request.path }}" {% if current_lang=='es' %} class="active" {% endif %}><img src="{{ url_for('static', filename='images/icons/flag_chile.png') }}" alt="Español" class="icon">{% if
+            <a href="/lang/es?next={{ request.path }}" {% if current_lang=='es' %} class="active" {% endif %}><img
+                    src="{{ url_for('static', filename='images/icons/flag_chile.png') }}" alt="Español" class="icon">{%
+                if
                 current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a>
         </div>
 
@@ -63,45 +70,81 @@
         </header>
 
         <nav class="main-nav">
-            <a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
-            <a href="{{ url_for('main.about_me') }}"><img src="{{ url_for('static', filename='images/icons/vcard.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif
+            <a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}"
+                    alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
+            <a href="{{ url_for('main.about_me') }}"><img
+                    src="{{ url_for('static', filename='images/icons/vcard.png') }}" alt="" class="nav-icon">{% if
+                current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif
                 %}</a>
-            <a href="{{ url_for('main.portfolio_list') }}"><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Portfolio{% else %}Portafolio{% endif %}</a>
-            <a href="{{ url_for('main.gallery_list') }}"><img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
-            <a href="{{ url_for('main.blog_list') }}"><img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
-            <a href="{{ url_for('contact.contact') }}"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
+            <a href="{{ url_for('main.portfolio_list') }}"><img
+                    src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon">{% if
+                current_lang == 'en' %}Portfolio{% else %}Portafolio{% endif %}</a>
+            <a href="{{ url_for('main.gallery_list') }}"><img
+                    src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon">{% if
+                current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
+            <a href="{{ url_for('main.blog_list') }}"><img
+                    src="{{ url_for('static', filename='images/icons/newspaper.png') }}" alt="" class="nav-icon">{% if
+                current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
+            <a href="{{ url_for('contact.contact') }}"><img
+                    src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon">{% if
+                current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
             <div class="nav-dropdown">
-                <a href="#" class="nav-dropdown-toggle"><img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt="" class="nav-icon">Extras <span class="nav-caret">&#9662;</span></a>
+                <a href="#" class="nav-dropdown-toggle"><img
+                        src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt=""
+                        class="nav-icon">Extras <span class="nav-caret">&#9662;</span></a>
                 <div class="nav-dropdown-menu">
-                    <a href="{{ url_for('extras.pdf_generator') }}"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}PDF Generator{% else %}Generador de PDF{% endif %}</a>
+                    <a href="{{ url_for('extras.pdf_generator') }}"><img
+                            src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt=""
+                            class="nav-icon">{% if current_lang == 'en' %}PDF Generator{% else %}Generador de PDF{%
+                        endif %}</a>
                 </div>
             </div>
-            <a href="{{ url_for('main.beercat') }}"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{% endif %}</a>
+            <a href="{{ url_for('main.beercat') }}"><img src="{{ url_for('static', filename='images/icons/beer.png') }}"
+                    alt="" class="nav-icon">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{%
+                endif %}</a>
         </nav>
 
         <div class="content-container">
             <aside class="sidebar">
                 <div class="panel-box">
                     <ul class="menu-list">
-                        <li><a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a></li>
-                        <li><a href="{{ cv_url }}"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Download CV{% else
+                        <li><a href="{{ url_for('main.home') }}"><img
+                                    src="{{ url_for('static', filename='images/icons/house.png') }}" alt=""
+                                    class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
+                        </li>
+                        <li><a href="{{ cv_url }}"><img
+                                    src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt=""
+                                    class="nav-icon">{% if current_lang == 'en' %}Download CV{% else
                                 %}Descargar CV{% endif %}</a></li>
-                        <li><a href="{{ url_for('main.homelab') }}"><img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="" class="nav-icon">Homelab</a></li>
-                        <li><a href="{{ url_for('main.setup') }}"><img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt="" class="nav-icon">Setup</a></li>
-                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/medal_award_gold.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Career{% else %}Carrera{% endif %}</a></li>
-                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/book_open.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}Guestbook{% else %}Libro de Visitas{% endif %}</a>
+                        <li><a href="{{ url_for('main.homelab') }}"><img
+                                    src="{{ url_for('static', filename='images/icons/servers.png') }}" alt=""
+                                    class="nav-icon">Homelab</a></li>
+                        <li><a href="{{ url_for('main.setup') }}"><img
+                                    src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt=""
+                                    class="nav-icon">Setup</a></li>
+                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/medal_award_gold.png') }}"
+                                    alt="" class="nav-icon">{% if current_lang == 'en' %}Career{% else %}Carrera{% endif
+                                %}</a></li>
+                        <li><a href="#"><img src="{{ url_for('static', filename='images/icons/book_open.png') }}" alt=""
+                                    class="nav-icon">{% if current_lang == 'en' %}Guestbook{% else %}Libro de Visitas{%
+                                endif %}</a>
                         </li>
                     </ul>
                 </div>
 
                 <div class="panel-box">
-                    <div class="panel-header"><img src="{{ url_for('static', filename='images/icons/beer.png') }}" alt="" class="nav-icon">{% if current_lang == 'en' %}BeerCat Project{% else %}Proyecto BeerCat{%
+                    <div class="panel-header"><img src="{{ url_for('static', filename='images/icons/beer.png') }}"
+                            alt="" class="nav-icon">{% if current_lang == 'en' %}BeerCat Project{% else %}Proyecto
+                        BeerCat{%
                         endif %}</div>
                     <div class="spotlight-content">
                         <div>{% if current_lang == 'en' %}Learn more about this project on our
-                            <a href="{{ url_for('main.beercat') }}">dedicated page</a>, or visit the official site: <a href="https://beercat.cl" target="_blank">BeerCat</a>{% else %}Conoce más sobre este proyecto en nuestra
+                            <a href="{{ url_for('main.beercat') }}">dedicated page</a>, or visit the official site: <a
+                                href="https://beercat.cl" target="_blank">BeerCat</a>{% else %}Conoce más sobre este
+                            proyecto en nuestra
                             <a href="{{ url_for('main.beercat') }}">página dedicada</a>, o visita el sitio oficial: <a
-                                href="https://beercat.cl" target="_blank">BeerCat</a>{% endif %}</div>
+                                href="https://beercat.cl" target="_blank">BeerCat</a>{% endif %}
+                        </div>
                         <div class="spotlight-img"></div>
                     </div>
                 </div>
@@ -110,9 +153,15 @@
 
                 <img src="{{ url_for('static', filename='images/announces/N6KVmek.gif') }}" class="announcement-image">
 
-                <img src="{{ url_for('static', filename='images/announces/anti-cgnat.jpg') }}" class="announcement-image">
+                <img src="{{ url_for('static', filename='images/announces/anti-cgnat.jpg') }}"
+                    class="announcement-image">
 
-                <img src="{{ url_for('utils.visitor_counter') }}" style="width: 130px; display: block; margin: 0 auto; pointer-events: none; user-select: none;" alt="Visitor Counter">
+                <img src="{{ url_for('static', filename='images/announces/make-html-site.png') }}"
+                    class="announcement-image">
+
+                <img src="{{ url_for('utils.visitor_counter') }}"
+                    style="width: 130px; display: block; margin: 0 auto; pointer-events: none; user-select: none;"
+                    alt="Visitor Counter">
 
             </aside>
 
