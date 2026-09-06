@@ -31,7 +31,7 @@
 
         <div class="payday-features">
             <div class="payday-feature">
-                <img src="{{ url_for('static', filename='images/icons/server_database.png') }}" alt="" class="payday-feature-icon">
+                <img src="{{ url_for('static', filename='images/icons/cobol.webp') }}" alt="" class="payday-feature-icon">
                 <div>
                     <div class="payday-feature-title">Núcleo bancario en COBOL</div>
                     <div class="payday-feature-desc">Subproceso legado que procesa cuentas y transacciones como un sistema real.</div>
@@ -67,11 +67,12 @@
             {% if payday_screenshots %}
             <div class="payday-gallery-grid" id="payday-gallery-grid">
                 {% for shot in payday_screenshots %}
+                {% set shot_name = shot.rsplit('.', 1)[0].replace('payday-bank-', '').replace('-', ' ')|title %}
                 <button type="button" class="payday-gallery-item"
                         data-full="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
-                        data-title="PAYDAY BANK">
+                        data-title="PAYDAY BANK — {{ shot_name }}">
                     <img src="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
-                         class="payday-gallery-thumb" alt="Captura de PAYDAY BANK" loading="lazy">
+                         class="payday-gallery-thumb" alt="PAYDAY BANK — {{ shot_name }} (captura)" loading="lazy">
                 </button>
                 {% endfor %}
             </div>
@@ -140,6 +141,9 @@
             web y móviles, así como en el desarrollo de software de escritorio. Con un enfoque en la calidad del código,
             la eficiencia y la experiencia del usuario, busco constantemente mejorar mis habilidades y mantenerme
             actualizado con las últimas tecnologías y tendencias en el desarrollo de software.
+
+            <img src="{{ url_for('static', filename='images/home/sdlc.png') }}" alt="SDLC" class="home-sdlc">
+
             <br><br>
             Desarrollar no es solo trabajo, es un estilo de vida. Me apasiona crear soluciones innovadoras y eficientes
             que resuelvan problemas del mundo real y mejoren la vida de las personas. Siempre me quedo con un poco de lo
