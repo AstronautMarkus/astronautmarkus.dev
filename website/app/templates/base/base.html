@@ -38,8 +38,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Arimo:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@1,600;1,700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
     {% block extra_css %}{% endblock %}
@@ -49,6 +50,7 @@
 <body>
 
     <div class="page-wrapper">
+        <div class="rainbow-bar" aria-hidden="true"></div>
         <div class="header-top-nav">
             <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}><img
                     src="{{ url_for('static', filename='images/icons/flag_usa.png') }}" alt="English" class="icon">{% if

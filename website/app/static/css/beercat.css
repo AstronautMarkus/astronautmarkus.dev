@@ -1,7 +1,7 @@
 /* ── BeerCat Project page ──────────────────────────────────────────────────
-   Same navy-header/card tokens as home.css/about_me.css (#1c3b68 → #2e5984,
-   .welcome-card/.card-header boxes) but kept under its own beercat- prefix
-   since none of those files are loaded on this page.
+   Same Mac System 7 chrome tokens (tokens.css) as home.css/about_me.css but
+   kept under its own beercat- prefix since none of those files are loaded
+   on this page.
 */
 
 /* ── Hero banner ────────────────────────────────────────────────────────── */
@@ -9,10 +9,10 @@
 .beercat-hero-wrap {
     position: relative;
     margin-bottom: 15px;
-    border-radius: 8px;
+    border-radius: 0;
     overflow: hidden;
-    border: 1px solid #b0c4de;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-2);
 }
 
 .beercat-hero-img {
@@ -29,19 +29,21 @@
     flex-direction: column;
     justify-content: flex-end;
     padding: 14px 16px;
-    background: linear-gradient(to top, rgba(10, 15, 30, 0.88) 0%, rgba(10, 15, 30, 0.15) 65%, rgba(10, 15, 30, 0) 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.15) 65%, rgba(0, 0, 0, 0) 100%);
 }
 
 .beercat-hero-title {
-    color: #fff;
-    font-size: 17px;
-    font-weight: bold;
+    color: var(--mac-white);
+    font-family: var(--font-wordmark);
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 700;
     letter-spacing: 0.3px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .beercat-hero-tagline {
-    color: #dbe6f2;
+    color: var(--mac-grey-1);
     font-size: 10.5px;
     font-style: italic;
     margin-top: 3px;
@@ -54,19 +56,20 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
     text-transform: uppercase;
-    color: #fff;
-    background: rgba(10, 15, 30, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 3px;
+    color: var(--mac-white);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--mac-white);
+    border-radius: 2px;
     padding: 4px 8px;
     text-decoration: none;
 }
 
 .beercat-hero-external:hover {
-    background: rgba(10, 15, 30, 0.8);
+    background: rgba(0, 0, 0, 0.9);
 }
 
 /* ── Intro ──────────────────────────────────────────────────────────────── */
@@ -80,14 +83,15 @@
 .beercat-intro-text {
     font-size: 10.5px;
     line-height: 1.5;
-    color: #222;
+    color: var(--mac-black);
     text-align: justify;
 }
 
 .beercat-intro-text::first-letter {
-    font-size: 14px;
+    font-family: var(--font-wordmark);
+    font-size: 16px;
     font-weight: bold;
-    color: #1c3b68;
+    color: var(--mac-black);
 }
 
 .beercat-intro-text p {
@@ -109,9 +113,9 @@
 .beercat-service-item {
     display: flex;
     gap: 8px;
-    background: #ffffff;
-    border: 1px solid #d0d8e0;
-    border-radius: 5px;
+    background: var(--mac-white);
+    border: 1px solid var(--mac-black);
+    border-radius: 2px;
     padding: 9px;
 }
 
@@ -125,14 +129,14 @@
 .beercat-service-title {
     font-size: 10px;
     font-weight: bold;
-    color: #16233a;
+    color: var(--mac-black);
     margin-bottom: 3px;
 }
 
 .beercat-service-desc {
     font-size: 9.5px;
     line-height: 1.4;
-    color: #444;
+    color: var(--mac-grey-6);
 }
 
 /* ── Value props ────────────────────────────────────────────────────────── */
@@ -144,20 +148,21 @@
 }
 
 .beercat-fact-item {
-    background: #ffffff;
-    border: 1px solid #d0d8e0;
-    border-radius: 5px;
+    background: var(--mac-white);
+    border: 1px solid var(--mac-black);
+    border-radius: 2px;
     padding: 8px;
     font-size: 10px;
     line-height: 1.4;
-    color: #222;
+    color: var(--mac-black);
 }
 
 .beercat-fact-item .beercat-fact-label {
     display: block;
+    font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
-    color: #1c3b68;
+    color: var(--mac-black);
     text-transform: uppercase;
     margin-bottom: 3px;
 }
@@ -170,13 +175,13 @@
 }
 
 .beercat-tag {
-    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
-    border: 1px solid #b0c4de;
-    color: #1a2a3a;
+    background: var(--mac-grey-1);
+    border: 1px solid var(--mac-black);
+    color: var(--mac-black);
     font-size: 9px;
     font-weight: bold;
     padding: 3px 7px;
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 /* ── Media / logo placeholders ─────────────────────────────────────────── */
@@ -195,10 +200,10 @@
     justify-content: center;
     gap: 6px;
     text-align: center;
-    background: #eef3f8;
-    border: 2px dashed #b0c4de;
-    border-radius: 5px;
-    color: #6a7f99;
+    background: var(--mac-grey-1);
+    border: 2px dashed var(--mac-grey-4);
+    border-radius: 2px;
+    color: var(--mac-grey-6);
     padding: 8px;
 }
 
@@ -210,6 +215,7 @@
 }
 
 .beercat-media-placeholder-label {
+    font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
     text-transform: uppercase;
@@ -223,7 +229,7 @@
 
 .beercat-media-note {
     font-size: 9.5px;
-    color: #6a7f99;
+    color: var(--mac-grey-6);
     font-style: italic;
     margin-top: 10px;
 }
@@ -242,7 +248,7 @@
 .beercat-cta-text {
     font-size: 10.5px;
     line-height: 1.4;
-    color: #222;
+    color: var(--mac-black);
     max-width: 380px;
 }
 
@@ -250,20 +256,24 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.3px;
-    color: #fff;
-    background: #1c3b68;
-    border-radius: 4px;
+    color: var(--mac-black);
+    background: var(--mac-grey-2);
+    border: 1px solid var(--mac-black);
+    border-top: 3px solid var(--rainbow-orange);
+    border-radius: var(--radius-button);
     padding: 10px 18px;
     text-decoration: none;
     white-space: nowrap;
 }
 
 .beercat-cta-btn:hover {
-    background: #2a5288;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 .beercat-cta-btn img {
@@ -276,19 +286,21 @@
     list-style: none;
     font-size: 10px;
     line-height: 1.7;
-    color: #333;
+    color: var(--mac-black);
     padding: 0 12px 12px;
 }
 
 .beercat-contact-list strong {
-    color: #1c3b68;
+    color: var(--mac-black);
 }
 
 @media (max-width: 480px) {
+
     .beercat-services-grid,
     .beercat-facts-grid {
         grid-template-columns: 1fr;
     }
+
     .beercat-media-grid {
         grid-template-columns: repeat(2, 1fr);
     }

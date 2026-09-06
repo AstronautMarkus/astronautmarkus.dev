@@ -1,0 +1,35 @@
+:root {
+    /* greyscale chrome ramp */
+    --mac-white: #ffffff;
+    --mac-grey-1: #eeeeee;
+    --mac-grey-2: #dddddd;
+    --mac-grey-3: #c0c0c0;
+    --mac-grey-4: #999999;
+    --mac-grey-5: #808080;
+    --mac-grey-6: #404040;
+    --mac-black: #000000;
+
+    /* rainbow accent — real 1977 logo order, top to bottom */
+    --rainbow-green: #61bb46;
+    --rainbow-yellow: #fdb827;
+    --rainbow-orange: #f5821f;
+    --rainbow-red: #e03a3e;
+    --rainbow-purple: #963d97;
+    --rainbow-blue: #009ddc;
+    --rainbow-gradient: linear-gradient(to right,
+            var(--rainbow-green), var(--rainbow-yellow), var(--rainbow-orange),
+            var(--rainbow-red), var(--rainbow-purple), var(--rainbow-blue));
+
+    /* shape */
+    --radius-none: 0px;
+    --radius-button: 4px;
+    --shadow-flat-1: 1px 1px 0 var(--mac-black);
+    --shadow-flat-2: 2px 2px 0 var(--mac-black);
+    --shadow-flat-3: 4px 4px 0 var(--mac-black);
+
+    /* type */
+    --font-chrome: 'Silkscreen', Geneva, 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Arimo', Helvetica, Arial, sans-serif;
+    --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+    --font-wordmark: 'EB Garamond', Georgia, 'Times New Roman', serif;
+}

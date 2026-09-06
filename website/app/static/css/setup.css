@@ -1,25 +1,28 @@
 /* ── Setup page ─────────────────────────────────────────────────────────
-   Same navy-header/card tokens as homelab.css/about_me.css
-   (#1c3b68 → #2e5984) but kept under its own setup- prefix since neither
-   of those files is loaded on this page.
+   Same Mac System 7 chrome tokens (tokens.css) as homelab.css/about_me.css
+   but kept under its own setup- prefix since neither of those files is
+   loaded on this page.
 */
 
 .setup-card {
-    background: #e2eaf2;
-    border: 1px solid #b0c4de;
-    border-radius: 8px;
+    background: var(--mac-white);
+    border: 2px solid var(--mac-black);
+    border-radius: 0;
     padding: 2px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-flat-2);
     margin-bottom: 15px;
 }
 
 .setup-card-header {
-    background: linear-gradient(to bottom, #1c3b68, #2e5984);
-    color: white;
+    background: var(--mac-grey-2);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
     padding: 6px 10px;
-    border-radius: 6px 6px 0 0;
+    border-radius: 0;
+    border-bottom: 3px solid;
+    border-image: var(--rainbow-gradient) 1;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -46,21 +49,22 @@
     height: 165px;
     object-fit: cover;
     display: block;
-    border: 2px solid #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-2);
 }
 
 .setup-hero-text {
     font-size: 10.5px;
     line-height: 1.5;
-    color: #222;
+    color: var(--mac-black);
     text-align: justify;
 }
 
 .setup-hero-text::first-letter {
-    font-size: 14px;
+    font-family: var(--font-wordmark);
+    font-size: 16px;
     font-weight: bold;
-    color: #1c3b68;
+    color: var(--mac-black);
 }
 
 .setup-hero-text p {
@@ -82,10 +86,10 @@
 }
 
 .setup-item {
-    background: #ffffff;
-    border: 1px solid #d0d8e0;
-    border-radius: 6px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+    background: var(--mac-white);
+    border: 1px solid var(--mac-black);
+    border-radius: 0;
+    box-shadow: var(--shadow-flat-1);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -96,8 +100,8 @@
     height: 130px;
     object-fit: cover;
     display: block;
-    border-bottom: 1px solid #d0d8e0;
-    background: #e8eef4;
+    border-bottom: 1px solid var(--mac-black);
+    background: var(--mac-grey-1);
 }
 
 .setup-item-body {
@@ -111,29 +115,30 @@
 .setup-item-title {
     font-size: 11px;
     font-weight: bold;
-    color: #16233a;
+    color: var(--mac-black);
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
 .setup-item-role {
+    font-family: var(--font-chrome);
     font-size: 8.5px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    color: #fff;
-    background: #5a7a9e;
+    color: var(--mac-white);
+    background: var(--mac-black);
     display: inline-block;
     padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 2px;
     align-self: flex-start;
 }
 
 .setup-item-desc {
     font-size: 9.5px;
     line-height: 1.4;
-    color: #333;
+    color: var(--mac-grey-6);
     flex: 1;
 }
 
@@ -144,11 +149,11 @@
 }
 
 .setup-tag {
-    background: linear-gradient(to bottom, #eef4f8, #d5e1ed);
-    border: 1px solid #b0c4de;
-    color: #1a2a3a;
+    background: var(--mac-grey-1);
+    border: 1px solid var(--mac-black);
+    color: var(--mac-black);
     font-size: 8.5px;
     font-weight: bold;
     padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 2px;
 }

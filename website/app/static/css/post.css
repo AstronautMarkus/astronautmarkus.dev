@@ -1,15 +1,14 @@
 /* ── Blog: list + post detail ──────────────────────────────────────────────
-   Reuses the exact tokens already in styles.css / home.css: navy header
-   gradient (#1c3b68 → #2a5288), panel-box light-blue containers, hard-coded
-   colors (no CSS vars site-wide), 6-8px radius only on outer card/panel
-   containers, small 9-11px bold labels. No new breakpoints: the rest of the
-   site is a fixed 820px desktop-only layout, so this doesn't add any either.
+   Reuses the Mac System 7 chrome tokens (tokens.css): black hairline
+   borders, flat title-bar boxes, no radius except buttons, hard-edged
+   shadows only on outer/floating elements. No new breakpoints: the rest of
+   the site is a fixed 820px desktop-only layout, so this doesn't add any
+   either.
 */
 
 /* ── Banner ─────────────────────────────────────────────────────────────── */
 /* Reuses .welcome-card / .card-header from home.css so the blog page matches
-   the home page exactly: same 8px outer radius, same shadow, same header
-   gradient — instead of its own one-off rounded block. */
+   the home page exactly — same outer window, same title-bar recipe. */
 
 .blog-banner-title {
     display: flex;
@@ -20,7 +19,7 @@
 .blog-banner-intro {
     font-size: 10.5px;
     line-height: 1.4;
-    color: #222;
+    color: var(--mac-black);
 }
 
 .pixel-icon {
@@ -78,10 +77,9 @@
 /* ── Sidebar boxes (shared by list + post) — clone of .panel-box/.panel-header */
 
 .blog-sidebar-box {
-    background: #d8e2ed;
-    border: 1px solid #fff;
-    border-radius: 6px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    background: var(--mac-white);
+    border: 1px solid var(--mac-black);
+    border-radius: 0;
     overflow: hidden;
     /* Flex children of the sticky column default to flex-shrink: 1, which
        squeezes this box below its content height (clipped by overflow:
@@ -94,13 +92,15 @@
 .blog-sidebar-box h4 {
     display: flex;
     align-items: center;
-    background: linear-gradient(to bottom, #1c3b68, #2a5288);
-    color: #fff;
+    background: var(--mac-grey-2);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
     font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
     padding: 5px 8px;
-    border-bottom: 1px solid #fff;
+    border-bottom: 3px solid;
+    border-image: var(--rainbow-gradient) 1;
 }
 
 .blog-sidebar-box ul {
@@ -108,7 +108,7 @@
 }
 
 .blog-sidebar-box li {
-    border-bottom: 1px solid #b8c8d8;
+    border-bottom: 1px solid var(--mac-grey-4);
 }
 
 .blog-sidebar-box li:last-child {
@@ -120,23 +120,23 @@
     padding: 5px 8px;
     font-size: 9.5px;
     font-weight: normal;
-    color: #1a2a3a;
+    color: var(--mac-black);
     text-decoration: none;
-    background: #fff;
+    background: var(--mac-white);
 }
 
 .blog-sidebar-box li:nth-child(even) a {
-    background: #f0f4f8;
+    background: var(--mac-grey-1);
 }
 
 .blog-sidebar-box a:hover {
-    background: #eef4f8;
-    color: #000;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 .blog-sidebar-box a.blog-cat-active {
-    background: #1c3b68;
-    color: #fff;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 /* "Post Info" box: plain label/value lines, some with an inline link mixed
@@ -146,7 +146,7 @@
     padding: 5px 8px;
     font-size: 9.5px;
     font-weight: bold;
-    color: #1a2a3a;
+    color: var(--mac-black);
     text-transform: uppercase;
 }
 
@@ -154,12 +154,8 @@
     display: inline;
     padding: 0;
     background: none;
-    color: #1c3b68;
+    color: var(--mac-black);
     text-decoration: underline;
-}
-
-.sidebar-info-list a:hover {
-    color: #000;
 }
 
 /* ── Post rows (blog list) ─────────────────────────────────────────────── */
@@ -169,7 +165,7 @@
 .blog-post-row {
     display: flex;
     padding: 10px 12px;
-    border-bottom: 1px dashed #b0c4de;
+    border-bottom: 1px dashed var(--mac-grey-4);
 }
 
 .blog-post-row:last-of-type {
@@ -187,8 +183,8 @@
     height: 90px;
     object-fit: cover;
     display: block;
-    border: 1px solid #fff;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-1);
 }
 
 .blog-post-thumb-placeholder {
@@ -196,9 +192,11 @@
     height: 90px;
     flex-shrink: 0;
     margin-right: 10px;
-    background: linear-gradient(to right, #507299, #7092b9);
-    border: 1px solid #fff;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    background-image: repeating-linear-gradient(45deg,
+            var(--mac-grey-1) 0 8px,
+            var(--mac-grey-2) 8px 16px);
+    border: 1px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-1);
 }
 
 .blog-post-body {
@@ -209,15 +207,16 @@
 }
 
 .blog-post-meta {
+    font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
-    color: #5a7a9e;
+    color: var(--mac-grey-6);
     text-transform: uppercase;
     margin-bottom: 3px;
 }
 
 .blog-post-meta a {
-    color: #1c3b68;
+    color: var(--mac-black);
     text-decoration: none;
 }
 
@@ -232,44 +231,47 @@
 }
 
 .blog-post-body h3 a {
-    color: #16233a;
+    color: var(--mac-black);
     text-decoration: none;
 }
 
 .blog-post-body h3 a:hover {
-    color: #1c3b68;
     text-decoration: underline;
 }
 
 .blog-post-excerpt {
     font-size: 10px;
     line-height: 1.4;
-    color: #444;
+    color: var(--mac-grey-6);
     flex: 1;
 }
 
 .blog-read-more {
     align-self: flex-start;
     margin-top: 6px;
+    font-family: var(--font-chrome);
     font-size: 8.5px;
     font-weight: bold;
     text-transform: uppercase;
-    color: #fff;
-    background: #1c3b68;
-    border-radius: 3px;
+    color: var(--mac-black);
+    background: var(--mac-grey-2);
+    border: 1px solid var(--mac-black);
+    border-radius: var(--radius-button);
     padding: 3px 8px;
     text-decoration: none;
 }
 
 .blog-read-more:hover {
-    background: #2a5288;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 /* ── Pagination ────────────────────────────────────────────────────────── */
 /* Footer bar inside the .welcome-card, same idiom as .news-footer/.alert-footer. */
 
 .blog-pagination-footer {
-    background: #d8e2ed;
+    background: var(--mac-grey-2);
+    border-top: 1px solid var(--mac-black);
     padding: 6px 8px;
 }
 
@@ -285,40 +287,42 @@
     min-width: 22px;
     text-align: center;
     padding: 3px 7px;
+    font-family: var(--font-chrome);
     font-size: 9.5px;
     font-weight: bold;
-    color: #1c3b68;
-    background: #d8e2ed;
-    border: 1px solid #fff;
-    border-radius: 3px;
+    color: var(--mac-black);
+    background: var(--mac-white);
+    border: 1px solid var(--mac-black);
+    border-radius: var(--radius-button);
     text-decoration: none;
 }
 
 .blog-page-btn:hover {
-    background: #fff;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 .blog-page-btn.current {
-    background: #1c3b68;
-    border-color: #1c3b68;
-    color: #fff;
+    background: var(--mac-black);
+    border-color: var(--mac-black);
+    color: var(--mac-white);
 }
 
 .blog-page-btn.disabled {
-    color: #9aa8b8;
-    background: #eef2f6;
+    color: var(--mac-grey-4);
+    background: var(--mac-grey-1);
     pointer-events: none;
 }
 
 /* ── Post cover ────────────────────────────────────────────────────────── */
-/* Kept small and fixed-height, styled like .feature-image (white border,
-   soft shadow, no rounding) so it can never overflow its column. */
+/* Kept small and fixed-height, styled like .feature-image (black border,
+   flat hard-edged shadow, no rounding) so it can never overflow its column. */
 
 .post-cover-wrap {
     position: relative;
     margin-bottom: 12px;
-    border: 2px solid #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-2);
 }
 
 .post-cover-img {
@@ -334,22 +338,22 @@
     right: 0;
     bottom: 0;
     padding: 8px 10px;
-    background: linear-gradient(to top, rgba(10, 20, 35, 0.85), rgba(10, 20, 35, 0));
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
 }
 
 .post-cover-title {
-    color: #fff;
+    color: var(--mac-white);
     font-size: 13px;
     font-weight: bold;
     line-height: 1.3;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 }
 
 /* ── Post header / meta ────────────────────────────────────────────────── */
 
 .post-header h1 {
     font-size: 15px;
-    color: #16233a;
+    color: var(--mac-black);
     margin-bottom: 5px;
 }
 
@@ -358,39 +362,42 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 5px;
+    font-family: var(--font-chrome);
     font-size: 9.5px;
     font-weight: bold;
-    color: #5a7a9e;
+    color: var(--mac-grey-6);
     text-transform: uppercase;
     margin-bottom: 10px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #d0d8e0;
+    border-bottom: 1px solid var(--mac-grey-4);
 }
 
 .post-meta-cat {
-    color: #1c3b68;
-    background: #d8e2ed;
-    border: 1px solid #fff;
-    border-radius: 3px;
+    color: var(--mac-black);
+    background: var(--mac-grey-2);
+    border: 1px solid var(--mac-black);
+    border-radius: 2px;
     padding: 2px 6px;
     text-decoration: none;
 }
 
 .post-meta-cat:hover {
-    background: #fff;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 .post-meta-lang a {
-    color: #1c3b68;
+    color: var(--mac-black);
     text-decoration: underline;
 }
 
 /* ── Prose (rendered markdown content) ────────────────────────────────── */
 
 .prose {
+    font-family: var(--font-body);
     font-size: 11px;
     line-height: 1.55;
-    color: #222;
+    color: var(--mac-black);
 }
 
 .prose>*+* {
@@ -403,7 +410,7 @@
 .prose h4,
 .prose h5,
 .prose h6 {
-    color: #16233a;
+    color: var(--mac-black);
     font-weight: bold;
     line-height: 1.3;
     scroll-margin-top: 15px;
@@ -411,19 +418,20 @@
 
 .prose h1 {
     font-size: 15px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #1c3b68;
+    padding-bottom: 6px;
+    border-bottom: 3px solid;
+    border-image: var(--rainbow-gradient) 1;
 }
 
 .prose h2 {
     font-size: 13px;
     padding-bottom: 4px;
-    border-bottom: 1px solid #d0d8e0;
+    border-bottom: 1px solid var(--mac-grey-4);
 }
 
 .prose h3 {
     font-size: 12px;
-    color: #1c3b68;
+    color: var(--mac-black);
 }
 
 .prose h4,
@@ -431,7 +439,7 @@
 .prose h6 {
     font-size: 11px;
     text-transform: uppercase;
-    color: #2a5288;
+    color: var(--mac-grey-6);
 }
 
 .prose p {
@@ -439,15 +447,11 @@
 }
 
 .prose a {
-    color: #1c3b68;
-}
-
-.prose a:hover {
-    color: #2a5288;
+    color: var(--mac-black);
 }
 
 .prose strong {
-    color: #16233a;
+    color: var(--mac-black);
 }
 
 .prose ul,
@@ -460,9 +464,9 @@
 }
 
 .prose blockquote {
-    border-left: 3px solid #1c3b68;
-    background: #eef4f8;
-    color: #3a4a5a;
+    border-left: 4px solid var(--mac-black);
+    background: var(--mac-grey-1);
+    color: var(--mac-black);
     padding: 6px 10px;
 }
 
@@ -472,7 +476,7 @@
 
 .prose hr {
     border: none;
-    border-top: 1px dashed #b0c4de;
+    border-top: 1px dashed var(--mac-grey-4);
     margin: 2px 0;
 }
 
@@ -483,8 +487,8 @@
     width: auto;
     height: auto;
     margin: 0 auto;
-    border: 2px solid #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-2);
 }
 
 .prose iframe {
@@ -492,17 +496,17 @@
     max-width: 100%;
     max-height: 420px;
     margin: 0 auto;
-    border: 2px solid #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-2);
 }
 
 .prose code {
-    font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 10px;
-    background: #eef2f6;
-    border: 1px solid #d8e0e8;
+    background: var(--mac-grey-1);
+    border: 1px solid var(--mac-grey-4);
     padding: 1px 4px;
-    color: #8a1c1c;
+    color: var(--mac-black);
 }
 
 .code-block-wrap {
@@ -510,46 +514,49 @@
 }
 
 .prose pre {
-    background: #16233a;
+    background: var(--mac-grey-6);
     padding: 10px 12px;
     overflow-x: auto;
-    border: 1px solid #0a1626;
+    border: 1px solid var(--mac-black);
 }
 
 .code-copy-btn {
     position: absolute;
     top: 6px;
     right: 6px;
-    background: linear-gradient(to bottom, #2a5288, #1c3b68);
-    color: #fff;
+    background: var(--mac-grey-2);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.3px;
     padding: 3px 8px;
-    border: 1px solid #4a6a92;
-    border-radius: 3px;
+    border: 1px solid var(--mac-black);
+    border-radius: var(--radius-button);
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.85;
     transition: opacity 0.15s ease, background 0.15s ease;
 }
 
 .code-copy-btn:hover {
     opacity: 1;
-    background: linear-gradient(to bottom, #35619c, #24447a);
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 .code-copy-btn.copied {
     opacity: 1;
-    background: linear-gradient(to bottom, #2e7d4f, #1f5c38);
-    border-color: #4caf7d;
+    background: var(--rainbow-green);
+    color: var(--mac-black);
+    border-color: var(--mac-black);
 }
 
 .prose pre code {
     background: none;
     border: none;
     padding: 0;
-    color: #dce8f5;
+    color: var(--mac-grey-1);
     font-size: 10px;
     line-height: 1.5;
 }
@@ -562,18 +569,18 @@
 
 .prose th,
 .prose td {
-    border: 1px solid #d0d8e0;
+    border: 1px solid var(--mac-black);
     padding: 5px 7px;
     text-align: left;
 }
 
 .prose th {
-    background: #d8e2ed;
-    color: #16233a;
+    background: var(--mac-grey-2);
+    color: var(--mac-black);
 }
 
 .prose tr:nth-child(even) td {
-    background: #f4f6f8;
+    background: var(--mac-grey-1);
 }
 
 /* ── Post gallery ──────────────────────────────────────────────────────── */
@@ -585,10 +592,11 @@
 .post-gallery h4 {
     display: flex;
     align-items: center;
+    font-family: var(--font-chrome);
     font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
-    color: #1c3b68;
+    color: var(--mac-black);
     margin-bottom: 6px;
 }
 
@@ -602,8 +610,8 @@
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border: 2px solid #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--mac-black);
+    box-shadow: var(--shadow-flat-1);
 }
 
 /* CRT power-on flicker, staggered per-thumbnail as it enters view */
@@ -678,19 +686,21 @@
 .post-back {
     display: inline-block;
     margin-top: 18px;
+    font-family: var(--font-chrome);
     font-size: 9.5px;
     font-weight: bold;
     text-transform: uppercase;
-    color: #1c3b68;
-    background: #d8e2ed;
-    border: 1px solid #fff;
-    border-radius: 3px;
+    color: var(--mac-black);
+    background: var(--mac-grey-2);
+    border: 1px solid var(--mac-black);
+    border-radius: var(--radius-button);
     padding: 5px 10px;
     text-decoration: none;
 }
 
 .post-back:hover {
-    background: #fff;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 /* ── Table of contents ────────────────────────────────────────────────── */
@@ -714,7 +724,7 @@
     min-height: 40px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #1c3b68 #d8e2ed;
+    scrollbar-color: var(--mac-grey-5) var(--mac-grey-1);
 }
 
 #toc-list::-webkit-scrollbar {
@@ -722,16 +732,16 @@
 }
 
 #toc-list::-webkit-scrollbar-track {
-    background: #d8e2ed;
+    background: var(--mac-grey-1);
 }
 
 #toc-list::-webkit-scrollbar-thumb {
-    background: #1c3b68;
-    border-radius: 3px;
+    background: var(--mac-grey-5);
+    border-radius: 2px;
 }
 
 #toc-list::-webkit-scrollbar-thumb:hover {
-    background: #2a5288;
+    background: var(--mac-grey-6);
 }
 
 #toc-list li {
@@ -743,7 +753,7 @@
     padding: 3px 8px !important;
     font-size: 9px !important;
     font-weight: normal !important;
-    color: #3a4a5a !important;
+    color: var(--mac-grey-6) !important;
     text-transform: none !important;
     border-left: 2px solid transparent;
 }
@@ -759,20 +769,20 @@
 }
 
 #toc-list a:hover {
-    background: #fff !important;
-    color: #1c3b68 !important;
+    background: var(--mac-black) !important;
+    color: var(--mac-white) !important;
 }
 
 #toc-list a.toc-active {
-    border-left-color: #1c3b68;
-    background: #fff !important;
-    color: #1c3b68 !important;
+    border-left-color: var(--mac-black);
+    background: var(--mac-grey-1) !important;
+    color: var(--mac-black) !important;
     font-weight: bold !important;
 }
 
 .toc-empty {
     padding: 6px 8px;
     font-size: 9.5px;
-    color: #5a6a7a;
+    color: var(--mac-grey-6);
     font-style: italic;
 }

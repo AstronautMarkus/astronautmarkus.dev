@@ -1,25 +1,28 @@
 /* ── PDF Generator page ─────────────────────────────────────────────────
-   Same navy-header/card tokens as home.css / homelab.css
-   (#1c3b68 → #2e5984, .welcome-card boxes) kept under its own pdfgen-
-   prefix since home.css isn't loaded on this page.
+   Same Mac System 7 chrome tokens (tokens.css) as home.css / homelab.css
+   kept under its own pdfgen- prefix since home.css isn't loaded on this
+   page.
 */
 
 .pdfgen-card {
-    background: #e2eaf2;
-    border: 1px solid #b0c4de;
-    border-radius: 8px;
+    background: var(--mac-white);
+    border: 2px solid var(--mac-black);
+    border-radius: 0;
     padding: 2px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-flat-2);
     margin-bottom: 15px;
 }
 
 .pdfgen-card-header {
-    background: linear-gradient(to bottom, #1c3b68, #2e5984);
-    color: white;
+    background: var(--mac-grey-2);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
     padding: 6px 10px;
-    border-radius: 6px 6px 0 0;
+    border-radius: 0;
+    border-bottom: 3px solid;
+    border-image: var(--rainbow-gradient) 1;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -32,7 +35,7 @@
 .pdfgen-intro {
     font-size: 10.5px;
     line-height: 1.5;
-    color: #222;
+    color: var(--mac-black);
     text-align: justify;
     margin: 0;
 }
@@ -49,13 +52,13 @@
 .pdfgen-mode-card {
     position: relative;
     display: block;
-    background: #e2eaf2;
-    border: 1px solid #b0c4de;
-    border-radius: 8px;
+    background: var(--mac-white);
+    border: 1px solid var(--mac-black);
+    border-radius: 0;
     padding: 12px 14px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-flat-1);
     cursor: pointer;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: outline-color 0.15s ease;
 }
 
 .pdfgen-mode-card input[type="radio"] {
@@ -66,12 +69,12 @@
 }
 
 .pdfgen-mode-card:hover {
-    border-color: #7092b9;
+    background: var(--mac-grey-1);
 }
 
 .pdfgen-mode-card.selected {
-    border-color: #1c3b68;
-    box-shadow: 0 0 0 2px rgba(28, 59, 104, 0.35), 2px 2px 8px rgba(0, 0, 0, 0.15);
+    outline: 2px solid var(--rainbow-blue);
+    outline-offset: -2px;
 }
 
 .pdfgen-mode-title {
@@ -80,7 +83,7 @@
     gap: 6px;
     font-size: 11px;
     font-weight: bold;
-    color: #1c3b68;
+    color: var(--mac-black);
     margin-bottom: 6px;
     padding-right: 20px;
 }
@@ -88,7 +91,7 @@
 .pdfgen-mode-desc {
     font-size: 10px;
     line-height: 1.45;
-    color: #333;
+    color: var(--mac-grey-6);
     margin-bottom: 8px;
 }
 
@@ -102,10 +105,10 @@
     display: inline-block;
     font-size: 8.5px;
     font-weight: bold;
-    color: #1c3b68;
-    background: #cddaea;
-    border: 1px solid #b0c4de;
-    border-radius: 10px;
+    color: var(--mac-black);
+    background: var(--mac-grey-1);
+    border: 1px solid var(--mac-black);
+    border-radius: 2px;
     padding: 2px 8px;
 }
 
@@ -120,21 +123,23 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    font-family: var(--font-chrome);
     font-size: 10.5px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    color: #fff;
-    background: #1c3b68;
-    border: none;
-    border-radius: 3px;
+    color: var(--mac-black);
+    background: var(--mac-grey-2);
+    border: 1px solid var(--mac-black);
+    border-top: 3px solid var(--rainbow-orange);
+    border-radius: var(--radius-button);
     padding: 9px 20px;
     cursor: pointer;
-    font-family: inherit;
 }
 
 .pdfgen-btn:hover {
-    background: #2a5288;
+    background: var(--mac-black);
+    color: var(--mac-white);
 }
 
 .pdfgen-btn img.icon {
@@ -143,7 +148,7 @@
 
 .pdfgen-note {
     font-size: 9px;
-    color: #555;
+    color: var(--mac-grey-6);
     margin: 8px 0 0;
 }
 
@@ -155,7 +160,7 @@
     padding: 0;
     font-size: 10px;
     line-height: 1.9;
-    color: #222;
+    color: var(--mac-black);
 }
 
 .pdfgen-tech-list li {
