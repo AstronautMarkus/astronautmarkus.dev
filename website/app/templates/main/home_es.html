@@ -9,6 +9,27 @@
 {% endblock %}
 
 {% block content %}
+<section class="welcome-card alert-card">
+    <div class="card-header alert-header">
+        <img src="{{ url_for('static', filename='images/icons/apple.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.5
+    </div>
+    <div class="alert-stripe"></div>
+    <div class="alert-body">
+        <div class="alert-intro">
+            Todo el sitio recibió una mano de pintura beige. Registro de cambios abajo, porque la historia importa:
+        </div>
+        <ul class="alert-list">
+            <li><span class="alert-tag security">SEGURIDAD</span> Erradicado el último píxel del azul de Windows 98. Contenido. Incinerado.</li>
+            <li><span class="alert-tag new">NUEVO</span> La franja arcoíris de seis colores, de vuelta en servicio en cada barra de título.</li>
+            <li><span class="alert-tag removed">ELIMINADO</span> Todas las sombras suaves y difuminadas del sitio. Esta casa ahora es de sombras planas.</li>
+            <li><span class="alert-tag improved">MEJORADO</span> Las páginas 404 ahora traen un ícono de bomba de verdad. Muy acorde a "fallo catastrófico."</li>
+            <li><span class="alert-tag fixed">CORREGIDO</span> Un bug de border-image que repintaba los acentos del sidebar en "arcoíris confundido" en vez de "arcoíris a propósito."</li>
+            <li><span class="alert-tag new">NUEVO</span> Botones que parecen a punto de expulsar un disquete si les haces clic mal.</li>
+        </ul>
+    </div>
+    <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+</section>
+
 <section class="welcome-card payday-card">
     <div class="card-header payday-header">
         <img src="{{ url_for('static', filename='images/icons/ecommerce_server.png') }}" alt="" class="nav-icon"> Proyecto Destacado
