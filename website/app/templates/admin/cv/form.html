@@ -1,7 +1,10 @@
 {% extends "admin/base.html" %}
 
 {% set is_edit = cv is not none %}
-{% set current_source = submitted_source if submitted_source is defined else (cv.source if is_edit else 'upload') %}
+{% set current_source = submitted_source if submitted_source is defined
+    else ('builder' if is_edit and builder_initial_data else (cv.source if is_edit else 'upload')) %}
+{% set selected_language = submitted_language if submitted_language is defined
+    else (cv.language if is_edit else none) %}
 
 {% block title %}{{ 'Edit CV' if is_edit else 'Upload CV' }}{% endblock %}
 {% block page_title %}{{ 'Edit CV' if is_edit else 'Upload CV' }}{% endblock %}
@@ -22,10 +25,10 @@
       <div class="form-group">
         <label for="language">Language <span style="color:#cc0000">*</span></label>
         <select id="language" name="language" required>
-          <option value="" disabled {{ 'selected' if not is_edit else '' }}>— select —</option>
+          <option value="" disabled {{ 'selected' if not selected_language else '' }}>— select —</option>
           {% for code, label in languages %}
           <option value="{{ code }}"
-            {{ 'selected' if is_edit and cv.language == code else '' }}>
+            {{ 'selected' if selected_language == code else '' }}>
             {{ label }} ({{ code.upper() }})
           </option>
           {% endfor %}
@@ -39,6 +42,8 @@
                 data-target="panel-source-upload">Upload PDF</button>
         <button type="button" class="lang-tab {{ 'active' if current_source == 'generated' else '' }}"
                 data-target="panel-source-generate">Generate from YAML</button>
+        <button type="button" class="lang-tab {{ 'active' if current_source == 'builder' else '' }}"
+                data-target="panel-source-builder">Build from Scratch</button>
       </div>
       <input type="hidden" name="source" id="source_field" value="{{ current_source }}">
 
@@ -78,6 +83,61 @@
         </div>
       </div>
 
+      <!-- ── Builder panel ─────────────────────────────────────── -->
+      <div class="lang-panel {{ 'active' if current_source == 'builder' else '' }}" id="panel-source-builder">
+
+        <div class="builder-block-title">Header</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="builder_name">Name <span class="text-required">*</span></label>
+            <input type="text" id="builder_name" placeholder="Jane Doe">
+          </div>
+          <div class="form-group">
+            <label for="builder_headline">Headline</label>
+            <input type="text" id="builder_headline" placeholder="Software Engineer">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="builder_location">Location</label>
+            <input type="text" id="builder_location" placeholder="Santiago, Chile">
+          </div>
+          <div class="form-group">
+            <label for="builder_email">Email</label>
+            <input type="email" id="builder_email">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="builder_phone">Phone</label>
+            <input type="text" id="builder_phone" placeholder="+1-234-567-8900">
+          </div>
+          <div class="form-group">
+            <label for="builder_website">Website</label>
+            <input type="url" id="builder_website" placeholder="https://example.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="builder_theme">Theme</label>
+          <select id="builder_theme">
+            {% for t in themes %}<option value="{{ t }}">{{ t }}</option>{% endfor %}
+          </select>
+          <span class="form-hint">The visual style RenderCV uses to typeset the PDF.</span>
+        </div>
+
+        <div class="builder-block-title">Social Networks</div>
+        <div id="social-networks-list"></div>
+        <button type="button" id="add-social-network-btn" class="btn btn-ghost btn-sm">+ Add social network</button>
+
+        <div class="builder-block-title">Sections</div>
+        <span class="form-hint">Add a section for each part of your CV — Education, Experience, Skills, Projects, Awards…</span>
+        <div id="sections-list"></div>
+        <button type="button" id="add-section-btn" class="btn btn-ghost btn-sm">+ Add section</button>
+
+        <input type="hidden" name="cv_builder_json" id="cv_builder_json_field" value="">
+      </div>
+
       <div>
         <button type="submit" class="btn btn-primary">
           {{ 'Save Changes' if is_edit else 'Upload CV' }}
@@ -88,16 +148,28 @@
   </form>
 </div>
 
+<script type="application/json" id="cv-builder-initial-data">{{ builder_initial_data | tojson }}</script>
+<script type="application/json" id="cv-builder-constants">{{ {'themes': themes, 'social_networks': social_networks} | tojson }}</script>
+
 <script>
 (function () {
-  // The lang-tabs here select an upload-vs-generate *mode*, not a language —
-  // admin.js handles the tab switching itself; this just keeps the hidden
-  // "source" field in sync with whichever mode tab is now active.
+  // The lang-tabs here select an upload-vs-generate-vs-builder *mode*, not a
+  // language — admin.js handles the tab switching itself; this just keeps the
+  // hidden "source" field in sync with whichever mode tab is now active.
   var sourceField = document.getElementById('source_field');
+  var sourceMap = {
+    'panel-source-upload': 'upload',
+    'panel-source-generate': 'generated',
+    'panel-source-builder': 'builder',
+  };
   document.addEventListener('admin:langtab', function (e) {
-    sourceField.value = e.detail.target === 'panel-source-generate' ? 'generated' : 'upload';
+    sourceField.value = sourceMap[e.detail.target] || 'upload';
   });
 })();
 </script>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cv_builder.js') }}"></script>
 {% endblock %}

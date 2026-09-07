@@ -779,6 +779,60 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     flex-shrink: 0;
 }
 
+/* ── CV Builder (structured RenderCV YAML form) ─────────────────────────── */
+.builder-block-title {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--c-ink-soft);
+    margin: 18px 0 8px;
+}
+
+.section-card {
+    background: var(--c-surface-2);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.section-card-header {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.section-card-header .form-group { margin: 0; flex: 1 1 160px; }
+
+.entry-card {
+    background: var(--c-surface);
+    border: 1px dashed var(--c-border-strong);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    margin: 8px 0;
+}
+
+.entry-card-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+.entry-card-fields .form-group { margin: 0; }
+
+.builder-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.builder-row select { flex: 0 0 160px; }
+.builder-row input { flex: 1; }
+
 /* ── Extra images ────────────────────────────────────────────────────────── */
 .img-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
 .img-item { position: relative; }
