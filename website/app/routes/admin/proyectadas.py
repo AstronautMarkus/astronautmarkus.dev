@@ -5,18 +5,36 @@ from app import db
 from app.models.models import Proyectada
 from app.routes.admin import admin_bp
 
+PER_PAGE = 50
+
 
 # ── List ─────────────────────────────────────────────────────────────────────
 
 @admin_bp.get('/proyectadas/')
 @login_required
 def proyectadas_list():
-    items = (
-        Proyectada.query
-        .order_by(Proyectada.created_at.desc())
-        .all()
+    page = max(request.args.get('page', 1, type=int), 1)
+    pagination = Proyectada.query.order_by(Proyectada.created_at.desc()).paginate(
+        page=page, per_page=PER_PAGE, error_out=False
     )
-    return render_template('admin/proyectadas/list.html', items=items)
+    return render_template('admin/proyectadas/list.html', pagination=pagination, items=pagination.items)
+
+
+@admin_bp.post('/proyectadas/bulk-delete')
+@login_required
+def proyectadas_bulk_delete():
+    ids = request.form.getlist('item_ids', type=int)
+    if ids:
+        deleted = (
+            Proyectada.query
+            .filter(Proyectada.id.in_(ids))
+            .delete(synchronize_session=False)
+        )
+        db.session.commit()
+        flash(f'{deleted} proyectada(s) deleted.', 'success')
+    else:
+        flash('No items selected.', 'error')
+    return redirect(url_for('admin.proyectadas_list'))
 
 
 # ── Create ────────────────────────────────────────────────────────────────────

@@ -1,4 +1,5 @@
 {% extends "admin/base.html" %}
+{% from "admin/_macros.html" import pagination_bar, search_bar %}
 
 {% block title %}Contact Inbox{% endblock %}
 {% block page_title %}Contact Inbox{% endblock %}
@@ -13,6 +14,8 @@
 {% endblock %}
 
 {% block content %}
+{{ search_bar('admin.contact_inbox', q, placeholder='Search name, email, subject…') }}
+
 <div class="card">
   {% if messages %}
   <form id="bulk-form" method="POST" action="{{ url_for('admin.contact_messages_bulk_delete') }}">
@@ -20,7 +23,7 @@
       <span style="font-size:12px;color:#777"><span id="selected-count">0</span> selected</span>
       <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete selected</button>
     </div>
-    <table class="table-blue">
+    <table class="table-blue table-responsive">
       <thead>
         <tr>
           <th style="width:16px"><input type="checkbox" id="select-all"></th>
@@ -35,22 +38,22 @@
       <tbody>
       {% for m in messages %}
       <tr class="{{ 'row-unread' if not m.is_read else '' }}">
-        <td style="padding-left:10px">
+        <td data-label="Select" style="padding-left:10px">
           <input type="checkbox" class="row-checkbox" name="message_ids" value="{{ m.id }}">
         </td>
-        <td>
+        <td data-label="Status">
           <span class="status-dot {{ 'unread' if not m.is_read else '' }}"></span>
         </td>
-        <td style="{% if not m.is_read %}font-weight:700{% endif %}">
+        <td data-label="From" style="{% if not m.is_read %}font-weight:700{% endif %}">
           {{ m.name }}<br>
           <span style="font-size:10px;color:#888;font-weight:normal">{{ m.email }}</span>
         </td>
-        <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;{% if not m.is_read %}font-weight:700{% endif %}">{{ m.subject }}</td>
-        <td>
+        <td data-label="Subject" style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;{% if not m.is_read %}font-weight:700{% endif %}">{{ m.subject }}</td>
+        <td data-label="Lang">
           <span class="lang-badge lang-badge-{{ m.language }}">{{ m.language | upper }}</span>
         </td>
-        <td style="color:#777;white-space:nowrap">{{ m.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
-        <td>
+        <td data-label="Received" style="color:#777;white-space:nowrap">{{ m.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
+        <td data-label="Actions">
           <div class="td-actions">
             <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}">View</a>
             <button type="submit" formaction="{{ url_for('admin.contact_message_block_sender', message_id=m.id) }}"
@@ -64,48 +67,16 @@
       </tbody>
     </table>
   </form>
+  {{ pagination_bar(pagination, 'admin.contact_inbox', q=q) }}
   {% else %}
-  <p class="empty-state">No messages yet.</p>
+  <p class="empty-state">
+    {% if q %}
+    No messages match "{{ q }}". <a href="{{ url_for('admin.contact_inbox') }}">Clear search</a>
+    {% else %}
+    No messages yet.
+    {% endif %}
+  </p>
   {% endif %}
 </div>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-  (function () {
-    var selectAll = document.getElementById('select-all');
-    var bulkForm = document.getElementById('bulk-form');
-    var bulkBtn = document.getElementById('bulk-delete-btn');
-    var countLabel = document.getElementById('selected-count');
-    if (!bulkForm) return;
-
-    function rowCheckboxes() {
-      return Array.prototype.slice.call(bulkForm.querySelectorAll('.row-checkbox'));
-    }
-
-    function updateState() {
-      var checked = rowCheckboxes().filter(function (cb) { return cb.checked; });
-      countLabel.textContent = checked.length;
-      bulkBtn.disabled = checked.length === 0;
-      selectAll.checked = checked.length > 0 && checked.length === rowCheckboxes().length;
-      selectAll.indeterminate = checked.length > 0 && checked.length < rowCheckboxes().length;
-    }
-
-    selectAll.addEventListener('change', function () {
-      rowCheckboxes().forEach(function (cb) { cb.checked = selectAll.checked; });
-      updateState();
-    });
-
-    bulkForm.addEventListener('change', function (e) {
-      if (e.target.classList.contains('row-checkbox')) updateState();
-    });
-
-    bulkBtn.addEventListener('click', function (e) {
-      var count = rowCheckboxes().filter(function (cb) { return cb.checked; }).length;
-      if (!confirm('Delete ' + count + ' selected message(s)?')) e.preventDefault();
-    });
-
-    updateState();
-  })();
-</script>
-{% endblock %}

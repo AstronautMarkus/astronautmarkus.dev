@@ -5,14 +5,31 @@ from app import db
 from app.models.models import BlockedSender, ContactMessage, MailTemplate
 from app.routes.admin import admin_bp
 
+PER_PAGE = 50
+
 # ─── Inbox ────────────────────────────────────────────────────────────────────
 
 @admin_bp.get('/contact/')
 @login_required
 def contact_inbox():
-    messages = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
-    unread = sum(1 for m in messages if not m.is_read)
-    return render_template('admin/contact/inbox.html', messages=messages, unread=unread)
+    unread = ContactMessage.query.filter_by(is_read=False).count()
+
+    q = request.args.get('q', '').strip()
+    page = max(request.args.get('page', 1, type=int), 1)
+
+    query = ContactMessage.query.order_by(ContactMessage.created_at.desc())
+    if q:
+        query = query.filter(db.or_(
+            ContactMessage.name.contains(q),
+            ContactMessage.email.contains(q),
+            ContactMessage.subject.contains(q),
+        ))
+
+    pagination = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+    return render_template(
+        'admin/contact/inbox.html',
+        pagination=pagination, messages=pagination.items, unread=unread, q=q,
+    )
 
 
 @admin_bp.get('/contact/<int:message_id>')
@@ -83,8 +100,11 @@ def contact_message_block_sender(message_id):
 @admin_bp.get('/contact/blocked/')
 @login_required
 def blocked_senders():
-    blocked = BlockedSender.query.order_by(BlockedSender.created_at.desc()).all()
-    return render_template('admin/contact/blocked_senders.html', blocked=blocked)
+    page = max(request.args.get('page', 1, type=int), 1)
+    pagination = BlockedSender.query.order_by(BlockedSender.created_at.desc()).paginate(
+        page=page, per_page=PER_PAGE, error_out=False
+    )
+    return render_template('admin/contact/blocked_senders.html', pagination=pagination, blocked=pagination.items)
 
 
 @admin_bp.post('/contact/blocked/add')
@@ -123,8 +143,11 @@ def blocked_sender_delete(blocked_id):
 @admin_bp.get('/contact/mail-templates/')
 @login_required
 def contact_mail_templates():
-    templates = MailTemplate.query.order_by(MailTemplate.slug, MailTemplate.language).all()
-    return render_template('admin/contact/mail_templates.html', templates=templates)
+    page = max(request.args.get('page', 1, type=int), 1)
+    pagination = MailTemplate.query.order_by(MailTemplate.slug, MailTemplate.language).paginate(
+        page=page, per_page=PER_PAGE, error_out=False
+    )
+    return render_template('admin/contact/mail_templates.html', pagination=pagination, templates=pagination.items)
 
 
 @admin_bp.route('/contact/mail-templates/<int:template_id>/edit', methods=['GET', 'POST'])

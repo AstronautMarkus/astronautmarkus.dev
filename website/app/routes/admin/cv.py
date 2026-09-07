@@ -10,6 +10,7 @@ from app.storage import storage
 
 ALLOWED_EXTENSIONS = {'pdf'}
 MAX_CV_BYTES = 10 * 1024 * 1024  # 10 MB
+PER_PAGE = 50
 
 LANGUAGES = [
     ('en', 'English'),
@@ -62,8 +63,11 @@ def _store_generated_cv(yaml_text: str, cv_id: int, language: str) -> tuple[str,
 @admin_bp.get('/cv/')
 @login_required
 def cv_list():
-    cvs = CvFile.query.order_by(CvFile.uploaded_at.desc()).all()
-    return render_template('admin/cv/list.html', cvs=cvs)
+    page = max(request.args.get('page', 1, type=int), 1)
+    pagination = CvFile.query.order_by(CvFile.uploaded_at.desc()).paginate(
+        page=page, per_page=PER_PAGE, error_out=False
+    )
+    return render_template('admin/cv/list.html', pagination=pagination, cvs=pagination.items)
 
 
 # ── Upload ────────────────────────────────────────────────────────────────────

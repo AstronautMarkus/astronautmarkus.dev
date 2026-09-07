@@ -11,6 +11,7 @@ ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
 ALLOWED_MD = {'md', 'markdown'}
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
 MAX_MD_BYTES = 2 * 1024 * 1024     # 2 MB
+PER_PAGE = 50
 
 
 def _allowed(filename: str) -> bool:
@@ -52,12 +53,42 @@ def _store_md(file, dest_path: str) -> bool:
 @admin_bp.get('/projects/')
 @login_required
 def projects_list():
-    projects = (
-        PortfolioProject.query
-        .order_by(PortfolioProject.created_at.desc())
-        .all()
-    )
-    return render_template('admin/projects/list.html', projects=projects)
+    q = request.args.get('q', '').strip()
+    page = max(request.args.get('page', 1, type=int), 1)
+
+    query = PortfolioProject.query.order_by(PortfolioProject.created_at.desc())
+    if q:
+        query = query.filter(PortfolioProject.title.contains(q))
+
+    pagination = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+    return render_template('admin/projects/list.html', pagination=pagination, projects=pagination.items, q=q)
+
+
+@admin_bp.post('/projects/bulk-delete')
+@login_required
+def projects_bulk_delete():
+    ids = request.form.getlist('project_ids', type=int)
+    if ids:
+        projects = PortfolioProject.query.filter(PortfolioProject.id.in_(ids)).all()
+        for project in projects:
+            if project.image_path:
+                storage.delete(project.image_path)
+            if project.markdown_path:
+                storage.delete(project.markdown_path)
+            if project.markdown_path_es:
+                storage.delete(project.markdown_path_es)
+            for img in project.extra_images:
+                storage.delete(img.image_path)
+        deleted = (
+            PortfolioProject.query
+            .filter(PortfolioProject.id.in_(ids))
+            .delete(synchronize_session=False)
+        )
+        db.session.commit()
+        flash(f'{deleted} project(s) deleted.', 'success')
+    else:
+        flash('No projects selected.', 'error')
+    return redirect(url_for('admin.projects_list'))
 
 
 # ── Create ────────────────────────────────────────────────────────────────────

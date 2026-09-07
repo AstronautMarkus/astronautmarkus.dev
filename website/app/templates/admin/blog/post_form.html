@@ -11,7 +11,7 @@
   <button type="button"
           class="publish-toggle {{ 'is-published' if post.published else '' }}"
           id="topbar-publish-toggle"
-          data-post-id="{{ post.id }}"
+          data-toggle-url="{{ url_for('admin.blog_post_toggle_publish', post_id=post.id) }}"
           title="{{ 'Click to unpublish' if post.published else 'Click to publish' }}">
     <span class="toggle-track"><span class="toggle-thumb"></span></span>
     <span class="toggle-label">{{ 'Published' if post.published else 'Draft' }}</span>
@@ -223,7 +223,7 @@
                 title="Copy URL to clipboard">Copy URL</button>
         <button type="button" class="del-img"
                 title="Remove"
-                onclick="BlogImages.delete({{ img.id }}, this.closest('.blog-img-item'))">×</button>
+                data-delete-url="{{ url_for('admin.blog_post_delete_image', post_id=post.id, image_id=img.id) }}">×</button>
       </div>
     </div>
     {% endfor %}
@@ -233,7 +233,7 @@
     {% endif %}
   </div>
 
-  <div class="upload-zone" id="upload-zone">
+  <div class="upload-zone" id="upload-zone" data-upload-url="{{ url_for('admin.blog_post_add_image', post_id=post.id) }}">
     <input type="file" id="img-file-input" accept="image/*" multiple>
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="1.5" style="margin-bottom:6px;opacity:0.55">
@@ -252,216 +252,20 @@
 {% endblock %}
 
 {% block extra_js %}
+{% if is_edit %}
 <script>
 (function () {
   'use strict';
-
-  // ── Language tabs ──────────────────────────────────────────────
-  document.querySelectorAll('.lang-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.lang-tab').forEach(function (t) { t.classList.remove('active'); });
-      document.querySelectorAll('.lang-panel').forEach(function (p) { p.classList.remove('active'); });
-      this.classList.add('active');
-      document.getElementById(this.dataset.target).classList.add('active');
-    });
-  });
-
-  // ── Spanish toggle ─────────────────────────────────────────────
-  var enableEs = document.getElementById('enable_es');
-  var esFields = document.getElementById('es-fields');
-  function syncEsState() {
-    if (!enableEs) return;
-    esFields.classList.toggle('disabled', !enableEs.checked);
-  }
-  if (enableEs) { enableEs.addEventListener('change', syncEsState); syncEsState(); }
-
-  // ── Cover preview ──────────────────────────────────────────────
-  var coverInput  = document.getElementById('cover_image');
-  var previewWrap = document.getElementById('cover-preview-wrap');
-  var previewImg  = document.getElementById('cover-preview-img');
-  var currentWrap = document.getElementById('cover-current-wrap');
-  if (coverInput) {
-    coverInput.addEventListener('change', function () {
-      var file = this.files[0];
-      if (!file) return;
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        previewImg.src = e.target.result;
-        previewWrap.style.display = 'flex';
-        if (currentWrap) currentWrap.style.display = 'none';
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  // ── Auto-slug (create mode only) ──────────────────────────────
-  var titleInput = document.getElementById('title');
-  var slugInput  = document.getElementById('slug');
-  var isEdit     = {{ 'true' if is_edit else 'false' }};
-  if (!isEdit && titleInput && slugInput) {
-    var slugManuallyEdited = false;
-    slugInput.addEventListener('input', function () { slugManuallyEdited = !!this.value; });
-    titleInput.addEventListener('input', function () {
-      if (slugManuallyEdited) return;
-      slugInput.value = this.value.toLowerCase().trim()
-        .replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-')
-        .replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '');
-    });
-  }
-
-  // ── Topbar publish toggle ──────────────────────────────────────
-  var topbarToggle = document.getElementById('topbar-publish-toggle');
-  var publishedCb  = document.getElementById('published');
-  if (topbarToggle) {
-    topbarToggle.addEventListener('click', function () {
-      var postId = this.dataset.postId;
-      var btn = this;
-      btn.disabled = true;
-      fetch('/admin/blog/' + postId + '/toggle-publish', {
-        method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (data.error) { btn.disabled = false; return; }
-          if (data.published) {
-            btn.classList.add('is-published');
-            btn.title = 'Click to unpublish';
-            btn.querySelector('.toggle-label').textContent = 'Published';
-            if (publishedCb) publishedCb.checked = true;
-          } else {
-            btn.classList.remove('is-published');
-            btn.title = 'Click to publish';
-            btn.querySelector('.toggle-label').textContent = 'Draft';
-            if (publishedCb) publishedCb.checked = false;
-          }
-          btn.disabled = false;
-        })
-        .catch(function () { btn.disabled = false; });
-    });
-  }
-
-  // ── Image gallery (edit mode only) ────────────────────────────
-  var POST_ID   = {{ post.id if is_edit else 'null' }};
-  var grid      = document.getElementById('post-img-grid');
-  var zone      = document.getElementById('upload-zone');
-  var fileInput = document.getElementById('img-file-input');
-
-  if (!zone) return;
-
-  zone.addEventListener('click', function (e) { if (e.target !== fileInput) fileInput.click(); });
-  zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag-over'); });
-  zone.addEventListener('dragleave', function (e) { if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over'); });
-  zone.addEventListener('drop', function (e) {
-    e.preventDefault(); zone.classList.remove('drag-over');
-    for (var i = 0; i < e.dataTransfer.files.length; i++) { upload(e.dataTransfer.files[i]); }
-  });
-  fileInput.addEventListener('change', function () {
-    for (var i = 0; i < this.files.length; i++) { upload(this.files[i]); }
-    this.value = '';
-  });
-
-  function upload(file) {
-    var hint = document.getElementById('no-images-hint');
-    if (hint) hint.remove();
-
-    var pending = document.createElement('div');
-    pending.className = 'img-item img-item-pending';
-    pending.innerHTML = '<div class="img-spinner"></div>';
-    grid.appendChild(pending);
-
-    var fd = new FormData();
-    fd.append('image', file);
-    fetch('/admin/blog/' + POST_ID + '/images', {
-      method: 'POST', body: fd,
-      headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    })
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (data.error) { pending.remove(); showFlash(data.error, 'error'); }
-        else             { pending.replaceWith(buildCard(data.id, data.url)); }
-      })
-      .catch(function () { pending.remove(); showFlash('Upload failed — please try again.', 'error'); });
-  }
-
-  function buildCard(id, url) {
-    var div = document.createElement('div');
-    div.className = 'img-item blog-img-item';
-    div.id = 'bimg-' + id;
-    div.innerHTML =
-      '<img src="' + url + '" alt="Image ' + id + '">' +
-      '<div class="blog-img-actions">' +
-        '<button type="button" class="copy-url-btn" data-url="' + url + '" title="Copy URL to clipboard">Copy URL</button>' +
-        '<button type="button" class="del-img" title="Remove" ' +
-          'onclick="BlogImages.delete(' + id + ', this.closest(\'.blog-img-item\'))">×</button>' +
-      '</div>';
-    div.querySelector('.copy-url-btn').addEventListener('click', handleCopy);
-    return div;
-  }
-
-  function showFlash(msg, type) {
-    var c = document.getElementById('ajax-flash-container');
-    var d = document.createElement('div');
-    d.className = 'ajax-flash ajax-flash-' + type;
-    d.textContent = msg;
-    c.appendChild(d);
-    setTimeout(function () { d.remove(); }, 5000);
-  }
-
-  // Copy URL to clipboard
-  function handleCopy(e) {
-    var btn = e.currentTarget;
-    var url = btn.dataset.url;
-    if (!navigator.clipboard) {
-      // Fallback for non-secure contexts
-      var ta = document.createElement('textarea');
-      ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      flashCopied(btn);
-      return;
+  // Topbar publish-toggle also needs to keep the form's own "Published"
+  // checkbox in sync — the shared toggle handler in admin.js only flips
+  // the button itself, so listen for its event here.
+  var publishedCb = document.getElementById('published');
+  document.addEventListener('admin:publishtoggle', function (e) {
+    if (publishedCb && e.detail.toggle.id === 'topbar-publish-toggle') {
+      publishedCb.checked = e.detail.published;
     }
-    navigator.clipboard.writeText(url).then(function () { flashCopied(btn); });
-  }
-
-  function flashCopied(btn) {
-    var orig = btn.textContent;
-    btn.textContent = 'Copied!';
-    btn.style.background = '#44aa44';
-    btn.style.color = '#fff';
-    btn.style.borderColor = '#44aa44';
-    setTimeout(function () {
-      btn.textContent = orig;
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.style.borderColor = '';
-    }, 1800);
-  }
-
-  // Wire up existing copy buttons on page load
-  document.querySelectorAll('.copy-url-btn').forEach(function (btn) {
-    btn.addEventListener('click', handleCopy);
   });
-
-  // Expose delete globally for inline onclick
-  window.BlogImages = {
-    delete: function (imageId, card) {
-      card.style.opacity = '0.35';
-      card.style.pointerEvents = 'none';
-      fetch('/admin/blog/' + POST_ID + '/images/' + imageId + '/delete', {
-        method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (data.ok) { card.remove(); }
-          else { card.style.opacity = '1'; card.style.pointerEvents = ''; showFlash('Failed to remove image.', 'error'); }
-        })
-        .catch(function () { card.style.opacity = '1'; card.style.pointerEvents = ''; showFlash('Failed to remove image.', 'error'); });
-    }
-  };
-
 }());
 </script>
+{% endif %}
 {% endblock %}

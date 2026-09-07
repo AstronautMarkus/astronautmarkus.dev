@@ -9,6 +9,7 @@ from app.storage import storage
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
+PER_PAGE = 50
 
 
 def _allowed(filename: str) -> bool:
@@ -33,12 +34,36 @@ def _store_image(file, dest_path: str) -> bool:
 @admin_bp.get('/gallery/')
 @login_required
 def gallery_list():
-    photos = (
-        GalleryPhoto.query
-        .order_by(GalleryPhoto.created_at.desc())
-        .all()
-    )
-    return render_template('admin/gallery/list.html', photos=photos)
+    q = request.args.get('q', '').strip()
+    page = max(request.args.get('page', 1, type=int), 1)
+
+    query = GalleryPhoto.query.order_by(GalleryPhoto.created_at.desc())
+    if q:
+        query = query.filter(GalleryPhoto.title.contains(q))
+
+    pagination = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+    return render_template('admin/gallery/list.html', pagination=pagination, photos=pagination.items, q=q)
+
+
+@admin_bp.post('/gallery/bulk-delete')
+@login_required
+def gallery_bulk_delete():
+    ids = request.form.getlist('photo_ids', type=int)
+    if ids:
+        photos = GalleryPhoto.query.filter(GalleryPhoto.id.in_(ids)).all()
+        for photo in photos:
+            if photo.image_path:
+                storage.delete(photo.image_path)
+        deleted = (
+            GalleryPhoto.query
+            .filter(GalleryPhoto.id.in_(ids))
+            .delete(synchronize_session=False)
+        )
+        db.session.commit()
+        flash(f'{deleted} photo(s) deleted.', 'success')
+    else:
+        flash('No photos selected.', 'error')
+    return redirect(url_for('admin.gallery_list'))
 
 
 # ── Create ────────────────────────────────────────────────────────────────────

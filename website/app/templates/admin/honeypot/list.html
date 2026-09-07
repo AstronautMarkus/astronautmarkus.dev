@@ -7,7 +7,7 @@
 {% block content %}
 
 <!-- ── Stats ── -->
-<div class="stat-grid" style="grid-template-columns:repeat(4,minmax(140px,1fr));max-width:720px;margin-bottom:16px">
+<div class="stat-grid" style="max-width:720px;margin-bottom:16px">
   <div class="stat-box accent-red">
     <div class="stat-box-label">Total Hits</div>
     <div class="stat-box-value">{{ '{:,}'.format(total) }}</div>
@@ -71,22 +71,22 @@
 {% endif %}
 
 <!-- ── Filter bar ── -->
-<form method="get" action="{{ url_for('admin.honeypot_list') }}" style="display:flex;gap:8px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap">
-  <div class="form-group" style="flex:0 0 180px">
+<form method="get" action="{{ url_for('admin.honeypot_list') }}" class="admin-filter-bar">
+  <div class="form-group">
     <label for="ip">Filter by IP</label>
-    <input type="text" id="ip" name="ip" value="{{ ip_filter }}" placeholder="e.g. 127.0.0" style="padding:5px 8px;font-size:11px">
+    <input type="text" id="ip" name="ip" value="{{ ip_filter }}" placeholder="e.g. 127.0.0">
   </div>
-  <div class="form-group" style="flex:0 0 180px">
+  <div class="form-group">
     <label for="resource">Target Resource</label>
-    <input type="text" id="resource" name="resource" value="{{ resource_filter }}" placeholder="e.g. .env" style="padding:5px 8px;font-size:11px">
+    <input type="text" id="resource" name="resource" value="{{ resource_filter }}" placeholder="e.g. .env">
   </div>
-  <div style="display:flex;gap:6px;padding-bottom:1px">
+  <div class="admin-filter-bar-actions">
     <button type="submit" class="btn btn-primary btn-sm">Filter</button>
     {% if ip_filter or resource_filter %}
     <a href="{{ url_for('admin.honeypot_list') }}" class="btn btn-ghost btn-sm">Clear</a>
     {% endif %}
   </div>
-  <div style="margin-left:auto;padding-bottom:1px;color:#666;font-size:11px;align-self:flex-end">
+  <div class="admin-filter-bar-summary">
     {% if pagination.total != total %}
       <strong>{{ pagination.total }}</strong> matching /
     {% endif %}
@@ -104,7 +104,7 @@
     </span>
   </div>
   {% if pagination.items %}
-  <table>
+  <table class="table-sticky-first">
     <colgroup>
       <col style="width:64px">
       <col style="width:130px">

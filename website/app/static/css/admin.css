@@ -1,12 +1,32 @@
 /* ══════════════════════════════════════════════════════════════════════════
    Admin panel — design tokens
-   Vintage Macintosh System 7 console — flat black/white/grey chrome, the
-   rainbow accent reserved for status colors and title-bar underlines.
-   Every custom property below keeps its original name (~150 call-sites
-   throughout this file consume them) — only the values changed.
+   A calm, functional console for a single-operator internal tool — no
+   decorative retro chrome here, just legible density. admin.css loads
+   after tokens.css and both target :root, so redeclaring the shared
+   primitive names below (--mac-*, --rainbow-*, --font-chrome, --shadow-
+   flat-*, --radius-button) overrides them for every admin page only —
+   the public site never loads this file, so it's unaffected.
    ══════════════════════════════════════════════════════════════════════════ */
 :root {
-    /* Steel chrome ramp (headers, panels, tables) — now the grey ramp */
+    /* Primitives — override tokens.css's values for admin pages only */
+    --mac-white: #ffffff;
+    --mac-grey-1: #f7f8f9;
+    --mac-grey-2: #eef0f2;
+    --mac-grey-3: #e2e5e9;
+    --mac-grey-4: #c9ced6;
+    --mac-grey-5: #8a929e;
+    --mac-grey-6: #4b5563;
+    --mac-black: #1e2530;
+    --rainbow-red: #dc3545;
+    --rainbow-green: #2f9e44;
+    --rainbow-orange: #e8830f;
+    --font-chrome: var(--font-sans);
+    --shadow-flat-1: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 1px rgba(16, 24, 40, .04);
+    --shadow-flat-2: 0 2px 6px rgba(16, 24, 40, .08);
+    --shadow-flat-3: 0 8px 20px rgba(16, 24, 40, .12);
+    --radius-button: 6px;
+
+    /* Steel chrome ramp (headers, panels, tables) */
     --steel-1: var(--mac-grey-1);
     --steel-2: var(--mac-grey-2);
     --steel-3: var(--mac-grey-3);
@@ -18,7 +38,7 @@
     --c-surface: var(--mac-white);
     --c-surface-2: var(--mac-grey-1);
     --c-border: var(--mac-grey-4);
-    --c-border-strong: var(--mac-black);
+    --c-border-strong: var(--mac-grey-4);
 
     /* Text */
     --c-ink: var(--mac-black);
@@ -26,50 +46,50 @@
     --c-muted: var(--mac-grey-5);
     --c-faint: var(--mac-grey-4);
 
-    /* Accent — flat black (primary interaction color) */
-    --c-primary: var(--mac-black);
-    --c-primary-dark: var(--mac-black);
-    --c-primary-soft: var(--mac-grey-1);
-    --c-primary-ring: rgba(0, 0, 0, 0.35);
+    /* Accent — a real interaction color, not flat black */
+    --c-primary: #2563eb;
+    --c-primary-dark: #1d4ed8;
+    --c-primary-soft: #eaf1fd;
+    --c-primary-ring: rgba(37, 99, 235, .35);
 
     /* Danger — reserved for destructive actions / real alerts */
     --c-danger: var(--rainbow-red);
     --c-danger-dark: var(--rainbow-red);
-    --c-danger-soft: var(--mac-grey-1);
+    --c-danger-soft: #fdecee;
 
-    /* Success — rainbow green */
+    /* Success */
     --c-success: var(--rainbow-green);
     --c-success-dark: var(--rainbow-green);
-    --c-success-soft: var(--mac-grey-1);
+    --c-success-soft: #e9f7ec;
 
-    /* Warning — rainbow orange */
+    /* Warning */
     --c-warning: var(--rainbow-orange);
     --c-warning-dark: var(--rainbow-orange);
-    --c-warning-soft: var(--mac-grey-1);
+    --c-warning-soft: #fdf1e3;
 
     --topbar-bg: var(--mac-white);
     --topbar-bg-2: var(--mac-grey-2);
-    --topbar-border: var(--mac-black);
-    --sidebar-bg: var(--mac-grey-2);
-    --sidebar-bg-2: var(--mac-grey-2);
-    --sidebar-border: var(--mac-black);
+    --topbar-border: var(--mac-grey-4);
+    --sidebar-bg: var(--mac-white);
+    --sidebar-bg-2: var(--mac-grey-1);
+    --sidebar-border: var(--mac-grey-4);
     --sidebar-text: var(--mac-black);
     --sidebar-text-soft: var(--mac-grey-6);
 
-    /* Shape — square corners everywhere except real push-buttons */
-    --radius-sm: 2px;
-    --radius: 2px;
-    --radius-lg: 2px;
-    --radius-pill: 2px;
+    /* Shape — a modest, friendly radius scale */
+    --radius-sm: 4px;
+    --radius: 6px;
+    --radius-lg: 8px;
+    --radius-pill: 999px;
 
-    /* Elevation — flat, hard-edged, never blurred */
+    /* Elevation — soft, subtle, never hard-edged */
     --shadow-xs: var(--shadow-flat-1);
     --shadow-sm: var(--shadow-flat-1);
     --shadow-md: var(--shadow-flat-2);
     --shadow-lg: var(--shadow-flat-3);
 
-    /* Type */
-    --font-sans: var(--font-body);
+    /* Type — system stack, no web fonts to load */
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
 
     --transition: 150ms ease;
@@ -109,10 +129,10 @@ a:hover { text-decoration: underline; }
     pointer-events: none;
 }
 
-/* ── Admin top bar (pinstripe, matches the public-site title bars) ──────── */
+/* ── Admin top bar ────────────────────────────────────────────────────── */
 .admin-topbar {
     height: var(--topbar-h);
-    background: repeating-linear-gradient(to bottom, var(--mac-white) 0 1px, var(--mac-grey-2) 1px 2px);
+    background: var(--c-surface);
     border-bottom: 1px solid var(--topbar-border);
     display: flex;
     align-items: center;
@@ -121,13 +141,6 @@ a:hover { text-decoration: underline; }
     position: sticky;
     top: 0;
     z-index: 100;
-}
-
-.admin-topbar > .rainbow-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
 }
 
 .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -156,10 +169,10 @@ a:hover { text-decoration: underline; }
 }
 
 .brand-badge {
-    background: var(--mac-black);
+    background: var(--c-primary);
     color: #fff;
     padding: 2px 6px;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     font-size: 9.5px;
     font-weight: 800;
     letter-spacing: 0.04em;
@@ -186,17 +199,17 @@ a:hover { text-decoration: underline; }
     font-weight: 600;
     padding: 5px 11px;
     border-radius: var(--radius-button);
-    border: 1px solid var(--c-border-strong);
-    background: var(--mac-grey-2);
+    border: 1px solid var(--c-border);
+    background: var(--mac-grey-1);
     text-decoration: none;
     transition: background var(--transition), border-color var(--transition), color var(--transition);
     white-space: nowrap;
 }
 
 .topbar-user a:hover {
-    color: var(--mac-white);
-    border-color: var(--mac-black);
-    background: var(--mac-black);
+    color: var(--c-primary-dark);
+    border-color: var(--c-primary);
+    background: var(--c-primary-soft);
     text-decoration: none;
 }
 
@@ -220,7 +233,7 @@ a:hover { text-decoration: underline; }
     display: block;
     width: 20px;
     height: 2px;
-    border-radius: 0;
+    border-radius: 2px;
     background: var(--c-ink-soft);
     transition: background var(--transition);
 }
@@ -311,17 +324,16 @@ a:hover { text-decoration: underline; }
     display: flex;
     align-items: center;
     gap: 7px;
-    color: var(--c-ink);
-    font-family: var(--font-chrome);
+    color: var(--c-ink-soft);
     font-weight: 700;
-    padding: 5px 9px 8px;
-    font-size: 10px;
+    padding: 6px 9px;
+    font-size: 10.5px;
     text-transform: uppercase;
-    letter-spacing: 0.09em;
-    background: var(--rainbow-gradient) left bottom / 100% 3px no-repeat, var(--mac-grey-2);
-    border: 1px solid var(--c-border-strong);
+    letter-spacing: 0.07em;
+    background: var(--c-surface-2);
+    border: 1px solid var(--c-border);
     border-left: 3px solid var(--c-border-strong);
-    border-radius: 0;
+    border-radius: var(--radius-sm);
 }
 
 .sidebar-title.blue  { border-left-color: var(--c-primary); color: var(--c-primary-dark); }
@@ -344,7 +356,7 @@ a:hover { text-decoration: underline; }
     padding: 8px 10px;
     font-size: 12.5px;
     font-weight: 600;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     border-left: 3px solid transparent;
     transition: background var(--transition), color var(--transition);
     min-height: 36px;
@@ -352,7 +364,7 @@ a:hover { text-decoration: underline; }
 
 .menu li a img.nav-icon { flex-shrink: 0; margin-right: 0; }
 
-.menu li a:hover { background: var(--mac-black); color: var(--mac-white); text-decoration: none; }
+.menu li a:hover { background: var(--mac-grey-2); color: var(--c-ink); text-decoration: none; }
 .menu li a.active {
     background: var(--c-primary-soft);
     color: var(--c-primary-dark);
@@ -366,7 +378,7 @@ a:hover { text-decoration: underline; }
     align-items: center;
     gap: 7px;
     padding: 7px 10px;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     font-size: 11.5px;
     font-weight: 600;
     border: 1px solid transparent;
@@ -381,22 +393,21 @@ a:hover { text-decoration: underline; }
 
 /* ── Cards / Panels ──────────────────────────────────────────────────────── */
 .card {
-    border: 1px solid var(--c-border-strong);
+    border: 1px solid var(--c-border);
     background: var(--c-surface);
-    border-radius: 0;
+    border-radius: var(--radius);
     box-shadow: var(--shadow-xs);
     margin-bottom: 16px;
     overflow: hidden;
 }
 
 .card-title {
-    background: var(--rainbow-gradient) left bottom / 100% 3px no-repeat, var(--mac-grey-2);
+    background: var(--c-surface-2);
     color: var(--c-ink);
-    font-family: var(--font-chrome);
     font-weight: 700;
-    padding: 10px 14px 13px;
-    border-bottom: 1px solid var(--c-border-strong);
-    font-size: 10.5px;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--c-border);
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     border-left: 3px solid var(--c-border-strong);
@@ -420,8 +431,8 @@ a:hover { text-decoration: underline; }
 
 .stat-box {
     background: var(--c-surface);
-    border: 1px solid var(--c-border-strong);
-    border-radius: 0;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
     box-shadow: var(--shadow-xs);
     padding: 12px 14px;
     position: relative;
@@ -487,8 +498,8 @@ a:hover { text-decoration: underline; }
 
 .bar-fill {
     width: 100%;
-    background: var(--mac-black);
-    border-radius: 0;
+    background: var(--c-primary);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
     min-height: 2px;
     position: relative;
 }
@@ -517,7 +528,7 @@ a:hover { text-decoration: underline; }
     padding-bottom: 4px;
 }
 
-/* ── Buttons (flat Mac push-button) ──────────────────────────────────────── */
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -526,21 +537,20 @@ a:hover { text-decoration: underline; }
     min-height: 34px;
     padding: 7px 14px;
     border-radius: var(--radius-button);
-    border: 1px solid var(--c-border-strong);
-    font-family: var(--font-chrome);
-    font-size: 11.5px;
+    border: 1px solid var(--c-border);
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
-    background: var(--mac-grey-2);
+    background: var(--c-surface);
     color: var(--c-ink-soft);
-    box-shadow: var(--shadow-flat-1);
+    box-shadow: var(--shadow-xs);
     transition: background var(--transition), border-color var(--transition), color var(--transition);
 }
 
-.btn:hover   { background: var(--mac-black); border-color: var(--mac-black); color: var(--mac-white); text-decoration: none; }
-.btn:active  { background: var(--mac-grey-4); box-shadow: none; transform: translate(1px, 1px); }
+.btn:hover   { background: var(--mac-grey-2); border-color: var(--c-border-strong); color: var(--c-ink); text-decoration: none; }
+.btn:active  { background: var(--mac-grey-3); box-shadow: none; }
 .btn:disabled{ opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 .btn img.nav-icon { margin-right: 0; }
 
@@ -548,26 +558,26 @@ a:hover { text-decoration: underline; }
 .btn-disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 
 .btn-primary {
-    background: var(--mac-black);
+    background: var(--c-primary);
     color: #ffffff;
-    border-color: var(--mac-black);
+    border-color: var(--c-primary);
 }
 
-.btn-primary:hover  { background: var(--mac-grey-6); color: #ffffff; border-color: var(--mac-black); }
+.btn-primary:hover  { background: var(--c-primary-dark); color: #ffffff; border-color: var(--c-primary-dark); }
 
 .btn-ghost {
     background: var(--mac-white);
-    border-color: var(--c-border-strong);
+    border-color: var(--c-border);
     color: var(--c-ink-soft);
 }
 
 .btn-danger {
-    background: var(--mac-grey-2);
-    border-color: var(--mac-black);
+    background: var(--c-danger-soft);
+    border-color: var(--rainbow-red);
     color: var(--rainbow-red);
 }
 
-.btn-danger:hover { background: var(--rainbow-red); color: #fff; border-color: var(--mac-black); }
+.btn-danger:hover { background: var(--rainbow-red); color: #fff; border-color: var(--rainbow-red); }
 
 .btn-sm { min-height: 29px; padding: 5px 11px; font-size: 10.5px; }
 
@@ -577,7 +587,7 @@ a:hover { text-decoration: underline; }
     margin-bottom: 14px;
     font-size: 12.5px;
     font-weight: 600;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     background: var(--mac-grey-1);
     color: var(--mac-black);
     border: 1px solid var(--mac-grey-4);
@@ -593,14 +603,13 @@ table { width: 100%; border-collapse: collapse; background: var(--c-surface); }
 th {
     text-align: left;
     padding: 9px 13px;
-    background: var(--mac-grey-2);
+    background: var(--c-surface-2);
     color: var(--c-ink);
-    font-family: var(--font-chrome);
     font-weight: 700;
-    font-size: 10px;
+    font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-bottom: 2px solid var(--mac-black);
+    border-bottom: 1px solid var(--c-border-strong);
     white-space: nowrap;
 }
 
@@ -618,14 +627,14 @@ td { padding: 9px 13px; vertical-align: middle; }
 .table-light th {
     background: var(--c-surface-2);
     color: var(--c-ink-soft);
-    border-bottom: 1px solid var(--c-border-strong);
+    border-bottom: 1px solid var(--c-border);
 }
 
 /* Solid table header variant — for primary/important listings */
 .table-blue th {
-    background: var(--mac-black);
+    background: var(--c-primary);
     color: #ffffff;
-    border-bottom: 2px solid var(--mac-black);
+    border-bottom: 1px solid var(--c-primary-dark);
 }
 
 /* ── Key/value label cell (detail views) ────────────────────────────────── */
@@ -685,6 +694,26 @@ tr.row-unread:hover { background: var(--c-primary-soft); }
 .pagination-pages { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
 .pagination-ellipsis { font-size: 11px; color: var(--c-faint); padding: 0 2px; }
 
+/* ── Filter bar (GET-param search/filter forms) ─────────────────────────── */
+.admin-filter-bar {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.admin-filter-bar .form-group { flex: 0 0 180px; margin: 0; }
+.admin-filter-bar .form-group input { padding: 5px 8px; font-size: 11px; }
+.admin-filter-bar-actions { display: flex; gap: 6px; padding-bottom: 1px; }
+.admin-filter-bar-summary {
+    margin-left: auto;
+    padding-bottom: 1px;
+    color: var(--c-muted);
+    font-size: 11px;
+    align-self: flex-end;
+}
+
 /* ── Forms ───────────────────────────────────────────────────────────────── */
 .form-grid { display: grid; gap: 16px; }
 .form-row  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -704,19 +733,19 @@ textarea,
 select {
     background: var(--c-surface);
     border: 1px solid var(--c-border-strong);
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     padding: 8px 10px;
     color: var(--c-ink);
     font-family: var(--font-sans);
     font-size: 13px;
     width: 100%;
-    transition: border-color var(--transition);
+    transition: border-color var(--transition), box-shadow var(--transition);
 }
 
 input:focus, textarea:focus, select:focus {
-    outline: 1px dashed var(--mac-black);
-    outline-offset: 2px;
-    border-color: var(--mac-black);
+    outline: none;
+    border-color: var(--c-primary);
+    box-shadow: 0 0 0 3px var(--c-primary-ring);
 }
 
 input[readonly], input:disabled, select:disabled {
@@ -732,16 +761,16 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
 .cover-thumb {
     width: 40px; height: 40px;
     object-fit: cover;
-    border-radius: 0;
-    border: 1px solid var(--c-border-strong);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-border);
     flex-shrink: 0;
 }
 
 .cover-placeholder {
     width: 40px; height: 40px;
     background: var(--c-surface-2);
-    border-radius: 0;
-    border: 1px solid var(--c-border-strong);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -757,16 +786,16 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     width: 88px; height: 88px;
     object-fit: cover;
     display: block;
-    border-radius: 0;
-    border: 1px solid var(--c-border-strong);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-border);
 }
 
 .del-img {
     position: absolute; top: -7px; right: -7px;
     width: 20px; height: 20px;
     background: var(--c-danger); color: #fff;
-    border: 2px solid var(--mac-black);
-    border-radius: 0;
+    border: 2px solid var(--c-surface);
+    border-radius: 50%;
     font-size: 11px; font-weight: bold;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
@@ -774,30 +803,29 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     transition: background var(--transition);
 }
 
-.del-img:hover { background: var(--mac-black); }
+.del-img:hover { background: #c82333; }
 
 /* ── Language tabs ───────────────────────────────────────────────────────── */
 .lang-tabs {
     display: flex;
     gap: 2px;
-    border-bottom: 1px solid var(--c-border-strong);
+    border-bottom: 1px solid var(--c-border);
     margin-bottom: 18px;
     padding-left: 2px;
 }
 
 .lang-tab {
     padding: 8px 15px;
-    font-family: var(--font-chrome);
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: 700;
-    border: 1px solid var(--c-border-strong);
+    border: 1px solid var(--c-border);
     border-bottom: none;
-    background: var(--mac-grey-2);
+    background: var(--c-surface-2);
     color: var(--c-ink-soft);
     cursor: pointer;
     position: relative;
     bottom: -1px;
-    border-radius: 0;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
     transition: color var(--transition), background var(--transition);
 }
 
@@ -822,7 +850,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     padding: 9px 12px;
     background: var(--c-surface-2);
     border: 1px solid var(--c-border);
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     border-left: 3px solid var(--c-border-strong);
     margin-bottom: 2px;
 }
@@ -845,8 +873,8 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
 
 /* ── Upload zone ─────────────────────────────────────────────────────────── */
 .upload-zone {
-    border: 2px dashed var(--c-border-strong);
-    border-radius: 0;
+    border: 2px dashed var(--c-border);
+    border-radius: var(--radius-lg);
     padding: 26px 16px;
     text-align: center;
     cursor: pointer;
@@ -867,8 +895,8 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
 /* ── Pending upload card ─────────────────────────────────────────────────── */
 .img-item-pending {
     width: 88px; height: 88px;
-    border: 1px dashed var(--c-border-strong);
-    border-radius: 0;
+    border: 1px dashed var(--c-border);
+    border-radius: var(--radius-sm);
     background: var(--c-surface-2);
     display: flex;
     align-items: center;
@@ -890,7 +918,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     padding: 8px 11px;
     font-size: 12px;
     font-weight: 600;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     background: var(--mac-grey-1);
     border-left: 3px solid;
     margin-bottom: 10px;
@@ -915,10 +943,10 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     border: 1px solid var(--c-border);
 }
 
-.lang-badge-en { background: var(--c-surface-2); color: var(--c-ink-soft); border-color: var(--c-border-strong); }
+.lang-badge-en { background: var(--c-surface-2); color: var(--c-ink-soft); border-color: var(--c-border); }
 .lang-badge-es { background: var(--c-primary-soft); color: var(--c-primary-dark); border-color: var(--c-border); }
 .lang-badge-success { background: var(--mac-grey-1); color: var(--rainbow-green); border-color: var(--rainbow-green); }
-.lang-badge-danger  { background: var(--c-danger); color: #ffffff; border-color: var(--mac-black); }
+.lang-badge-danger  { background: var(--c-danger); color: #ffffff; border-color: var(--rainbow-red); }
 
 /* ── Publish toggle ──────────────────────────────────────────────────────── */
 .publish-toggle {
@@ -941,18 +969,17 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     border-radius: var(--radius-pill);
     transition: background var(--transition);
     flex-shrink: 0;
-    border: 1px solid var(--mac-black);
 }
 
 .publish-toggle.is-published .toggle-track { background: var(--c-success); }
 
 .toggle-thumb {
     position: absolute;
-    top: 1px; left: 1px;
+    top: 2px; left: 2px;
     width: 17px; height: 17px;
     background: #fff;
-    border: 1px solid var(--mac-black);
     border-radius: 50%;
+    box-shadow: var(--shadow-flat-1);
     transition: left var(--transition);
 }
 
@@ -973,8 +1000,8 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     width: 88px; height: 88px;
     object-fit: cover;
     display: block;
-    border-radius: 0;
-    border: 1px solid var(--c-border-strong);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-border);
 }
 
 .blog-img-actions { display: flex; gap: 4px; margin-top: 5px; }
@@ -984,9 +1011,9 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     padding: 4px 6px;
     font-size: 9.5px;
     font-weight: 600;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     background: var(--c-surface);
-    border: 1px solid var(--c-border-strong);
+    border: 1px solid var(--c-border);
     color: var(--c-ink-soft);
     cursor: pointer;
     font-family: var(--font-sans);
@@ -996,7 +1023,8 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     transition: background var(--transition), border-color var(--transition);
 }
 
-.copy-url-btn:hover { background: var(--mac-black); color: var(--mac-white); }
+.copy-url-btn:hover { background: var(--c-primary); border-color: var(--c-primary); color: var(--mac-white); }
+.copy-url-btn.copied { background: var(--rainbow-green); border-color: var(--rainbow-green); color: #fff; }
 
 /* ── File current row ────────────────────────────────────────────────────── */
 .file-current-row {
@@ -1007,7 +1035,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     padding: 8px 12px;
     background: var(--c-surface-2);
     border: 1px solid var(--c-border);
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     font-size: 12px;
     color: var(--c-ink-soft);
 }
@@ -1094,6 +1122,69 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     table { font-size: 12px; }
 
     th, td { padding: 7px 9px; }
+
+    /* ── Responsive tables: stacked "label: value" rows ──────────────────── */
+    /* Opt-in via .table-responsive on the site owner's daily CRUD lists.
+       Wide read-only log tables (honeypot/visits) keep horizontal scroll
+       instead — see .table-sticky-first below. */
+    .table-responsive thead { display: none; }
+    .table-responsive, .table-responsive tbody, .table-responsive tr, .table-responsive td {
+        display: block;
+        width: 100%;
+    }
+    .table-responsive tr {
+        border: 1px solid var(--c-border);
+        border-radius: var(--radius);
+        margin-bottom: 10px;
+    }
+    .table-responsive td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--c-border);
+        text-align: right;
+    }
+    .table-responsive td:last-child { border-bottom: none; }
+    .table-responsive td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 10px;
+        letter-spacing: .04em;
+        color: var(--c-muted);
+        text-align: left;
+        margin-right: auto;
+        padding-right: 10px;
+    }
+    /* The Actions column holds a full button group, not a single value —
+       stack its label above the (already-stacking) button group instead
+       of trying to fit both on one flex row. */
+    .table-responsive td:has(.td-actions) { display: block; }
+    .table-responsive td:has(.td-actions)::before { display: block; margin-bottom: 6px; }
+
+    /* Wide, read-only log tables (honeypot/visits): keep the horizontal
+       scroll, but pin the first column so it stays visible while scrolling. */
+    .table-sticky-first th:first-child,
+    .table-sticky-first td:first-child {
+        position: sticky;
+        left: 0;
+        background: inherit;
+    }
+
+    /* ── Other patterns with no mobile rules until now ───────────────────── */
+    .upload-zone { padding: 18px 12px; font-size: 11.5px; }
+    .img-grid { gap: 8px; }
+    .img-item img, .blog-img-item img, .img-item-pending { width: 72px; height: 72px; }
+    .del-img { width: 22px; height: 22px; }
+
+    .bar-chart { gap: 2px; padding: 14px 4px 0; }
+    .bar-val { display: none; }
+    .bar-label { font-size: 8px; }
+
+    .admin-filter-bar .form-group { flex: 1 1 140px; }
+    .admin-filter-bar-summary { margin-left: 0; flex-basis: 100%; }
 }
 
 /* Small phones */
@@ -1110,4 +1201,5 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
 /* Touch devices: guarantee comfortable tap targets */
 @media (pointer: coarse) {
     .btn, .menu li a, .lang-tab, .copy-url-btn { min-height: 40px; }
+    .row-checkbox { width: 20px; height: 20px; }
 }

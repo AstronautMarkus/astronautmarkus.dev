@@ -66,7 +66,7 @@
   <div class="card">
     <div class="card-title red"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Recent Messages</div>
     {% if recent_messages %}
-    <table>
+    <table class="table-responsive">
       <thead>
         <tr>
           <th>From</th>
@@ -77,7 +77,7 @@
       <tbody>
       {% for m in recent_messages %}
       <tr>
-        <td>
+        <td data-label="From">
           <a href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}"
              class="{{ 'text-strong' if not m.is_read else '' }}">
             {{ m.name }}
@@ -86,10 +86,10 @@
             <span class="lang-badge lang-badge-danger">new</span>
           {% endif %}
         </td>
-        <td class="text-muted text-sm truncate" style="max-width:120px">
+        <td data-label="Subject" class="text-muted text-sm truncate" style="max-width:120px">
           {{ m.subject or '—' }}
         </td>
-        <td class="text-muted text-sm nowrap">
+        <td data-label="Date" class="text-muted text-sm nowrap">
           {{ m.created_at | dtfmt('%b %d') }}
         </td>
       </tr>
@@ -105,7 +105,7 @@
   <div class="card">
     <div class="card-title"><img src="{{ url_for('static', filename='images/icons/quill.png') }}" alt="" class="nav-icon"> Recent Blog Posts</div>
     {% if recent_posts %}
-    <table>
+    <table class="table-responsive">
       <thead>
         <tr>
           <th>Title</th>
@@ -116,19 +116,19 @@
       <tbody>
       {% for p in recent_posts %}
       <tr>
-        <td>
+        <td data-label="Title">
           <a href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}" class="text-strong">
             {{ p.title }}
           </a>
         </td>
-        <td>
+        <td data-label="Status">
           {% if p.published %}
             <span class="lang-badge lang-badge-success">Live</span>
           {% else %}
             <span class="lang-badge">Draft</span>
           {% endif %}
         </td>
-        <td class="text-muted text-sm nowrap">
+        <td data-label="Date" class="text-muted text-sm nowrap">
           {{ p.created_at | dtfmt('%b %d') }}
         </td>
       </tr>
@@ -146,7 +146,7 @@
 <div class="card">
   <div class="card-title"><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon"> Recent Projects</div>
   {% if recent_projects %}
-  <table>
+  <table class="table-responsive">
     <thead>
       <tr>
         <th>#</th>
@@ -158,10 +158,10 @@
     <tbody>
     {% for p in recent_projects %}
     <tr>
-      <td class="text-muted nowrap">{{ p.id }}</td>
-      <td class="text-strong">{{ p.title }}</td>
-      <td class="text-muted text-sm">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
-      <td>
+      <td data-label="#" class="text-muted nowrap">{{ p.id }}</td>
+      <td data-label="Title" class="text-strong">{{ p.title }}</td>
+      <td data-label="Created" class="text-muted text-sm">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
+      <td data-label="Actions">
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}"><img src="{{ url_for('static', filename='images/icons/pencil.png') }}" alt="" class="nav-icon"> Edit</a>
         </div>

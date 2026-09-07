@@ -14,6 +14,7 @@ ALLOWED_MD  = {'md', 'markdown'}
 ALLOWED_IMG = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
 MAX_MD_BYTES  = 2 * 1024 * 1024   # 2 MB
 MAX_IMG_BYTES = 5 * 1024 * 1024   # 5 MB
+PER_PAGE = 50
 
 
 def _allowed_md(filename: str) -> bool:
@@ -99,8 +100,11 @@ def _unique_slug(base: str, exclude_id: int | None = None) -> str:
 @admin_bp.get('/blog/categories/')
 @login_required
 def blog_categories_list():
-    categories = BlogCategory.query.order_by(BlogCategory.name).all()
-    return render_template('admin/blog/category_list.html', categories=categories)
+    page = max(request.args.get('page', 1, type=int), 1)
+    pagination = BlogCategory.query.order_by(BlogCategory.name).paginate(
+        page=page, per_page=PER_PAGE, error_out=False
+    )
+    return render_template('admin/blog/category_list.html', pagination=pagination, categories=pagination.items)
 
 
 @admin_bp.route('/blog/categories/create', methods=['GET', 'POST'])
@@ -182,8 +186,15 @@ def blog_category_delete(cat_id):
 @admin_bp.get('/blog/')
 @login_required
 def blog_posts_list():
-    posts = BlogPost.query.order_by(BlogPost.created_at.desc()).all()
-    return render_template('admin/blog/post_list.html', posts=posts)
+    q = request.args.get('q', '').strip()
+    page = max(request.args.get('page', 1, type=int), 1)
+
+    query = BlogPost.query.order_by(BlogPost.created_at.desc())
+    if q:
+        query = query.filter(BlogPost.title.contains(q))
+
+    pagination = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+    return render_template('admin/blog/post_list.html', pagination=pagination, posts=pagination.items, q=q)
 
 
 @admin_bp.route('/blog/create', methods=['GET', 'POST'])
@@ -361,6 +372,33 @@ def blog_post_delete(post_id):
     db.session.delete(post)
     db.session.commit()
     flash(f'Post "{title}" deleted.', 'success')
+    return redirect(url_for('admin.blog_posts_list'))
+
+
+@admin_bp.post('/blog/bulk-delete')
+@login_required
+def blog_posts_bulk_delete():
+    ids = request.form.getlist('post_ids', type=int)
+    if ids:
+        posts = BlogPost.query.filter(BlogPost.id.in_(ids)).all()
+        for post in posts:
+            if post.cover_image_path:
+                storage.delete(post.cover_image_path)
+            if post.markdown_path:
+                storage.delete(post.markdown_path)
+            if post.markdown_path_es:
+                storage.delete(post.markdown_path_es)
+            for img in post.images:
+                storage.delete(img.image_path)
+        deleted = (
+            BlogPost.query
+            .filter(BlogPost.id.in_(ids))
+            .delete(synchronize_session=False)
+        )
+        db.session.commit()
+        flash(f'{deleted} post(s) deleted.', 'success')
+    else:
+        flash('No posts selected.', 'error')
     return redirect(url_for('admin.blog_posts_list'))
 
 

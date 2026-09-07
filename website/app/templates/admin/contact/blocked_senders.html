@@ -1,4 +1,5 @@
 {% extends "admin/base.html" %}
+{% from "admin/_macros.html" import pagination_bar %}
 
 {% block title %}Blocked Senders{% endblock %}
 {% block page_title %}Blocked Senders{% endblock %}
@@ -25,7 +26,7 @@
 
 <div class="card">
   {% if blocked %}
-  <table class="table-blue">
+  <table class="table-blue table-responsive">
     <thead>
       <tr>
         <th>Email</th>
@@ -38,17 +39,17 @@
     <tbody>
     {% for b in blocked %}
     <tr>
-      <td>{{ b.email or '—' }}</td>
-      <td>{{ b.ip_address or '—' }}</td>
-      <td>
+      <td data-label="Email">{{ b.email or '—' }}</td>
+      <td data-label="IP address">{{ b.ip_address or '—' }}</td>
+      <td data-label="Reason">
         {% if b.reason == 'rate_limit_exceeded' %}
         <span class="lang-badge lang-badge-danger">Auto (rate limit)</span>
         {% else %}
         <span class="lang-badge">Manual</span>
         {% endif %}
       </td>
-      <td style="color:#777;white-space:nowrap">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
-      <td>
+      <td data-label="Blocked" style="color:#777;white-space:nowrap">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
+      <td data-label="Actions">
         <div class="td-actions">
           <form method="POST" action="{{ url_for('admin.blocked_sender_delete', blocked_id=b.id) }}"
                 onsubmit="return confirm('Unblock this sender?');">
@@ -60,6 +61,7 @@
     {% endfor %}
     </tbody>
   </table>
+  {{ pagination_bar(pagination, 'admin.blocked_senders') }}
   {% else %}
   <p class="empty-state">No blocked senders yet.</p>
   {% endif %}

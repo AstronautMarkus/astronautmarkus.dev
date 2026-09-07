@@ -1,4 +1,5 @@
 {% extends "admin/base.html" %}
+{% from "admin/_macros.html" import pagination_bar, search_bar %}
 
 {% block title %}Portfolio Projects{% endblock %}
 {% block page_title %}Portfolio Projects{% endblock %}
@@ -8,70 +9,85 @@
 {% endblock %}
 
 {% block content %}
+{{ search_bar('admin.projects_list', q, placeholder='Search by title…') }}
+
 <div class="card">
   {% if projects %}
-  <table>
-    <thead>
+  <form id="bulk-form" method="POST" action="{{ url_for('admin.projects_bulk_delete') }}">
+    <div class="td-actions" style="padding:8px 10px;justify-content:space-between;display:flex;align-items:center">
+      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> selected</span>
+      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete selected</button>
+    </div>
+    <table class="table-responsive">
+      <thead>
+        <tr>
+          <th style="width:16px"><input type="checkbox" id="select-all"></th>
+          <th style="width:52px">Cover</th>
+          <th>Title</th>
+          <th>Project</th>
+          <th>GitHub</th>
+          <th>Created</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for p in projects %}
       <tr>
-        <th style="width:52px">Cover</th>
-        <th>Title</th>
-        <th>Project</th>
-        <th>GitHub</th>
-        <th>Created</th>
-        <th style="text-align:right">Actions</th>
+        <td data-label="Select" style="padding-left:10px">
+          <input type="checkbox" class="row-checkbox" name="project_ids" value="{{ p.id }}">
+        </td>
+        <td data-label="Cover">
+          {% if p.image_path %}
+            <img class="cover-thumb" src="{{ storage_url(p.image_path) }}" alt="{{ p.title }}">
+          {% else %}
+            <div class="cover-placeholder">—</div>
+          {% endif %}
+        </td>
+        <td data-label="Title" style="font-weight:700;max-width:240px">
+          {{ p.title }}
+          <span class="lang-badge lang-badge-en">EN</span>
+          {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
+        </td>
+        <td data-label="Project">
+          {% if p.project_url %}
+            <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
+               style="font-size:0.8rem">↗ link</a>
+          {% else %}
+            <span style="color:#aaaaaa">—</span>
+          {% endif %}
+        </td>
+        <td data-label="GitHub">
+          {% if p.github_repo_url %}
+            <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
+               style="font-size:0.8rem">↗ repo</a>
+          {% else %}
+            <span style="color:#aaaaaa">—</span>
+          {% endif %}
+        </td>
+        <td data-label="Created" style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
+        <td data-label="Actions">
+          <div class="td-actions">
+            <a class="btn btn-ghost btn-sm"
+               href="{{ url_for('admin.projects_edit', project_id=p.id) }}">Edit</a>
+            <button type="submit" formaction="{{ url_for('admin.projects_delete', project_id=p.id) }}"
+                    formnovalidate onclick="return confirm('Delete project «{{ p.title }}»? This cannot be undone.')"
+                    class="btn btn-danger btn-sm">Delete</button>
+          </div>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-    {% for p in projects %}
-    <tr>
-      <td>
-        {% if p.image_path %}
-          <img class="cover-thumb" src="{{ storage_url(p.image_path) }}" alt="{{ p.title }}">
-        {% else %}
-          <div class="cover-placeholder">—</div>
-        {% endif %}
-      </td>
-      <td style="font-weight:700;max-width:240px">
-        {{ p.title }}
-        <span class="lang-badge lang-badge-en">EN</span>
-        {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
-      </td>
-      <td>
-        {% if p.project_url %}
-          <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
-             style="font-size:0.8rem">↗ link</a>
-        {% else %}
-          <span style="color:#aaaaaa">—</span>
-        {% endif %}
-      </td>
-      <td>
-        {% if p.github_repo_url %}
-          <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
-             style="font-size:0.8rem">↗ repo</a>
-        {% else %}
-          <span style="color:#aaaaaa">—</span>
-        {% endif %}
-      </td>
-      <td style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
-      <td>
-        <div class="td-actions">
-          <a class="btn btn-ghost btn-sm"
-             href="{{ url_for('admin.projects_edit', project_id=p.id) }}">Edit</a>
-          <form method="POST"
-                action="{{ url_for('admin.projects_delete', project_id=p.id) }}"
-                onsubmit="return confirm('Delete project «{{ p.title }}»? This cannot be undone.')">
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
-        </div>
-      </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      {% endfor %}
+      </tbody>
+    </table>
+  </form>
+  {{ pagination_bar(pagination, 'admin.projects_list', q=q) }}
   {% else %}
   <p class="empty-state">
+    {% if q %}
+    No projects match "{{ q }}". <a href="{{ url_for('admin.projects_list') }}">Clear search</a>
+    {% else %}
     No projects yet.
     <a href="{{ url_for('admin.projects_create') }}">Create your first project →</a>
+    {% endif %}
   </p>
   {% endif %}
 </div>

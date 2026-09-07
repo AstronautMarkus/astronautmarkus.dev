@@ -1,4 +1,5 @@
 {% extends "admin/base.html" %}
+{% from "admin/_macros.html" import pagination_bar, search_bar %}
 
 {% block title %}Blog Posts{% endblock %}
 {% block page_title %}Blog Posts{% endblock %}
@@ -9,111 +10,90 @@
 {% endblock %}
 
 {% block content %}
+{{ search_bar('admin.blog_posts_list', q, placeholder='Search by title…') }}
+
 <div class="card">
   {% if posts %}
-  <table>
-    <thead>
-      <tr>
-        <th style="width:44px">Cover</th>
-        <th>Title</th>
-        <th>Category</th>
-        <th>Languages</th>
-        <th>Published</th>
-        <th>Created</th>
-        <th style="text-align:right">Actions</th>
+  <form id="bulk-form" method="POST" action="{{ url_for('admin.blog_posts_bulk_delete') }}">
+    <div class="td-actions" style="padding:8px 10px;justify-content:space-between;display:flex;align-items:center">
+      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> selected</span>
+      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete selected</button>
+    </div>
+    <table class="table-responsive">
+      <thead>
+        <tr>
+          <th style="width:16px"><input type="checkbox" id="select-all"></th>
+          <th style="width:44px">Cover</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Languages</th>
+          <th>Published</th>
+          <th>Created</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for p in posts %}
+      <tr id="post-row-{{ p.id }}">
+        <td data-label="Select" style="padding-left:10px">
+          <input type="checkbox" class="row-checkbox" name="post_ids" value="{{ p.id }}">
+        </td>
+        <td data-label="Cover">
+          {% if p.cover_image_path %}
+            <img class="cover-thumb" src="{{ storage_url(p.cover_image_path) }}" alt="{{ p.title }}">
+          {% else %}
+            <div class="cover-placeholder">—</div>
+          {% endif %}
+        </td>
+        <td data-label="Title" style="font-weight:700;max-width:240px">
+          {{ p.title }}
+          <div style="font-size:10px;color:#999999;font-weight:normal;margin-top:2px">{{ p.slug }}</div>
+        </td>
+        <td data-label="Category">
+          {% if p.category %}
+            <span class="tag-pill">{{ p.category.name }}</span>
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+        <td data-label="Languages">
+          <span class="lang-badge lang-badge-en">EN</span>
+          {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
+        </td>
+        <td data-label="Published">
+          <button type="button"
+                  class="publish-toggle {{ 'is-published' if p.published else '' }}"
+                  data-toggle-url="{{ url_for('admin.blog_post_toggle_publish', post_id=p.id) }}"
+                  title="{{ 'Click to unpublish' if p.published else 'Click to publish' }}">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="toggle-label">{{ 'Published' if p.published else 'Draft' }}</span>
+          </button>
+        </td>
+        <td data-label="Created" style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
+        <td data-label="Actions">
+          <div class="td-actions">
+            <a class="btn btn-ghost btn-sm"
+               href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}">Edit</a>
+            <button type="submit" formaction="{{ url_for('admin.blog_post_delete', post_id=p.id) }}"
+                    formnovalidate onclick="return confirm('Delete post «{{ p.title }}»? This cannot be undone.')"
+                    class="btn btn-danger btn-sm">Delete</button>
+          </div>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-    {% for p in posts %}
-    <tr id="post-row-{{ p.id }}">
-      <td>
-        {% if p.cover_image_path %}
-          <img class="cover-thumb" src="{{ storage_url(p.cover_image_path) }}" alt="{{ p.title }}">
-        {% else %}
-          <div class="cover-placeholder">—</div>
-        {% endif %}
-      </td>
-      <td style="font-weight:700;max-width:240px">
-        {{ p.title }}
-        <div style="font-size:10px;color:#999999;font-weight:normal;margin-top:2px">{{ p.slug }}</div>
-      </td>
-      <td>
-        {% if p.category %}
-          <span class="tag-pill">{{ p.category.name }}</span>
-        {% else %}
-          <span class="text-muted">—</span>
-        {% endif %}
-      </td>
-      <td>
-        <span class="lang-badge lang-badge-en">EN</span>
-        {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
-      </td>
-      <td>
-        <button type="button"
-                class="publish-toggle {{ 'is-published' if p.published else '' }}"
-                data-post-id="{{ p.id }}"
-                title="{{ 'Click to unpublish' if p.published else 'Click to publish' }}">
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          <span class="toggle-label">{{ 'Published' if p.published else 'Draft' }}</span>
-        </button>
-      </td>
-      <td style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
-      <td>
-        <div class="td-actions">
-          <a class="btn btn-ghost btn-sm"
-             href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}">Edit</a>
-          <form method="POST"
-                action="{{ url_for('admin.blog_post_delete', post_id=p.id) }}"
-                onsubmit="return confirm('Delete post «{{ p.title }}»? This cannot be undone.')">
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
-        </div>
-      </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      {% endfor %}
+      </tbody>
+    </table>
+  </form>
+  {{ pagination_bar(pagination, 'admin.blog_posts_list', q=q) }}
   {% else %}
   <p class="empty-state">
+    {% if q %}
+    No posts match "{{ q }}". <a href="{{ url_for('admin.blog_posts_list') }}">Clear search</a>
+    {% else %}
     No posts yet.
     <a href="{{ url_for('admin.blog_post_create') }}">Write your first post →</a>
+    {% endif %}
   </p>
   {% endif %}
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-(function () {
-  'use strict';
-
-  document.querySelectorAll('.publish-toggle').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var postId = this.dataset.postId;
-      var toggle = this;
-      toggle.disabled = true;
-
-      fetch('/admin/blog/' + postId + '/toggle-publish', {
-        method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (data.error) { toggle.disabled = false; return; }
-          if (data.published) {
-            toggle.classList.add('is-published');
-            toggle.title = 'Click to unpublish';
-            toggle.querySelector('.toggle-label').textContent = 'Published';
-          } else {
-            toggle.classList.remove('is-published');
-            toggle.title = 'Click to publish';
-            toggle.querySelector('.toggle-label').textContent = 'Draft';
-          }
-          toggle.disabled = false;
-        })
-        .catch(function () { toggle.disabled = false; });
-    });
-  });
-}());
-</script>
 {% endblock %}

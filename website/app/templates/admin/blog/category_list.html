@@ -1,4 +1,5 @@
 {% extends "admin/base.html" %}
+{% from "admin/_macros.html" import pagination_bar %}
 
 {% block title %}Blog Categories{% endblock %}
 {% block page_title %}Blog Categories{% endblock %}
@@ -11,7 +12,7 @@
 {% block content %}
 <div class="card">
   {% if categories %}
-  <table>
+  <table class="table-responsive">
     <thead>
       <tr>
         <th>Name</th>
@@ -24,16 +25,16 @@
     <tbody>
     {% for cat in categories %}
     <tr>
-      <td style="font-weight:700">{{ cat.name }}</td>
-      <td>
+      <td data-label="Name" style="font-weight:700">{{ cat.name }}</td>
+      <td data-label="Languages">
         <span class="lang-badge lang-badge-en">EN</span>
         {% if cat.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
       </td>
-      <td>
+      <td data-label="Posts">
         <span style="font-size:11px;color:#555555">{{ cat.posts | length }}</span>
       </td>
-      <td style="color:#777777;font-size:0.8rem">{{ cat.created_at | dtfmt('%b %d, %Y') }}</td>
-      <td>
+      <td data-label="Created" style="color:#777777;font-size:0.8rem">{{ cat.created_at | dtfmt('%b %d, %Y') }}</td>
+      <td data-label="Actions">
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm"
              href="{{ url_for('admin.blog_category_edit', cat_id=cat.id) }}">Edit</a>
@@ -48,6 +49,7 @@
     {% endfor %}
     </tbody>
   </table>
+  {{ pagination_bar(pagination, 'admin.blog_categories_list') }}
   {% else %}
   <p class="empty-state">
     No categories yet.
