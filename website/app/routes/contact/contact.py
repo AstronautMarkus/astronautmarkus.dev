@@ -7,11 +7,11 @@ from datetime import datetime, timedelta
 
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_mail import Message
-from jinja2 import Environment, select_autoescape
 
 from app import db, mail
+from app.emails import render_email, template_for
 from app.i18n import get_current_language, render_localized_template
-from app.models.models import BlockedSender, ContactMessage, ContactSubmissionLog, MailTemplate
+from app.models.models import BlockedSender, ContactMessage, ContactSubmissionLog
 from app.routes.contact import contact_bp
 
 _EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
@@ -23,92 +23,22 @@ MIN_SUBMIT_SECONDS = 3           # forms submitted faster than this are treated 
 RATE_LIMIT_WINDOW_MINUTES = 10
 RATE_LIMIT_MAX_ATTEMPTS = 3      # attempts allowed per email/IP within the window before auto-ban
 
-# ─── Default templates ────────────────────────────────────────────────────────
+# ─── Mail subjects ─────────────────────────────────────────────────────────────
 
-_DEFAULT_TEMPLATES = [
-    {
-        'slug': 'contact_notification',
-        'language': 'en',
-        'description': 'Email sent to you when someone fills the contact form (English)',
-        'subject': 'New message: {{ subject }}',
-        'body_html': (
-            '<p>You received a new contact message from your website.</p>'
-            '<table cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:monospace">'
-            '<tr><td style="font-weight:bold;padding-right:12px">From</td><td>{{ name }} &lt;{{ email }}&gt;</td></tr>'
-            '<tr><td style="font-weight:bold;padding-right:12px">Subject</td><td>{{ subject }}</td></tr>'
-            '<tr><td style="font-weight:bold;padding-right:12px;vertical-align:top">Message</td>'
-            '<td style="white-space:pre-wrap">{{ message }}</td></tr>'
-            '</table>'
-        ),
+_SUBJECTS = {
+    'contact_notification': {
+        'en': 'New message: {subject}',
+        'es': 'Nuevo mensaje: {subject}',
     },
-    {
-        'slug': 'contact_notification',
-        'language': 'es',
-        'description': 'Correo enviado a ti cuando alguien completa el formulario de contacto (Español)',
-        'subject': 'Nuevo mensaje: {{ subject }}',
-        'body_html': (
-            '<p>Recibiste un nuevo mensaje de contacto desde tu sitio web.</p>'
-            '<table cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:monospace">'
-            '<tr><td style="font-weight:bold;padding-right:12px">De</td><td>{{ name }} &lt;{{ email }}&gt;</td></tr>'
-            '<tr><td style="font-weight:bold;padding-right:12px">Asunto</td><td>{{ subject }}</td></tr>'
-            '<tr><td style="font-weight:bold;padding-right:12px;vertical-align:top">Mensaje</td>'
-            '<td style="white-space:pre-wrap">{{ message }}</td></tr>'
-            '</table>'
-        ),
+    'contact_autoresponse': {
+        'en': 'Thanks for reaching out, {name}!',
+        'es': '¡Gracias por escribirme, {name}!',
     },
-    {
-        'slug': 'contact_autoresponse',
-        'language': 'en',
-        'description': 'Autoresponse sent to the person who submitted the form (English)',
-        'subject': 'Thanks for reaching out, {{ name }}!',
-        'body_html': (
-            '<p>Hi {{ name }},</p>'
-            "<p>Thanks for your message! I've received it and will get back to you as soon as possible.</p>"
-            '<p>Here is a copy of what you sent:</p>'
-            '<blockquote style="border-left:3px solid #ccc;margin:0;padding:0 12px;color:#555">'
-            '<strong>Subject:</strong> {{ subject }}<br><br>'
-            '{{ message }}'
-            '</blockquote>'
-            '<p>Best regards,<br>Marcos — AstronautMarkus.dev</p>'
-        ),
-    },
-    {
-        'slug': 'contact_autoresponse',
-        'language': 'es',
-        'description': 'Respuesta automática enviada a quien completó el formulario (Español)',
-        'subject': '¡Gracias por escribirme, {{ name }}!',
-        'body_html': (
-            '<p>Hola {{ name }},</p>'
-            '<p>¡Gracias por tu mensaje! Lo he recibido y te responderé lo antes posible.</p>'
-            '<p>Aquí tienes una copia de lo que enviaste:</p>'
-            '<blockquote style="border-left:3px solid #ccc;margin:0;padding:0 12px;color:#555">'
-            '<strong>Asunto:</strong> {{ subject }}<br><br>'
-            '{{ message }}'
-            '</blockquote>'
-            '<p>Un saludo,<br>Marcos — AstronautMarkus.dev</p>'
-        ),
-    },
-]
+}
 
 
-def _seed_templates() -> None:
-    """Insert default mail templates if they don't exist yet."""
-    for tpl in _DEFAULT_TEMPLATES:
-        exists = MailTemplate.query.filter_by(
-            slug=tpl['slug'], language=tpl['language']
-        ).first()
-        if not exists:
-            db.session.add(MailTemplate(**tpl))
-    db.session.commit()
-
-
-def _render_body(body_html: str, **kwargs) -> str:
-    env = Environment(autoescape=select_autoescape(['html']))
-    return env.from_string(body_html).render(**kwargs)
-
-
-def _get_template(slug: str, lang: str) -> MailTemplate | None:
-    return MailTemplate.query.filter_by(slug=slug, language=lang).first()
+def _subject(key: str, lang: str, **kwargs) -> str:
+    return _SUBJECTS[key].get(lang, _SUBJECTS[key]['en']).format(**kwargs)
 
 
 _PRIVATE_IP_PREFIXES = ('127.', '::1', '10.', '172.', '192.168.', '::ffff:127.')
@@ -148,12 +78,12 @@ def _verify_turnstile(token: str, remote_ip: str | None = None) -> bool:
 
 
 def _send_notification(lang: str, name: str, email: str, subject: str, message: str) -> None:
-    tpl = _get_template('contact_notification', lang) or _get_template('contact_notification', 'en')
-    if not tpl:
-        return
-    rendered_subject = _render_body(tpl.subject, name=name, email=email, subject=subject, message=message)
-    rendered_body = _render_body(tpl.body_html, name=name, email=email, subject=subject, message=message)
     admin_email = current_app.config.get('MAIL_DEFAULT_SENDER') or current_app.config.get('MAIL_USERNAME')
+    rendered_subject = _subject('contact_notification', lang, subject=subject)
+    rendered_body = render_email(
+        template_for('emails/contact_notification', lang),
+        name=name, email=email, subject=subject, message=message,
+    )
     msg = Message(
         subject=rendered_subject,
         recipients=[admin_email],
@@ -164,11 +94,11 @@ def _send_notification(lang: str, name: str, email: str, subject: str, message: 
 
 
 def _send_autoresponse(lang: str, name: str, email: str, subject: str, message: str) -> None:
-    tpl = _get_template('contact_autoresponse', lang) or _get_template('contact_autoresponse', 'en')
-    if not tpl:
-        return
-    rendered_subject = _render_body(tpl.subject, name=name, email=email, subject=subject, message=message)
-    rendered_body = _render_body(tpl.body_html, name=name, email=email, subject=subject, message=message)
+    rendered_subject = _subject('contact_autoresponse', lang, name=name)
+    rendered_body = render_email(
+        template_for('emails/contact_autoresponse', lang),
+        name=name, email=email, subject=subject, message=message,
+    )
     msg = Message(
         subject=rendered_subject,
         recipients=[email],
@@ -301,7 +231,6 @@ def contact():
 
         # Send emails (non-fatal)
         try:
-            _seed_templates()
             _send_notification(lang, name, email, subject, message)
             _send_autoresponse(lang, name, email, subject, message)
         except Exception as exc:

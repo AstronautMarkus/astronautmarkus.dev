@@ -2,43 +2,10 @@ from datetime import datetime, timedelta
 
 from flask import current_app, url_for
 from flask_mail import Message
-from jinja2 import Environment, select_autoescape
 
-from app import db, mail
-from app.models.models import HoneypotHit, MailTemplate, User
-
-_DEFAULT_TEMPLATE = {
-    'slug': 'honeypot_alert',
-    'language': 'es',
-    'description': 'Correo enviado a los administradores cuando el honeypot captura un nuevo atacante',
-    'subject': '[Honeypot] Actividad detectada: {{ resource }}',
-    'body_html': (
-        '<p>El honeypot <strong>kanarianlintu</strong> registró una nueva solicitud.</p>'
-        '<table cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:monospace">'
-        '<tr><td style="font-weight:bold;padding-right:12px">IP</td><td>{{ ip_address }}</td></tr>'
-        '<tr><td style="font-weight:bold;padding-right:12px">Recurso</td><td>{{ resource }}</td></tr>'
-        '<tr><td style="font-weight:bold;padding-right:12px">Ruta</td><td>{{ method }} {{ path }}</td></tr>'
-        '<tr><td style="font-weight:bold;padding-right:12px">User-Agent</td><td>{{ user_agent }}</td></tr>'
-        '<tr><td style="font-weight:bold;padding-right:12px">Referrer</td><td>{{ referrer }}</td></tr>'
-        '<tr><td style="font-weight:bold;padding-right:12px">Fecha</td><td>{{ created_at }}</td></tr>'
-        '</table>'
-        '<p><a href="{{ detail_url }}">Ver detalle completo →</a></p>'
-    ),
-}
-
-
-def _seed_template() -> MailTemplate:
-    tpl = MailTemplate.query.filter_by(slug='honeypot_alert', language='es').first()
-    if not tpl:
-        tpl = MailTemplate(**_DEFAULT_TEMPLATE)
-        db.session.add(tpl)
-        db.session.commit()
-    return tpl
-
-
-def _render(text: str, **kwargs) -> str:
-    env = Environment(autoescape=select_autoescape(['html']))
-    return env.from_string(text).render(**kwargs)
+from app import mail
+from app.emails import render_email
+from app.models.models import HoneypotHit, User
 
 
 def _should_alert(hit: HoneypotHit) -> bool:
@@ -67,10 +34,10 @@ def notify_admins(hit: HoneypotHit) -> None:
         return
 
     try:
-        tpl = _seed_template()
+        resource = hit.resource or hit.path
         context = {
             'ip_address': hit.ip_address,
-            'resource': hit.resource or hit.path,
+            'resource': resource,
             'method': hit.method,
             'path': hit.path,
             'user_agent': hit.user_agent or '—',
@@ -78,8 +45,8 @@ def notify_admins(hit: HoneypotHit) -> None:
             'created_at': hit.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') if hit.created_at else '',
             'detail_url': url_for('admin.honeypot_detail', hit_id=hit.id, _external=True),
         }
-        subject = _render(tpl.subject, **context)
-        body = _render(tpl.body_html, **context)
+        subject = f'[Honeypot] Actividad detectada: {resource}'
+        body = render_email('emails/honeypot_alert.html', **context)
         msg = Message(subject=subject, recipients=recipients, html=body)
         mail.send(msg)
     except Exception as exc:

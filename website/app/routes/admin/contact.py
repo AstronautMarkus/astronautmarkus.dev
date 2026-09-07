@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from app import db
-from app.models.models import BlockedSender, ContactMessage, MailTemplate
+from app.models.models import BlockedSender, ContactMessage
 from app.routes.admin import admin_bp
 
 PER_PAGE = 50
@@ -136,42 +136,3 @@ def blocked_sender_delete(blocked_id):
         db.session.commit()
         flash('Sender unblocked.', 'success')
     return redirect(url_for('admin.blocked_senders'))
-
-
-# ─── Mail templates ───────────────────────────────────────────────────────────
-
-@admin_bp.get('/contact/mail-templates/')
-@login_required
-def contact_mail_templates():
-    page = max(request.args.get('page', 1, type=int), 1)
-    pagination = MailTemplate.query.order_by(MailTemplate.slug, MailTemplate.language).paginate(
-        page=page, per_page=PER_PAGE, error_out=False
-    )
-    return render_template('admin/contact/mail_templates.html', pagination=pagination, templates=pagination.items)
-
-
-@admin_bp.route('/contact/mail-templates/<int:template_id>/edit', methods=['GET', 'POST'])
-@login_required
-def contact_mail_template_edit(template_id):
-    tpl = db.session.get(MailTemplate, template_id)
-    if tpl is None:
-        flash('Template not found.', 'error')
-        return redirect(url_for('admin.contact_mail_templates'))
-
-    if request.method == 'POST':
-        subject = request.form.get('subject', '').strip()
-        body_html = request.form.get('body_html', '').strip()
-        description = request.form.get('description', '').strip()
-
-        if not subject or not body_html:
-            flash('Subject and body are required.', 'error')
-            return render_template('admin/contact/mail_template_form.html', tpl=tpl)
-
-        tpl.subject = subject
-        tpl.body_html = body_html
-        tpl.description = description or tpl.description
-        db.session.commit()
-        flash('Template saved.', 'success')
-        return redirect(url_for('admin.contact_mail_templates'))
-
-    return render_template('admin/contact/mail_template_form.html', tpl=tpl)

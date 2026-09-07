@@ -1,0 +1,36 @@
+{% extends "emails/base.html" %}
+{% set lang = 'es' %}
+
+{% block subject_title %}[Honeypot] Actividad detectada: {{ resource }}{% endblock %}
+
+{% block content %}
+<h1>Actividad detectada</h1>
+<p>El honeypot <strong>kanarianlintu</strong> registró una nueva solicitud.</p>
+<table class="data-table">
+    <tr>
+        <td class="label">IP</td>
+        <td>{{ ip_address }}</td>
+    </tr>
+    <tr>
+        <td class="label">Recurso</td>
+        <td>{{ resource }}</td>
+    </tr>
+    <tr>
+        <td class="label">Ruta</td>
+        <td>{{ method }} {{ path }}</td>
+    </tr>
+    <tr>
+        <td class="label">User-Agent</td>
+        <td>{{ user_agent }}</td>
+    </tr>
+    <tr>
+        <td class="label">Referrer</td>
+        <td>{{ referrer }}</td>
+    </tr>
+    <tr>
+        <td class="label">Fecha</td>
+        <td>{{ created_at }}</td>
+    </tr>
+</table>
+<p><a href="{{ detail_url }}">Ver detalle completo →</a></p>
+{% endblock %}

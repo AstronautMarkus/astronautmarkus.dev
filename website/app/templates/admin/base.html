@@ -130,12 +130,6 @@
             </a>
           </li>
           <li>
-            <a href="{{ url_for('admin.contact_mail_templates') }}"
-              class="{{ 'active' if request.endpoint and 'mail_template' in request.endpoint else '' }}">
-              <img src="{{ url_for('static', filename='images/icons/email_open.png') }}" alt="" class="nav-icon"> Mail Templates
-            </a>
-          </li>
-          <li>
             <a href="{{ url_for('admin.blocked_senders') }}"
               class="{{ 'active' if request.endpoint == 'admin.blocked_senders' else '' }}">
               <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" alt="" class="nav-icon"> Blocked Senders

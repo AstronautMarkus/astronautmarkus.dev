@@ -171,25 +171,6 @@ class ContactMessage(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 
-class MailTemplate(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    slug = db.Column(db.String(50), nullable=False)
-    language = db.Column(db.String(10), nullable=False, default='en')
-    description = db.Column(db.String(200), nullable=True)
-    subject = db.Column(db.String(200), nullable=False)
-    body_html = db.Column(db.Text, nullable=False)
-    updated_at = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=db.func.current_timestamp(),
-        onupdate=db.func.current_timestamp(),
-    )
-
-    __table_args__ = (
-        db.UniqueConstraint('slug', 'language', name='uq_mail_template_slug_lang'),
-    )
-
-
 class BlockedSender(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(200), nullable=True, index=True)
