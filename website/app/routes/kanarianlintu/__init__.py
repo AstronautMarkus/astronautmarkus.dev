@@ -33,13 +33,6 @@ def log_hit(resource=None):
         db.session.commit()
     except Exception:
         db.session.rollback()
-        return
-
-    try:
-        from app.routes.kanarianlintu.notify import notify_admins
-        notify_admins(hit)
-    except Exception:
-        db.session.rollback()
 
 
 from . import server, env, fail, decoys  # noqa: E402, F401
