@@ -42,6 +42,7 @@
         href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Arimo:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@1,600;1,700&display=swap">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/image-modal.css') }}">
     {% block head %}{% endblock %}
     {% block extra_css %}{% endblock %}
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
@@ -175,6 +176,35 @@
                     href="https://www.debian.org/" target="_blank">Debian 13</a></div>
         </footer>
     </div>
+
+    <div class="image-modal-overlay" id="image-modal-overlay">
+        <div class="image-modal" role="dialog" aria-modal="true"
+            aria-label="{% if current_lang == 'en' %}Image viewer{% else %}Visor de imágenes{% endif %}">
+            <div class="image-modal-header">
+                <span class="image-modal-counter" id="image-modal-counter"></span>
+                <button type="button" class="image-modal-close" id="image-modal-close"
+                    aria-label="{% if current_lang == 'en' %}Close{% else %}Cerrar{% endif %}"><img
+                        src="{{ url_for('static', filename='images/icons/cross.png') }}" alt="" class="nav-icon"></button>
+            </div>
+            <div class="image-modal-body">
+                <button type="button" class="image-modal-nav prev" id="image-modal-prev"
+                    aria-label="{% if current_lang == 'en' %}Previous{% else %}Anterior{% endif %}"><img
+                        src="{{ url_for('static', filename='images/icons/resultset_previous.png') }}" alt=""
+                        class="nav-icon"></button>
+                <img src="" alt="" class="image-modal-img" id="image-modal-img">
+                <button type="button" class="image-modal-nav next" id="image-modal-next"
+                    aria-label="{% if current_lang == 'en' %}Next{% else %}Siguiente{% endif %}"><img
+                        src="{{ url_for('static', filename='images/icons/resultset_next.png') }}" alt=""
+                        class="nav-icon"></button>
+            </div>
+            <div class="image-modal-caption" id="image-modal-caption">
+                <div class="image-modal-title" id="image-modal-title"></div>
+                <div class="image-modal-desc" id="image-modal-desc"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/image-modal.js') }}"></script>
 
     {% block extra_js %}{% endblock %}
 

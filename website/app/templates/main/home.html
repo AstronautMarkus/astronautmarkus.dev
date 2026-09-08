@@ -104,7 +104,7 @@ articles, and dev experiments by AstronautMarkus.{% endblock %}
             <div class="payday-gallery-grid" id="payday-gallery-grid">
                 {% for shot in payday_screenshots %}
                 {% set shot_name = shot.rsplit('.', 1)[0].replace('payday-bank-', '').replace('-', ' ')|title %}
-                <button type="button" class="payday-gallery-item"
+                <button type="button" class="payday-gallery-item modal-image" data-modal-group="payday"
                     data-full="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
                     data-title="PAYDAY BANK — {{ shot_name }}">
                     <img src="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
@@ -131,27 +131,6 @@ articles, and dev experiments by AstronautMarkus.{% endblock %}
         </div>
     </div>
 </section>
-
-{% if payday_screenshots %}
-<div class="payday-modal-overlay" id="payday-modal-overlay">
-    <div class="payday-modal" role="dialog" aria-modal="true" aria-label="PAYDAY BANK screenshots">
-        <div class="payday-modal-header">
-            <span class="payday-modal-counter" id="payday-modal-counter"></span>
-            <button type="button" class="payday-modal-close" id="payday-modal-close" aria-label="Close"><img
-                    src="{{ url_for('static', filename='images/icons/cross.png') }}" alt="" class="nav-icon"></button>
-        </div>
-        <div class="payday-modal-body">
-            <button type="button" class="payday-modal-nav prev" id="payday-modal-prev" aria-label="Previous"><img
-                    src="{{ url_for('static', filename='images/icons/resultset_previous.png') }}" alt=""
-                    class="nav-icon"></button>
-            <img src="" alt="" class="payday-modal-img" id="payday-modal-img">
-            <button type="button" class="payday-modal-nav next" id="payday-modal-next" aria-label="Next"><img
-                    src="{{ url_for('static', filename='images/icons/resultset_next.png') }}" alt=""
-                    class="nav-icon"></button>
-        </div>
-    </div>
-</div>
-{% endif %}
 
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
@@ -219,71 +198,5 @@ articles, and dev experiments by AstronautMarkus.{% endblock %}
                 class="nav-icon"></a>
     </div>
 </section>
-{% endif %}
-{% endblock %}
-
-{% block extra_js %}
-{% if payday_screenshots %}
-<script>
-    (function () {
-        var items = Array.prototype.slice.call(document.querySelectorAll('#payday-gallery-grid .payday-gallery-item'));
-        if (!items.length) return;
-
-        var overlay = document.getElementById('payday-modal-overlay');
-        var imgEl = document.getElementById('payday-modal-img');
-        var counterEl = document.getElementById('payday-modal-counter');
-        var closeBtn = document.getElementById('payday-modal-close');
-        var prevBtn = document.getElementById('payday-modal-prev');
-        var nextBtn = document.getElementById('payday-modal-next');
-
-        var current = -1;
-
-        function show(index) {
-            if (index < 0) index = items.length - 1;
-            if (index >= items.length) index = 0;
-            current = index;
-
-            var item = items[current];
-            imgEl.src = item.getAttribute('data-full');
-            imgEl.alt = item.getAttribute('data-title') || '';
-            counterEl.textContent = (current + 1) + ' / ' + items.length;
-
-            var multiple = items.length > 1;
-            prevBtn.style.display = multiple ? '' : 'none';
-            nextBtn.style.display = multiple ? '' : 'none';
-        }
-
-        function open(index) {
-            show(index);
-            overlay.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function close() {
-            overlay.classList.remove('open');
-            document.body.style.overflow = '';
-            imgEl.src = '';
-        }
-
-        items.forEach(function (item, index) {
-            item.addEventListener('click', function () { open(index); });
-        });
-
-        closeBtn.addEventListener('click', close);
-        prevBtn.addEventListener('click', function () { show(current - 1); });
-        nextBtn.addEventListener('click', function () { show(current + 1); });
-
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) close();
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (!overlay.classList.contains('open')) return;
-            if (e.key === 'Escape') close();
-            else if (e.key === 'ArrowLeft') show(current - 1);
-            else if (e.key === 'ArrowRight') show(current + 1);
-        });
-    })();
-</script>
 {% endif %}
 {% endblock %}

@@ -71,10 +71,8 @@
             <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Imágenes del Post</h4>
             <div class="post-gallery-grid">
                 {% for img in post.images %}
-                <a href="{{ storage_url(img.image_path) }}" target="_blank" rel="noopener noreferrer"
-                   title="Imagen {{ loop.index }}">
-                    <img src="{{ storage_url(img.image_path) }}" alt="Imagen {{ loop.index }}">
-                </a>
+                <img src="{{ storage_url(img.image_path) }}" alt="Imagen {{ loop.index }}" class="modal-image"
+                     data-modal-group="post-images">
                 {% endfor %}
             </div>
         </div>
