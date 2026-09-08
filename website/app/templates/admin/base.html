@@ -140,10 +140,14 @@
 
       <div class="sidebar-box">
         <div class="sidebar-title green"><img src="{{ url_for('static', filename='images/icons/server.png') }}" alt="" class="nav-icon"> System</div>
-        <div class="sidebar-content">
-          <div class="status-box ok"><img src="{{ url_for('static', filename='images/icons/tick_circle_frame.png') }}" alt="" class="nav-icon"> DB Connected</div>
-          <div class="status-box ok"><img src="{{ url_for('static', filename='images/icons/tick_circle_frame.png') }}" alt="" class="nav-icon"> Storage OK</div>
-        </div>
+        <ul class="menu">
+          <li>
+            <a href="{{ url_for('admin.backups_list') }}"
+              class="{{ 'active' if request.endpoint and 'backup' in request.endpoint else '' }}">
+              <img src="{{ url_for('static', filename='images/icons/server_database.png') }}" alt="" class="nav-icon"> Backups
+            </a>
+          </li>
+        </ul>
       </div>
 
       {% if admin_unread_contact %}

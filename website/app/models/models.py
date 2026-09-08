@@ -208,6 +208,18 @@ class GuestbookEntry(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 
+class Backup(db.Model):
+    """Metadata for a data-only mysqldump generated from the admin panel.
+    The dump file itself lives in the regular storage driver (local or S3,
+    whichever STORAGE_DRIVER selects) under file_path, same as any other
+    upload — see app/services/backup_service.py."""
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(200), nullable=False)
+    file_path = db.Column(db.String(200), nullable=False)
+    size_bytes = db.Column(db.Integer, nullable=False, default=0)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
 class HoneypotHit(db.Model):
     """Records every request that hits a kanarianlintu decoy route, for threat intel purposes."""
     id = db.Column(db.Integer, primary_key=True)

@@ -1,0 +1,58 @@
+{% extends "admin/base.html" %}
+{% from "admin/_macros.html" import pagination_bar %}
+
+{% block title %}Backups{% endblock %}
+{% block page_title %}Backups{% endblock %}
+
+{% block topbar_actions %}
+<form method="POST" action="{{ url_for('admin.backups_generate') }}">
+  <button type="submit" class="btn btn-primary btn-sm">+ Generate Backup</button>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-title">Website Backups</div>
+
+  {% if backups %}
+  <table class="table-responsive">
+    <thead>
+      <tr>
+        <th>Filename</th>
+        <th>Size</th>
+        <th>Created</th>
+        <th style="text-align:right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in backups %}
+      <tr>
+        <td data-label="Filename" style="font-family:monospace;font-size:0.82rem">{{ b.filename }}</td>
+        <td data-label="Size" style="color:#555555;font-size:0.85rem">{{ (b.size_bytes / 1024) | round(1) }} KB</td>
+        <td data-label="Created" style="color:#777777;font-size:0.8rem">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}
+        </td>
+        <td data-label="Actions">
+          <div class="td-actions">
+            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.backups_download', backup_id=b.id) }}">Download</a>
+            <form method="POST" action="{{ url_for('admin.backups_delete', backup_id=b.id) }}"
+              onsubmit="return confirm('Delete backup «{{ b.filename }}»? This cannot be undone.')">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination_bar(pagination, 'admin.backups_list') }}
+  {% else %}
+  <p style="color:#666666;font-size:0.85rem;margin:0 0 14px">
+    Each backup is a row-per-INSERT <code>mysqldump</code> of the database's data only (no table
+    structure) — easy to read, diff, or grep.
+  </p>
+  <p class="empty-state">
+    No backups yet. Use the "Generate Backup" button above to create the first one.
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
