@@ -1,0 +1,98 @@
+/* ── Guestbook: entry wall ────────────────────────────────────────────────
+   Reuses .welcome-card/.card-header (home.css) for banners and the whole
+   .contact-form/.contact-alert/.contact-btn set (contact.css) for the sign
+   form. Only the entry list and its pagination are new here.
+*/
+
+.guestbook-wall {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+}
+
+.guestbook-entry {
+    background: var(--mac-grey-1);
+    border: 1px solid var(--mac-black);
+    padding: 8px 10px;
+}
+
+.guestbook-entry-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.guestbook-entry-name {
+    font-family: var(--font-chrome);
+    font-size: 10.5px;
+    font-weight: bold;
+    color: var(--mac-black);
+}
+
+.guestbook-entry-date {
+    font-size: 9px;
+    color: var(--mac-grey-4);
+    white-space: nowrap;
+}
+
+.guestbook-entry-message {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: var(--mac-black);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.guestbook-empty {
+    padding: 12px;
+}
+
+/* ── Pagination (matches .blog-pagination-footer) ───────────────────────── */
+
+.guestbook-pagination-footer {
+    background: var(--mac-grey-2);
+    border-top: 1px solid var(--mac-black);
+    padding: 6px 8px;
+}
+
+.guestbook-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.guestbook-page-btn {
+    display: inline-block;
+    min-width: 22px;
+    text-align: center;
+    padding: 3px 7px;
+    font-family: var(--font-chrome);
+    font-size: 9.5px;
+    font-weight: bold;
+    color: var(--mac-black);
+    background: var(--mac-white);
+    border: 1px solid var(--mac-black);
+    border-radius: var(--radius-button);
+    text-decoration: none;
+}
+
+.guestbook-page-btn:hover {
+    background: var(--mac-black);
+    color: var(--mac-white);
+}
+
+.guestbook-page-btn.current {
+    background: var(--mac-black);
+    border-color: var(--mac-black);
+    color: var(--mac-white);
+}
+
+.guestbook-page-btn.disabled {
+    color: var(--mac-grey-4);
+    background: var(--mac-grey-1);
+    pointer-events: none;
+}

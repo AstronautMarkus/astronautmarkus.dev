@@ -127,6 +127,10 @@
                         <li><a href="{{ url_for('main.setup') }}"><img
                                     src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt=""
                                     class="nav-icon">Setup</a></li>
+                        <li><a href="{{ url_for('main.guestbook') }}"><img
+                                    src="{{ url_for('static', filename='images/icons/book_open.png') }}" alt=""
+                                    class="nav-icon">{% if current_lang == 'en' %}Guest Book{% else %}Libro de
+                                Visitas{% endif %}</a></li>
                     </ul>
                 </div>
 

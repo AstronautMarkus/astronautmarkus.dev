@@ -1,0 +1,108 @@
+{% extends "base/base.html" %}
+
+{% block title %}Libro de Visitas{% endblock %}
+{% block description %}Firma el libro de visitas — deja una nota, saluda o comparte tus impresiones sobre AstronautMarkus.dev.{% endblock %}
+{% block keywords %}libro de visitas, guestbook, comentarios, Marcos Reyes, AstronautMarkus{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/guestbook.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="welcome-card">
+    <div class="card-header contact-banner-title">
+        <img src="{{ url_for('static', filename='images/icons/book_open.png') }}" class="icon" alt="">
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Libro de Visitas
+    </div>
+    <div class="card-body">
+        <div class="contact-banner-intro">
+            Deja una nota antes de irte — saluda, comparte tus impresiones, o simplemente hazme saber que pasaste por aquí. Las entradas se revisan antes de publicarse abajo.
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, msg in messages %}
+        {% if category == 'success' %}
+        <div class="contact-alert contact-alert-success">¡Gracias por firmar! Tu entrada aparecerá aquí una vez que sea revisada.</div>
+        {% elif category == 'error' %}
+        <div class="contact-alert contact-alert-error">Por favor completa tu nombre y un mensaje.</div>
+        {% endif %}
+    {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('main.guestbook') }}" class="contact-form" novalidate>
+
+        <input type="hidden" name="form_ts" value="{{ form_ts }}">
+        <div class="hp-field" aria-hidden="true">
+            <label for="company_site">Company Site</label>
+            <input type="text" id="company_site" name="company_site" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-group {% if 'name' in field_errors %}has-error{% endif %}">
+            <label for="name">Nombre <span class="required">*</span></label>
+            <input type="text" id="name" name="name" value="{{ form_data.get('name', '') }}"
+                   placeholder="Tu nombre" maxlength="100" autocomplete="name">
+            {% if 'name' in field_errors %}<span class="field-error">El nombre es obligatorio.</span>{% endif %}
+        </div>
+
+        <div class="form-group {% if 'message' in field_errors %}has-error{% endif %}">
+            <label for="message">Mensaje <span class="required">*</span></label>
+            <textarea id="message" name="message" rows="4" placeholder="Deja tu huella…" maxlength="1000">{{ form_data.get('message', '') }}</textarea>
+            {% if 'message' in field_errors %}<span class="field-error">El mensaje no puede estar vacío.</span>{% endif %}
+        </div>
+
+        <button type="submit" class="contact-btn"><img src="{{ url_for('static', filename='images/icons/pencil.png') }}" alt="" class="nav-icon"> Firmar el Libro de Visitas</button>
+
+    </form>
+</section>
+
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Entradas
+    </div>
+
+    {% if entries %}
+    <div class="guestbook-wall">
+        {% for entry in entries %}
+        <div class="guestbook-entry">
+            <div class="guestbook-entry-head">
+                <span class="guestbook-entry-name">{{ entry.name }}</span>
+                <span class="guestbook-entry-date">{{ entry.created_at | dtfmt('%d %b, %Y') }}</span>
+            </div>
+            <div class="guestbook-entry-message">{{ entry.message }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if pagination.pages > 1 %}
+    <div class="guestbook-pagination-footer">
+        <div class="guestbook-pagination">
+            <a href="{{ url_for('main.guestbook', page=pagination.prev_num) }}"
+               class="guestbook-page-btn{% if not pagination.has_prev %} disabled{% endif %}">Ant.</a>
+
+            {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if p %}
+                <a href="{{ url_for('main.guestbook', page=p) }}"
+                   class="guestbook-page-btn{% if p == pagination.page %} current{% endif %}">{{ p }}</a>
+                {% else %}
+                <span class="guestbook-page-btn disabled">&hellip;</span>
+                {% endif %}
+            {% endfor %}
+
+            <a href="{{ url_for('main.guestbook', page=pagination.next_num) }}"
+               class="guestbook-page-btn{% if not pagination.has_next %} disabled{% endif %}">Sig.</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="guestbook-empty">
+        <div class="card-text">Aún no hay entradas. ¡Sé el primero en firmar!</div>
+    </div>
+    {% endif %}
+</section>
+
+{% endblock %}
