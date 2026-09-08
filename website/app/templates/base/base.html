@@ -107,7 +107,8 @@
         </nav>
 
         <div class="content-container">
-            <aside class="sidebar">
+            <aside class="sidebar"
+                style="height: calc(70vh - 50px); overflow-y: auto; display: flex; flex-direction: column;">
                 <div class="panel-box">
                     <ul class="menu-list">
                         <li><a href="{{ url_for('main.home') }}"><img
@@ -146,18 +147,14 @@
                     </div>
                 </div>
 
-                <img src="{{ url_for('static', filename='images/announces/announce.png') }}" class="announcement-image">
+                <a href="https://open.spotify.com/playlist/03OXOTX3VQyHLpQMb0lVwW?si=86cf5a71ca834d83" target="_blank" class="back-to-top" id="back-to-top">
+                    <img src="{{ url_for('static', filename='images/announces/announce.png') }}"
+                        class="announcement-image">
+                </a>
 
-                <img src="{{ url_for('static', filename='images/announces/N6KVmek.gif') }}" class="announcement-image">
-
-                <img src="{{ url_for('static', filename='images/announces/anti-cgnat.jpg') }}"
-                    class="announcement-image">
-
-                <img src="{{ url_for('static', filename='images/announces/make-html-site.png') }}"
-                    class="announcement-image">
 
                 <img src="{{ url_for('utils.visitor_counter') }}"
-                    style="width: 130px; display: block; margin: 0 auto; pointer-events: none; user-select: none;"
+                    style="width: 130px; display: block; margin: 0 auto; margin-top: auto; pointer-events: none; user-select: none;"
                     alt="Visitor Counter">
 
             </aside>
