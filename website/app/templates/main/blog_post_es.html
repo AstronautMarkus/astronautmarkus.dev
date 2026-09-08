@@ -24,7 +24,8 @@
 
 {% if post.cover_image_path %}
 <div class="post-cover-wrap">
-    <img src="{{ storage_url(post.cover_image_path) }}" class="post-cover-img" alt="{{ title }}">
+    <img src="{{ storage_url(post.cover_image_path) }}" class="post-cover-img modal-image"
+         data-modal-group="post-images" alt="{{ title }}">
     <div class="post-cover-overlay">
         <div class="post-cover-title">{{ title }}</div>
     </div>

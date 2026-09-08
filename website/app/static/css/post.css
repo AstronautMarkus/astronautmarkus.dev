@@ -339,6 +339,7 @@
     bottom: 0;
     padding: 8px 10px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+    pointer-events: none;
 }
 
 .post-cover-title {

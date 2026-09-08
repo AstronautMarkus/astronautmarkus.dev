@@ -28,7 +28,8 @@
 
 {% if project.image_path %}
 <div class="post-cover-wrap">
-    <img src="{{ storage_url(project.image_path) }}" class="post-cover-img" alt="{{ p_title }}">
+    <img src="{{ storage_url(project.image_path) }}" class="post-cover-img modal-image"
+         data-modal-group="portfolio-images" alt="{{ p_title }}">
     <div class="post-cover-overlay">
         <div class="post-cover-title">{{ p_title }}</div>
     </div>
