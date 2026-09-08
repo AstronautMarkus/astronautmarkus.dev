@@ -24,28 +24,20 @@
                 Esto es real, no un montaje. Tengo <strong>dos ISP</strong> entrando a la casa: Entel por un ONT
                 Huawei que modifiqué para escapar del CG-NAT y tener una IP realmente alcanzable, y Mundo Pacífico
                 — supuestamente el internet más rápido de Latinoamérica — sobre un ONT FiberHome capaz de 10 Gigabit,
-                por ahora con un plan de 2 Gbps mientras termino de preparar el cableado para aprovecharlo en toda la
-                casa.
+                utilizando el plan de 2 Gbps. Mediante un transceptor a RJ45 SFP+, conecto desde el router a un switch de 2.5G pero con un gateway de 10G, para que la planta alta pueda aprovechar la velocidad de la línea sin depender del Wi-Fi.
             </p>
             <p>
-                Todo lo que está detrás de esos dos enlaces pasa por un <strong>FortiGate 60D</strong> que encontré
+                Todo lo que cuelga del WAN1 pasa por un <strong>FortiGate 60D</strong> que encontré
                 por ahí — no daré más detalles — que por ahora solo ocupa la DMZ, conectado a un switch TP-Link de 24
-                puertos donde vive cada servidor y lab. La arquitectura está pensada para repartir la carga a
+                puertos donde vive cada servidor y lab. El WAN2 de Mundo Pacífico, en cambio, va directo a un router
+                Huawei WiFi AX2 que hace de router principal para el resto de la casa, sin pasar por el firewall.
+                La arquitectura está pensada para repartir la carga a
                 propósito: un viejo Core 2 Duo no hace nada más que servir de reverse proxy con <strong>Caddy</strong>
                 para que ningún equipo sea un punto único de falla, un Ryzen 5 hace el trabajo pesado de verdad, y un
                 viejo HP ProLiant queda casi siempre en reposo como músculo de respaldo. Todo esto está repartido en
                 <strong>dos plantas</strong>: el rack principal vive en la sala central, y hay un segundo montaje más
                 chico arriba, en mi habitación.
             </p>
-        </div>
-    </div>
-    <div class="homelab-card-body" style="padding-top:0;">
-        <div class="homelab-notice">
-            <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="Nota">
-            <div>
-                <strong>Sobre las fotos:</strong> las fotos de hardware son de referencia, sacadas de internet, no
-                del equipo real. Me da paja sacar captura componente por componente jaja.
-            </div>
         </div>
     </div>
 </section>
@@ -83,6 +75,14 @@
                     <img src="{{ url_for('static', filename='images/icons/prohibition_button.png') }}" alt="">
                     FortiGate 60D
                 </div>
+                <div class="topo-node core" data-id="ax2main" style="left:400px; top:110px;">
+                    <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="">
+                    AX2 Principal
+                </div>
+                <div class="topo-node" data-id="phone7911" style="left:540px; top:110px;">
+                    <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt="">
+                    Cisco 7911
+                </div>
                 <div class="topo-node core" data-id="tplink" style="left:230px; top:180px;">
                     <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
                     TP-Link 24p
@@ -104,19 +104,35 @@
                     Pi 4B (repuesto)
                 </div>
 
-                <div class="topo-node core" data-id="patchpanel2f" style="left:730px; top:60px;">
+                <div class="topo-node core" data-id="patchpanel2f" style="left:720px; top:40px;">
                     <img src="{{ url_for('static', filename='images/icons/category.png') }}" alt="">
                     Patch Panel
                 </div>
-                <div class="topo-node core" data-id="linksys" style="left:730px; top:140px;">
+                <div class="topo-node core" data-id="horaco" style="left:720px; top:100px;">
+                    <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
+                    HORACO 2.5G
+                </div>
+                <div class="topo-node" data-id="macmini" style="left:690px; top:160px;">Mac Mini M1</div>
+                <div class="topo-node" data-id="sisterpc" style="left:850px; top:160px;">PC de mi Hermana</div>
+                <div class="topo-node core" data-id="linksys" style="left:850px; top:220px;">
                     <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
                     Linksys SE3005
                 </div>
-                <div class="topo-node" data-id="macmini" style="left:700px; top:230px;">Mac Mini M1</div>
-                <div class="topo-node" data-id="sisterpc" style="left:850px; top:230px;">PC de mi Hermana</div>
-                <div class="topo-node" data-id="camera2f" style="left:775px; top:310px;">
+                <div class="topo-node" data-id="camera2f" style="left:690px; top:290px;">
                     <img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="">
                     Cámara IP
+                </div>
+                <div class="topo-node core" data-id="ax2ap" style="left:850px; top:290px;">
+                    <img src="{{ url_for('static', filename='images/icons/information.png') }}" alt="">
+                    AX2 AP
+                </div>
+                <div class="topo-node" data-id="zero2w" style="left:690px; top:360px;">
+                    <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt="">
+                    Pi Zero 2W
+                </div>
+                <div class="topo-node" data-id="spa504g" style="left:850px; top:360px;">
+                    <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt="">
+                    Cisco SPA504G
                 </div>
 
             </div>
@@ -124,7 +140,8 @@
 
         <div class="topology-legend-canvas">
             <span><span class="swatch"></span>Enlace LAN est&aacute;ndar</span>
-            <span><span class="swatch direct"></span>Enlace directo Mundo Pac&iacute;fico &rarr; 2do piso (bypassea el firewall; 1G hoy, transceptor 10G/2.5G planeado)</span>
+            <span><span class="swatch direct"></span>Enlace directo Mundo Pac&iacute;fico &rarr; 2do piso</span>
+            <span><span class="swatch" style="border-top-style:dashed;"></span>Enlace inal&aacute;mbrico (WiFi)</span>
             <button type="button" class="topology-reset-btn" id="homelab-topology-reset"><img src="{{ url_for('static', filename='images/icons/arrow_refresh.png') }}" alt="" class="nav-icon"> Reiniciar orden</button>
         </div>
 
@@ -142,7 +159,7 @@
             <tr>
                 <td class="vlan-id">WAN2</td>
                 <td>Mundo Pacífico · FiberHome HG5853SF</td>
-                <td>Alimenta al FortiGate <em>y</em> tiene su propio cable LAN directo al patch panel de la planta alta</td>
+                <td>Utilizado para uso doméstico y algo más, como VoIP para jugar con mi familia. Las computadoras usan este enlace para conectarse a internet utilizando adaptadores de 2.5G</td>
             </tr>
             <tr>
                 <td class="vlan-id">DMZ</td>
@@ -151,8 +168,8 @@
             </tr>
             <tr>
                 <td class="vlan-id">2P</td>
-                <td>Linksys SE3005 + patch panel</td>
-                <td>Alimentado directo desde el gateway de Mundo Pacífico, sin pasar por el firewall — 1G hoy, transceptor 10G/2.5G planeado</td>
+                <td>HORACO de 2,5 GbE / Transceptor SFP+ 10G</td>
+                <td>Directo desde el router ISP, para que la planta alta pueda aprovechar la velocidad de la línea sin depender del Wi-Fi. Al tener un enlace de 10G, es un backbone completo que sirve 2.5G al resto y usa el Linksys SE3005 como switch gigabit secundario para cosas que no necesitan más velocidad.</td>
             </tr>
         </table>
     </div>
@@ -219,11 +236,11 @@
                 <span class="homelab-item-floor">Planta Baja</span>
                 <span class="homelab-item-role">Firewall</span>
                 <div class="homelab-item-desc">
-                    Lo encontré por ahí — hasta ahí lo dejo. Está entre ambos WAN y la DMZ, hoy con una sola zona de
+                    Lo encontré por ahí — hasta ahí lo dejo. Está entre el WAN1 y la DMZ, hoy con una sola zona de
                     red mientras el resto del lab va creciendo hacia necesitar más segmentación.
                 </div>
                 <div class="homelab-item-specs">
-                    <span class="homelab-tag">Dual WAN</span>
+                    <span class="homelab-tag">WAN1</span>
                     <span class="homelab-tag">DMZ</span>
                     <span class="homelab-tag">Hallazgo de Segunda Mano</span>
                 </div>
@@ -336,26 +353,6 @@
         </div>
 
         <div class="homelab-item">
-            <img src="{{ url_for('static', filename='images/homelab/ups.jpg') }}" class="homelab-item-photo" alt="Unidad de respaldo UPS">
-            <div class="homelab-item-body">
-                <div class="homelab-item-title">
-                    <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
-                    UPS — Hikvision
-                </div>
-                <span class="homelab-item-floor">Planta Baja</span>
-                <span class="homelab-item-role">Energía</span>
-                <div class="homelab-item-desc">
-                    Todo lo que corre en AC en el rack — ambos ONT, el firewall, el switch, los cuatro servidores —
-                    pasa por un UPS Hikvision, para que un corte breve no se traduzca en un servidor caído.
-                </div>
-                <div class="homelab-item-specs">
-                    <span class="homelab-tag">Respaldo AC</span>
-                    <span class="homelab-tag">Todo el Rack</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="homelab-item">
             <img src="{{ url_for('static', filename='images/homelab/switch5.jpg') }}" class="homelab-item-photo" alt="Switch chico gigabit de 5 puertos">
             <div class="homelab-item-body">
                 <div class="homelab-item-title">
@@ -365,8 +362,8 @@
                 <span class="homelab-item-floor">Planta Alta</span>
                 <span class="homelab-item-role">Switch Habitación</span>
                 <div class="homelab-item-desc">
-                    Un switch Gigabit chico de 5 puertos en el bastidor de 2 postes de arriba, que alimenta al Mac
-                    Mini M1, a la computadora de mi hermana a través del patch panel, y a la cámara de la planta alta.
+                    Un switch Gigabit chico de 5 puertos en el bastidor de 2 postes de arriba, colgado del HORACO, que
+                    alimenta al access point Huawei AX2, al teléfono Cisco SPA504G y a la cámara IP de la planta alta.
                 </div>
                 <div class="homelab-item-specs">
                     <span class="homelab-tag">5 Puertos</span>
@@ -376,7 +373,7 @@
         </div>
 
         <div class="homelab-item">
-            <img src="{{ url_for('static', filename='images/homelab/patch-panel.jpg') }}" class="homelab-item-photo" alt="Patch panel">
+            <img src="{{ url_for('static', filename='images/homelab/patch-panel.jpg') }}" class="homelab-item-photo" alt="Patch panel de red en la habitación">
             <div class="homelab-item-body">
                 <div class="homelab-item-title">
                     <img src="{{ url_for('static', filename='images/icons/category.png') }}" class="icon" alt="">
@@ -385,13 +382,156 @@
                 <span class="homelab-item-floor">Planta Alta</span>
                 <span class="homelab-item-role">Cableado</span>
                 <div class="homelab-item-desc">
-                    Por ahora, tiradas Gigabit básicas. El plan es expandirlo a un backbone de 10G de verdad (o al
-                    menos 2.5G) para que el bastidor de arriba pueda aprovechar lo que ofrece la línea de Mundo
-                    Pacífico.
+                    Reparte las tiradas Gigabit de la habitación y alimenta al switch HORACO de 2.5G a través del
+                    transceptor SFP+ de 10G, dándole por fin al bastidor de arriba un backbone real en vez de
+                    depender del Wi-Fi.
                 </div>
                 <div class="homelab-item-specs">
-                    <span class="homelab-tag">Expansión Planeada</span>
-                    <span class="homelab-tag">Meta 2.5G/10G</span>
+                    <span class="homelab-tag">Backbone 2.5G/10G</span>
+                    <span class="homelab-tag">Alimenta a HORACO</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/huawei-ax2.jpg') }}" class="homelab-item-photo" alt="Router WiFi 6 Huawei AX2">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/information.png') }}" class="icon" alt="">
+                    Huawei WiFi AX2 — Router Principal
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Router Principal</span>
+                <div class="homelab-item-desc">
+                    Router WiFi 6 de Huawei conectado directo al WAN2, sin pasar por el FortiGate, que sirve como
+                    router principal para la red doméstica. Proporciona conectividad inalámbrica de alta velocidad y
+                    es compatible con los últimos estándares de seguridad.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">WiFi 6</span>
+                    <span class="homelab-tag">WAN2 Directo</span>
+                    <span class="homelab-tag">Seguridad Avanzada</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/huawei-ax2.jpg') }}" class="homelab-item-photo" alt="Router WiFi 6 Huawei AX2 en modo access point">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/information.png') }}" class="icon" alt="">
+                    Huawei WiFi AX2 — Access Point
+                </div>
+                <span class="homelab-item-floor">Planta Alta</span>
+                <span class="homelab-item-role">Access Point</span>
+                <div class="homelab-item-desc">
+                    Conectado por cable al switch Linksys de la planta alta y configurado en modo access point, para
+                    ampliar ahí la cobertura WiFi sin perder velocidad ni estabilidad respecto a la red principal.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">WiFi 6</span>
+                    <span class="homelab-tag">Access Point</span>
+                    <span class="homelab-tag">Enlace Cableado</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/switch-25.jpg') }}" class="homelab-item-photo" alt="Switch de 2.5G para la planta alta">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/share.png') }}" class="icon" alt="">
+                    HORACO 2.5G
+                </div>
+                <span class="homelab-item-floor">Planta Alta</span>
+                <span class="homelab-item-role">Switch 2.5G</span>
+                <div class="homelab-item-desc">
+                    Switch de 2.5G que recibe el backbone de 10G a través del transceptor SFP+ y reparte esa
+                    velocidad al Mac Mini M1, a la PC de mi hermana y, en cascada, al switch Linksys de la habitación.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Switch 2.5G</span>
+                    <span class="homelab-tag">Backbone 10G</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/10g.jpg') }}" class="homelab-item-photo" alt="Transceptor SFP+ 10G para backbone de red">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/share.png') }}" class="icon" alt="">
+                    Transceptor SFP+ 10G
+                </div>
+                <span class="homelab-item-floor">Planta Alta</span>
+                <span class="homelab-item-role">Enlace Backbone</span>
+                <div class="homelab-item-desc">
+                    Transceptor SFP+ de 10G utilizado para conectarse al backbone de la red desde la planta alta.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Backbone 10G</span>
+                    <span class="homelab-tag">RJ45 → SFP+</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/zero2w.jpg') }}" class="homelab-item-photo" alt="Placa Raspberry Pi Zero 2 W">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" class="icon" alt="">
+                    Raspberry Pi Zero 2 W
+                </div>
+                <span class="homelab-item-floor">Planta Alta</span>
+                <span class="homelab-item-role">Centralita VoIP (Asterisk)</span>
+                <div class="homelab-item-desc">
+                    Utilizada como centralita telefónica con Asterisk. Se conecta a la red principal por WiFi al AX2
+                    de la planta alta, lo que le permite gestionar las llamadas VoIP de ese piso.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Asterisk</span>
+                    <span class="homelab-tag">WiFi</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/7911.jpg') }}" class="homelab-item-photo" alt="Teléfono IP Cisco 7911">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="icon" alt="">
+                    Cisco 7911
+                </div>
+                <span class="homelab-item-floor">Planta Baja</span>
+                <span class="homelab-item-role">Teléfono VoIP</span>
+                <div class="homelab-item-desc">
+                    Teléfono VoIP conectado directo al router de Mundo Pacífico (WAN2), sin pasar por el switch
+                    principal, para el servicio de telefonía de la planta baja.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Ethernet</span>
+                    <span class="homelab-tag">PoE</span>
+                    <span class="homelab-tag">WAN2 Directo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="homelab-item">
+            <img src="{{ url_for('static', filename='images/homelab/spa504g.jpg') }}" class="homelab-item-photo" alt="Teléfono IP Cisco SPA504G">
+            <div class="homelab-item-body">
+                <div class="homelab-item-title">
+                    <img src="{{ url_for('static', filename='images/icons/toolbox.png') }}" class="icon" alt="">
+                    Cisco SPA504G
+                </div>
+                <span class="homelab-item-floor">Planta Alta</span>
+                <span class="homelab-item-role">Teléfono VoIP</span>
+                <div class="homelab-item-desc">
+                    Teléfono VoIP conectado al switch Linksys de la planta alta para el servicio de telefonía.
+                </div>
+                <div class="homelab-item-specs">
+                    <span class="homelab-tag">Ethernet</span>
+                    <span class="homelab-tag">PoE</span>
+                    <span class="homelab-tag">Trampa: técnicamente está en mi habitación, jeje</span>
                 </div>
             </div>
         </div>
@@ -407,24 +547,30 @@
     <div class="homelab-card-body">
         <div class="power-grid">
             <div class="power-box">
-                <div class="power-box-title">
-                    <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
-                    AC — UPS Hikvision
-                </div>
-                <div class="power-box-desc">
-                    Todo lo que corre en 220V — ambos ONT, el FortiGate, el switch TP-Link y los cuatro servidores de
-                    la planta baja — queda respaldado por un UPS Hikvision.
+                <img src="{{ url_for('static', filename='images/homelab/ups.jpg') }}" class="power-box-photo" alt="UPS Hikvision">
+                <div class="power-box-body">
+                    <div class="power-box-title">
+                        <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+                        AC — UPS Hikvision
+                    </div>
+                    <div class="power-box-desc">
+                        Todo lo que corre en 220V — ambos ONT, el FortiGate, el switch TP-Link y los cuatro servidores de
+                        la planta baja — queda respaldado por un UPS Hikvision.
+                    </div>
                 </div>
             </div>
             <div class="power-box">
-                <div class="power-box-title">
-                    <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
-                    DC — UPS de 12V para Cámaras
-                </div>
-                <div class="power-box-desc">
-                    Las cargas más chicas en DC, como las cámaras IP, van con un UPS de 12V dedicado — unos 2.0A, más
-                    o menos 24W. Una amiga de la universidad me explicó por qué dimensionarlo así tiene sentido, y
-                    desde entonces ha funcionado muy bien.
+                <img src="{{ url_for('static', filename='images/homelab/ups12.jpg') }}" class="power-box-photo" alt="UPS de 12V para cámaras">
+                <div class="power-box-body">
+                    <div class="power-box-title">
+                        <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" class="icon" alt="">
+                        DC — UPS de 12V para Cámaras
+                    </div>
+                    <div class="power-box-desc">
+                        Las cargas más chicas en DC, como las cámaras IP, van con un UPS de 12V dedicado — unos 2.0A, más
+                        o menos 24W. Una amiga de la universidad me explicó por qué dimensionarlo así tiene sentido, y
+                        desde entonces ha funcionado muy bien.
+                    </div>
                 </div>
             </div>
         </div>
@@ -491,21 +637,21 @@
                 </div>
             </li>
             <li class="homelab-roadmap-item">
-                <span class="homelab-roadmap-status progress">En Progreso</span>
+                <span class="homelab-roadmap-status done">Listo</span>
                 <div class="homelab-roadmap-text">
                     <strong>Cablear la casa para 2 Gbps</strong> — la línea de Mundo Pacífico ya puede darlos; el
                     cableado interno, todavía no.
                 </div>
             </li>
             <li class="homelab-roadmap-item">
-                <span class="homelab-roadmap-status planned">Planeado</span>
+                <span class="homelab-roadmap-status done">Listo</span>
                 <div class="homelab-roadmap-text">
                     <strong>Transceptor RJ45 10G/2.5G</strong> — desde el puerto 10G del router de Mundo Pacífico,
                     para por fin darle al bastidor del segundo piso un uplink de verdad en vez de depender del Wi-Fi.
                 </div>
             </li>
             <li class="homelab-roadmap-item">
-                <span class="homelab-roadmap-status planned">Planeado</span>
+                <span class="homelab-roadmap-status done">Listo</span>
                 <div class="homelab-roadmap-text">
                     <strong>Expandir el patch panel de la habitación</strong> — para estar a la altura de lo que
                     termine entregando la mejora del transceptor.
@@ -522,76 +668,6 @@
     </div>
 </section>
 
-<section class="homelab-card homelab-dream-card">
-    <div class="homelab-card-header homelab-dream-header">
-        <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" class="icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Dream Homelab
-    </div>
-    <div class="homelab-dream-intro">
-        La versión honesta: ando en un dilema constante entre querer más poder y más juguetes, y saber perfectamente
-        que quizás no le saque provecho ni a la mitad. Esta sección es esa lista de deseos igual — el build "si el
-        dinero y el tiempo no importaran".
-    </div>
-    <div class="homelab-dream-grid">
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Centralita VoIP</strong> — un Asterisk/FreePBX autoalojado con anexos de verdad por toda la
-                casa, principalmente porque suena como un rabbit hole entretenido.
-            </div>
-        </div>
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Wi-Fi mesh de verdad</strong> — access points de nivel empresarial con roaming real entre
-                ambos pisos, en vez de repetidores y fe.
-            </div>
-        </div>
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Una impresora de red como corresponde</strong> — láser más una etiquetadora, con su propio
-                print server, para que imprimir deje de ser un evento.
-            </div>
-        </div>
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/servers.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Un cluster de mini PCs</strong> — un puñado de equipos estilo NUC corriendo Proxmox, para que
-                "La Bestia" deje de ser lo único entre yo y el downtime.
-            </div>
-        </div>
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/server_database.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Un NAS dedicado</strong> — RAID más backups programados fuera del sitio, en vez de confiar en
-                discos repartidos entre cuatro equipos distintos.
-            </div>
-        </div>
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/timeline.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Grafana + Prometheus + Uptime Kuma</strong> — dashboards y alertas de verdad, en vez de
-                enterarme de que algo se cayó porque alguien me escribió.
-            </div>
-        </div>
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/share.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Un backbone de 10G de verdad</strong> — ambos pisos, ambos WAN, sin cuellos de botella — el
-                transceptor planeado llevado a su conclusión lógica.
-            </div>
-        </div>
-        <div class="homelab-dream-item">
-            <img src="{{ url_for('static', filename='images/icons/wrench.png') }}" alt="">
-            <div class="homelab-dream-item-text">
-                <strong>Un UPS online de doble conversión como corresponde</strong> — con tarjeta de red, para que los
-                apagados durante un corte real sean automáticos y no una notificación en el celular y una corrida.
-            </div>
-        </div>
-    </div>
-</section>
-
 {% endblock %}
 
 {% block extra_js %}
@@ -603,17 +679,22 @@
 
     var edges = [
         ['wan1', 'fortigate', 'normal'],
-        ['wan2', 'fortigate', 'normal'],
+        ['wan2', 'ax2main', 'normal'],
+        ['wan2', 'phone7911', 'normal'],
         ['wan2', 'patchpanel2f', 'direct'],
         ['fortigate', 'tplink', 'normal'],
         ['tplink', 'gateway', 'normal'],
         ['tplink', 'bestia', 'normal'],
         ['tplink', 'dl360', 'normal'],
         ['tplink', 'pi4', 'normal'],
-        ['patchpanel2f', 'linksys', 'normal'],
-        ['linksys', 'macmini', 'normal'],
-        ['linksys', 'sisterpc', 'normal'],
-        ['linksys', 'camera2f', 'normal']
+        ['patchpanel2f', 'horaco', 'normal'],
+        ['horaco', 'macmini', 'normal'],
+        ['horaco', 'sisterpc', 'normal'],
+        ['horaco', 'linksys', 'normal'],
+        ['linksys', 'camera2f', 'normal'],
+        ['linksys', 'ax2ap', 'normal'],
+        ['linksys', 'spa504g', 'normal'],
+        ['ax2ap', 'zero2w', 'wifi']
     ];
 
     var STORE_KEY = 'homelab-topology-positions-v1';
@@ -646,8 +727,12 @@
 
     var lineEls = edges.map(function (edge) {
         var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('stroke', edge[2] === 'direct' ? '#b5651d' : '#7092b9');
-        line.setAttribute('stroke-width', edge[2] === 'direct' ? '2.5' : '1.5');
+        var kind = edge[2];
+        line.setAttribute('stroke', kind === 'direct' ? '#b5651d' : '#7092b9');
+        line.setAttribute('stroke-width', kind === 'direct' ? '2.5' : '1.5');
+        if (kind === 'wifi') {
+            line.setAttribute('stroke-dasharray', '5,4');
+        }
         svg.appendChild(line);
         return { from: edge[0], to: edge[1], el: line };
     });
