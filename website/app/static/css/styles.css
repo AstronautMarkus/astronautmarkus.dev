@@ -94,6 +94,10 @@ a:hover {
     color: var(--mac-black);
 }
 
+.header-top-nav a.active:hover {
+    color: var(--mac-white);
+}
+
 .header-main {
     height: 85px;
     background: url('/static/images/banner.png') no-repeat center center;
