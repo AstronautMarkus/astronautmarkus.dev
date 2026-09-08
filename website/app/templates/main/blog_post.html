@@ -42,7 +42,7 @@
             <div class="post-meta-row">
                 <span>{{ post.created_at.strftime('%B %d, %Y') }}</span>
                 {% if post.category %}
-                <a href="{{ url_for('main.blog_list', cat=post.category_id) }}" class="post-meta-cat">
+                <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}" class="post-meta-cat">
                     {{ post.category.name }}
                 </a>
                 {% endif %}
@@ -86,10 +86,11 @@
             <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">Post Info</h4>
             <ul class="sidebar-info-list">
                 <li>Published: {{ post.created_at.strftime('%d %b %Y') }}</li>
+                <li>Views: {{ post.view_count }}</li>
                 {% if post.category %}
                 <li>
                     Category:
-                    <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
+                    <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}">
                         {{ post.category.name }}
                     </a>
                 </li>

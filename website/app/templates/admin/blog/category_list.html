@@ -16,6 +16,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Slug</th>
         <th>Languages</th>
         <th>Posts</th>
         <th>Created</th>
@@ -26,6 +27,7 @@
     {% for cat in categories %}
     <tr>
       <td data-label="Name" style="font-weight:700">{{ cat.name }}</td>
+      <td data-label="Slug" style="color:#777777;font-size:0.8rem">{{ cat.slug }}</td>
       <td data-label="Languages">
         <span class="lang-badge lang-badge-en">EN</span>
         {% if cat.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}

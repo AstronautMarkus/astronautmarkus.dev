@@ -28,6 +28,7 @@
           <th>Category</th>
           <th>Languages</th>
           <th>Published</th>
+          <th>Views</th>
           <th>Created</th>
           <th style="text-align:right">Actions</th>
         </tr>
@@ -69,6 +70,7 @@
             <span class="toggle-label">{{ 'Published' if p.published else 'Draft' }}</span>
           </button>
         </td>
+        <td data-label="Views" style="color:#555555">{{ p.view_count }}</td>
         <td data-label="Created" style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
         <td data-label="Actions">
           <div class="td-actions">

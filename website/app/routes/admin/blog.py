@@ -82,13 +82,13 @@ def _parse_tags(raw: str) -> list[BlogTag]:
     return tags
 
 
-def _unique_slug(base: str, exclude_id: int | None = None) -> str:
+def _unique_slug(model, base: str, exclude_id: int | None = None) -> str:
     slug = base
     i = 2
     while True:
-        q = BlogPost.query.filter_by(slug=slug)
+        q = model.query.filter_by(slug=slug)
         if exclude_id:
-            q = q.filter(BlogPost.id != exclude_id)
+            q = q.filter(model.id != exclude_id)
         if not q.first():
             return slug
         slug = f'{base}-{i}'
@@ -118,13 +118,20 @@ def blog_category_create():
 
         has_es = request.form.get('has_es') == '1'
         name_es = request.form.get('name_es', '').strip() or None
+        slug_input = request.form.get('slug', '').strip()
+        base_slug = _slugify(slug_input) if slug_input else _slugify(name)
 
         cat = BlogCategory(
             name=name,
             has_es=has_es,
             name_es=name_es if has_es else None,
+            slug='__tmp__',
         )
         db.session.add(cat)
+        db.session.flush()
+
+        cat.slug = _unique_slug(BlogCategory, base_slug, exclude_id=cat.id)
+
         db.session.commit()
         flash(f'Category "{cat.name}" created.', 'success')
         return redirect(url_for('admin.blog_categories_list'))
@@ -237,7 +244,7 @@ def blog_post_create():
         db.session.add(post)
         db.session.flush()
 
-        post.slug = _unique_slug(base_slug, exclude_id=post.id)
+        post.slug = _unique_slug(BlogPost, base_slug, exclude_id=post.id)
 
         # Cover image
         cover = request.files.get('cover_image')

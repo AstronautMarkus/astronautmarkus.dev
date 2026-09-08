@@ -38,6 +38,18 @@
                  placeholder="e.g. Development"
                  required>
         </div>
+        <div class="form-group">
+          <label for="slug">Slug</label>
+          <input type="text" id="slug" name="slug"
+                 value="{{ category.slug if is_edit else '' }}"
+                 placeholder="auto-generated-from-name"
+                 {{ 'readonly' if is_edit else '' }}>
+          {% if is_edit %}
+          <span class="form-hint">Locked after creation to preserve future URLs.</span>
+          {% else %}
+          <span class="form-hint">Leave blank to auto-generate from the name.</span>
+          {% endif %}
+        </div>
       </div>
 
       <!-- ── Spanish panel ─────────────────────────────────────── -->

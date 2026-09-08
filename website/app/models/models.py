@@ -91,6 +91,7 @@ class Proyectada(db.Model):
 
 class BlogCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(120), nullable=False, unique=True)
     # English (required)
     name = db.Column(db.String(100), nullable=False, unique=True)
     # Spanish (optional)
@@ -138,6 +139,9 @@ class BlogPost(db.Model):
     # Cover image
     cover_image_path = db.Column(db.String(200), nullable=True)
 
+    # Views
+    view_count = db.Column(db.Integer, nullable=False, default=0, server_default='0')
+
     images = db.relationship(
         'BlogPostImage',
         backref='post',
@@ -158,6 +162,14 @@ class BlogPostImage(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False)
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class BlogPostView(db.Model):
+    """Per-visitor view log for BlogPost, used to dedupe view_count increments by IP within a rolling window."""
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False, index=True)
+    ip_address = db.Column(db.String(45), nullable=False)
+    viewed_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
 class ContactMessage(db.Model):

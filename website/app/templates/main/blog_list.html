@@ -46,7 +46,7 @@
 <section class="welcome-card">
     <div class="card-header blog-banner-title">
         <img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Blog
+        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Blog{% if current_category %} · {{ current_category.name }}{% endif %}
     </div>
     <div class="card-body">
         <div class="blog-banner-intro">
@@ -81,7 +81,7 @@
                         {{ post.created_at.strftime('%B %d, %Y') }}
                         {% if post.category %}
                         &nbsp;·&nbsp;
-                        <a href="{{ url_for('main.blog_list', cat=post.category_id) }}">
+                        <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}">
                             {{ post.category.name }}
                         </a>
                         {% endif %}
@@ -106,19 +106,19 @@
             {% if pagination.pages > 1 %}
             <div class="blog-pagination-footer">
                 <div class="blog-pagination">
-                    <a href="{{ url_for('main.blog_list', page=pagination.prev_num, cat=current_cat, tag=current_tag) }}"
+                    <a href="{{ url_for(pagination_endpoint, page=pagination.prev_num, **pagination_kwargs) }}"
                        class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">Prev</a>
 
                     {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
                         {% if p %}
-                        <a href="{{ url_for('main.blog_list', page=p, cat=current_cat, tag=current_tag) }}"
+                        <a href="{{ url_for(pagination_endpoint, page=p, **pagination_kwargs) }}"
                            class="blog-page-btn{% if p == pagination.page %} current{% endif %}">{{ p }}</a>
                         {% else %}
                         <span class="blog-page-btn disabled">&hellip;</span>
                         {% endif %}
                     {% endfor %}
 
-                    <a href="{{ url_for('main.blog_list', page=pagination.next_num, cat=current_cat, tag=current_tag) }}"
+                    <a href="{{ url_for(pagination_endpoint, page=pagination.next_num, **pagination_kwargs) }}"
                        class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">Next</a>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                 </li>
                 {% for cat in categories %}
                 <li>
-                    <a href="{{ url_for('main.blog_list', cat=cat.id) }}"
+                    <a href="{{ url_for('main.blog_category_detail', slug=cat.slug) }}"
                        {% if current_cat == cat.id %}class="blog-cat-active"{% endif %}>
                         {{ cat.name }}
                     </a>
