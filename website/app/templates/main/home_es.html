@@ -167,7 +167,7 @@
         {% for post in latest_posts %}
         {% set p_title = post.title_es if post.has_es and post.title_es else post.title %}
         <tr>
-            <td class="news-date">{{ post.created_at.strftime('%d %b %Y') }}</td>
+            <td class="news-date">{{ post.created_at | dtfmt('%d %b %Y') }}</td>
             <td><a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ p_title }}</a></td>
         </tr>
         {% endfor %}

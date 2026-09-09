@@ -41,7 +41,7 @@
     <h1>{{ p_title }}</h1>
     {% endif %}
     <div class="portfolio-meta-row">
-        <span>{{ project.created_at.strftime('%B %d, %Y') }}</span>
+        <span>{{ project.created_at | dtfmt('%B %d, %Y') }}</span>
         {% if project.has_es %}
         <span class="portfolio-meta-lang">
             <a href="/lang/en?next={{ request.path }}">EN</a>

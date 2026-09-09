@@ -163,6 +163,15 @@ def create_app():
 		return send_from_directory(icons_dir, filename)
 
 	# ── Template filters ──────────────────────────────────────────
+	# Month/weekday names are spelled out here instead of relying on
+	# locale.setlocale(), which is process-global and not thread-safe
+	# under gunicorn workers serving both languages concurrently.
+	_MONTHS_ES_FULL = ('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+	                    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre')
+	_MONTHS_ES_ABBR = ('ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic')
+	_DAYS_ES_FULL   = ('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo')
+	_DAYS_ES_ABBR   = ('lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom')
+
 	def _dtfmt(value, fmt='%b %d, %Y'):
 		if isinstance(value, str):
 			# treat zero/null MySQL dates as missing
@@ -177,6 +186,12 @@ def create_app():
 			else:
 				return value
 		if hasattr(value, 'strftime'):
+			if get_current_language() == 'es':
+				fmt = (fmt
+				       .replace('%B', _MONTHS_ES_FULL[value.month - 1])
+				       .replace('%b', _MONTHS_ES_ABBR[value.month - 1])
+				       .replace('%A', _DAYS_ES_FULL[value.weekday()])
+				       .replace('%a', _DAYS_ES_ABBR[value.weekday()]))
 			return value.strftime(fmt)
 		return str(value)
 

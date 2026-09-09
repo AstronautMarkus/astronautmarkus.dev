@@ -80,7 +80,7 @@
 
                 <div class="blog-post-body">
                     <div class="blog-post-meta">
-                        {{ post.created_at.strftime('%B %d, %Y') }}
+                        {{ post.created_at | dtfmt('%B %d, %Y') }}
                         {% if post.category %}
                         &nbsp;·&nbsp;
                         <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}">
