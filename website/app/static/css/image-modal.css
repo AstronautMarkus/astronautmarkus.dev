@@ -144,3 +144,9 @@
     line-height: 1.5;
     color: var(--mac-grey-6);
 }
+
+@media (max-width: 480px) {
+    .image-modal-overlay {
+        padding: 10px;
+    }
+}

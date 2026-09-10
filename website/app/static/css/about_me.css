@@ -156,3 +156,19 @@
     text-transform: uppercase;
     margin-bottom: 3px;
 }
+
+@media (max-width: 480px) {
+    .profile-body {
+        flex-direction: column;
+    }
+
+    .profile-photo {
+        width: 100%;
+        height: 200px;
+    }
+
+    .stack-grid,
+    .facts-grid {
+        grid-template-columns: 1fr;
+    }
+}

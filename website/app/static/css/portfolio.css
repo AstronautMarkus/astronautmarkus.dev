@@ -197,3 +197,9 @@
     text-align: justify;
     margin-bottom: 8px;
 }
+
+@media (max-width: 480px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -434,6 +434,18 @@
     display: block;
     margin: 0 auto;
     width: 350px;
+    max-width: 100%;
     pointer-events: none;
     height: auto;
+}
+
+@media (max-width: 480px) {
+    .card-body {
+        flex-direction: column;
+    }
+
+    .feature-image {
+        width: 100%;
+        height: 160px;
+    }
 }

@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {% set page_title = self.title() %}
     <title>{% block title %}AstronautMarkus.Dev{% endblock %} | AstronautMarkus.Dev</title>
 
@@ -108,8 +109,7 @@
         </nav>
 
         <div class="content-container">
-            <aside class="sidebar"
-                style="height: calc(70vh - 50px); overflow-y: auto; display: flex; flex-direction: column;">
+            <aside class="sidebar">
                 <div class="panel-box">
                     <ul class="menu-list">
                         <li><a href="{{ url_for('main.home') }}"><img
@@ -205,6 +205,7 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/image-modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nav-dropdown.js') }}"></script>
 
     {% block extra_js %}{% endblock %}
 

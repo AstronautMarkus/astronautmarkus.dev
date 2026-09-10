@@ -787,3 +787,28 @@
     color: var(--mac-grey-6);
     font-style: italic;
 }
+
+/* ── Mobile: stack sidebar below the article instead of beside it ───────── */
+@media (max-width: 768px) {
+
+    #blog-content,
+    #post-content {
+        flex-direction: column;
+    }
+
+    #blog-sidebar,
+    #post-sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    #toc-box {
+        flex: none;
+    }
+
+    #toc-list {
+        max-height: 220px;
+    }
+}

@@ -212,7 +212,7 @@ a:hover {
     z-index: 50;
 }
 
-.nav-dropdown:hover .nav-dropdown-menu {
+.nav-dropdown.open .nav-dropdown-menu {
     display: block;
 }
 
@@ -240,6 +240,10 @@ a:hover {
 
 .sidebar {
     width: 250px;
+    height: calc(70vh - 50px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     background: var(--mac-grey-2);
     padding: 15px 10px;
     border-right: 2px solid var(--mac-black);
@@ -511,4 +515,68 @@ hr {
     border: none;
     border-top: 1px solid var(--mac-grey-4);
     margin: 12px 0;
+}
+
+/* ── Responsive shell ──────────────────────────────────────────────────────
+   Everything above this point is the original fixed 920px desktop window,
+   untouched. Below 768px we turn it into a normal single-column page: the
+   sidebar drops below the main content instead of sitting beside it, and
+   the nav wraps instead of overflowing. Nothing here overrides a rule
+   outside a max-width query, so desktop rendering never changes. */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+    }
+
+    .page-wrapper {
+        width: 100%;
+        zoom: 1;
+    }
+
+    .header-main {
+        height: auto;
+        padding: 12px;
+    }
+
+    .logo-title {
+        font-size: 20px;
+        letter-spacing: -0.3px;
+        overflow-wrap: anywhere;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 3px;
+    }
+
+    .main-nav a {
+        padding: 3px 7px;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        order: 2;
+        width: 100%;
+        height: auto;
+        overflow-y: visible;
+        border-right: none;
+        border-top: 2px solid var(--mac-black);
+    }
+
+    .main-content {
+        order: 1;
+        position: static;
+        overflow-y: visible;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
 }
