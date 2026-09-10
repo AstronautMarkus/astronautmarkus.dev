@@ -794,6 +794,12 @@
     #blog-content,
     #post-content {
         flex-direction: column;
+        /* align-items: flex-start (desktop) sizes row-children to their
+           content width — once the axis flips to column it would stop
+           #blog-main/#post-main from stretching to the full column width,
+           letting prose/images/code blocks size to their own content
+           width and overflow the viewport instead of wrapping. */
+        align-items: stretch;
     }
 
     #blog-sidebar,

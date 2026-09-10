@@ -547,11 +547,29 @@ hr {
     .main-nav {
         flex-wrap: wrap;
         justify-content: center;
+        align-items: flex-start;
         row-gap: 3px;
     }
 
     .main-nav a {
         padding: 3px 7px;
+    }
+
+    /* Extras menu floats absolutely on desktop, where there's room to spare.
+       On a wrapped mobile nav the toggle can land anywhere in the row, so an
+       absolutely-positioned box can run off the right edge — instead let it
+       take the dropdown's full row and expand in normal flow underneath. */
+    .nav-dropdown.open {
+        width: 100%;
+    }
+
+    .nav-dropdown-menu {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--mac-black);
     }
 
     .content-container {
