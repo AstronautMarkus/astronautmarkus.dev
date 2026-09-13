@@ -5,57 +5,90 @@
 {% block page_title %}Dashboard{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-sm" href="{{ url_for('admin.projects_create') }}"><img src="{{ url_for('static', filename='images/icons/plus_button.png') }}" alt="" class="nav-icon"> Portfolio</a>
-  <a class="btn btn-sm" href="{{ url_for('admin.blog_post_create') }}"><img src="{{ url_for('static', filename='images/icons/plus_button.png') }}" alt="" class="nav-icon"> Post</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_create') }}"><i class="fa-solid fa-plus"></i> Portfolio</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_post_create') }}"><i class="fa-solid fa-plus"></i> Post</a>
   <a class="btn btn-primary btn-sm" href="{{ url_for('admin.contact_inbox') }}">
-    <img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Inbox{% if unread_messages %} ({{ unread_messages }}){% endif %}
+    <i class="fa-solid fa-envelope"></i> Inbox{% if unread_messages %} ({{ unread_messages }}){% endif %}
   </a>
 {% endblock %}
 
 {% block content %}
 
 <!-- ── Stats ── -->
-<div class="stat-grid">
-  <div class="stat-box accent">
-    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon"> Portfolio Projects</div>
-    <div class="stat-box-value">{{ total_projects }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.projects_list') }}">View all →</a></div>
+<div class="row g-3 mb-3">
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-aqua">
+      <div class="inner">
+        <h3>{{ total_projects }}</h3>
+        <p>Portfolio Projects</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-briefcase"></i></div>
+      <a href="{{ url_for('admin.projects_list') }}" class="small-box-footer">View all <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
-  <div class="stat-box">
-    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt="" class="nav-icon"> CV Files</div>
-    <div class="stat-box-value">{{ total_cvs }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.cv_list') }}">View all →</a></div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-blue">
+      <div class="inner">
+        <h3>{{ total_cvs }}</h3>
+        <p>CV Files</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-file-pdf"></i></div>
+      <a href="{{ url_for('admin.cv_list') }}" class="small-box-footer">View all <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
-  <div class="stat-box accent">
-    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/quill.png') }}" alt="" class="nav-icon"> Blog Posts</div>
-    <div class="stat-box-value">{{ total_posts }}</div>
-    <div class="stat-box-sub">{{ total_categories }} categor{{ 'y' if total_categories == 1 else 'ies' }}</div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-purple">
+      <div class="inner">
+        <h3>{{ total_posts }}</h3>
+        <p>Blog Posts</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-feather"></i></div>
+      <span class="small-box-footer">{{ total_categories }} categor{{ 'y' if total_categories == 1 else 'ies' }}</span>
+    </div>
   </div>
-  <div class="stat-box">
-    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/three_tags.png') }}" alt="" class="nav-icon"> Categories</div>
-    <div class="stat-box-value">{{ total_categories }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.blog_categories_list') }}">Manage →</a></div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-yellow">
+      <div class="inner">
+        <h3>{{ total_categories }}</h3>
+        <p>Categories</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-tags"></i></div>
+      <a href="{{ url_for('admin.blog_categories_list') }}" class="small-box-footer">Manage <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
-  <div class="stat-box {{ 'accent-red' if unread_messages else '' }}">
-    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Messages</div>
-    <div class="stat-box-value">{{ total_messages }}</div>
-    <div class="stat-box-sub">
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box {{ 'bg-red' if unread_messages else 'bg-grey' }}">
+      <div class="inner">
+        <h3>{{ total_messages }}</h3>
+        <p>Messages</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-envelope"></i></div>
       {% if unread_messages %}
-        <a href="{{ url_for('admin.contact_inbox') }}" class="text-danger">{{ unread_messages }} unread →</a>
+      <a href="{{ url_for('admin.contact_inbox') }}" class="small-box-footer">{{ unread_messages }} unread <i class="fa-solid fa-circle-arrow-right"></i></a>
       {% else %}
-        all read
+      <span class="small-box-footer">all read</span>
       {% endif %}
     </div>
   </div>
-  <div class="stat-box accent-green">
-    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/chart_line.png') }}" alt="" class="nav-icon"> Total Visits</div>
-    <div class="stat-box-value">{{ total_visits }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.visits_list') }}">Analytics →</a></div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-green">
+      <div class="inner">
+        <h3>{{ total_visits }}</h3>
+        <p>Total Visits</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-chart-line"></i></div>
+      <a href="{{ url_for('admin.visits_list') }}" class="small-box-footer">Analytics <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
-  <div class="stat-box {{ 'accent-red' if total_honeypot_hits else '' }}">
-    <div class="stat-box-label"><img src="{{ url_for('static', filename='images/icons/computer_error.png') }}" alt="" class="nav-icon"> Honeypot Hits</div>
-    <div class="stat-box-value">{{ total_honeypot_hits }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.honeypot_list') }}">View log →</a></div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box {{ 'bg-red' if total_honeypot_hits else 'bg-grey' }}">
+      <div class="inner">
+        <h3>{{ total_honeypot_hits }}</h3>
+        <p>Honeypot Hits</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-bug"></i></div>
+      <a href="{{ url_for('admin.honeypot_list') }}" class="small-box-footer">View log <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
 </div>
 
@@ -64,7 +97,7 @@
 
   <!-- Recent messages -->
   <div class="card">
-    <div class="card-title red"><img src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon"> Recent Messages</div>
+    <div class="card-title red"><i class="fa-solid fa-envelope"></i> Recent Messages</div>
     {% if recent_messages %}
     <table class="table-responsive">
       <thead>
@@ -103,7 +136,7 @@
 
   <!-- Recent posts -->
   <div class="card">
-    <div class="card-title"><img src="{{ url_for('static', filename='images/icons/quill.png') }}" alt="" class="nav-icon"> Recent Blog Posts</div>
+    <div class="card-title"><i class="fa-solid fa-feather"></i> Recent Blog Posts</div>
     {% if recent_posts %}
     <table class="table-responsive">
       <thead>
@@ -144,7 +177,7 @@
 
 <!-- ── Recent projects table ── -->
 <div class="card">
-  <div class="card-title"><img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon"> Recent Projects</div>
+  <div class="card-title"><i class="fa-solid fa-briefcase"></i> Recent Projects</div>
   {% if recent_projects %}
   <table class="table-responsive">
     <thead>
@@ -163,7 +196,7 @@
       <td data-label="Created" class="text-muted text-sm">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
       <td data-label="Actions">
         <div class="td-actions">
-          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}"><img src="{{ url_for('static', filename='images/icons/pencil.png') }}" alt="" class="nav-icon"> Edit</a>
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}"><i class="fa-solid fa-pen"></i> Edit</a>
         </div>
       </td>
     </tr>

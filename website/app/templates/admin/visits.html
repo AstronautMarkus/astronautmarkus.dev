@@ -7,36 +7,44 @@
 {% block content %}
 
 <!-- ── Stats ── -->
-<div class="stat-grid" style="max-width:560px;margin-bottom:16px">
-  <div class="stat-box accent-green">
-    <div class="stat-box-label">Total Visits</div>
-    <div class="stat-box-value">{{ '{:,}'.format(total) }}</div>
+<div class="row g-3 mb-3" style="max-width:760px">
+  <div class="col-lg-4 col-md-6 col-12">
+    <div class="small-box bg-green">
+      <div class="inner">
+        <h3>{{ '{:,}'.format(total) }}</h3>
+        <p>Total Visits</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-earth-americas"></i></div>
+    </div>
   </div>
-  <div class="stat-box">
-    <div class="stat-box-label">Today</div>
-    <div class="stat-box-value">{{ today_count }}</div>
+  <div class="col-lg-4 col-md-6 col-12">
+    <div class="small-box bg-aqua">
+      <div class="inner">
+        <h3>{{ today_count }}</h3>
+        <p>Today</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-calendar-day"></i></div>
+    </div>
   </div>
-  <div class="stat-box">
-    <div class="stat-box-label">Last 7 Days</div>
-    <div class="stat-box-value">{{ week_count }}</div>
+  <div class="col-lg-4 col-md-6 col-12">
+    <div class="small-box bg-blue">
+      <div class="inner">
+        <h3>{{ week_count }}</h3>
+        <p>Last 7 Days</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-calendar-week"></i></div>
+    </div>
   </div>
 </div>
 
-<!-- ── 14-day bar chart ── -->
-<div class="card" style="margin-bottom:16px">
-  <div class="card-title green">Traffic — Last 14 Days</div>
-  <div style="padding:12px 14px 8px">
-    <div class="bar-chart">
-      {% for day in chart_data %}
-      <div class="bar-day">
-        <div class="bar-fill" style="height:{{ ((day.count / max_count) * 100)|int }}%">
-          {% if day.count > 0 %}
-          <span class="bar-val">{{ day.count }}</span>
-          {% endif %}
-        </div>
-        <div class="bar-label">{{ day.label }}</div>
-      </div>
-      {% endfor %}
+<!-- ── 14-day chart ── -->
+<div class="card-box" style="margin-bottom:16px">
+  <div class="card-box-header">
+    <h3 class="card-box-title">Traffic — Last 14 Days</h3>
+  </div>
+  <div class="card-box-body">
+    <div class="chart-container">
+      <canvas id="visitsChart"></canvas>
     </div>
   </div>
 </div>
@@ -169,4 +177,30 @@
   {% endif %}
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  new Chart(document.getElementById('visitsChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: {{ chart_data | map(attribute='label') | list | tojson }},
+      datasets: [{
+        label: 'Visits',
+        data: {{ chart_data | map(attribute='count') | list | tojson }},
+        backgroundColor: '#00a65a',
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+</script>
 {% endblock %}

@@ -10,17 +10,19 @@
 
 {% block content %}
 <div class="card" style="margin-bottom:14px">
-  <div class="card-title">Block an email or IP manually</div>
-  <form method="POST" action="{{ url_for('admin.blocked_sender_add') }}" style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding:10px 0 0">
-    <div class="form-group" style="margin:0">
-      <label for="email" style="font-size:11px">Email</label>
+  <div class="card-title"><i class="fa-solid fa-ban"></i> Block an email or IP manually</div>
+  <form method="POST" action="{{ url_for('admin.blocked_sender_add') }}" class="admin-filter-bar" style="margin:0">
+    <div class="form-group">
+      <label for="email">Email</label>
       <input type="text" id="email" name="email" placeholder="spammer@example.com">
     </div>
-    <div class="form-group" style="margin:0">
-      <label for="ip_address" style="font-size:11px">IP address</label>
+    <div class="form-group">
+      <label for="ip_address">IP address</label>
       <input type="text" id="ip_address" name="ip_address" placeholder="203.0.113.42">
     </div>
-    <button type="submit" class="btn btn-danger btn-sm">Block</button>
+    <div class="admin-filter-bar-actions">
+      <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-ban"></i> Block</button>
+    </div>
   </form>
 </div>
 
