@@ -1,8 +1,8 @@
 {% extends "admin/base.html" %}
 
-{% block title %}Honeypot{% endblock %}
-{% block breadcrumb %}Honeypot{% endblock %}
-{% block page_title %}Honeypot Log{% endblock %}
+{% block title %}{{ t('nav.honeypot') }}{% endblock %}
+{% block breadcrumb %}{{ t('nav.honeypot') }}{% endblock %}
+{% block page_title %}{{ t('honeypot.title') }}{% endblock %}
 
 {% block content %}
 
@@ -12,7 +12,7 @@
     <div class="small-box bg-red">
       <div class="inner">
         <h3>{{ '{:,}'.format(total) }}</h3>
-        <p>Total Hits</p>
+        <p>{{ t('honeypot.total_hits') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-bug"></i></div>
     </div>
@@ -21,7 +21,7 @@
     <div class="small-box bg-grey">
       <div class="inner">
         <h3>{{ today_count }}</h3>
-        <p>Today</p>
+        <p>{{ t('honeypot.today') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-calendar-day"></i></div>
     </div>
@@ -30,7 +30,7 @@
     <div class="small-box bg-grey">
       <div class="inner">
         <h3>{{ week_count }}</h3>
-        <p>Last 7 Days</p>
+        <p>{{ t('honeypot.last_7_days') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-calendar-week"></i></div>
     </div>
@@ -39,7 +39,7 @@
     <div class="small-box bg-grey">
       <div class="inner">
         <h3>{{ unique_ips }}</h3>
-        <p>Unique IPs</p>
+        <p>{{ t('honeypot.unique_ips') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-network-wired"></i></div>
     </div>
@@ -49,7 +49,7 @@
 <!-- ── 14-day chart ── -->
 <div class="card-box" style="margin-bottom:16px">
   <div class="card-box-header">
-    <h3 class="card-box-title">Hits — Last 14 Days</h3>
+    <h3 class="card-box-title">{{ t('honeypot.chart_title') }}</h3>
   </div>
   <div class="card-box-body">
     <div class="chart-container">
@@ -61,19 +61,19 @@
 <!-- ── Top offending IPs ── -->
 {% if top_ips %}
 <div class="card" style="margin-bottom:16px">
-  <div class="card-title">Most Active IPs</div>
+  <div class="card-title">{{ t('honeypot.most_active_ips') }}</div>
   <table>
     <thead>
       <tr>
-        <th>IP Address</th>
-        <th style="text-align:right">Hits</th>
+        <th>{{ t('honeypot.ip_address') }}</th>
+        <th style="text-align:right">{{ t('honeypot.hits') }}</th>
       </tr>
     </thead>
     <tbody>
     {% for ip, hits in top_ips %}
     <tr>
       <td style="font-family:'Courier New',monospace;font-size:11px">
-        <a href="{{ url_for('admin.honeypot_list', ip=ip) }}" style="color:#444;text-decoration:none" title="Filter by this IP">{{ ip }}</a>
+        <a href="{{ url_for('admin.honeypot_list', ip=ip) }}" style="color:#444;text-decoration:none" title="{{ t('honeypot.filter_by_ip_title') }}">{{ ip }}</a>
       </td>
       <td style="text-align:right;font-variant-numeric:tabular-nums">{{ hits }}</td>
     </tr>
@@ -86,34 +86,34 @@
 <!-- ── Filter bar ── -->
 <form method="get" action="{{ url_for('admin.honeypot_list') }}" class="admin-filter-bar">
   <div class="form-group">
-    <label for="ip">Filter by IP</label>
+    <label for="ip">{{ t('honeypot.filter_by_ip') }}</label>
     <input type="text" id="ip" name="ip" value="{{ ip_filter }}" placeholder="e.g. 127.0.0">
   </div>
   <div class="form-group">
-    <label for="resource">Target Resource</label>
+    <label for="resource">{{ t('honeypot.target_resource') }}</label>
     <input type="text" id="resource" name="resource" value="{{ resource_filter }}" placeholder="e.g. .env">
   </div>
   <div class="admin-filter-bar-actions">
-    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+    <button type="submit" class="btn btn-primary btn-sm">{{ t('common.filter') }}</button>
     {% if ip_filter or resource_filter %}
-    <a href="{{ url_for('admin.honeypot_list') }}" class="btn btn-ghost btn-sm">Clear</a>
+    <a href="{{ url_for('admin.honeypot_list') }}" class="btn btn-ghost btn-sm">{{ t('common.clear') }}</a>
     {% endif %}
   </div>
   <div class="admin-filter-bar-summary">
     {% if pagination.total != total %}
-      <strong>{{ pagination.total }}</strong> matching /
+      <strong>{{ pagination.total }}</strong> {{ t('honeypot.matching') }} /
     {% endif %}
-    <strong>{{ '{:,}'.format(total) }}</strong> total &nbsp;·&nbsp;
-    Page <strong>{{ pagination.page }}</strong> of <strong>{{ pagination.pages or 1 }}</strong>
+    <strong>{{ '{:,}'.format(total) }}</strong> {{ t('honeypot.total') }} &nbsp;·&nbsp;
+    {{ t('honeypot.page_label') }} <strong>{{ pagination.page }}</strong> {{ t('macros.of') }} <strong>{{ pagination.pages or 1 }}</strong>
   </div>
 </form>
 
 <!-- ── Hits table ── -->
 <div class="card" style="margin-bottom:0">
   <div class="card-title">
-    Hits
+    {{ t('honeypot.hits_col_title') }}
     <span style="font-weight:normal;opacity:0.7;font-size:10px;margin-left:6px">
-      showing {{ pagination.items | length }} of {{ pagination.total }}
+      {{ t('honeypot.showing_n_of', shown=(pagination.items | length), total=pagination.total) }}
     </span>
   </div>
   {% if pagination.items %}
@@ -129,11 +129,11 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>IP Address</th>
-        <th>Target</th>
-        <th>User Agent</th>
-        <th>Method</th>
-        <th>Time</th>
+        <th>{{ t('honeypot.ip_address') }}</th>
+        <th>{{ t('honeypot.target') }}</th>
+        <th>{{ t('honeypot.user_agent') }}</th>
+        <th>{{ t('honeypot.method') }}</th>
+        <th>{{ t('honeypot.time') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -143,11 +143,11 @@
         <a href="{{ url_for('admin.honeypot_detail', hit_id=h.id) }}" style="color:#999;text-decoration:none">{{ h.id }}</a>
       </td>
       <td style="font-family:'Courier New',monospace;font-size:11px;white-space:nowrap">
-        <a href="{{ url_for('admin.honeypot_list', ip=h.ip_address, resource=resource_filter) }}" style="color:#444;text-decoration:none" title="Filter by this IP">{{ h.ip_address }}</a>
+        <a href="{{ url_for('admin.honeypot_list', ip=h.ip_address, resource=resource_filter) }}" style="color:#444;text-decoration:none" title="{{ t('honeypot.filter_by_ip_title') }}">{{ h.ip_address }}</a>
       </td>
       <td>
         {% if h.resource %}
-          <a href="{{ url_for('admin.honeypot_list', ip=ip_filter, resource=h.resource) }}" class="lang-badge lang-badge-danger" style="text-decoration:none" title="Filter by target">{{ h.resource | truncate(20, True, '…') }}</a>
+          <a href="{{ url_for('admin.honeypot_list', ip=ip_filter, resource=h.resource) }}" class="lang-badge lang-badge-danger" style="text-decoration:none" title="{{ t('honeypot.filter_by_target') }}">{{ h.resource | truncate(20, True, '…') }}</a>
         {% else %}
           <span style="color:#bbb">—</span>
         {% endif %}
@@ -168,15 +168,15 @@
   {% if pagination.pages > 1 %}
   <div class="pagination">
     <div class="pagination-info">
-      Showing <strong>{{ (pagination.page - 1) * 50 + 1 }}–{{ (pagination.page - 1) * 50 + (pagination.items | length) }}</strong>
-      of <strong>{{ '{:,}'.format(pagination.total) }}</strong>
+      {{ t('macros.showing') }} <strong>{{ (pagination.page - 1) * 50 + 1 }}–{{ (pagination.page - 1) * 50 + (pagination.items | length) }}</strong>
+      {{ t('macros.of') }} <strong>{{ '{:,}'.format(pagination.total) }}</strong>
     </div>
     <div class="pagination-pages">
       {# Prev #}
       {% if pagination.has_prev %}
-        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list', page=pagination.prev_num, ip=ip_filter, resource=resource_filter) }}">← Prev</a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list', page=pagination.prev_num, ip=ip_filter, resource=resource_filter) }}">{{ t('macros.prev') }}</a>
       {% else %}
-        <span class="btn btn-ghost btn-sm btn-disabled">← Prev</span>
+        <span class="btn btn-ghost btn-sm btn-disabled">{{ t('macros.prev') }}</span>
       {% endif %}
 
       {# Page numbers – show up to 7 around current #}
@@ -196,9 +196,9 @@
 
       {# Next #}
       {% if pagination.has_next %}
-        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list', page=pagination.next_num, ip=ip_filter, resource=resource_filter) }}">Next →</a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list', page=pagination.next_num, ip=ip_filter, resource=resource_filter) }}">{{ t('macros.next') }}</a>
       {% else %}
-        <span class="btn btn-ghost btn-sm btn-disabled">Next →</span>
+        <span class="btn btn-ghost btn-sm btn-disabled">{{ t('macros.next') }}</span>
       {% endif %}
     </div>
   </div>
@@ -207,9 +207,9 @@
   {% else %}
   <div class="empty-state">
     {% if ip_filter or resource_filter %}
-      No hits match the current filter. <a href="{{ url_for('admin.honeypot_list') }}">Clear filters</a>
+      {{ t('honeypot.no_hits_match') }} <a href="{{ url_for('admin.honeypot_list') }}">{{ t('common.clear_filters') }}</a>
     {% else %}
-      No honeypot hits recorded yet.
+      {{ t('honeypot.no_hits') }}
     {% endif %}
   </div>
   {% endif %}

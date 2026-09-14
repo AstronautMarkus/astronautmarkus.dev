@@ -1,11 +1,11 @@
 {% extends "admin/base.html" %}
 {% from "admin/_macros.html" import pagination_bar %}
 
-{% block title %}CV Files{% endblock %}
-{% block page_title %}CV Files{% endblock %}
+{% block title %}{{ t('cv.files_title') }}{% endblock %}
+{% block page_title %}{{ t('cv.files_title') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.cv_upload') }}">+ Upload CV</a>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.cv_upload') }}">{{ t('cv.upload_btn') }}</a>
 {% endblock %}
 
 {% block content %}
@@ -14,38 +14,38 @@
   <table class="table-responsive">
     <thead>
       <tr>
-        <th>Language</th>
-        <th>Source</th>
-        <th>File Path</th>
-        <th>Uploaded</th>
-        <th style="text-align:right">Actions</th>
+        <th>{{ t('common.language') }}</th>
+        <th>{{ t('cv.source') }}</th>
+        <th>{{ t('cv.file_path') }}</th>
+        <th>{{ t('cv.uploaded') }}</th>
+        <th style="text-align:right">{{ t('common.actions') }}</th>
       </tr>
     </thead>
     <tbody>
     {% for cv in cvs %}
     <tr>
-      <td data-label="Language" style="font-weight:700;text-transform:uppercase">{{ cv.language }}</td>
-      <td data-label="Source" style="font-size:0.82rem;color:#555555">{{ 'Generated' if cv.source == 'generated' else 'Uploaded' }}</td>
-      <td data-label="File Path" style="font-size:0.82rem;color:#555555">{{ cv.file_path }}</td>
-      <td data-label="Uploaded" style="color:#777777;font-size:0.8rem">{{ cv.uploaded_at | dtfmt('%b %d, %Y') }}</td>
-      <td data-label="Actions">
+      <td data-label="{{ t('common.language') }}" style="font-weight:700;text-transform:uppercase">{{ cv.language }}</td>
+      <td data-label="{{ t('cv.source') }}" style="font-size:0.82rem;color:#555555">{{ t('cv.generated') if cv.source == 'generated' else t('cv.uploaded_src') }}</td>
+      <td data-label="{{ t('cv.file_path') }}" style="font-size:0.82rem;color:#555555">{{ cv.file_path }}</td>
+      <td data-label="{{ t('cv.uploaded') }}" style="color:#777777;font-size:0.8rem">{{ cv.uploaded_at | dtfmt('%b %d, %Y') }}</td>
+      <td data-label="{{ t('common.actions') }}">
         <div class="td-actions">
           <a class="btn btn-ghost btn-sm"
              href="{{ storage_url(cv.file_path) }}" target="_blank" rel="noopener noreferrer">
-            Download
+            {{ t('common.download') }}
           </a>
           {% if cv.source == 'generated' and cv.yaml_path %}
           <a class="btn btn-ghost btn-sm"
              href="{{ storage_url(cv.yaml_path) }}" target="_blank" rel="noopener noreferrer">
-            YAML
+            {{ t('cv.yaml') }}
           </a>
           {% endif %}
           <a class="btn btn-ghost btn-sm"
-             href="{{ url_for('admin.cv_edit', cv_id=cv.id) }}">Edit</a>
+             href="{{ url_for('admin.cv_edit', cv_id=cv.id) }}">{{ t('common.edit') }}</a>
           <form method="POST"
                 action="{{ url_for('admin.cv_delete', cv_id=cv.id) }}"
-                onsubmit="return confirm('Delete CV ({{ cv.language.upper() }})? This cannot be undone.')">
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                onsubmit="return confirm('{{ t('cv.confirm_delete', lang=cv.language.upper()) }}')">
+            <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </form>
         </div>
       </td>
@@ -56,8 +56,8 @@
   {{ pagination_bar(pagination, 'admin.cv_list') }}
   {% else %}
   <p class="empty-state">
-    No CV files yet.
-    <a href="{{ url_for('admin.cv_upload') }}">Upload your first CV →</a>
+    {{ t('cv.no_files') }}
+    <a href="{{ url_for('admin.cv_upload') }}">{{ t('cv.upload_first') }}</a>
   </p>
   {% endif %}
 </div>

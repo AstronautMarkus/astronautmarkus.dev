@@ -2,6 +2,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from app import db
+from app.i18n import t
 from app.models.models import GuestbookEntry
 from app.routes.admin import admin_bp
 
@@ -29,9 +30,9 @@ def guestbook_bulk_delete():
             .delete(synchronize_session=False)
         )
         db.session.commit()
-        flash(f'{deleted} entrada(s) eliminada(s).', 'success')
+        flash(t('flash.guestbook_bulk_deleted', n=deleted), 'success')
     else:
-        flash('No se seleccionaron entradas.', 'error')
+        flash(t('flash.no_entries_selected'), 'error')
     return redirect(url_for('admin.guestbook_list'))
 
 
@@ -40,12 +41,12 @@ def guestbook_bulk_delete():
 def guestbook_approve(entry_id):
     entry = db.session.get(GuestbookEntry, entry_id)
     if entry is None:
-        flash('Entrada no encontrada.', 'error')
+        flash(t('flash.guestbook_not_found'), 'error')
         return redirect(url_for('admin.guestbook_list'))
 
     entry.approved = True
     db.session.commit()
-    flash('Entrada aprobada y publicada.', 'success')
+    flash(t('flash.guestbook_approved'), 'success')
     return redirect(url_for('admin.guestbook_list'))
 
 
@@ -54,12 +55,12 @@ def guestbook_approve(entry_id):
 def guestbook_unapprove(entry_id):
     entry = db.session.get(GuestbookEntry, entry_id)
     if entry is None:
-        flash('Entrada no encontrada.', 'error')
+        flash(t('flash.guestbook_not_found'), 'error')
         return redirect(url_for('admin.guestbook_list'))
 
     entry.approved = False
     db.session.commit()
-    flash('Entrada oculta del guestbook público.', 'success')
+    flash(t('flash.guestbook_hidden'), 'success')
     return redirect(url_for('admin.guestbook_list'))
 
 
@@ -68,10 +69,10 @@ def guestbook_unapprove(entry_id):
 def guestbook_delete(entry_id):
     entry = db.session.get(GuestbookEntry, entry_id)
     if entry is None:
-        flash('Entrada no encontrada.', 'error')
+        flash(t('flash.guestbook_not_found'), 'error')
         return redirect(url_for('admin.guestbook_list'))
 
     db.session.delete(entry)
     db.session.commit()
-    flash('Entrada eliminada.', 'success')
+    flash(t('flash.guestbook_deleted'), 'success')
     return redirect(url_for('admin.guestbook_list'))

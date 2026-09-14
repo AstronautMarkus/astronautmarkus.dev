@@ -4,6 +4,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
 
 from app import db
+from app.i18n import t
 from app.models.models import HoneypotHit
 from app.routes.admin import admin_bp
 
@@ -85,7 +86,7 @@ def honeypot_list():
 def honeypot_detail(hit_id):
     hit = db.session.get(HoneypotHit, hit_id)
     if hit is None:
-        flash('Honeypot hit not found.', 'error')
+        flash(t('flash.honeypot_not_found'), 'error')
         return redirect(url_for('admin.honeypot_list'))
     return render_template('admin/honeypot/detail.html', hit=hit)
 
@@ -97,5 +98,5 @@ def honeypot_delete(hit_id):
     if hit:
         db.session.delete(hit)
         db.session.commit()
-        flash('Honeypot hit deleted.', 'success')
+        flash(t('flash.honeypot_deleted'), 'success')
     return redirect(url_for('admin.honeypot_list'))

@@ -5,6 +5,7 @@ from flask import flash, redirect, render_template, request, send_file, url_for
 from flask_login import login_required
 
 from app import db
+from app.i18n import t
 from app.models.models import Backup
 from app.routes.admin import admin_bp
 from app.services.backup_service import BackupError, generate_data_dump
@@ -40,7 +41,7 @@ def backups_generate():
     db.session.add(backup)
     db.session.commit()
 
-    flash(f'Backup "{filename}" generated ({len(dump_bytes) // 1024} KB).', 'success')
+    flash(t('flash.backup_generated', filename=filename, kb=len(dump_bytes) // 1024), 'success')
     return redirect(url_for('admin.backups_list'))
 
 
@@ -49,7 +50,7 @@ def backups_generate():
 def backups_download(backup_id):
     backup = db.session.get(Backup, backup_id)
     if backup is None or not storage.exists(backup.file_path):
-        flash('Backup not found.', 'error')
+        flash(t('flash.backup_not_found'), 'error')
         return redirect(url_for('admin.backups_list'))
 
     data = storage.get(backup.file_path)
@@ -66,12 +67,12 @@ def backups_download(backup_id):
 def backups_delete(backup_id):
     backup = db.session.get(Backup, backup_id)
     if backup is None:
-        flash('Backup not found.', 'error')
+        flash(t('flash.backup_not_found'), 'error')
         return redirect(url_for('admin.backups_list'))
 
     storage.delete(backup.file_path)
     filename = backup.filename
     db.session.delete(backup)
     db.session.commit()
-    flash(f'Backup "{filename}" deleted.', 'success')
+    flash(t('flash.backup_deleted', filename=filename), 'success')
     return redirect(url_for('admin.backups_list'))

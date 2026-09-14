@@ -1,8 +1,8 @@
 {% extends "admin/base.html" %}
 
-{% block title %}Visits{% endblock %}
-{% block breadcrumb %}Visits{% endblock %}
-{% block page_title %}Site Visits{% endblock %}
+{% block title %}{{ t('nav.visits') }}{% endblock %}
+{% block breadcrumb %}{{ t('nav.visits') }}{% endblock %}
+{% block page_title %}{{ t('visits.title') }}{% endblock %}
 
 {% block content %}
 
@@ -12,7 +12,7 @@
     <div class="small-box bg-green">
       <div class="inner">
         <h3>{{ '{:,}'.format(total) }}</h3>
-        <p>Total Visits</p>
+        <p>{{ t('dashboard.total_visits') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-earth-americas"></i></div>
     </div>
@@ -21,7 +21,7 @@
     <div class="small-box bg-aqua">
       <div class="inner">
         <h3>{{ today_count }}</h3>
-        <p>Today</p>
+        <p>{{ t('honeypot.today') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-calendar-day"></i></div>
     </div>
@@ -30,7 +30,7 @@
     <div class="small-box bg-blue">
       <div class="inner">
         <h3>{{ week_count }}</h3>
-        <p>Last 7 Days</p>
+        <p>{{ t('honeypot.last_7_days') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-calendar-week"></i></div>
     </div>
@@ -40,7 +40,7 @@
 <!-- ── 14-day chart ── -->
 <div class="card-box" style="margin-bottom:16px">
   <div class="card-box-header">
-    <h3 class="card-box-title">Traffic — Last 14 Days</h3>
+    <h3 class="card-box-title">{{ t('visits.chart_title') }}</h3>
   </div>
   <div class="card-box-body">
     <div class="chart-container">
@@ -52,34 +52,34 @@
 <!-- ── Filter bar ── -->
 <form method="get" action="{{ url_for('admin.visits_list') }}" class="admin-filter-bar">
   <div class="form-group">
-    <label for="ip">Filter by IP</label>
+    <label for="ip">{{ t('honeypot.filter_by_ip') }}</label>
     <input type="text" id="ip" name="ip" value="{{ ip_filter }}" placeholder="e.g. 127.0.0">
   </div>
   <div class="form-group">
-    <label for="utm">UTM Source</label>
+    <label for="utm">{{ t('visits.utm_source') }}</label>
     <input type="text" id="utm" name="utm" value="{{ utm_filter }}" placeholder="e.g. facebook">
   </div>
   <div class="admin-filter-bar-actions">
-    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+    <button type="submit" class="btn btn-primary btn-sm">{{ t('common.filter') }}</button>
     {% if ip_filter or utm_filter %}
-    <a href="{{ url_for('admin.visits_list') }}" class="btn btn-ghost btn-sm">Clear</a>
+    <a href="{{ url_for('admin.visits_list') }}" class="btn btn-ghost btn-sm">{{ t('common.clear') }}</a>
     {% endif %}
   </div>
   <div class="admin-filter-bar-summary">
     {% if pagination.total != total %}
-      <strong>{{ pagination.total }}</strong> matching /
+      <strong>{{ pagination.total }}</strong> {{ t('honeypot.matching') }} /
     {% endif %}
-    <strong>{{ '{:,}'.format(total) }}</strong> total &nbsp;·&nbsp;
-    Page <strong>{{ pagination.page }}</strong> of <strong>{{ pagination.pages or 1 }}</strong>
+    <strong>{{ '{:,}'.format(total) }}</strong> {{ t('honeypot.total') }} &nbsp;·&nbsp;
+    {{ t('honeypot.page_label') }} <strong>{{ pagination.page }}</strong> {{ t('macros.of') }} <strong>{{ pagination.pages or 1 }}</strong>
   </div>
 </form>
 
 <!-- ── Visits table ── -->
 <div class="card" style="margin-bottom:0">
   <div class="card-title">
-    Visits
+    {{ t('visits.visits_col_title') }}
     <span style="font-weight:normal;opacity:0.7;font-size:10px;margin-left:6px">
-      showing {{ pagination.items | length }} of {{ pagination.total }}
+      {{ t('honeypot.showing_n_of', shown=(pagination.items | length), total=pagination.total) }}
     </span>
   </div>
   {% if pagination.items %}
@@ -94,10 +94,10 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>IP Address</th>
-        <th>User Agent</th>
-        <th>UTM Source</th>
-        <th>Visited At</th>
+        <th>{{ t('honeypot.ip_address') }}</th>
+        <th>{{ t('honeypot.user_agent') }}</th>
+        <th>{{ t('visits.utm_source') }}</th>
+        <th>{{ t('visits.visited_at') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -105,14 +105,14 @@
     <tr>
       <td style="color:#999;font-variant-numeric:tabular-nums;font-size:11px">{{ v.id }}</td>
       <td style="font-family:'Courier New',monospace;font-size:11px;white-space:nowrap">
-        <a href="{{ url_for('admin.visits_list', ip=v.ip_address, utm=utm_filter) }}" style="color:#444;text-decoration:none" title="Filter by this IP">{{ v.ip_address }}</a>
+        <a href="{{ url_for('admin.visits_list', ip=v.ip_address, utm=utm_filter) }}" style="color:#444;text-decoration:none" title="{{ t('honeypot.filter_by_ip_title') }}">{{ v.ip_address }}</a>
       </td>
       <td style="font-size:11px;color:#555;max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ v.user_agent or '' }}">
         {{ v.user_agent or '—' }}
       </td>
       <td>
         {% if v.utm_source %}
-          <a href="{{ url_for('admin.visits_list', ip=ip_filter, utm=v.utm_source) }}" class="lang-badge lang-badge-en" style="text-decoration:none" title="Filter by source">{{ v.utm_source | truncate(18, True, '…') }}</a>
+          <a href="{{ url_for('admin.visits_list', ip=ip_filter, utm=v.utm_source) }}" class="lang-badge lang-badge-en" style="text-decoration:none" title="{{ t('visits.filter_by_source') }}">{{ v.utm_source | truncate(18, True, '…') }}</a>
         {% else %}
           <span style="color:#bbb">—</span>
         {% endif %}
@@ -129,15 +129,15 @@
   {% if pagination.pages > 1 %}
   <div class="pagination">
     <div class="pagination-info">
-      Showing <strong>{{ (pagination.page - 1) * 50 + 1 }}–{{ (pagination.page - 1) * 50 + (pagination.items | length) }}</strong>
-      of <strong>{{ '{:,}'.format(pagination.total) }}</strong>
+      {{ t('macros.showing') }} <strong>{{ (pagination.page - 1) * 50 + 1 }}–{{ (pagination.page - 1) * 50 + (pagination.items | length) }}</strong>
+      {{ t('macros.of') }} <strong>{{ '{:,}'.format(pagination.total) }}</strong>
     </div>
     <div class="pagination-pages">
       {# Prev #}
       {% if pagination.has_prev %}
-        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.visits_list', page=pagination.prev_num, ip=ip_filter, utm=utm_filter) }}">← Prev</a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.visits_list', page=pagination.prev_num, ip=ip_filter, utm=utm_filter) }}">{{ t('macros.prev') }}</a>
       {% else %}
-        <span class="btn btn-ghost btn-sm btn-disabled">← Prev</span>
+        <span class="btn btn-ghost btn-sm btn-disabled">{{ t('macros.prev') }}</span>
       {% endif %}
 
       {# Page numbers – show up to 7 around current #}
@@ -158,9 +158,9 @@
 
       {# Next #}
       {% if pagination.has_next %}
-        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.visits_list', page=pagination.next_num, ip=ip_filter, utm=utm_filter) }}">Next →</a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.visits_list', page=pagination.next_num, ip=ip_filter, utm=utm_filter) }}">{{ t('macros.next') }}</a>
       {% else %}
-        <span class="btn btn-ghost btn-sm btn-disabled">Next →</span>
+        <span class="btn btn-ghost btn-sm btn-disabled">{{ t('macros.next') }}</span>
       {% endif %}
     </div>
   </div>
@@ -169,9 +169,9 @@
   {% else %}
   <div class="empty-state">
     {% if ip_filter or utm_filter %}
-      No visits match the current filter. <a href="{{ url_for('admin.visits_list') }}">Clear filters</a>
+      {{ t('visits.no_match') }} <a href="{{ url_for('admin.visits_list') }}">{{ t('common.clear_filters') }}</a>
     {% else %}
-      No visits recorded yet.
+      {{ t('visits.no_visits') }}
     {% endif %}
   </div>
   {% endif %}

@@ -2,6 +2,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from app import db
+from app.i18n import t
 from app.models.models import Proyectada
 from app.routes.admin import admin_bp
 
@@ -31,9 +32,9 @@ def proyectadas_bulk_delete():
             .delete(synchronize_session=False)
         )
         db.session.commit()
-        flash(f'{deleted} proyectada(s) deleted.', 'success')
+        flash(t('flash.proyectadas_bulk_deleted', n=deleted), 'success')
     else:
-        flash('No items selected.', 'error')
+        flash(t('flash.no_items_selected'), 'error')
     return redirect(url_for('admin.proyectadas_list'))
 
 
@@ -45,10 +46,10 @@ def proyectadas_create():
     if request.method == 'POST':
         text = request.form.get('text', '').strip()
         if not text:
-            flash('El texto en inglés es obligatorio.', 'error')
+            flash(t('flash.en_text_required'), 'error')
             return render_template('admin/proyectadas/form.html', item=None)
         if len(text) > 10000:
-            flash('El texto no puede superar los 10 000 caracteres.', 'error')
+            flash(t('flash.text_too_long'), 'error')
             return render_template('admin/proyectadas/form.html', item=None)
 
         has_es = request.form.get('has_es') == '1'
@@ -63,7 +64,7 @@ def proyectadas_create():
         )
         db.session.add(item)
         db.session.commit()
-        flash('Proyectada creada.', 'success')
+        flash(t('flash.proyectada_created'), 'success')
         return redirect(url_for('admin.proyectadas_list'))
 
     return render_template('admin/proyectadas/form.html', item=None)
@@ -76,16 +77,16 @@ def proyectadas_create():
 def proyectadas_edit(item_id):
     item = db.session.get(Proyectada, item_id)
     if item is None:
-        flash('Proyectada no encontrada.', 'error')
+        flash(t('flash.proyectada_not_found'), 'error')
         return redirect(url_for('admin.proyectadas_list'))
 
     if request.method == 'POST':
         text = request.form.get('text', '').strip()
         if not text:
-            flash('El texto en inglés es obligatorio.', 'error')
+            flash(t('flash.en_text_required'), 'error')
             return render_template('admin/proyectadas/form.html', item=item)
         if len(text) > 10000:
-            flash('El texto no puede superar los 10 000 caracteres.', 'error')
+            flash(t('flash.text_too_long'), 'error')
             return render_template('admin/proyectadas/form.html', item=item)
 
         has_es = request.form.get('has_es') == '1'
@@ -97,7 +98,7 @@ def proyectadas_edit(item_id):
         item.published = request.form.get('published') == '1'
 
         db.session.commit()
-        flash('Proyectada actualizada.', 'success')
+        flash(t('flash.proyectada_updated'), 'success')
         return redirect(url_for('admin.proyectadas_list'))
 
     return render_template('admin/proyectadas/form.html', item=item)
@@ -110,10 +111,10 @@ def proyectadas_edit(item_id):
 def proyectadas_delete(item_id):
     item = db.session.get(Proyectada, item_id)
     if item is None:
-        flash('Proyectada no encontrada.', 'error')
+        flash(t('flash.proyectada_not_found'), 'error')
         return redirect(url_for('admin.proyectadas_list'))
 
     db.session.delete(item)
     db.session.commit()
-    flash('Proyectada eliminada.', 'success')
+    flash(t('flash.proyectada_deleted'), 'success')
     return redirect(url_for('admin.proyectadas_list'))

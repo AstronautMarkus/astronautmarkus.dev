@@ -1,84 +1,84 @@
 {% extends "admin/base.html" %}
 {% from "admin/_macros.html" import pagination_bar, search_bar %}
 
-{% block title %}Blog Posts{% endblock %}
-{% block page_title %}Blog Posts{% endblock %}
+{% block title %}{{ t('blog.posts_title') }}{% endblock %}
+{% block page_title %}{{ t('blog.posts_title') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_categories_list') }}">Categories</a>
-  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.blog_post_create') }}">+ New Post</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_categories_list') }}">{{ t('blog.categories_link') }}</a>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.blog_post_create') }}">{{ t('blog.new_post_btn') }}</a>
 {% endblock %}
 
 {% block content %}
-{{ search_bar('admin.blog_posts_list', q, placeholder='Search by title…') }}
+{{ search_bar('admin.blog_posts_list', q, placeholder=t('blog.search_by_title')) }}
 
 <div class="card">
   {% if posts %}
   <form id="bulk-form" method="POST" action="{{ url_for('admin.blog_posts_bulk_delete') }}">
     <div class="td-actions" style="padding:8px 10px;justify-content:space-between;display:flex;align-items:center">
-      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> selected</span>
-      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete selected</button>
+      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> {{ t('common.selected') }}</span>
+      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>{{ t('common.delete_selected') }}</button>
     </div>
     <table class="table-responsive">
       <thead>
         <tr>
           <th style="width:16px"><input type="checkbox" id="select-all"></th>
-          <th style="width:44px">Cover</th>
-          <th>Title</th>
-          <th>Category</th>
-          <th>Languages</th>
-          <th>Published</th>
-          <th>Views</th>
-          <th>Created</th>
-          <th style="text-align:right">Actions</th>
+          <th style="width:44px">{{ t('blog.cover') }}</th>
+          <th>{{ t('common.title') }}</th>
+          <th>{{ t('blog.category') }}</th>
+          <th>{{ t('common.languages') }}</th>
+          <th>{{ t('blog.published_col') }}</th>
+          <th>{{ t('blog.views') }}</th>
+          <th>{{ t('common.created') }}</th>
+          <th style="text-align:right">{{ t('common.actions') }}</th>
         </tr>
       </thead>
       <tbody>
       {% for p in posts %}
       <tr id="post-row-{{ p.id }}">
-        <td data-label="Select" style="padding-left:10px">
+        <td data-label="{{ t('common.select') }}" style="padding-left:10px">
           <input type="checkbox" class="row-checkbox" name="post_ids" value="{{ p.id }}">
         </td>
-        <td data-label="Cover">
+        <td data-label="{{ t('blog.cover') }}">
           {% if p.cover_image_path %}
             <img class="cover-thumb" src="{{ storage_url(p.cover_image_path) }}" alt="{{ p.title }}">
           {% else %}
             <div class="cover-placeholder">—</div>
           {% endif %}
         </td>
-        <td data-label="Title" style="font-weight:700;max-width:240px">
+        <td data-label="{{ t('common.title') }}" style="font-weight:700;max-width:240px">
           {{ p.title }}
           <div style="font-size:10px;color:#999999;font-weight:normal;margin-top:2px">{{ p.slug }}</div>
         </td>
-        <td data-label="Category">
+        <td data-label="{{ t('blog.category') }}">
           {% if p.category %}
             <span class="tag-pill">{{ p.category.name }}</span>
           {% else %}
             <span class="text-muted">—</span>
           {% endif %}
         </td>
-        <td data-label="Languages">
+        <td data-label="{{ t('common.languages') }}">
           <span class="lang-badge lang-badge-en">EN</span>
           {% if p.has_es %}<span class="lang-badge lang-badge-es">ES</span>{% endif %}
         </td>
-        <td data-label="Published">
+        <td data-label="{{ t('blog.published_col') }}">
           <button type="button"
                   class="publish-toggle {{ 'is-published' if p.published else '' }}"
                   data-toggle-url="{{ url_for('admin.blog_post_toggle_publish', post_id=p.id) }}"
-                  title="{{ 'Click to unpublish' if p.published else 'Click to publish' }}">
+                  title="{{ t('blog.click_to_unpublish') if p.published else t('blog.click_to_publish') }}">
             <span class="toggle-track"><span class="toggle-thumb"></span></span>
-            <span class="toggle-label">{{ 'Published' if p.published else 'Draft' }}</span>
+            <span class="toggle-label">{{ t('blog.published_col') if p.published else t('dashboard.draft') }}</span>
           </button>
         </td>
-        <td data-label="Views" style="color:#555555">{{ p.view_count }}</td>
-        <td data-label="Created" style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
-        <td data-label="Actions">
+        <td data-label="{{ t('blog.views') }}" style="color:#555555">{{ p.view_count }}</td>
+        <td data-label="{{ t('common.created') }}" style="color:#777777;font-size:0.8rem">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
+        <td data-label="{{ t('common.actions') }}">
           <div class="td-actions">
             <a class="btn btn-ghost btn-sm"
-               href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}">Edit</a>
+               href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}">{{ t('common.edit') }}</a>
             <button type="submit" formaction="{{ url_for('admin.blog_post_delete', post_id=p.id) }}"
-                    formnovalidate onclick="return confirm('Delete post «{{ p.title }}»? This cannot be undone.')"
-                    class="btn btn-danger btn-sm">Delete</button>
+                    formnovalidate onclick="return confirm('{{ t('blog.confirm_delete_post', title=p.title) }}')"
+                    class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </div>
         </td>
       </tr>
@@ -90,10 +90,10 @@
   {% else %}
   <p class="empty-state">
     {% if q %}
-    No posts match "{{ q }}". <a href="{{ url_for('admin.blog_posts_list') }}">Clear search</a>
+    {{ t('blog.no_posts_match', q=q) }} <a href="{{ url_for('admin.blog_posts_list') }}">{{ t('common.clear_search') }}</a>
     {% else %}
-    No posts yet.
-    <a href="{{ url_for('admin.blog_post_create') }}">Write your first post →</a>
+    {{ t('blog.no_posts') }}
+    <a href="{{ url_for('admin.blog_post_create') }}">{{ t('blog.write_first') }}</a>
     {% endif %}
   </p>
   {% endif %}

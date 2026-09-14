@@ -2,6 +2,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from app import db
+from app.i18n import t
 from app.models.models import BlockedSender, ContactMessage
 from app.routes.admin import admin_bp
 
@@ -37,7 +38,7 @@ def contact_inbox():
 def contact_message_detail(message_id):
     entry = db.session.get(ContactMessage, message_id)
     if entry is None:
-        flash('Message not found.', 'error')
+        flash(t('flash.message_not_found'), 'error')
         return redirect(url_for('admin.contact_inbox'))
     if not entry.is_read:
         entry.is_read = True
@@ -52,7 +53,7 @@ def contact_message_delete(message_id):
     if entry:
         db.session.delete(entry)
         db.session.commit()
-        flash('Message deleted.', 'success')
+        flash(t('flash.message_deleted'), 'success')
     return redirect(url_for('admin.contact_inbox'))
 
 
@@ -67,9 +68,9 @@ def contact_messages_bulk_delete():
             .delete(synchronize_session=False)
         )
         db.session.commit()
-        flash(f'{deleted} message(s) deleted.', 'success')
+        flash(t('flash.messages_bulk_deleted', n=deleted), 'success')
     else:
-        flash('No messages selected.', 'error')
+        flash(t('flash.no_messages_selected'), 'error')
     return redirect(url_for('admin.contact_inbox'))
 
 
@@ -78,7 +79,7 @@ def contact_messages_bulk_delete():
 def contact_message_block_sender(message_id):
     entry = db.session.get(ContactMessage, message_id)
     if entry is None:
-        flash('Message not found.', 'error')
+        flash(t('flash.message_not_found'), 'error')
         return redirect(url_for('admin.contact_inbox'))
 
     email = entry.email.lower()
@@ -91,7 +92,7 @@ def contact_message_block_sender(message_id):
         .delete(synchronize_session=False)
     )
     db.session.commit()
-    flash(f'Blocked {email} and deleted {deleted} message(s).', 'success')
+    flash(t('flash.blocked_and_deleted', email=email, n=deleted), 'success')
     return redirect(url_for('admin.contact_inbox'))
 
 
@@ -114,7 +115,7 @@ def blocked_sender_add():
     ip_address = request.form.get('ip_address', '').strip()
 
     if not email and not ip_address:
-        flash('Provide an email and/or an IP address.', 'error')
+        flash(t('flash.email_or_ip_required'), 'error')
         return redirect(url_for('admin.blocked_senders'))
 
     db.session.add(BlockedSender(
@@ -123,7 +124,7 @@ def blocked_sender_add():
         reason='manual',
     ))
     db.session.commit()
-    flash('Sender blocked.', 'success')
+    flash(t('flash.sender_blocked'), 'success')
     return redirect(url_for('admin.blocked_senders'))
 
 
@@ -134,5 +135,5 @@ def blocked_sender_delete(blocked_id):
     if entry:
         db.session.delete(entry)
         db.session.commit()
-        flash('Sender unblocked.', 'success')
+        flash(t('flash.sender_unblocked'), 'success')
     return redirect(url_for('admin.blocked_senders'))

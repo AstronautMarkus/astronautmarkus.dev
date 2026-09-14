@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ current_lang }}">
 
 <head>
   <meta charset="UTF-8">
@@ -40,7 +40,7 @@
   <!-- ── Top bar ── -->
   <header class="main-header">
     <div class="topbar-left">
-      <button class="icon-btn" id="sidebarToggle" aria-label="Toggle menu">
+      <button class="icon-btn" id="sidebarToggle" aria-label="{{ t('base.toggle_menu') }}">
         <i class="fa-solid fa-bars"></i>
       </button>
       <div class="brand">
@@ -49,16 +49,16 @@
       </div>
     </div>
     <div class="topbar-right">
-      <button class="icon-btn" id="themeToggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+      <button class="icon-btn" id="themeToggle" aria-label="{{ t('base.toggle_theme') }}" title="{{ t('base.toggle_theme') }}">
         <i class="fa-solid fa-moon theme-icon-dark"></i>
         <i class="fa-solid fa-sun theme-icon-light"></i>
       </button>
-      <span class="topbar-username d-none d-md-inline">Signed in as <strong>{{ current_user.username }}</strong></span>
+      <span class="topbar-username d-none d-md-inline">{{ t('base.signed_in_as') }} <strong>{{ current_user.username }}</strong></span>
       <a href="{{ url_for('main.home') }}" target="_blank" class="topbar-link">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i> <span class="d-none d-sm-inline">View Site</span>
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> <span class="d-none d-sm-inline">{{ t('base.view_site') }}</span>
       </a>
       <a href="{{ url_for('auth.logout') }}" class="topbar-link">
-        <i class="fa-solid fa-right-from-bracket"></i> <span class="d-none d-sm-inline">Logout</span>
+        <i class="fa-solid fa-right-from-bracket"></i> <span class="d-none d-sm-inline">{{ t('base.logout') }}</span>
       </a>
     </div>
   </header>
@@ -71,75 +71,75 @@
         <span>AstronautMarkus</span>
       </div>
       <div class="sidebar-status">
-        <div class="status-item"><span class="status-dot"></span> Signed in as {{ current_user.username }}</div>
+        <div class="status-item"><span class="status-dot"></span> {{ t('base.signed_in_as') }} {{ current_user.username }}</div>
         {% if admin_unread_contact %}
         <div class="status-item status-item-alert">
           <i class="fa-solid fa-triangle-exclamation"></i>
-          <a href="{{ url_for('admin.contact_inbox') }}">{{ admin_unread_contact }} unread message{{ 's' if admin_unread_contact != 1 else '' }}</a>
+          <a href="{{ url_for('admin.contact_inbox') }}">{{ t('base.unread_message_one' if admin_unread_contact == 1 else 'base.unread_message_other', n=admin_unread_contact) }}</a>
         </div>
         {% endif %}
       </div>
     </div>
 
     <ul class="sidebar-menu">
-      <li class="header">Main</li>
+      <li class="header">{{ t('nav.main') }}</li>
       <li class="{{ 'active' if request.endpoint == 'admin.dashboard' else '' }}">
         <a href="{{ url_for('admin.dashboard') }}">
-          <i class="fa-solid fa-gauge-high menu-icon"></i><span>Dashboard</span>
+          <i class="fa-solid fa-gauge-high menu-icon"></i><span>{{ t('nav.dashboard') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and 'visit' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.visits_list') }}">
-          <i class="fa-solid fa-chart-line menu-icon"></i><span>Visits</span>
+          <i class="fa-solid fa-chart-line menu-icon"></i><span>{{ t('nav.visits') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and 'honeypot' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.honeypot_list') }}">
-          <i class="fa-solid fa-bug menu-icon"></i><span>Honeypot</span>
+          <i class="fa-solid fa-bug menu-icon"></i><span>{{ t('nav.honeypot') }}</span>
         </a>
       </li>
 
-      <li class="header">Content</li>
+      <li class="header">{{ t('nav.content') }}</li>
       <li class="{{ 'active' if request.endpoint and 'project' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.projects_list') }}">
-          <i class="fa-solid fa-briefcase menu-icon"></i><span>Portfolio</span>
+          <i class="fa-solid fa-briefcase menu-icon"></i><span>{{ t('nav.portfolio') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and 'gallery' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.gallery_list') }}">
-          <i class="fa-solid fa-images menu-icon"></i><span>Gallery</span>
+          <i class="fa-solid fa-images menu-icon"></i><span>{{ t('nav.gallery') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and 'cv' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.cv_list') }}">
-          <i class="fa-solid fa-file-pdf menu-icon"></i><span>CV Files</span>
+          <i class="fa-solid fa-file-pdf menu-icon"></i><span>{{ t('nav.cv_files') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_post') else '' }}">
         <a href="{{ url_for('admin.blog_posts_list') }}">
-          <i class="fa-solid fa-feather menu-icon"></i><span>Blog Posts</span>
+          <i class="fa-solid fa-feather menu-icon"></i><span>{{ t('nav.blog_posts') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin.blog_category') else '' }}">
         <a href="{{ url_for('admin.blog_categories_list') }}">
-          <i class="fa-solid fa-tags menu-icon"></i><span>Categories</span>
+          <i class="fa-solid fa-tags menu-icon"></i><span>{{ t('nav.categories') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and 'proyectada' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.proyectadas_list') }}">
-          <i class="fa-solid fa-rocket menu-icon"></i><span>Proyectadas</span>
+          <i class="fa-solid fa-rocket menu-icon"></i><span>{{ t('nav.proyectadas') }}</span>
         </a>
       </li>
       <li class="{{ 'active' if request.endpoint and 'guestbook' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.guestbook_list') }}">
-          <i class="fa-solid fa-book-open menu-icon"></i><span>Guestbook</span>
+          <i class="fa-solid fa-book-open menu-icon"></i><span>{{ t('nav.guestbook') }}</span>
         </a>
       </li>
 
-      <li class="header">Contact</li>
+      <li class="header">{{ t('nav.contact') }}</li>
       <li class="{{ 'active' if request.endpoint == 'admin.contact_inbox' or request.endpoint == 'admin.contact_message_detail' else '' }}">
         <a href="{{ url_for('admin.contact_inbox') }}">
-          <i class="fa-solid fa-envelope menu-icon"></i><span>Inbox</span>
+          <i class="fa-solid fa-envelope menu-icon"></i><span>{{ t('nav.inbox') }}</span>
           {% if admin_unread_contact %}
           <div class="badge-container">
             <span class="badge bg-danger">{{ admin_unread_contact }}</span>
@@ -149,17 +149,26 @@
       </li>
       <li class="{{ 'active' if request.endpoint == 'admin.blocked_senders' else '' }}">
         <a href="{{ url_for('admin.blocked_senders') }}">
-          <i class="fa-solid fa-ban menu-icon"></i><span>Blocked Senders</span>
+          <i class="fa-solid fa-ban menu-icon"></i><span>{{ t('nav.blocked_senders') }}</span>
         </a>
       </li>
 
-      <li class="header">System</li>
+      <li class="header">{{ t('nav.system') }}</li>
       <li class="{{ 'active' if request.endpoint and 'backup' in request.endpoint else '' }}">
         <a href="{{ url_for('admin.backups_list') }}">
-          <i class="fa-solid fa-database menu-icon"></i><span>Backups</span>
+          <i class="fa-solid fa-database menu-icon"></i><span>{{ t('nav.backups') }}</span>
         </a>
       </li>
     </ul>
+
+    <div class="sidebar-footer">
+      <a class="sidebar-lang-toggle"
+         href="/lang/{{ 'es' if current_lang == 'en' else 'en' }}?next={{ request.path }}"
+         title="{{ t('base.switch_language') }}">
+        <i class="fa-solid fa-globe"></i>
+        <span>{{ 'Español' if current_lang == 'en' else 'English' }}</span>
+      </a>
+    </div>
   </aside>
 
   <!-- ── Main content ── -->

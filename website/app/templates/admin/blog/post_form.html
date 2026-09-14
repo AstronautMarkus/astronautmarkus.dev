@@ -2,19 +2,19 @@
 
 {% set is_edit = post is not none %}
 
-{% block title %}{{ 'Edit Post' if is_edit else 'New Post' }}{% endblock %}
-{% block page_title %}{{ 'Edit Post' if is_edit else 'New Post' }}{% endblock %}
+{% block title %}{{ t('blog.edit_post') if is_edit else t('blog.new_post') }}{% endblock %}
+{% block page_title %}{{ t('blog.edit_post') if is_edit else t('blog.new_post') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_posts_list') }}">← Back to list</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_posts_list') }}">{{ t('common.back_to_list') }}</a>
   {% if is_edit %}
   <button type="button"
           class="publish-toggle {{ 'is-published' if post.published else '' }}"
           id="topbar-publish-toggle"
           data-toggle-url="{{ url_for('admin.blog_post_toggle_publish', post_id=post.id) }}"
-          title="{{ 'Click to unpublish' if post.published else 'Click to publish' }}">
+          title="{{ t('blog.click_to_unpublish') if post.published else t('blog.click_to_publish') }}">
     <span class="toggle-track"><span class="toggle-thumb"></span></span>
-    <span class="toggle-label">{{ 'Published' if post.published else 'Draft' }}</span>
+    <span class="toggle-label">{{ t('blog.published_col') if post.published else t('dashboard.draft') }}</span>
   </button>
   {% endif %}
 {% endblock %}
@@ -25,7 +25,7 @@
 
 <!-- ── Main form ────────────────────────────────────────────── -->
 <div class="card">
-  <div class="card-title">Post Content</div>
+  <div class="card-title">{{ t('blog.post_content') }}</div>
   <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
 
     <!-- language tabs -->
@@ -34,7 +34,7 @@
         English <span class="lang-req">*</span>
       </button>
       <button type="button" class="lang-tab" data-target="panel-es">
-        Español <span class="lang-opt">optional</span>
+        Español <span class="lang-opt">{{ t('common.optional') }}</span>
       </button>
     </div>
 
@@ -44,26 +44,26 @@
       <div class="lang-panel active" id="panel-en">
 
         <div class="form-group">
-          <label for="title">Title <span class="text-required">*</span></label>
+          <label for="title">{{ t('common.title') }} <span class="text-required">*</span></label>
           <input type="text" id="title" name="title"
                  value="{{ post.title if is_edit else '' }}"
                  placeholder="My Post Title" required>
         </div>
 
         <div class="form-group">
-          <label for="description">Excerpt / Short Description</label>
+          <label for="description">{{ t('blog.excerpt') }}</label>
           <textarea id="description" name="description" rows="3"
                     placeholder="A brief summary shown in listings and meta tags…">{{ post.description if is_edit and post.description else '' }}</textarea>
         </div>
 
         <div class="form-group">
-          <label for="markdown_file">Markdown Content (EN)</label>
+          <label for="markdown_file">{{ t('blog.markdown_en') }}</label>
           {% if is_edit and post.markdown_path %}
           <div class="file-current-row">
-            <span>Current file:</span>
+            <span>{{ t('common.current_file') }}</span>
             <a href="{{ storage_url(post.markdown_path) }}" target="_blank"
-               rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Download EN .md</a>
-            <span class="form-hint">Upload a new file to replace it.</span>
+               rel="noopener noreferrer" class="btn btn-ghost btn-sm">{{ t('blog.download_md_en') }}</a>
+            <span class="form-hint">{{ t('common.upload_replace_hint') }}</span>
           </div>
           {% endif %}
           <input type="file" id="markdown_file" name="markdown_file" accept=".md,.markdown">
@@ -78,7 +78,7 @@
           <input type="checkbox" id="enable_es" name="has_es" value="1"
                  {{ 'checked' if is_edit and post.has_es else '' }}>
           <label for="enable_es" class="es-enable-label">
-            Enable Spanish content for this post
+            {{ t('blog.enable_es_post') }}
           </label>
         </div>
         <div class="es-fields-wrap{{ ' disabled' if not (is_edit and post.has_es) else '' }}"
@@ -98,12 +98,12 @@
           </div>
 
           <div class="form-group">
-            <label for="markdown_file_es">Contenido Markdown (ES)</label>
+            <label for="markdown_file_es">{{ t('blog.markdown_es') }}</label>
             {% if is_edit and post.markdown_path_es %}
             <div class="file-current-row">
               <span>Archivo actual:</span>
               <a href="{{ storage_url(post.markdown_path_es) }}" target="_blank"
-                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Descargar ES .md</a>
+                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">{{ t('blog.download_md_es') }}</a>
               <span class="form-hint">Sube un archivo nuevo para reemplazarlo.</span>
             </div>
             {% endif %}
@@ -116,20 +116,20 @@
 
       <!-- ── Cover image ────────────────────────────────────── -->
       <div class="form-group">
-        <label for="cover_image">Header / Cover Image</label>
+        <label for="cover_image">{{ t('blog.header_cover_image') }}</label>
         {% if is_edit and post.cover_image_path %}
         <div id="cover-current-wrap"
              style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-current-img" src="{{ storage_url(post.cover_image_path) }}"
                style="height:72px;width:128px;object-fit:cover;border:1px solid #cccccc">
-          <span class="form-hint">Upload a new file to replace the current header.</span>
+          <span class="form-hint">{{ t('blog.upload_replace_header') }}</span>
         </div>
         {% endif %}
         <div id="cover-preview-wrap"
              style="display:none;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-preview-img" src="" alt="New cover preview"
                style="height:72px;width:128px;object-fit:cover;border:2px dashed #2b5797">
-          <span class="form-hint" style="color:#2b5797">New cover — not saved yet</span>
+          <span class="form-hint" style="color:#2b5797">{{ t('blog.new_cover_not_saved') }}</span>
         </div>
         <input type="file" id="cover_image" name="cover_image" accept="image/*">
         <span class="form-hint">JPG, PNG, WebP, GIF — max 5 MB</span>
@@ -138,9 +138,9 @@
       <!-- ── Shared metadata ────────────────────────────────── -->
       <div class="form-row">
         <div class="form-group">
-          <label for="category_id">Category</label>
+          <label for="category_id">{{ t('blog.category') }}</label>
           <select id="category_id" name="category_id">
-            <option value="">— Uncategorized —</option>
+            <option value="">{{ t('blog.uncategorized') }}</option>
             {% for cat in categories %}
             <option value="{{ cat.id }}"
                     {{ 'selected' if is_edit and post.category_id == cat.id else '' }}>
@@ -150,33 +150,33 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="slug">Slug</label>
+          <label for="slug">{{ t('blog.slug') }}</label>
           <input type="text" id="slug" name="slug"
                  value="{{ post.slug if is_edit else '' }}"
                  placeholder="auto-generated-from-title"
                  {{ 'readonly' if is_edit else '' }}>
           {% if is_edit %}
-          <span class="form-hint">Locked after creation to preserve future URLs.</span>
+          <span class="form-hint">{{ t('blog.slug_locked_hint') }}</span>
           {% else %}
-          <span class="form-hint">Leave blank to auto-generate from the English title.</span>
+          <span class="form-hint">{{ t('blog.slug_blank_hint_title') }}</span>
           {% endif %}
         </div>
       </div>
 
       <div class="form-group">
-        <label for="tags">Tags</label>
+        <label for="tags">{{ t('blog.tags') }}</label>
         <input type="text" id="tags" name="tags"
                value="{{ post.tags | map(attribute='name') | join(', ') if is_edit else '' }}"
                placeholder="python, flask, devops">
-        <span class="form-hint">Comma-separated list of tags.</span>
+        <span class="form-hint">{{ t('blog.tags_hint') }}</span>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="created_at">Publication Date</label>
+          <label for="created_at">{{ t('blog.publication_date') }}</label>
           <input type="datetime-local" id="created_at" name="created_at"
                  value="{{ post.created_at.strftime('%Y-%m-%dT%H:%M') if is_edit else now_dt }}">
-          <span class="form-hint">Defaults to current date/time on creation.</span>
+          <span class="form-hint">{{ t('blog.publication_date_hint') }}</span>
         </div>
       </div>
 
@@ -187,13 +187,13 @@
                style="width:auto">
         <label for="published"
                style="text-transform:none;letter-spacing:0;font-size:12px;cursor:pointer;color:#333333">
-          Publish this post (make it visible on the public site)
+          {{ t('blog.publish_checkbox') }}
         </label>
       </div>
 
       <div>
         <button type="submit" class="btn btn-primary">
-          {{ 'Save Changes' if is_edit else 'Create Post' }}
+          {{ t('common.save_changes') if is_edit else t('blog.create_post') }}
         </button>
       </div>
 
@@ -205,9 +205,9 @@
 {% if is_edit %}
 <div class="card">
   <div class="card-title">
-    Post Images
+    {{ t('blog.post_images') }}
     <span style="font-size:10px;font-weight:normal;color:#888888;text-transform:none;letter-spacing:0;margin-left:8px">
-      Upload images, then copy their URLs to paste into your Markdown.
+      {{ t('blog.post_images_hint') }}
     </span>
   </div>
 
@@ -220,16 +220,16 @@
       <div class="blog-img-actions">
         <button type="button" class="copy-url-btn"
                 data-url="{{ storage_url(img.image_path) }}"
-                title="Copy URL to clipboard">Copy URL</button>
+                title="Copy URL to clipboard">{{ t('blog.copy_url') }}</button>
         <button type="button" class="del-img"
-                title="Remove"
+                title="{{ t('blog.remove') }}"
                 data-delete-url="{{ url_for('admin.blog_post_delete_image', post_id=post.id, image_id=img.id) }}">×</button>
       </div>
     </div>
     {% endfor %}
     {% if not post.images %}
     <p id="no-images-hint"
-       style="color:#888888;font-size:0.83rem;margin:0 0 4px">No images yet.</p>
+       style="color:#888888;font-size:0.83rem;margin:0 0 4px">{{ t('blog.no_images_yet') }}</p>
     {% endif %}
   </div>
 
@@ -241,7 +241,7 @@
       <polyline points="17 8 12 3 7 8"/>
       <line x1="12" y1="3" x2="12" y2="15"/>
     </svg>
-    <div style="font-weight:bold">Click to upload or drag &amp; drop</div>
+    <div style="font-weight:bold">{{ t('blog.click_to_upload') }}</div>
     <div style="margin-top:3px;font-size:10px;color:#aaaaaa">
       JPG, PNG, WebP, GIF — max 5 MB each — multiple files supported
     </div>

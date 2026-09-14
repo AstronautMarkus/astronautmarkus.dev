@@ -1,64 +1,64 @@
 {% extends "admin/base.html" %}
 {% from "admin/_macros.html" import pagination_bar, search_bar %}
 
-{% block title %}Contact Inbox{% endblock %}
-{% block page_title %}Contact Inbox{% endblock %}
+{% block title %}{{ t('contact.inbox_title') }}{% endblock %}
+{% block page_title %}{{ t('contact.inbox_title') }}{% endblock %}
 
 {% block topbar_actions %}
   {% if unread > 0 %}
   <span class="lang-badge lang-badge-danger" style="margin-left:0">
-    {{ unread }} unread
+    {{ t('contact.unread_n', n=unread) }}
   </span>
   {% endif %}
 {% endblock %}
 
 {% block content %}
-{{ search_bar('admin.contact_inbox', q, placeholder='Search name, email, subject…') }}
+{{ search_bar('admin.contact_inbox', q, placeholder=t('contact.search_ph')) }}
 
 <div class="card">
   {% if messages %}
   <form id="bulk-form" method="POST" action="{{ url_for('admin.contact_messages_bulk_delete') }}">
     <div class="td-actions" style="padding:8px 10px;justify-content:space-between;display:flex;align-items:center">
-      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> selected</span>
-      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete selected</button>
+      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> {{ t('common.selected') }}</span>
+      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>{{ t('common.delete_selected') }}</button>
     </div>
     <table class="table-blue table-responsive">
       <thead>
         <tr>
           <th style="width:16px"><input type="checkbox" id="select-all"></th>
           <th style="width:16px"></th>
-          <th>From</th>
-          <th>Subject</th>
-          <th>Lang</th>
-          <th>Received</th>
-          <th style="text-align:right">Actions</th>
+          <th>{{ t('dashboard.from') }}</th>
+          <th>{{ t('contact.subject') }}</th>
+          <th>{{ t('contact.lang') }}</th>
+          <th>{{ t('contact.received') }}</th>
+          <th style="text-align:right">{{ t('common.actions') }}</th>
         </tr>
       </thead>
       <tbody>
       {% for m in messages %}
       <tr class="{{ 'row-unread' if not m.is_read else '' }}">
-        <td data-label="Select" style="padding-left:10px">
+        <td data-label="{{ t('common.select') }}" style="padding-left:10px">
           <input type="checkbox" class="row-checkbox" name="message_ids" value="{{ m.id }}">
         </td>
-        <td data-label="Status">
+        <td data-label="{{ t('common.status') }}">
           <span class="status-dot {{ 'unread' if not m.is_read else '' }}"></span>
         </td>
-        <td data-label="From" style="{% if not m.is_read %}font-weight:700{% endif %}">
+        <td data-label="{{ t('dashboard.from') }}" style="{% if not m.is_read %}font-weight:700{% endif %}">
           {{ m.name }}<br>
           <span style="font-size:10px;color:#888;font-weight:normal">{{ m.email }}</span>
         </td>
-        <td data-label="Subject" style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;{% if not m.is_read %}font-weight:700{% endif %}">{{ m.subject }}</td>
-        <td data-label="Lang">
+        <td data-label="{{ t('contact.subject') }}" style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;{% if not m.is_read %}font-weight:700{% endif %}">{{ m.subject }}</td>
+        <td data-label="{{ t('contact.lang') }}">
           <span class="lang-badge lang-badge-{{ m.language }}">{{ m.language | upper }}</span>
         </td>
-        <td data-label="Received" style="color:#777;white-space:nowrap">{{ m.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
-        <td data-label="Actions">
+        <td data-label="{{ t('contact.received') }}" style="color:#777;white-space:nowrap">{{ m.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
+        <td data-label="{{ t('common.actions') }}">
           <div class="td-actions">
-            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}">View</a>
+            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}">{{ t('common.view') }}</a>
             <button type="submit" formaction="{{ url_for('admin.contact_message_block_sender', message_id=m.id) }}"
-                    formnovalidate onclick="return confirm('Block ' + '{{ m.email }}' + ' and delete all their messages?');" class="btn btn-danger btn-sm">Block</button>
+                    formnovalidate onclick="return confirm('{{ t('contact.block_confirm', email=m.email) }}');" class="btn btn-danger btn-sm">{{ t('contact.block') }}</button>
             <button type="submit" formaction="{{ url_for('admin.contact_message_delete', message_id=m.id) }}"
-                    formnovalidate onclick="return confirm('Delete this message?');" class="btn btn-danger btn-sm">Delete</button>
+                    formnovalidate onclick="return confirm('{{ t('contact.delete_message_confirm') }}');" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </div>
         </td>
       </tr>
@@ -70,9 +70,9 @@
   {% else %}
   <p class="empty-state">
     {% if q %}
-    No messages match "{{ q }}". <a href="{{ url_for('admin.contact_inbox') }}">Clear search</a>
+    {{ t('contact.no_messages_match', q=q) }} <a href="{{ url_for('admin.contact_inbox') }}">{{ t('common.clear_search') }}</a>
     {% else %}
-    No messages yet.
+    {{ t('contact.no_messages') }}
     {% endif %}
   </p>
   {% endif %}

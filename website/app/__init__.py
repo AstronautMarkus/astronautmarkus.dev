@@ -11,6 +11,7 @@ from app.i18n import (
     DEFAULT_LANGUAGE,
     get_current_language,
     render_localized_template,
+    t as translate,
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.routing import RequestRedirect as _WerkzeugRedirect
@@ -198,6 +199,7 @@ def create_app():
 		return str(value)
 
 	app.jinja_env.filters['dtfmt'] = _dtfmt
+	app.jinja_env.globals['t'] = translate
 
 	# ── Template globals ──────────────────────────────────────────
 	def _storage_url(path):

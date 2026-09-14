@@ -3,6 +3,7 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 from app import db
+from app.i18n import t
 from app.models.models import ExtraPortfolioImage, PortfolioProject
 from app.routes.admin import admin_bp
 from app.storage import storage
@@ -85,9 +86,9 @@ def projects_bulk_delete():
             .delete(synchronize_session=False)
         )
         db.session.commit()
-        flash(f'{deleted} project(s) deleted.', 'success')
+        flash(t('flash.projects_bulk_deleted', n=deleted), 'success')
     else:
-        flash('No projects selected.', 'error')
+        flash(t('flash.no_projects_selected'), 'error')
     return redirect(url_for('admin.projects_list'))
 
 
@@ -99,7 +100,7 @@ def projects_create():
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash('Title is required.', 'error')
+            flash(t('flash.title_required'), 'error')
             return render_template('admin/projects/form.html', project=None, extra_images=[])
 
         has_es = request.form.get('has_es') == '1'
@@ -125,7 +126,7 @@ def projects_create():
             if _store_image(cover, path):
                 project.image_path = path
             else:
-                flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
+                flash(t('flash.cover_rejected'), 'error')
 
         # Markdown EN
         md_en = request.files.get('markdown_file')
@@ -134,7 +135,7 @@ def projects_create():
             if _store_md(md_en, path_en):
                 project.markdown_path = path_en
             else:
-                flash('EN Markdown rejected — must be a .md file under 2 MB.', 'error')
+                flash(t('flash.en_md_rejected'), 'error')
 
         # Markdown ES
         if has_es:
@@ -144,10 +145,10 @@ def projects_create():
                 if _store_md(md_es, path_es):
                     project.markdown_path_es = path_es
                 else:
-                    flash('ES Markdown rejected — must be a .md file under 2 MB.', 'error')
+                    flash(t('flash.es_md_rejected'), 'error')
 
         db.session.commit()
-        flash(f'Project "{project.title}" created.', 'success')
+        flash(t('flash.project_created', title=project.title), 'success')
         return redirect(url_for('admin.projects_edit', project_id=project.id))
 
     return render_template('admin/projects/form.html', project=None, extra_images=[])
@@ -160,13 +161,13 @@ def projects_create():
 def projects_edit(project_id):
     project = db.session.get(PortfolioProject, project_id)
     if project is None:
-        flash('Project not found.', 'error')
+        flash(t('flash.project_not_found'), 'error')
         return redirect(url_for('admin.projects_list'))
 
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash('Title is required.', 'error')
+            flash(t('flash.title_required'), 'error')
             return render_template('admin/projects/form.html',
                                    project=project, extra_images=project.extra_images)
 
@@ -191,7 +192,7 @@ def projects_edit(project_id):
                     storage.delete(project.image_path)
                 project.image_path = new_path
             else:
-                flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
+                flash(t('flash.cover_rejected'), 'error')
 
         # Markdown EN
         md_en = request.files.get('markdown_file')
@@ -200,7 +201,7 @@ def projects_edit(project_id):
             if _store_md(md_en, path_en):
                 project.markdown_path = path_en
             else:
-                flash('EN Markdown rejected — must be a .md file under 2 MB.', 'error')
+                flash(t('flash.en_md_rejected'), 'error')
 
         # Markdown ES
         if has_es:
@@ -210,10 +211,10 @@ def projects_edit(project_id):
                 if _store_md(md_es, path_es):
                     project.markdown_path_es = path_es
                 else:
-                    flash('ES Markdown rejected — must be a .md file under 2 MB.', 'error')
+                    flash(t('flash.es_md_rejected'), 'error')
 
         db.session.commit()
-        flash('Project updated.', 'success')
+        flash(t('flash.project_updated'), 'success')
         return redirect(url_for('admin.projects_edit', project_id=project.id))
 
     return render_template('admin/projects/form.html',
@@ -227,7 +228,7 @@ def projects_edit(project_id):
 def projects_delete(project_id):
     project = db.session.get(PortfolioProject, project_id)
     if project is None:
-        flash('Project not found.', 'error')
+        flash(t('flash.project_not_found'), 'error')
         return redirect(url_for('admin.projects_list'))
 
     if project.image_path:
@@ -242,7 +243,7 @@ def projects_delete(project_id):
     title = project.title
     db.session.delete(project)
     db.session.commit()
-    flash(f'Project "{title}" deleted.', 'success')
+    flash(t('flash.project_deleted', title=title), 'success')
     return redirect(url_for('admin.projects_list'))
 
 

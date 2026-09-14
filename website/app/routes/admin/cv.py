@@ -5,6 +5,7 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 from app import db
+from app.i18n import t
 from app.models.models import CvFile
 from app.routes.admin import admin_bp
 from app.services.rendercv_service import (
@@ -88,7 +89,7 @@ def _parse_builder_json(raw_text: str) -> dict:
     try:
         data = json.loads(raw_text) if raw_text else {}
     except (ValueError, TypeError):
-        flash('Could not read the builder data — please try again.', 'warning')
+        flash(t('flash.cv_builder_read_error'), 'warning')
         return {}
     return data if isinstance(data, dict) else {}
 
@@ -113,7 +114,7 @@ def cv_upload():
     if request.method == 'POST':
         language = request.form.get('language', '').strip()
         if not language:
-            flash('Language is required.', 'error')
+            flash(t('flash.language_required'), 'error')
             return _render_form(cv=None)
 
         raw_source = request.form.get('source', 'upload')
@@ -122,7 +123,7 @@ def cv_upload():
         if raw_source == 'builder':
             builder_data = _parse_builder_json(request.form.get('cv_builder_json', ''))
             if not (builder_data.get('header') or {}).get('name', '').strip():
-                flash('Name is required.', 'error')
+                flash(t('flash.name_required'), 'error')
                 return _render_form(cv=None, submitted_source='builder', builder_initial_data=builder_data,
                                      submitted_language=language)
 
@@ -139,7 +140,7 @@ def cv_upload():
                 return _render_form(cv=None, submitted_source=source, submitted_language=language)
 
             if not yaml_text:
-                flash('YAML content is required.', 'error')
+                flash(t('flash.yaml_required'), 'error')
                 return _render_form(cv=None, submitted_source=source, submitted_language=language)
         else:
             source = 'upload'
@@ -153,7 +154,7 @@ def cv_upload():
                 yaml_path, pdf_path = _store_generated_cv(yaml_text, cv.id, language)
             except RenderCVError as exc:
                 db.session.rollback()
-                flash(f'CV generation failed: {exc}', 'error')
+                flash(t('flash.cv_generation_failed', exc=exc), 'error')
                 if raw_source == 'builder':
                     return _render_form(cv=None, submitted_source='builder', builder_initial_data=builder_data,
                                          submitted_language=language)
@@ -169,7 +170,7 @@ def cv_upload():
         else:
             file = request.files.get('cv_file')
             if not file or not file.filename:
-                flash('A PDF file is required.', 'error')
+                flash(t('flash.pdf_required'), 'error')
                 return _render_form(cv=None, submitted_source=source, submitted_language=language)
 
             cv = CvFile(language=language, file_path='', source=source)
@@ -179,12 +180,12 @@ def cv_upload():
             path = f"cv/{cv.id}_{secure_filename(language)}.pdf"
             if not _store_cv(file, path):
                 db.session.rollback()
-                flash('File rejected — must be a PDF and no larger than 10 MB.', 'error')
+                flash(t('flash.pdf_rejected'), 'error')
                 return _render_form(cv=None, submitted_source=source, submitted_language=language)
             cv.file_path = path
 
         db.session.commit()
-        flash(f'CV ({language.upper()}) uploaded successfully.', 'success')
+        flash(t('flash.cv_uploaded', lang=language.upper()), 'success')
         return redirect(url_for('admin.cv_list'))
 
     return _render_form(cv=None)
@@ -197,13 +198,13 @@ def cv_upload():
 def cv_edit(cv_id):
     cv = db.session.get(CvFile, cv_id)
     if cv is None:
-        flash('CV not found.', 'error')
+        flash(t('flash.cv_not_found'), 'error')
         return redirect(url_for('admin.cv_list'))
 
     if request.method == 'POST':
         language = request.form.get('language', '').strip()
         if not language:
-            flash('Language is required.', 'error')
+            flash(t('flash.language_required'), 'error')
             return _render_form(cv=cv)
 
         raw_source = request.form.get('source', '').strip()
@@ -213,7 +214,7 @@ def cv_edit(cv_id):
         if raw_source == 'builder':
             builder_data = _parse_builder_json(request.form.get('cv_builder_json', ''))
             if not (builder_data.get('header') or {}).get('name', '').strip():
-                flash('Name is required.', 'error')
+                flash(t('flash.name_required'), 'error')
                 return _render_form(cv=cv, submitted_source='builder', builder_initial_data=builder_data)
 
             yaml_text, builder_warnings = build_yaml_from_builder_data(builder_data, language)
@@ -236,7 +237,7 @@ def cv_edit(cv_id):
                 try:
                     yaml_path, pdf_path = _store_generated_cv(yaml_text, cv.id, language)
                 except RenderCVError as exc:
-                    flash(f'CV generation failed: {exc}', 'error')
+                    flash(t('flash.cv_generation_failed', exc=exc), 'error')
                     if raw_source == 'builder':
                         return _render_form(cv=cv, submitted_source='builder', builder_initial_data=builder_data)
                     return _render_form(cv=cv, submitted_yaml=yaml_text, submitted_source=source)
@@ -255,7 +256,7 @@ def cv_edit(cv_id):
                 elif storage.exists(sidecar):
                     storage.delete(sidecar)
             elif cv.source != 'generated' or not cv.yaml_path:
-                flash('YAML content is required.', 'error')
+                flash(t('flash.yaml_required'), 'error')
                 return _render_form(cv=cv, submitted_source=source)
             # else: staying generated, no new YAML submitted — keep existing files as-is.
         else:
@@ -263,13 +264,13 @@ def cv_edit(cv_id):
             if file and file.filename:
                 new_path = f"cv/{cv.id}_{secure_filename(language)}.pdf"
                 if not _store_cv(file, new_path):
-                    flash('File rejected — must be a PDF and no larger than 10 MB.', 'error')
+                    flash(t('flash.pdf_rejected'), 'error')
                     return _render_form(cv=cv, submitted_source=source)
                 if cv.file_path and cv.file_path != new_path:
                     storage.delete(cv.file_path)
                 cv.file_path = new_path
             elif not cv.file_path:
-                flash('A PDF file is required.', 'error')
+                flash(t('flash.pdf_required'), 'error')
                 return _render_form(cv=cv, submitted_source=source)
 
             if cv.yaml_path:
@@ -281,7 +282,7 @@ def cv_edit(cv_id):
             cv.source = 'upload'
 
         db.session.commit()
-        flash('CV updated successfully.', 'success')
+        flash(t('flash.cv_updated'), 'success')
         return redirect(url_for('admin.cv_list'))
 
     submitted_yaml = ''
@@ -309,7 +310,7 @@ def cv_edit(cv_id):
 def cv_delete(cv_id):
     cv = db.session.get(CvFile, cv_id)
     if cv is None:
-        flash('CV not found.', 'error')
+        flash(t('flash.cv_not_found'), 'error')
         return redirect(url_for('admin.cv_list'))
 
     if cv.yaml_path:
@@ -323,5 +324,5 @@ def cv_delete(cv_id):
     lang = cv.language
     db.session.delete(cv)
     db.session.commit()
-    flash(f'CV ({lang.upper()}) deleted.', 'success')
+    flash(t('flash.cv_deleted', lang=lang.upper()), 'success')
     return redirect(url_for('admin.cv_list'))

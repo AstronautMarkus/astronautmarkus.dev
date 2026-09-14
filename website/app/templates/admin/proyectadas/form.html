@@ -2,11 +2,11 @@
 
 {% set is_edit = item is not none %}
 
-{% block title %}{{ 'Edit proyectada' if is_edit else 'New proyectada' }}{% endblock %}
-{% block page_title %}{{ 'Edit proyectada' if is_edit else 'New proyectada' }}{% endblock %}
+{% block title %}{{ t('proyectadas.edit_title') if is_edit else t('proyectadas.new_title') }}{% endblock %}
+{% block page_title %}{{ t('proyectadas.edit_title') if is_edit else t('proyectadas.new_title') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.proyectadas_list') }}">← Back to list</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.proyectadas_list') }}">{{ t('common.back_to_list') }}</a>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 {% set action_url = url_for('admin.proyectadas_edit', item_id=item.id) if is_edit else url_for('admin.proyectadas_create') %}
 
 <div class="card">
-  <div class="card-title">Detail</div>
+  <div class="card-title">{{ t('proyectadas.detail') }}</div>
   <form method="POST" action="{{ action_url }}">
 
     <!-- ── Language tabs ─────────────────────────────────────── -->
@@ -23,7 +23,7 @@
         English <span class="lang-req">*</span>
       </button>
       <button type="button" class="lang-tab" data-target="panel-es">
-        Español <span class="lang-opt">optional</span>
+        Español <span class="lang-opt">{{ t('common.optional') }}</span>
       </button>
     </div>
 
@@ -32,7 +32,7 @@
       <!-- ── English panel ─────────────────────────────────── -->
       <div class="lang-panel active" id="panel-en">
         <div class="form-group">
-          <label for="text">Text <span style="color:#cc0000">*</span></label>
+          <label for="text">{{ t('proyectadas.text') }} <span style="color:#cc0000">*</span></label>
           <textarea id="text" name="text" rows="10"
                     maxlength="10000"
                     placeholder="Type the proyectada here…"
@@ -46,13 +46,13 @@
           <input type="checkbox" id="enable_es" name="has_es" value="1"
                  {{ 'checked' if is_edit and item.has_es else '' }}>
           <label for="enable_es" class="es-enable-label">
-            Enable Spanish content for this proyectada
+            {{ t('proyectadas.enable_es') }}
           </label>
         </div>
         <div class="es-fields-wrap{{ ' disabled' if not (is_edit and item.has_es) else '' }}"
              id="es-fields">
           <div class="form-group">
-            <label for="text_es">Text (ES) <span style="color:#cc0000">*</span></label>
+            <label for="text_es">{{ t('proyectadas.text_es') }} <span style="color:#cc0000">*</span></label>
             <textarea id="text_es" name="text_es" rows="10"
                       maxlength="10000"
                       placeholder="Write the proyectada here…">{{ item.text_es if is_edit and item.text_es else '' }}</textarea>
@@ -67,15 +67,15 @@
       <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.5rem;">
         <input type="checkbox" name="published" value="1"
                {{ 'checked' if is_edit and item.published else '' }}>
-        Publish (visible on the site)
+        {{ t('proyectadas.publish_checkbox') }}
       </label>
     </div>
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">
-        {{ 'Save changes' if is_edit else 'Create proyectada' }}
+        {{ t('proyectadas.save_btn') if is_edit else t('proyectadas.create_btn') }}
       </button>
-      <a href="{{ url_for('admin.proyectadas_list') }}" class="btn btn-ghost">Cancel</a>
+      <a href="{{ url_for('admin.proyectadas_list') }}" class="btn btn-ghost">{{ t('common.cancel') }}</a>
     </div>
 
   </form>

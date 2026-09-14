@@ -6,6 +6,7 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 from app import db
+from app.i18n import t
 from app.models.models import BlogCategory, BlogPost, BlogPostImage, BlogTag
 from app.routes.admin import admin_bp
 from app.storage import storage
@@ -113,7 +114,7 @@ def blog_category_create():
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
         if not name:
-            flash('Category name is required.', 'error')
+            flash(t('flash.category_name_required'), 'error')
             return render_template('admin/blog/category_form.html', category=None)
 
         has_es = request.form.get('has_es') == '1'
@@ -133,7 +134,7 @@ def blog_category_create():
         cat.slug = _unique_slug(BlogCategory, base_slug, exclude_id=cat.id)
 
         db.session.commit()
-        flash(f'Category "{cat.name}" created.', 'success')
+        flash(t('flash.category_created', name=cat.name), 'success')
         return redirect(url_for('admin.blog_categories_list'))
 
     return render_template('admin/blog/category_form.html', category=None)
@@ -144,13 +145,13 @@ def blog_category_create():
 def blog_category_edit(cat_id):
     category = db.session.get(BlogCategory, cat_id)
     if category is None:
-        flash('Category not found.', 'error')
+        flash(t('flash.category_not_found'), 'error')
         return redirect(url_for('admin.blog_categories_list'))
 
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
         if not name:
-            flash('Category name is required.', 'error')
+            flash(t('flash.category_name_required'), 'error')
             return render_template('admin/blog/category_form.html', category=category)
 
         has_es = request.form.get('has_es') == '1'
@@ -160,7 +161,7 @@ def blog_category_edit(cat_id):
         category.has_es = has_es
         category.name_es = name_es if has_es else None
         db.session.commit()
-        flash('Category updated.', 'success')
+        flash(t('flash.category_updated'), 'success')
         return redirect(url_for('admin.blog_category_edit', cat_id=category.id))
 
     return render_template('admin/blog/category_form.html', category=category)
@@ -171,20 +172,17 @@ def blog_category_edit(cat_id):
 def blog_category_delete(cat_id):
     category = db.session.get(BlogCategory, cat_id)
     if category is None:
-        flash('Category not found.', 'error')
+        flash(t('flash.category_not_found'), 'error')
         return redirect(url_for('admin.blog_categories_list'))
 
     if category.posts:
-        flash(
-            f'Cannot delete "{category.name}" — {len(category.posts)} post(s) are assigned to it.',
-            'error',
-        )
+        flash(t('flash.category_in_use', name=category.name, n=len(category.posts)), 'error')
         return redirect(url_for('admin.blog_categories_list'))
 
     name = category.name
     db.session.delete(category)
     db.session.commit()
-    flash(f'Category "{name}" deleted.', 'success')
+    flash(t('flash.category_deleted', name=name), 'success')
     return redirect(url_for('admin.blog_categories_list'))
 
 
@@ -212,7 +210,7 @@ def blog_post_create():
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash('Title is required.', 'error')
+            flash(t('flash.title_required'), 'error')
             return render_template('admin/blog/post_form.html', post=None, categories=categories,
                                    now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'))
 
@@ -254,7 +252,7 @@ def blog_post_create():
             if _store_img(cover, cover_path):
                 post.cover_image_path = cover_path
             else:
-                flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
+                flash(t('flash.cover_rejected'), 'error')
 
         # Markdown EN
         md_en = request.files.get('markdown_file')
@@ -263,7 +261,7 @@ def blog_post_create():
             if _store_md(md_en, path_en):
                 post.markdown_path = path_en
             else:
-                flash('EN Markdown rejected — must be a .md file under 2 MB.', 'error')
+                flash(t('flash.en_md_rejected'), 'error')
 
         # Markdown ES
         if has_es:
@@ -273,10 +271,10 @@ def blog_post_create():
                 if _store_md(md_es, path_es):
                     post.markdown_path_es = path_es
                 else:
-                    flash('ES Markdown rejected — must be a .md file under 2 MB.', 'error')
+                    flash(t('flash.es_md_rejected'), 'error')
 
         db.session.commit()
-        flash(f'Post "{post.title}" created.', 'success')
+        flash(t('flash.post_created', title=post.title), 'success')
         return redirect(url_for('admin.blog_post_edit', post_id=post.id))
 
     return render_template('admin/blog/post_form.html', post=None, categories=categories,
@@ -288,7 +286,7 @@ def blog_post_create():
 def blog_post_edit(post_id):
     post = db.session.get(BlogPost, post_id)
     if post is None:
-        flash('Post not found.', 'error')
+        flash(t('flash.post_not_found'), 'error')
         return redirect(url_for('admin.blog_posts_list'))
 
     categories = BlogCategory.query.order_by(BlogCategory.name).all()
@@ -296,7 +294,7 @@ def blog_post_edit(post_id):
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash('Title is required.', 'error')
+            flash(t('flash.title_required'), 'error')
             return render_template('admin/blog/post_form.html', post=post, categories=categories)
 
         has_es      = request.form.get('has_es') == '1'
@@ -329,7 +327,7 @@ def blog_post_edit(post_id):
                     storage.delete(post.cover_image_path)
                 post.cover_image_path = cover_path
             else:
-                flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
+                flash(t('flash.cover_rejected'), 'error')
 
         # Markdown EN
         md_en = request.files.get('markdown_file')
@@ -338,7 +336,7 @@ def blog_post_edit(post_id):
             if _store_md(md_en, path_en):
                 post.markdown_path = path_en
             else:
-                flash('EN Markdown rejected — must be a .md file under 2 MB.', 'error')
+                flash(t('flash.en_md_rejected'), 'error')
 
         # Markdown ES
         if has_es:
@@ -348,10 +346,10 @@ def blog_post_edit(post_id):
                 if _store_md(md_es, path_es):
                     post.markdown_path_es = path_es
                 else:
-                    flash('ES Markdown rejected — must be a .md file under 2 MB.', 'error')
+                    flash(t('flash.es_md_rejected'), 'error')
 
         db.session.commit()
-        flash('Post updated.', 'success')
+        flash(t('flash.post_updated'), 'success')
         return redirect(url_for('admin.blog_post_edit', post_id=post.id))
 
     return render_template('admin/blog/post_form.html', post=post, categories=categories,
@@ -363,7 +361,7 @@ def blog_post_edit(post_id):
 def blog_post_delete(post_id):
     post = db.session.get(BlogPost, post_id)
     if post is None:
-        flash('Post not found.', 'error')
+        flash(t('flash.post_not_found'), 'error')
         return redirect(url_for('admin.blog_posts_list'))
 
     if post.cover_image_path:
@@ -378,7 +376,7 @@ def blog_post_delete(post_id):
     title = post.title
     db.session.delete(post)
     db.session.commit()
-    flash(f'Post "{title}" deleted.', 'success')
+    flash(t('flash.post_deleted', title=title), 'success')
     return redirect(url_for('admin.blog_posts_list'))
 
 
@@ -403,9 +401,9 @@ def blog_posts_bulk_delete():
             .delete(synchronize_session=False)
         )
         db.session.commit()
-        flash(f'{deleted} post(s) deleted.', 'success')
+        flash(t('flash.posts_bulk_deleted', n=deleted), 'success')
     else:
-        flash('No posts selected.', 'error')
+        flash(t('flash.no_posts_selected'), 'error')
     return redirect(url_for('admin.blog_posts_list'))
 
 

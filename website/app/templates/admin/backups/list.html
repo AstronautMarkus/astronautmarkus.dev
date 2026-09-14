@@ -1,42 +1,42 @@
 {% extends "admin/base.html" %}
 {% from "admin/_macros.html" import pagination_bar %}
 
-{% block title %}Backups{% endblock %}
-{% block page_title %}Backups{% endblock %}
+{% block title %}{{ t('backups.title') }}{% endblock %}
+{% block page_title %}{{ t('backups.title') }}{% endblock %}
 
 {% block topbar_actions %}
 <form method="POST" action="{{ url_for('admin.backups_generate') }}">
-  <button type="submit" class="btn btn-primary btn-sm">+ Generate Backup</button>
+  <button type="submit" class="btn btn-primary btn-sm">{{ t('backups.generate_btn') }}</button>
 </form>
 {% endblock %}
 
 {% block content %}
 <div class="card">
-  <div class="card-title">Website Backups</div>
+  <div class="card-title">{{ t('backups.website_backups') }}</div>
 
   {% if backups %}
   <table class="table-responsive">
     <thead>
       <tr>
-        <th>Filename</th>
-        <th>Size</th>
-        <th>Created</th>
-        <th style="text-align:right">Actions</th>
+        <th>{{ t('backups.filename') }}</th>
+        <th>{{ t('backups.size') }}</th>
+        <th>{{ t('common.created') }}</th>
+        <th style="text-align:right">{{ t('common.actions') }}</th>
       </tr>
     </thead>
     <tbody>
       {% for b in backups %}
       <tr>
-        <td data-label="Filename" style="font-family:monospace;font-size:0.82rem">{{ b.filename }}</td>
-        <td data-label="Size" style="color:#555555;font-size:0.85rem">{{ (b.size_bytes / 1024) | round(1) }} KB</td>
-        <td data-label="Created" style="color:#777777;font-size:0.8rem">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}
+        <td data-label="{{ t('backups.filename') }}" style="font-family:monospace;font-size:0.82rem">{{ b.filename }}</td>
+        <td data-label="{{ t('backups.size') }}" style="color:#555555;font-size:0.85rem">{{ (b.size_bytes / 1024) | round(1) }} KB</td>
+        <td data-label="{{ t('common.created') }}" style="color:#777777;font-size:0.8rem">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}
         </td>
-        <td data-label="Actions">
+        <td data-label="{{ t('common.actions') }}">
           <div class="td-actions">
-            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.backups_download', backup_id=b.id) }}">Download</a>
+            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.backups_download', backup_id=b.id) }}">{{ t('common.download') }}</a>
             <form method="POST" action="{{ url_for('admin.backups_delete', backup_id=b.id) }}"
-              onsubmit="return confirm('Delete backup «{{ b.filename }}»? This cannot be undone.')">
-              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              onsubmit="return confirm('{{ t('backups.confirm_delete', filename=b.filename) }}')">
+              <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
             </form>
           </div>
         </td>
@@ -47,11 +47,10 @@
   {{ pagination_bar(pagination, 'admin.backups_list') }}
   {% else %}
   <p style="color:#666666;font-size:0.85rem;margin:0 0 14px">
-    Each backup is a row-per-INSERT <code>mysqldump</code> of the database's data only (no table
-    structure) — easy to read, diff, or grep.
+    {{ t('backups.explainer') }}
   </p>
   <p class="empty-state">
-    No backups yet. Use the "Generate Backup" button above to create the first one.
+    {{ t('backups.no_backups') }}
   </p>
   {% endif %}
 </div>

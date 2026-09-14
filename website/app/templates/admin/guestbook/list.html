@@ -1,58 +1,58 @@
 {% extends "admin/base.html" %}
 {% from "admin/_macros.html" import pagination_bar %}
 
-{% block title %}Guestbook{% endblock %}
-{% block page_title %}Guestbook{% endblock %}
+{% block title %}{{ t('guestbook.title') }}{% endblock %}
+{% block page_title %}{{ t('guestbook.title') }}{% endblock %}
 
 {% block content %}
 <div class="card">
   {% if entries %}
   <form id="bulk-form" method="POST" action="{{ url_for('admin.guestbook_bulk_delete') }}">
     <div class="td-actions" style="padding:8px 10px;justify-content:space-between;display:flex;align-items:center">
-      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> selected</span>
-      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete selected</button>
+      <span style="font-size:12px;color:#777"><span id="selected-count">0</span> {{ t('common.selected') }}</span>
+      <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>{{ t('common.delete_selected') }}</button>
     </div>
     <table class="table-responsive">
       <thead>
         <tr>
           <th style="width:16px"><input type="checkbox" id="select-all"></th>
-          <th>Name</th>
-          <th>Message</th>
-          <th>Status</th>
-          <th>IP</th>
-          <th>Date</th>
-          <th style="text-align:right">Actions</th>
+          <th>{{ t('common.name') }}</th>
+          <th>{{ t('contact.message') }}</th>
+          <th>{{ t('common.status') }}</th>
+          <th>{{ t('guestbook.ip') }}</th>
+          <th>{{ t('common.date') }}</th>
+          <th style="text-align:right">{{ t('common.actions') }}</th>
         </tr>
       </thead>
       <tbody>
       {% for entry in entries %}
       <tr>
-        <td data-label="Select" style="padding-left:10px">
+        <td data-label="{{ t('common.select') }}" style="padding-left:10px">
           <input type="checkbox" class="row-checkbox" name="entry_ids" value="{{ entry.id }}">
         </td>
-        <td data-label="Name">{{ entry.name }}</td>
-        <td data-label="Message" style="max-width:420px">{{ entry.message | truncate(140) }}</td>
-        <td data-label="Status">
+        <td data-label="{{ t('common.name') }}">{{ entry.name }}</td>
+        <td data-label="{{ t('contact.message') }}" style="max-width:420px">{{ entry.message | truncate(140) }}</td>
+        <td data-label="{{ t('common.status') }}">
           {% if entry.approved %}
-            <span style="color:#22a322;font-weight:700;font-size:0.8rem">Published</span>
+            <span style="color:#22a322;font-weight:700;font-size:0.8rem">{{ t('guestbook.published') }}</span>
           {% else %}
-            <span style="color:#aaaaaa;font-size:0.8rem">Pending</span>
+            <span style="color:#aaaaaa;font-size:0.8rem">{{ t('guestbook.pending') }}</span>
           {% endif %}
         </td>
-        <td data-label="IP" style="color:#777777;font-size:0.8rem">{{ entry.ip_address or '—' }}</td>
-        <td data-label="Date" style="color:#777777;font-size:0.8rem">{{ entry.created_at | dtfmt('%b %d, %Y') }}</td>
-        <td data-label="Actions">
+        <td data-label="{{ t('guestbook.ip') }}" style="color:#777777;font-size:0.8rem">{{ entry.ip_address or '—' }}</td>
+        <td data-label="{{ t('common.date') }}" style="color:#777777;font-size:0.8rem">{{ entry.created_at | dtfmt('%b %d, %Y') }}</td>
+        <td data-label="{{ t('common.actions') }}">
           <div class="td-actions">
             {% if entry.approved %}
             <button type="submit" formaction="{{ url_for('admin.guestbook_unapprove', entry_id=entry.id) }}"
-                    formnovalidate class="btn btn-ghost btn-sm">Unpublish</button>
+                    formnovalidate class="btn btn-ghost btn-sm">{{ t('guestbook.unpublish') }}</button>
             {% else %}
             <button type="submit" formaction="{{ url_for('admin.guestbook_approve', entry_id=entry.id) }}"
-                    formnovalidate class="btn btn-primary btn-sm">Approve</button>
+                    formnovalidate class="btn btn-primary btn-sm">{{ t('guestbook.approve') }}</button>
             {% endif %}
             <button type="submit" formaction="{{ url_for('admin.guestbook_delete', entry_id=entry.id) }}"
-                    formnovalidate onclick="return confirm('Delete this guestbook entry? This cannot be undone.')"
-                    class="btn btn-danger btn-sm">Delete</button>
+                    formnovalidate onclick="return confirm('{{ t('guestbook.confirm_delete') }}')"
+                    class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </div>
         </td>
       </tr>
@@ -62,7 +62,7 @@
   </form>
   {{ pagination_bar(pagination, 'admin.guestbook_list') }}
   {% else %}
-  <p class="empty-state">No guestbook entries yet.</p>
+  <p class="empty-state">{{ t('guestbook.no_entries') }}</p>
   {% endif %}
 </div>
 {% endblock %}

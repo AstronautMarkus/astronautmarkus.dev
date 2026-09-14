@@ -1,14 +1,14 @@
 {% extends "admin/base.html" %}
 
-{% block title %}Honeypot Hit #{{ hit.id }}{% endblock %}
-{% block breadcrumb %}Honeypot › #{{ hit.id }}{% endblock %}
-{% block page_title %}Honeypot Hit #{{ hit.id }}{% endblock %}
+{% block title %}{{ t('honeypot.hit_hash', id=hit.id) }}{% endblock %}
+{% block breadcrumb %}{{ t('nav.honeypot') }} › #{{ hit.id }}{% endblock %}
+{% block page_title %}{{ t('honeypot.hit_hash', id=hit.id) }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list') }}">← Back to log</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list') }}">{{ t('honeypot.back_to_log') }}</a>
   <form method="POST" action="{{ url_for('admin.honeypot_delete', hit_id=hit.id) }}"
-        onsubmit="return confirm('Delete this honeypot hit? This cannot be undone.');" style="display:inline">
-    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        onsubmit="return confirm('{{ t('honeypot.confirm_delete') }}');" style="display:inline">
+    <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
   </form>
 {% endblock %}
 
@@ -16,19 +16,19 @@
 <div class="card">
   <table class="table-light">
     <tr>
-      <td class="kv-label">IP Address</td>
+      <td class="kv-label">{{ t('honeypot.ip_address') }}</td>
       <td class="mono" style="font-weight:700">
         <a href="{{ url_for('admin.honeypot_list', ip=hit.ip_address) }}">{{ hit.ip_address }}</a>
       </td>
     </tr>
     {% if hit.x_forwarded_for %}
     <tr>
-      <td class="kv-label">X-Forwarded-For</td>
+      <td class="kv-label">{{ t('honeypot.x_forwarded_for') }}</td>
       <td class="mono">{{ hit.x_forwarded_for }}</td>
     </tr>
     {% endif %}
     <tr>
-      <td class="kv-label">Target Resource</td>
+      <td class="kv-label">{{ t('honeypot.target_resource') }}</td>
       <td>
         {% if hit.resource %}
           <span class="lang-badge lang-badge-danger">{{ hit.resource }}</span>
@@ -38,36 +38,36 @@
       </td>
     </tr>
     <tr>
-      <td class="kv-label">Method / Path</td>
+      <td class="kv-label">{{ t('honeypot.method_path') }}</td>
       <td class="mono">
         {{ hit.method }} {{ hit.path }}{% if hit.query_string %}?{{ hit.query_string }}{% endif %}
       </td>
     </tr>
     <tr>
-      <td class="kv-label">Endpoint</td>
+      <td class="kv-label">{{ t('honeypot.endpoint') }}</td>
       <td class="text-muted">{{ hit.endpoint or '—' }}</td>
     </tr>
     <tr>
-      <td class="kv-label">User Agent</td>
+      <td class="kv-label">{{ t('honeypot.user_agent') }}</td>
       <td style="word-break:break-all">{{ hit.user_agent or '—' }}</td>
     </tr>
     <tr>
-      <td class="kv-label">Referrer</td>
+      <td class="kv-label">{{ t('honeypot.referrer') }}</td>
       <td style="word-break:break-all">{{ hit.referrer or '—' }}</td>
     </tr>
     <tr>
-      <td class="kv-label">Accept-Language</td>
+      <td class="kv-label">{{ t('honeypot.accept_language') }}</td>
       <td>{{ hit.accept_language or '—' }}</td>
     </tr>
     <tr>
-      <td class="kv-label">Time</td>
+      <td class="kv-label">{{ t('honeypot.time') }}</td>
       <td class="text-muted">{{ hit.created_at | dtfmt('%B %d, %Y at %H:%M:%S') }} UTC</td>
     </tr>
   </table>
 </div>
 
 <div class="card" style="margin-top:14px">
-  <div class="card-title">Raw Request Headers</div>
+  <div class="card-title">{{ t('honeypot.raw_headers') }}</div>
   <pre class="mono" style="white-space:pre-wrap;word-break:break-all;font-size:11px;line-height:1.7;color:var(--c-ink-soft);margin:0;padding:12px 14px">{{ hit.headers or '—' }}</pre>
 </div>
 {% endblock %}

@@ -1,27 +1,27 @@
 {% extends "admin/base.html" %}
 {% from "admin/_macros.html" import pagination_bar %}
 
-{% block title %}Blocked Senders{% endblock %}
-{% block page_title %}Blocked Senders{% endblock %}
+{% block title %}{{ t('contact.blocked_senders_title') }}{% endblock %}
+{% block page_title %}{{ t('contact.blocked_senders_title') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">← Back to inbox</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">{{ t('contact.back_to_inbox') }}</a>
 {% endblock %}
 
 {% block content %}
 <div class="card" style="margin-bottom:14px">
-  <div class="card-title"><i class="fa-solid fa-ban"></i> Block an email or IP manually</div>
+  <div class="card-title"><i class="fa-solid fa-ban"></i> {{ t('contact.block_manual_title') }}</div>
   <form method="POST" action="{{ url_for('admin.blocked_sender_add') }}" class="admin-filter-bar" style="margin:0">
     <div class="form-group">
-      <label for="email">Email</label>
+      <label for="email">{{ t('contact.email') }}</label>
       <input type="text" id="email" name="email" placeholder="spammer@example.com">
     </div>
     <div class="form-group">
-      <label for="ip_address">IP address</label>
+      <label for="ip_address">{{ t('contact.ip_address') }}</label>
       <input type="text" id="ip_address" name="ip_address" placeholder="203.0.113.42">
     </div>
     <div class="admin-filter-bar-actions">
-      <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-ban"></i> Block</button>
+      <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-ban"></i> {{ t('contact.block') }}</button>
     </div>
   </form>
 </div>
@@ -31,31 +31,31 @@
   <table class="table-blue table-responsive">
     <thead>
       <tr>
-        <th>Email</th>
-        <th>IP address</th>
-        <th>Reason</th>
-        <th>Blocked</th>
-        <th style="text-align:right">Actions</th>
+        <th>{{ t('contact.email') }}</th>
+        <th>{{ t('contact.ip_address') }}</th>
+        <th>{{ t('contact.reason') }}</th>
+        <th>{{ t('contact.blocked_col') }}</th>
+        <th style="text-align:right">{{ t('common.actions') }}</th>
       </tr>
     </thead>
     <tbody>
     {% for b in blocked %}
     <tr>
-      <td data-label="Email">{{ b.email or '—' }}</td>
-      <td data-label="IP address">{{ b.ip_address or '—' }}</td>
-      <td data-label="Reason">
+      <td data-label="{{ t('contact.email') }}">{{ b.email or '—' }}</td>
+      <td data-label="{{ t('contact.ip_address') }}">{{ b.ip_address or '—' }}</td>
+      <td data-label="{{ t('contact.reason') }}">
         {% if b.reason == 'rate_limit_exceeded' %}
-        <span class="lang-badge lang-badge-danger">Auto (rate limit)</span>
+        <span class="lang-badge lang-badge-danger">{{ t('contact.auto_rate_limit') }}</span>
         {% else %}
-        <span class="lang-badge">Manual</span>
+        <span class="lang-badge">{{ t('contact.manual') }}</span>
         {% endif %}
       </td>
-      <td data-label="Blocked" style="color:#777;white-space:nowrap">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
-      <td data-label="Actions">
+      <td data-label="{{ t('contact.blocked_col') }}" style="color:#777;white-space:nowrap">{{ b.created_at | dtfmt('%b %d, %Y %H:%M') }}</td>
+      <td data-label="{{ t('common.actions') }}">
         <div class="td-actions">
           <form method="POST" action="{{ url_for('admin.blocked_sender_delete', blocked_id=b.id) }}"
-                onsubmit="return confirm('Unblock this sender?');">
-            <button type="submit" class="btn btn-ghost btn-sm">Unblock</button>
+                onsubmit="return confirm('{{ t('contact.unblock_confirm') }}');">
+            <button type="submit" class="btn btn-ghost btn-sm">{{ t('contact.unblock') }}</button>
           </form>
         </div>
       </td>
@@ -65,7 +65,7 @@
   </table>
   {{ pagination_bar(pagination, 'admin.blocked_senders') }}
   {% else %}
-  <p class="empty-state">No blocked senders yet.</p>
+  <p class="empty-state">{{ t('contact.no_blocked') }}</p>
   {% endif %}
 </div>
 {% endblock %}

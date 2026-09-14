@@ -2,11 +2,11 @@
 
 {% set is_edit = photo is not none %}
 
-{% block title %}{{ 'Edit Photo' if is_edit else 'New Photo' }}{% endblock %}
-{% block page_title %}{{ 'Edit Photo' if is_edit else 'New Photo' }}{% endblock %}
+{% block title %}{{ t('gallery.edit_photo') if is_edit else t('gallery.new_photo') }}{% endblock %}
+{% block page_title %}{{ t('gallery.edit_photo') if is_edit else t('gallery.new_photo') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.gallery_list') }}">← Back to list</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.gallery_list') }}">{{ t('common.back_to_list') }}</a>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 {% set action_url = url_for('admin.gallery_edit', photo_id=photo.id) if is_edit else url_for('admin.gallery_create') %}
 
 <div class="card">
-  <div class="card-title">Photo Details</div>
+  <div class="card-title">{{ t('gallery.photo_details') }}</div>
   <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
 
     <!-- ── Language tabs ─────────────────────────────────────── -->
@@ -23,7 +23,7 @@
         English <span class="lang-req">*</span>
       </button>
       <button type="button" class="lang-tab" data-target="panel-es">
-        Español <span class="lang-opt">optional</span>
+        Español <span class="lang-opt">{{ t('common.optional') }}</span>
       </button>
     </div>
 
@@ -32,13 +32,13 @@
       <!-- ── English panel ─────────────────────────────────── -->
       <div class="lang-panel active" id="panel-en">
         <div class="form-group">
-          <label for="title">Title <span style="color:#cc0000">*</span></label>
+          <label for="title">{{ t('common.title') }} <span style="color:#cc0000">*</span></label>
           <input type="text" id="title" name="title"
                  value="{{ photo.title if is_edit else '' }}"
                  placeholder="A day at the beach" required>
         </div>
         <div class="form-group">
-          <label for="description">Description</label>
+          <label for="description">{{ t('gallery.description') }}</label>
           <textarea id="description" name="description"
                     rows="4"
                     placeholder="A short description of the photo…">{{ photo.description if is_edit and photo.description else '' }}</textarea>
@@ -51,7 +51,7 @@
           <input type="checkbox" id="enable_es" name="has_es" value="1"
                  {{ 'checked' if is_edit and photo.has_es else '' }}>
           <label for="enable_es" class="es-enable-label">
-            Enable Spanish content for this photo
+            {{ t('gallery.enable_es') }}
           </label>
         </div>
         <div class="es-fields-wrap{{ ' disabled' if not (is_edit and photo.has_es) else '' }}"
@@ -73,19 +73,19 @@
 
       <!-- ── Image ──────────────────────────────────────────── -->
       <div class="form-group">
-        <label for="image">Photo {% if not is_edit %}<span style="color:#cc0000">*</span>{% endif %}</label>
+        <label for="image">{{ t('gallery.photo_field') }} {% if not is_edit %}<span style="color:#cc0000">*</span>{% endif %}</label>
         {% if is_edit and photo.image_path %}
         <div id="cover-current-wrap" style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-current-img"
                src="{{ storage_url(photo.image_path) }}"
                style="height:72px;width:72px;object-fit:cover;border:1px solid #cccccc">
-          <span class="form-hint">Upload a new file to replace the current photo.</span>
+          <span class="form-hint">{{ t('gallery.upload_replace_photo') }}</span>
         </div>
         {% endif %}
         <div id="cover-preview-wrap" style="display:none;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-preview-img" src="" alt="New photo preview"
                style="height:72px;width:72px;object-fit:cover;border:2px dashed #2b5797">
-          <span class="form-hint" style="color:#2b5797">New photo — not saved yet</span>
+          <span class="form-hint" style="color:#2b5797">{{ t('gallery.new_photo_not_saved') }}</span>
         </div>
         <input type="file" id="image" name="image" accept="image/*" {{ 'required' if not is_edit else '' }}>
         <span class="form-hint">JPG, PNG, WebP, GIF — max 5 MB</span>
@@ -93,7 +93,7 @@
 
       <div>
         <button type="submit" class="btn btn-primary">
-          {{ 'Save Changes' if is_edit else 'Upload Photo' }}
+          {{ t('common.save_changes') if is_edit else t('gallery.upload_photo_btn') }}
         </button>
       </div>
 

@@ -2,11 +2,11 @@
 
 {% set is_edit = project is not none %}
 
-{% block title %}{{ 'Edit Project' if is_edit else 'New Project' }}{% endblock %}
-{% block page_title %}{{ 'Edit Project' if is_edit else 'New Project' }}{% endblock %}
+{% block title %}{{ t('projects.edit_title') if is_edit else t('projects.new_title') }}{% endblock %}
+{% block page_title %}{{ t('projects.edit_title') if is_edit else t('projects.new_title') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_list') }}">← Back to list</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_list') }}">{{ t('common.back_to_list') }}</a>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 {% set action_url = url_for('admin.projects_edit', project_id=project.id) if is_edit else url_for('admin.projects_create') %}
 
 <div class="card">
-  <div class="card-title">Project Details</div>
+  <div class="card-title">{{ t('projects.details') }}</div>
   <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
 
     <!-- ── Language tabs ─────────────────────────────────────── -->
@@ -23,7 +23,7 @@
         English <span class="lang-req">*</span>
       </button>
       <button type="button" class="lang-tab" data-target="panel-es">
-        Español <span class="lang-opt">optional</span>
+        Español <span class="lang-opt">{{ t('common.optional') }}</span>
       </button>
     </div>
 
@@ -32,30 +32,30 @@
       <!-- ── English panel ─────────────────────────────────── -->
       <div class="lang-panel active" id="panel-en">
         <div class="form-group">
-          <label for="title">Title <span style="color:#cc0000">*</span></label>
+          <label for="title">{{ t('common.title') }} <span style="color:#cc0000">*</span></label>
           <input type="text" id="title" name="title"
                  value="{{ project.title if is_edit else '' }}"
                  placeholder="My Awesome Project" required>
         </div>
         <div class="form-group">
-          <label for="description">Description</label>
+          <label for="description">{{ t('gallery.description') }}</label>
           <textarea id="description" name="description"
                     rows="4"
                     placeholder="A short description of the project…">{{ project.description if is_edit and project.description else '' }}</textarea>
-          <span class="form-hint">Short excerpt shown in listings and meta tags.</span>
+          <span class="form-hint">{{ t('projects.excerpt_hint') }}</span>
         </div>
         <div class="form-group">
-          <label for="markdown_file">Markdown Content (EN)</label>
+          <label for="markdown_file">{{ t('blog.markdown_en') }}</label>
           {% if is_edit and project.markdown_path %}
           <div class="file-current-row">
-            <span>Current file:</span>
+            <span>{{ t('common.current_file') }}</span>
             <a href="{{ storage_url(project.markdown_path) }}" target="_blank"
-               rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Download EN .md</a>
-            <span class="form-hint">Upload a new file to replace it.</span>
+               rel="noopener noreferrer" class="btn btn-ghost btn-sm">{{ t('blog.download_md_en') }}</a>
+            <span class="form-hint">{{ t('common.upload_replace_hint') }}</span>
           </div>
           {% endif %}
           <input type="file" id="markdown_file" name="markdown_file" accept=".md,.markdown">
-          <span class="form-hint">.md or .markdown — max 2 MB. Full, detailed write-up shown on the project page.</span>
+          <span class="form-hint">{{ t('projects.md_hint') }}</span>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
           <input type="checkbox" id="enable_es" name="has_es" value="1"
                  {{ 'checked' if is_edit and project.has_es else '' }}>
           <label for="enable_es" class="es-enable-label">
-            Enable Spanish content for this project
+            {{ t('projects.enable_es') }}
           </label>
         </div>
         <div class="es-fields-wrap{{ ' disabled' if not (is_edit and project.has_es) else '' }}"
@@ -83,12 +83,12 @@
                       placeholder="Una breve descripción del proyecto…">{{ project.description_es if is_edit and project.description_es else '' }}</textarea>
           </div>
           <div class="form-group">
-            <label for="markdown_file_es">Contenido Markdown (ES)</label>
+            <label for="markdown_file_es">{{ t('blog.markdown_es') }}</label>
             {% if is_edit and project.markdown_path_es %}
             <div class="file-current-row">
               <span>Archivo actual:</span>
               <a href="{{ storage_url(project.markdown_path_es) }}" target="_blank"
-                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">↓ Descargar ES .md</a>
+                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">{{ t('blog.download_md_es') }}</a>
               <span class="form-hint">Sube un archivo nuevo para reemplazarlo.</span>
             </div>
             {% endif %}
@@ -101,13 +101,13 @@
       <!-- ── Shared fields ─────────────────────────────────── -->
       <div class="form-row">
         <div class="form-group">
-          <label for="project_url">Project URL</label>
+          <label for="project_url">{{ t('projects.project_url') }}</label>
           <input type="url" id="project_url" name="project_url"
                  value="{{ project.project_url if is_edit and project.project_url else '' }}"
                  placeholder="https://myproject.com">
         </div>
         <div class="form-group">
-          <label for="github_repo_url">GitHub Repository</label>
+          <label for="github_repo_url">{{ t('projects.github_repo') }}</label>
           <input type="url" id="github_repo_url" name="github_repo_url"
                  value="{{ project.github_repo_url if is_edit and project.github_repo_url else '' }}"
                  placeholder="https://github.com/user/repo">
@@ -116,19 +116,19 @@
 
       <!-- ── Cover image ────────────────────────────────────── -->
       <div class="form-group">
-        <label for="cover_image">Cover Image</label>
+        <label for="cover_image">{{ t('projects.cover_image') }}</label>
         {% if is_edit and project.image_path %}
         <div id="cover-current-wrap" style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-current-img"
                src="{{ storage_url(project.image_path) }}"
                style="height:72px;width:72px;object-fit:cover;border:1px solid #cccccc">
-          <span class="form-hint">Upload a new file to replace the current cover.</span>
+          <span class="form-hint">{{ t('projects.upload_replace_cover') }}</span>
         </div>
         {% endif %}
         <div id="cover-preview-wrap" style="display:none;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-preview-img" src="" alt="New cover preview"
                style="height:72px;width:72px;object-fit:cover;border:2px dashed #2b5797">
-          <span class="form-hint" style="color:#2b5797">New cover — not saved yet</span>
+          <span class="form-hint" style="color:#2b5797">{{ t('projects.new_cover_not_saved') }}</span>
         </div>
         <input type="file" id="cover_image" name="cover_image" accept="image/*">
         <span class="form-hint">JPG, PNG, WebP, GIF — max 5 MB</span>
@@ -136,7 +136,7 @@
 
       <div>
         <button type="submit" class="btn btn-primary">
-          {{ 'Save Changes' if is_edit else 'Create Project' }}
+          {{ t('common.save_changes') if is_edit else t('projects.create_btn') }}
         </button>
       </div>
 
@@ -148,9 +148,9 @@
 {% if is_edit %}
 <div class="card" id="extra-images-card">
   <div class="card-title">
-    Extra Images
+    {{ t('projects.extra_images') }}
     <span style="font-size:10px;font-weight:normal;color:#888888;text-transform:none;letter-spacing:0;margin-left:8px">
-      Also shown in the screenshots gallery. Copy a URL to embed it in your Markdown, or use the <code>@filename.ext</code> shorthand.
+      {{ t('projects.extra_images_hint') }}
     </span>
   </div>
 
@@ -163,14 +163,14 @@
       <div class="blog-img-actions">
         <button type="button" class="copy-url-btn"
                 data-url="{{ storage_url(img.image_path) }}"
-                title="Copy URL to clipboard">Copy URL</button>
-        <button type="button" class="del-img" title="Remove"
+                title="Copy URL to clipboard">{{ t('blog.copy_url') }}</button>
+        <button type="button" class="del-img" title="{{ t('blog.remove') }}"
                 data-delete-url="{{ url_for('admin.projects_delete_image', project_id=project.id, image_id=img.id) }}">×</button>
       </div>
     </div>
     {% endfor %}
     {% if not extra_images %}
-    <p id="no-images-hint" style="color:#888888;font-size:0.83rem;margin:0 0 4px">No extra images yet.</p>
+    <p id="no-images-hint" style="color:#888888;font-size:0.83rem;margin:0 0 4px">{{ t('projects.no_extra_images') }}</p>
     {% endif %}
   </div>
 
@@ -183,7 +183,7 @@
       <polyline points="17 8 12 3 7 8"/>
       <line x1="12" y1="3" x2="12" y2="15"/>
     </svg>
-    <div style="font-weight:bold">Click to upload or drag &amp; drop</div>
+    <div style="font-weight:bold">{{ t('blog.click_to_upload') }}</div>
     <div style="margin-top:3px;font-size:10px;color:#aaaaaa">JPG, PNG, WebP, GIF — max 5 MB each — multiple files supported</div>
   </div>
 </div>
