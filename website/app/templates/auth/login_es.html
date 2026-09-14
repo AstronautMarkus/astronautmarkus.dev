@@ -21,10 +21,15 @@
                 Área restringida. Inicia sesión con tus credenciales de administrador para continuar.
             </p>
 
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-            <p class="login-error">
+            {% set category, message = messages[0] %}
+            <p class="login-error{% if category != 'error' %} login-notice{% endif %}">
+                {% if category == 'error' %}
                 Usuario o contraseña incorrectos.
+                {% else %}
+                Debes iniciar sesión para acceder a esta página.
+                {% endif %}
             </p>
             {% endif %}
             {% endwith %}

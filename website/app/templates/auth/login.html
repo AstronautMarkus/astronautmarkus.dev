@@ -21,10 +21,15 @@
                 Restricted area. Sign in with your admin credentials to continue.
             </p>
 
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-            <p class="login-error">
+            {% set category, message = messages[0] %}
+            <p class="login-error{% if category != 'error' %} login-notice{% endif %}">
+                {% if category == 'error' %}
                 Invalid username or password.
+                {% else %}
+                You must be logged in to access this page.
+                {% endif %}
             </p>
             {% endif %}
             {% endwith %}

@@ -22,7 +22,7 @@ def login():
                 next_url = url_for('admin.dashboard')
             return redirect(next_url)
 
-        flash('invalid_credentials')
+        flash('invalid_credentials', 'error')
 
     return render_localized_template('auth/login.html')
 

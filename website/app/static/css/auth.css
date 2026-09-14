@@ -37,6 +37,10 @@
     border-radius: 0;
 }
 
+.login-error.login-notice {
+    border-left-color: var(--rainbow-blue);
+}
+
 .login-card-body .form-group {
     margin-bottom: 12px;
     display: flex;
