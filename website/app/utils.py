@@ -17,10 +17,11 @@ def _esc(s: str) -> str:
 
 def _inline_markup(t: str) -> str:
     """Apply inline patterns to already-HTML-escaped text."""
-    # Images: ![alt](url)
+    # Images: ![alt](url) — tagged modal-image so the global lightbox
+    # (js/image-modal.js) picks them up; it falls back to alt as the title.
     t = re.sub(
         r'!\[([^\]]*)\]\(([^)\s]+)\)',
-        lambda m: f'<img src="{m.group(2)}" alt="{m.group(1)}" style="max-width:100%;height:auto">',
+        lambda m: f'<img src="{m.group(2)}" alt="{m.group(1)}" class="modal-image" style="max-width:100%;height:auto">',
         t,
     )
     # Links: [text](url)
