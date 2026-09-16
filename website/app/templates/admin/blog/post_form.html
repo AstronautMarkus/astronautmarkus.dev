@@ -97,6 +97,27 @@
                       placeholder="Un resumen breve…">{{ post.description_es if is_edit and post.description_es else '' }}</textarea>
           </div>
 
+          {% if ai_enabled %}
+          <div class="form-group">
+            <button type="button" class="btn btn-ghost btn-sm ai-suggest-btn"
+                    data-url="{{ url_for('admin.blog_ai_suggest_metadata') }}"
+                    data-post-id="{{ post.id if is_edit else '' }}"
+                    data-language="es"
+                    data-title-input="title_es"
+                    data-title-fallback-input="title"
+                    data-markdown-input="markdown_file_es"
+                    data-description-input="description_es"
+                    data-label="{{ t('blog.ai_generate') }}"
+                    data-label-busy="{{ t('blog.ai_generating') }}"
+                    data-error-target="ai-suggest-error-es">
+              {{ t('blog.ai_generate') }}
+            </button>
+            <span class="form-hint">{{ t('blog.ai_hint_es') }}</span>
+            <span class="form-hint" id="ai-suggest-error-es" style="color:#c0392b;display:none"
+                  data-title-required="{{ t('flash.ai_title_required') }}"></span>
+          </div>
+          {% endif %}
+
           <div class="form-group">
             <label for="markdown_file_es">{{ t('blog.markdown_es') }}</label>
             {% if is_edit and post.markdown_path_es %}
@@ -170,6 +191,27 @@
                placeholder="python, flask, devops">
         <span class="form-hint">{{ t('blog.tags_hint') }}</span>
       </div>
+
+      {% if ai_enabled %}
+      <div class="form-group" id="ai-suggest-row">
+        <button type="button" class="btn btn-ghost btn-sm ai-suggest-btn"
+                data-url="{{ url_for('admin.blog_ai_suggest_metadata') }}"
+                data-post-id="{{ post.id if is_edit else '' }}"
+                data-language="en"
+                data-title-input="title"
+                data-markdown-input="markdown_file"
+                data-description-input="description"
+                data-tags-input="tags"
+                data-label="{{ t('blog.ai_generate') }}"
+                data-label-busy="{{ t('blog.ai_generating') }}"
+                data-error-target="ai-suggest-error-en">
+          {{ t('blog.ai_generate') }}
+        </button>
+        <span class="form-hint">{{ t('blog.ai_hint') }}</span>
+        <span class="form-hint" id="ai-suggest-error-en" style="color:#c0392b;display:none"
+              data-title-required="{{ t('flash.ai_title_required') }}"></span>
+      </div>
+      {% endif %}
 
       <div class="form-row">
         <div class="form-group">
@@ -252,6 +294,9 @@
 {% endblock %}
 
 {% block extra_js %}
+{% if ai_enabled %}
+<script src="{{ url_for('static', filename='js/blog_ai.js') }}"></script>
+{% endif %}
 {% if is_edit %}
 <script>
 (function () {

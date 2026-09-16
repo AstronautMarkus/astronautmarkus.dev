@@ -9,6 +9,7 @@ from app import db
 from app.i18n import t
 from app.models.models import BlogCategory, BlogPost, BlogPostImage, BlogTag
 from app.routes.admin import admin_bp
+from app.services.ai_service import AIServiceError, is_enabled, suggest_blog_metadata
 from app.storage import storage
 
 ALLOWED_MD  = {'md', 'markdown'}
@@ -212,7 +213,7 @@ def blog_post_create():
         if not title:
             flash(t('flash.title_required'), 'error')
             return render_template('admin/blog/post_form.html', post=None, categories=categories,
-                                   now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'))
+                                   now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'), ai_enabled=is_enabled())
 
         has_es      = request.form.get('has_es') == '1'
         published   = request.form.get('published') == '1'
@@ -278,7 +279,7 @@ def blog_post_create():
         return redirect(url_for('admin.blog_post_edit', post_id=post.id))
 
     return render_template('admin/blog/post_form.html', post=None, categories=categories,
-                           now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'))
+                           now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'), ai_enabled=is_enabled())
 
 
 @admin_bp.route('/blog/<int:post_id>/edit', methods=['GET', 'POST'])
@@ -295,7 +296,7 @@ def blog_post_edit(post_id):
         title = request.form.get('title', '').strip()
         if not title:
             flash(t('flash.title_required'), 'error')
-            return render_template('admin/blog/post_form.html', post=post, categories=categories)
+            return render_template('admin/blog/post_form.html', post=post, categories=categories, ai_enabled=is_enabled())
 
         has_es      = request.form.get('has_es') == '1'
         published   = request.form.get('published') == '1'
@@ -353,7 +354,7 @@ def blog_post_edit(post_id):
         return redirect(url_for('admin.blog_post_edit', post_id=post.id))
 
     return render_template('admin/blog/post_form.html', post=post, categories=categories,
-                           now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'))
+                           now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'), ai_enabled=is_enabled())
 
 
 @admin_bp.post('/blog/<int:post_id>/delete')
@@ -418,6 +419,53 @@ def blog_post_toggle_publish(post_id):
     post.published = not post.published
     db.session.commit()
     return jsonify({'published': post.published})
+
+
+# ── AI suggestions (AJAX) ─────────────────────────────────────────────────────
+
+@admin_bp.post('/blog/ai/suggest-metadata')
+@login_required
+def blog_ai_suggest_metadata():
+    if not is_enabled():
+        return jsonify({'error': t('flash.ai_not_configured')}), 503
+
+    title = request.form.get('title', '').strip()
+    if not title:
+        return jsonify({'error': t('flash.ai_title_required')}), 400
+
+    language = request.form.get('language', 'en').strip().lower()
+    if language not in ('en', 'es'):
+        language = 'en'
+    include_tags = language == 'en'  # tags are shared across languages — only generate them once, from EN
+
+    markdown_content = ''
+    md_file = request.files.get('markdown_file')
+    if md_file and md_file.filename:
+        if not _allowed_md(md_file.filename):
+            return jsonify({'error': t('flash.en_md_rejected')}), 400
+        content = md_file.read()
+        if len(content) > MAX_MD_BYTES:
+            return jsonify({'error': t('flash.en_md_rejected')}), 400
+        markdown_content = content.decode('utf-8', errors='ignore')
+    else:
+        post_id = request.form.get('post_id', type=int)
+        if post_id:
+            post = db.session.get(BlogPost, post_id)
+            path = (post.markdown_path_es if language == 'es' else post.markdown_path) if post else None
+            if path:
+                markdown_content = storage.get(path).decode('utf-8', errors='ignore')
+
+    existing_tags = [name for (name,) in db.session.query(BlogTag.name).all()] if include_tags else None
+
+    try:
+        suggestion = suggest_blog_metadata(
+            title=title, markdown_content=markdown_content, language=language,
+            existing_tags=existing_tags, include_tags=include_tags,
+        )
+    except AIServiceError as exc:
+        return jsonify({'error': str(exc)}), 502
+
+    return jsonify(suggestion)
 
 
 # ── Post images (AJAX) ────────────────────────────────────────────────────────

@@ -62,3 +62,12 @@ class Config:
     CONTACT_FORM_ENABLED = clean_env(os.getenv('CONTACT_FORM_ENABLED'), 'true').lower() not in (
         '0', 'false', 'no', 'off',
     )
+
+    # ── AI content suggestions (Gemini) ─────────────────────────────
+    # Used by the admin "Generate with AI" button (blog excerpt + tags for now).
+    GEMINI_API_KEY = clean_env(os.getenv('GEMINI_API_KEY'), '')
+    GEMINI_MODEL = clean_env(os.getenv('GEMINI_MODEL'), 'gemini-3.6-flash')
+    # Set to 'false' to hide the AI button even if a key is configured.
+    AI_FEATURES_ENABLED = clean_env(os.getenv('AI_FEATURES_ENABLED'), 'true').lower() not in (
+        '0', 'false', 'no', 'off',
+    )

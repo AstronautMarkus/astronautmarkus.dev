@@ -770,7 +770,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
 .es-enable-row input[type="checkbox"] { width: auto; flex-shrink: 0; }
 .es-enable-label { font-size: 12px; color: var(--c-ink-soft); cursor: pointer; font-weight: 600; }
 .es-fields-wrap { display: grid; gap: 16px; }
-.es-fields-wrap.disabled input, .es-fields-wrap.disabled textarea { opacity: .45; pointer-events: none; background: var(--c-surface-2); }
+.es-fields-wrap.disabled input, .es-fields-wrap.disabled textarea, .es-fields-wrap.disabled button { opacity: .45; pointer-events: none; background: var(--c-surface-2); }
 
 /* ── Badges ──────────────────────────────────────────────────────────────── */
 .lang-badge {
