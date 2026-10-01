@@ -1,0 +1,8 @@
+User-agent: *
+# Language prefixes and the language switcher only set a cookie and redirect
+# to the canonical URL; /lang/?next=... would otherwise be an endless crawl space.
+Disallow: /en/
+Disallow: /es/
+Disallow: /lang/
+
+Sitemap: {{ url_for('utils.sitemap', _external=True) }}

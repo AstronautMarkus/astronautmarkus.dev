@@ -161,6 +161,15 @@
         </div>
 
         <div class="blog-sidebar-box">
+            <h4><img src="{{ url_for('static', filename='images/icons/bell.png') }}" class="pixel-icon-inline" alt="">Subscribe</h4>
+            <ul>
+                <li>
+                    <a href="{{ url_for('main.blog_rss') }}" type="application/rss+xml">RSS feed</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="blog-sidebar-box">
             <h4><img src="{{ url_for('static', filename='images/icons/note.png') }}" class="pixel-icon-inline" alt="">Recent Posts</h4>
             <ul>
                 {% for post in posts[:5] %}

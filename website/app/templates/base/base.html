@@ -18,6 +18,9 @@
     {% block canonical %}
     <link rel="canonical" href="{{ request.url }}">{% endblock %}
 
+    <link rel="alternate" type="application/rss+xml" title="AstronautMarkus.Dev Blog"
+        href="{{ url_for('main.blog_rss', lang='es' if current_lang == 'es' else None, _external=True) }}">
+
     <!-- Open Graph -->
     <meta property="og:site_name" content="AstronautMarkus.Dev">
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
