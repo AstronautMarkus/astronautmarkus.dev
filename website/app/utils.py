@@ -271,3 +271,17 @@ def expand_media_shorthand(text: str, base_path: str) -> str:
 
     # Match @word[word/-/.]*.ext — must start with word char, must have extension
     return re.sub(r'@([\w][\w\.\-]*\.\w+)', _replace, text)
+
+
+# ── Redirect targets ──────────────────────────────────────────────────────────
+
+def safe_redirect_target(target: str | None, fallback: str = '/') -> str:
+    """
+    Return `target` if it is a path on this site, otherwise `fallback`.
+
+    A plain startswith('/') check is not enough: browsers read '//evil.com'
+    and '/\\evil.com' as another host, which turns ?next= into an open redirect.
+    """
+    if not target or not target.startswith('/') or target.startswith(('//', '/\\')):
+        return fallback
+    return target

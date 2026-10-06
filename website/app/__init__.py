@@ -18,6 +18,7 @@ from werkzeug.routing import RequestRedirect as _WerkzeugRedirect
 from werkzeug.exceptions import NotFound as _WerkzeugNotFound
 
 from app.storage import storage
+from app.utils import safe_redirect_target
 from app.storage.url_cache import get_or_set as _cache_get_or_set
 
 # S3-backed files are served via temporary presigned URLs, cached
@@ -72,7 +73,9 @@ def create_app():
 			# /es/<subpath> or /en/<subpath>
 			prefix = f'/{lang}/'
 			if path.startswith(prefix):
-				clean_path = path[len(f'/{lang}'):]
+				# Collapse leading slashes so '/es//host' can't become a
+				# protocol-relative '//host' redirect to another site.
+				clean_path = '/' + path[len(f'/{lang}'):].lstrip('/')
 
 				try:
 					app.url_map.bind('').match(clean_path, method=request.method)
@@ -102,11 +105,7 @@ def create_app():
 		if lang not in SUPPORTED_LANGUAGES:
 			lang = DEFAULT_LANGUAGE
 
-		next_url = request.args.get('next', '/')
-		if not next_url.startswith('/'):
-			next_url = '/'
-
-		response = redirect(next_url)
+		response = redirect(safe_redirect_target(request.args.get('next')))
 		response.set_cookie(
 			LANG_COOKIE_NAME,
 			lang,

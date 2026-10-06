@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app.i18n import render_localized_template
 from app.models.models import User
 from app.routes.auth import auth_bp
+from app.utils import safe_redirect_target
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -17,10 +18,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
-            next_url = request.args.get('next', url_for('admin.dashboard'))
-            if not next_url.startswith('/'):
-                next_url = url_for('admin.dashboard')
-            return redirect(next_url)
+            return redirect(safe_redirect_target(request.args.get('next'), url_for('admin.dashboard')))
 
         flash('invalid_credentials', 'error')
 
