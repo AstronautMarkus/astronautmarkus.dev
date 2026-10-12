@@ -412,7 +412,7 @@ ADMIN_STRINGS = {
     'backups.filename': {'en': 'Filename', 'es': 'Nombre del archivo'},
     'backups.size': {'en': 'Size', 'es': 'Tamaño'},
     'backups.confirm_delete': {'en': 'Delete backup «{filename}»? This cannot be undone.', 'es': '¿Eliminar la copia «{filename}»? Esta acción no se puede deshacer.'},
-    'backups.explainer': {'en': "Each backup is a row-per-INSERT mysqldump of the database's data only (no table structure) — easy to read, diff, or grep.", 'es': 'Cada copia es un volcado mysqldump fila-por-INSERT solo de los datos de la base (sin estructura de tablas) — fácil de leer, comparar o buscar.'},
+    'backups.explainer': {'en': "Each backup is a row-per-INSERT SQL dump of the database's data only (no table structure) — easy to read, diff, or grep.", 'es': 'Cada copia es un volcado SQL fila-por-INSERT solo de los datos de la base (sin estructura de tablas) — fácil de leer, comparar o buscar.'},
     'backups.no_backups': {'en': 'No backups yet. Use the "Generate Backup" button above to create the first one.', 'es': 'Aún no hay copias de seguridad. Usa el botón "Generar copia" de arriba para crear la primera.'},
 
     # ── Flash messages (Python-side, admin/*.py routes) ──

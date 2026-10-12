@@ -209,7 +209,7 @@ class GuestbookEntry(db.Model):
 
 
 class Backup(db.Model):
-    """Metadata for a data-only mysqldump generated from the admin panel.
+    """Metadata for a data-only SQL dump generated from the admin panel.
     The dump file itself lives in the regular storage driver (local or S3,
     whichever STORAGE_DRIVER selects) under file_path, same as any other
     upload — see app/services/backup_service.py."""
