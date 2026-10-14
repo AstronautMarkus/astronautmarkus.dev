@@ -1,4 +1,4 @@
-import json
+import mimetypes
 
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
@@ -8,18 +8,13 @@ from app import db
 from app.i18n import t
 from app.models.models import CvFile
 from app.routes.admin import admin_bp
-from app.services.rendercv_service import (
-    AVAILABLE_THEMES,
-    MAX_CV_YAML_BYTES,
-    SOCIAL_NETWORKS,
-    RenderCVError,
-    build_yaml_from_builder_data,
-    render_yaml_to_pdf,
-)
+from app.services.rendercv_service import MAX_CV_YAML_BYTES, RenderCVError, render_yaml_to_pdf
 from app.storage import storage
 
 ALLOWED_EXTENSIONS = {'pdf'}
 MAX_CV_BYTES = 10 * 1024 * 1024  # 10 MB
+IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
+MAX_CV_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
 PER_PAGE = 50
 
 LANGUAGES = [
@@ -30,8 +25,8 @@ LANGUAGES = [
 SOURCES = ('upload', 'generated')
 
 
-def _allowed(filename: str) -> bool:
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def _allowed(filename: str, extensions=ALLOWED_EXTENSIONS) -> bool:
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in extensions
 
 
 def _store_cv(file, dest_path: str) -> bool:
@@ -58,40 +53,55 @@ def _read_yaml_input(req) -> str:
     return (req.form.get('cv_yaml') or '').strip()
 
 
-def _store_generated_cv(yaml_text: str, cv_id: int, language: str) -> tuple[str, str]:
-    """Render the YAML to a PDF and persist both files. Raises RenderCVError on failure."""
-    pdf_bytes = render_yaml_to_pdf(yaml_text)
+def _read_cv_images(req) -> dict[str, bytes]:
+    """Read images uploaded for the YAML to reference by filename (e.g. `photo: logo.png`)."""
+    images = {}
+    for file in req.files.getlist('cv_images'):
+        if not file or not file.filename:
+            continue
+        name = secure_filename(file.filename)
+        content = file.read()
+        if not _allowed(name, IMAGE_EXTENSIONS) or len(content) > MAX_CV_IMAGE_BYTES:
+            raise ValueError(t('flash.cv_image_rejected', name=file.filename))
+        images[name] = content
+    return images
+
+
+def _images_prefix(cv_id: int) -> str:
+    return f"cv/{cv_id}_images/"
+
+
+def _delete_cv_images(cv_id: int) -> None:
+    for path in storage.list(_images_prefix(cv_id)):
+        storage.delete(path)
+
+
+def _store_generated_cv(yaml_text: str, cv_id: int, language: str,
+                        new_images: dict[str, bytes], removed: set[str] = frozenset()) -> tuple[str, str]:
+    """Render the YAML (with the CV's stored images minus `removed`, plus any new ones) to a
+    PDF and persist everything. Raises RenderCVError on failure, before anything is changed."""
+    prefix = _images_prefix(cv_id)
+    stored_paths = {path.rsplit('/', 1)[-1]: path for path in storage.list(prefix)}
+    kept = {name: storage.get(path) for name, path in stored_paths.items() if name not in removed}
+    pdf_bytes = render_yaml_to_pdf(yaml_text, {**kept, **new_images})
     yaml_path = f"cv/{cv_id}_{secure_filename(language)}.yaml"
     pdf_path = f"cv/{cv_id}_{secure_filename(language)}.pdf"
     storage.put(yaml_path, yaml_text, content_type='text/yaml')
     storage.put(pdf_path, pdf_bytes, content_type='application/pdf')
+    for name in removed & stored_paths.keys():  # only names we listed, never raw form input
+        storage.delete(stored_paths[name])
+    for name, content in new_images.items():
+        storage.put(prefix + name, content,
+                    content_type=mimetypes.guess_type(name)[0] or 'application/octet-stream')
     return yaml_path, pdf_path
-
-
-def _builder_sidecar_path(cv_id: int, language: str) -> str:
-    """Path to the raw CV Builder JSON kept alongside a generated CV's yaml/pdf,
-    so the builder form can be rehydrated exactly when editing it again."""
-    return f"cv/{cv_id}_{secure_filename(language)}.builder.json"
 
 
 def _render_form(**kwargs):
     """render_template for cv/form.html with the params every branch needs."""
     kwargs.setdefault('languages', LANGUAGES)
-    kwargs.setdefault('themes', AVAILABLE_THEMES)
-    kwargs.setdefault('social_networks', SOCIAL_NETWORKS)
-    kwargs.setdefault('builder_initial_data', None)
+    cv = kwargs.get('cv')
+    kwargs.setdefault('cv_images', storage.list(_images_prefix(cv.id)) if cv else [])
     return render_template('admin/cv/form.html', **kwargs)
-
-
-def _parse_builder_json(raw_text: str) -> dict:
-    """Parse the builder's submitted JSON blob. Malformed input becomes an empty
-    dict (the caller's own field-level validation then reports what's missing)."""
-    try:
-        data = json.loads(raw_text) if raw_text else {}
-    except (ValueError, TypeError):
-        flash(t('flash.cv_builder_read_error'), 'warning')
-        return {}
-    return data if isinstance(data, dict) else {}
 
 
 # ── List ──────────────────────────────────────────────────────────────────────
@@ -118,23 +128,12 @@ def cv_upload():
             return _render_form(cv=None)
 
         raw_source = request.form.get('source', 'upload')
-        builder_data = None
 
-        if raw_source == 'builder':
-            builder_data = _parse_builder_json(request.form.get('cv_builder_json', ''))
-            if not (builder_data.get('header') or {}).get('name', '').strip():
-                flash(t('flash.name_required'), 'error')
-                return _render_form(cv=None, submitted_source='builder', builder_initial_data=builder_data,
-                                     submitted_language=language)
-
-            yaml_text, builder_warnings = build_yaml_from_builder_data(builder_data, language)
-            for w in builder_warnings:
-                flash(w, 'warning')
-            source = 'generated'
-        elif raw_source == 'generated':
+        if raw_source == 'generated':
             source = 'generated'
             try:
                 yaml_text = _read_yaml_input(request)
+                images = _read_cv_images(request)
             except ValueError as exc:
                 flash(str(exc), 'error')
                 return _render_form(cv=None, submitted_source=source, submitted_language=language)
@@ -151,22 +150,15 @@ def cv_upload():
             db.session.flush()
 
             try:
-                yaml_path, pdf_path = _store_generated_cv(yaml_text, cv.id, language)
+                yaml_path, pdf_path = _store_generated_cv(yaml_text, cv.id, language, images)
             except RenderCVError as exc:
                 db.session.rollback()
                 flash(t('flash.cv_generation_failed', exc=exc), 'error')
-                if raw_source == 'builder':
-                    return _render_form(cv=None, submitted_source='builder', builder_initial_data=builder_data,
-                                         submitted_language=language)
                 return _render_form(cv=None, submitted_yaml=yaml_text, submitted_source=source,
                                      submitted_language=language)
 
             cv.yaml_path = yaml_path
             cv.file_path = pdf_path
-
-            if raw_source == 'builder':
-                storage.put(_builder_sidecar_path(cv.id, language), json.dumps(builder_data),
-                            content_type='application/json')
         else:
             file = request.files.get('cv_file')
             if not file or not file.filename:
@@ -208,23 +200,16 @@ def cv_edit(cv_id):
             return _render_form(cv=cv)
 
         raw_source = request.form.get('source', '').strip()
-        builder_data = None
         cv.language = language
+        images = {}
+        removed = set()
 
-        if raw_source == 'builder':
-            builder_data = _parse_builder_json(request.form.get('cv_builder_json', ''))
-            if not (builder_data.get('header') or {}).get('name', '').strip():
-                flash(t('flash.name_required'), 'error')
-                return _render_form(cv=cv, submitted_source='builder', builder_initial_data=builder_data)
-
-            yaml_text, builder_warnings = build_yaml_from_builder_data(builder_data, language)
-            for w in builder_warnings:
-                flash(w, 'warning')
+        if raw_source == 'generated':
             source = 'generated'
-        elif raw_source == 'generated':
-            source = 'generated'
+            removed = set(request.form.getlist('cv_images_delete'))
             try:
                 yaml_text = _read_yaml_input(request)
+                images = _read_cv_images(request)
             except ValueError as exc:
                 flash(str(exc), 'error')
                 return _render_form(cv=cv, submitted_source=source)
@@ -233,13 +218,14 @@ def cv_edit(cv_id):
             yaml_text = ''
 
         if source == 'generated':
+            if not yaml_text and (images or removed) and cv.source == 'generated' and cv.yaml_path:
+                # Only image changes submitted: re-render the stored YAML with them.
+                yaml_text = storage.get(cv.yaml_path).decode('utf-8', errors='replace')
             if yaml_text:
                 try:
-                    yaml_path, pdf_path = _store_generated_cv(yaml_text, cv.id, language)
+                    yaml_path, pdf_path = _store_generated_cv(yaml_text, cv.id, language, images, removed)
                 except RenderCVError as exc:
                     flash(t('flash.cv_generation_failed', exc=exc), 'error')
-                    if raw_source == 'builder':
-                        return _render_form(cv=cv, submitted_source='builder', builder_initial_data=builder_data)
                     return _render_form(cv=cv, submitted_yaml=yaml_text, submitted_source=source)
 
                 if cv.file_path and cv.file_path != pdf_path:
@@ -249,12 +235,6 @@ def cv_edit(cv_id):
                 cv.file_path = pdf_path
                 cv.yaml_path = yaml_path
                 cv.source = 'generated'
-
-                sidecar = _builder_sidecar_path(cv.id, language)
-                if raw_source == 'builder':
-                    storage.put(sidecar, json.dumps(builder_data), content_type='application/json')
-                elif storage.exists(sidecar):
-                    storage.delete(sidecar)
             elif cv.source != 'generated' or not cv.yaml_path:
                 flash(t('flash.yaml_required'), 'error')
                 return _render_form(cv=cv, submitted_source=source)
@@ -276,9 +256,7 @@ def cv_edit(cv_id):
             if cv.yaml_path:
                 storage.delete(cv.yaml_path)
                 cv.yaml_path = None
-            sidecar = _builder_sidecar_path(cv.id, language)
-            if storage.exists(sidecar):
-                storage.delete(sidecar)
+            _delete_cv_images(cv.id)
             cv.source = 'upload'
 
         db.session.commit()
@@ -292,15 +270,7 @@ def cv_edit(cv_id):
         except Exception:
             submitted_yaml = ''
 
-    builder_initial_data = None
-    sidecar = _builder_sidecar_path(cv.id, cv.language)
-    if cv.source == 'generated' and storage.exists(sidecar):
-        try:
-            builder_initial_data = json.loads(storage.get(sidecar).decode('utf-8', errors='replace'))
-        except Exception:
-            builder_initial_data = None
-
-    return _render_form(cv=cv, submitted_yaml=submitted_yaml, builder_initial_data=builder_initial_data)
+    return _render_form(cv=cv, submitted_yaml=submitted_yaml)
 
 
 # ── Delete ────────────────────────────────────────────────────────────────────
@@ -317,9 +287,7 @@ def cv_delete(cv_id):
         storage.delete(cv.yaml_path)
     if cv.file_path:
         storage.delete(cv.file_path)
-    sidecar = _builder_sidecar_path(cv.id, cv.language)
-    if storage.exists(sidecar):
-        storage.delete(sidecar)
+    _delete_cv_images(cv.id)
 
     lang = cv.language
     db.session.delete(cv)

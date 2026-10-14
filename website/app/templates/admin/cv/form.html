@@ -2,7 +2,7 @@
 
 {% set is_edit = cv is not none %}
 {% set current_source = submitted_source if submitted_source is defined
-    else ('builder' if is_edit and builder_initial_data else (cv.source if is_edit else 'upload')) %}
+    else (cv.source if is_edit else 'upload') %}
 {% set selected_language = submitted_language if submitted_language is defined
     else (cv.language if is_edit else none) %}
 
@@ -42,8 +42,6 @@
                 data-target="panel-source-upload">{{ t('cv.tab_upload') }}</button>
         <button type="button" class="lang-tab {{ 'active' if current_source == 'generated' else '' }}"
                 data-target="panel-source-generate">{{ t('cv.tab_generate') }}</button>
-        <button type="button" class="lang-tab {{ 'active' if current_source == 'builder' else '' }}"
-                data-target="panel-source-builder">{{ t('cv.tab_builder') }}</button>
       </div>
       <input type="hidden" name="source" id="source_field" value="{{ current_source }}">
 
@@ -81,61 +79,29 @@
         <div class="form-group">
           <input type="file" id="cv_yaml_file" name="cv_yaml_file" accept=".yaml,.yml">
         </div>
-      </div>
-
-      <!-- ── Builder panel ─────────────────────────────────────── -->
-      <div class="lang-panel {{ 'active' if current_source == 'builder' else '' }}" id="panel-source-builder">
-
-        <div class="builder-block-title">{{ t('cv.builder_header') }}</div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="builder_name">{{ t('cv.builder_name') }} <span class="text-required">*</span></label>
-            <input type="text" id="builder_name" placeholder="Jane Doe">
-          </div>
-          <div class="form-group">
-            <label for="builder_headline">{{ t('cv.builder_headline') }}</label>
-            <input type="text" id="builder_headline" placeholder="Software Engineer">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="builder_location">{{ t('cv.builder_location') }}</label>
-            <input type="text" id="builder_location" placeholder="Santiago, Chile">
-          </div>
-          <div class="form-group">
-            <label for="builder_email">{{ t('cv.builder_email') }}</label>
-            <input type="email" id="builder_email">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="builder_phone">{{ t('cv.builder_phone') }}</label>
-            <input type="text" id="builder_phone" placeholder="+1-234-567-8900">
-          </div>
-          <div class="form-group">
-            <label for="builder_website">{{ t('cv.builder_website') }}</label>
-            <input type="url" id="builder_website" placeholder="https://example.com">
-          </div>
-        </div>
-
         <div class="form-group">
-          <label for="builder_theme">{{ t('cv.builder_theme') }}</label>
-          <select id="builder_theme">
-            {% for theme in themes %}<option value="{{ theme }}">{{ theme }}</option>{% endfor %}
-          </select>
-          <span class="form-hint">{{ t('cv.theme_hint') }}</span>
+          <label for="cv_images">{{ t('cv.images_field') }}</label>
+          {% if cv_images %}
+          <div class="img-grid" style="margin-bottom:0.5rem">
+            {% for path in cv_images %}
+            {% set name = path.rsplit('/', 1)[-1] %}
+            <div class="img-item">
+              <a href="{{ storage_url(path) }}" target="_blank" rel="noopener noreferrer">
+                <img src="{{ storage_url(path) }}" alt="{{ name }}">
+              </a>
+              <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.78rem;max-width:88px">
+                <input type="checkbox" name="cv_images_delete" value="{{ name }}">
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ t('cv.image_delete') }} {{ name }}">{{ name }}</span>
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+          <span class="form-hint">{{ t('cv.images_delete_hint') }}</span>
+          {% endif %}
+          <input type="file" id="cv_images" name="cv_images" multiple
+                 accept=".png,.jpg,.jpeg,.webp,.gif">
+          <span class="form-hint">{{ t('cv.images_hint') }}</span>
         </div>
-
-        <div class="builder-block-title">{{ t('cv.social_networks') }}</div>
-        <div id="social-networks-list"></div>
-        <button type="button" id="add-social-network-btn" class="btn btn-ghost btn-sm">{{ t('cv.add_social') }}</button>
-
-        <div class="builder-block-title">{{ t('cv.sections') }}</div>
-        <span class="form-hint">{{ t('cv.sections_hint') }}</span>
-        <div id="sections-list"></div>
-        <button type="button" id="add-section-btn" class="btn btn-ghost btn-sm">{{ t('cv.add_section') }}</button>
-
-        <input type="hidden" name="cv_builder_json" id="cv_builder_json_field" value="">
       </div>
 
       <div>
@@ -148,19 +114,15 @@
   </form>
 </div>
 
-<script type="application/json" id="cv-builder-initial-data">{{ builder_initial_data | tojson }}</script>
-<script type="application/json" id="cv-builder-constants">{{ {'themes': themes, 'social_networks': social_networks} | tojson }}</script>
-
 <script>
 (function () {
-  // The lang-tabs here select an upload-vs-generate-vs-builder *mode*, not a
+  // The lang-tabs here select an upload-vs-generate *mode*, not a
   // language — admin.js handles the tab switching itself; this just keeps the
   // hidden "source" field in sync with whichever mode tab is now active.
   var sourceField = document.getElementById('source_field');
   var sourceMap = {
     'panel-source-upload': 'upload',
     'panel-source-generate': 'generated',
-    'panel-source-builder': 'builder',
   };
   document.addEventListener('admin:langtab', function (e) {
     sourceField.value = sourceMap[e.detail.target] || 'upload';
@@ -168,8 +130,4 @@
 })();
 </script>
 
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/cv_builder.js') }}"></script>
 {% endblock %}
