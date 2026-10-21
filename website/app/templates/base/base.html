@@ -111,6 +111,9 @@
                             src="{{ icon('page_white_acrobat.png') }}" alt=""
                             class="nav-icon">{% if current_lang == 'en' %}PDF Generator{% else %}Generador de PDF{%
                         endif %}</a>
+                    <a href="{{ url_for('main.widgets') }}"><img
+                            src="{{ icon('share.png') }}" alt=""
+                            class="nav-icon">Widgets</a>
                 </div>
             </div>
             <a href="{{ url_for('main.beercat') }}"><img src="{{ icon('beer.png') }}"

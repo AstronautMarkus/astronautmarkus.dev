@@ -1,0 +1,9 @@
+{% extends "cards/_card.svg" %}
+{% block body %}
+{% for line in title_lines %}<text y="{{ 15 + loop.index0 * 20 }}" font-size="15" font-weight="600">{{ line }}</text>
+{% endfor %}
+{% set y = title_lines|length * 20 %}
+<text y="{{ y + 13 }}" class="muted" font-size="11">{{ meta }}</text>
+{% for line in desc_lines %}<text y="{{ y + 35 + loop.index0 * 17 }}" font-size="12">{{ line }}</text>
+{% endfor %}
+{% endblock %}

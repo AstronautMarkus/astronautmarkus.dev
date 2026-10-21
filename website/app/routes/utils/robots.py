@@ -17,6 +17,7 @@ SITEMAP_PAGES = (
     'main.guestbook',
     'contact.contact',
     'extras.pdf_generator',
+    'main.widgets',
 )
 
 

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" role="img" aria-labelledby="card-title">
+<title id="card-title">{{ title }} · {{ host }}</title>
+<style>
+  .bg { fill: #ffffff; stroke: #d0d7de; }
+  .rule { stroke: #d8dee4; }
+  text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif; fill: #1f2328; }
+  .muted { fill: #59636e; }
+  .accent { fill: #0969da; }
+  /* follows the viewer's OS/browser setting, so it fits GitHub's dark mode too */
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #0d1117; stroke: #30363d; }
+    .rule { stroke: #21262d; }
+    text { fill: #e6edf3; }
+    .muted { fill: #9198a1; }
+    .accent { fill: #4493f8; }
+  }
+</style>
+<rect class="bg" x="0.5" y="0.5" width="{{ width - 1 }}" height="{{ height - 1 }}" rx="6"/>
+<text x="{{ pad }}" y="28" class="accent" font-size="14" font-weight="600">{{ title }}</text>
+<text x="{{ width - pad }}" y="28" class="muted" font-size="11" text-anchor="end">{{ host }}</text>
+<g transform="translate({{ pad }} {{ top }})">
+{% block body %}{% endblock %}
+</g>
+</svg>

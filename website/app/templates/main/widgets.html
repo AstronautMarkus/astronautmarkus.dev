@@ -1,0 +1,82 @@
+{% extends "base/base.html" %}
+
+{% block title %}Widgets{% endblock %}
+{% block description %}{% if current_lang == 'es' %}Tarjetas SVG en vivo con datos de AstronautMarkus.Dev para pegar en un README de GitHub o cualquier web.{% else %}Live SVG cards with AstronautMarkus.Dev data to drop into a GitHub README or any web page.{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/widgets.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% macro snippets(label, img, link) %}
+<div class="widget-body">
+    <a href="{{ link }}" class="widget-preview"><img src="{{ img }}" alt="{{ label }}" loading="lazy"></a>
+    {% for kind, snippet in [
+        ('Markdown', '[![%s](%s)](%s)' % (label, img, link)),
+        ('HTML', '<a href="%s"><img src="%s" alt="%s"></a>' % (link, img, label|e)),
+    ] %}
+    <div class="widget-snippet-label">{{ kind }}</div>
+    <div class="code-block-wrap">
+        <pre class="widget-snippet"><code>{{ snippet }}</code></pre>
+        <button type="button" class="code-copy-btn" data-copied="{{ '¡Copiado!' if current_lang == 'es' else 'Copied!' }}">{{ 'Copiar' if current_lang == 'es' else 'Copy' }}</button>
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Widgets
+    </div>
+    <div class="widget-body">
+        {% if current_lang == 'es' %}
+        <p>Tarjetas SVG que se generan en vivo con los datos de este sitio. Pégalas en un README de GitHub, en tu firma de un foro o en cualquier página que acepte imágenes. Tienen un estilo neutro que cambia solo entre claro y oscuro según el visitante, y se actualizan más o menos cada una hora.</p>
+        {% else %}
+        <p>SVG cards generated live from this site's data. Drop them into a GitHub README, a forum signature or any page that accepts images. They use a neutral style that switches between light and dark to match the viewer, and refresh about once an hour.</p>
+        {% endif %}
+    </div>
+</section>
+
+{% for label, endpoint, link in [
+    ('AstronautMarkus.Dev Stats', 'utils.card_stats', url_for('main.home', _external=True)),
+    ('Latest from the blog', 'utils.card_latest_post', url_for('main.blog_list', _external=True)),
+    ('Latest blog posts', 'utils.card_posts', url_for('main.blog_list', _external=True)),
+    ('Guest Book', 'utils.card_guestbook', url_for('main.guestbook', _external=True)),
+] %}
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> {{ label }}
+    </div>
+    {{ snippets(label, url_for(endpoint, _external=True), link) }}
+</section>
+{% endfor %}
+
+{% if projects %}
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> {{ 'Proyectos del portafolio' if current_lang == 'es' else 'Portfolio projects' }}
+    </div>
+    {% for project in projects %}
+    <details class="widget-project">
+        <summary>{{ project.title }}</summary>
+        {{ snippets(project.title, url_for('utils.card_project', project_id=project.id, _external=True), url_for('main.portfolio_detail', project_id=project.id, _external=True)) }}
+    </details>
+    {% endfor %}
+</section>
+{% endif %}
+
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> {{ 'Contador de visitas' if current_lang == 'es' else 'Visitor counter' }}
+    </div>
+    {{ snippets('Visitor counter', url_for('utils.visitor_counter', _external=True), url_for('main.home', _external=True)) }}
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/widgets.js') }}"></script>
+{% endblock %}
