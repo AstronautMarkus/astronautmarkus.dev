@@ -28,12 +28,6 @@
     letter-spacing: -2px;
 }
 
-.error-code::before {
-    content: "\1F4A3\FE0E ";
-    font-size: 0.6em;
-    vertical-align: middle;
-}
-
 .error-code-danger {
     color: var(--rainbow-red);
 }
@@ -43,7 +37,7 @@
     font-size: 13px;
     font-weight: bold;
     color: var(--mac-black);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 1.5px;
     margin: 6px 0 10px;
 }
@@ -71,32 +65,32 @@
     font-family: var(--font-chrome);
     font-size: 10.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.4px;
     color: var(--mac-black) !important;
-    background: var(--mac-grey-2);
-    border: 1px solid var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     padding: 8px 18px;
     text-decoration: none;
 }
 
 .error-btn:hover {
-    background: var(--mac-black);
-    border-color: var(--mac-black);
-    color: var(--mac-white) !important;
+    background: var(--select-bg);
+    border-color: var(--line);
+    color: var(--select-text) !important;
     text-decoration: none;
 }
 
 .error-btn-outline {
     background: var(--mac-white);
     color: var(--mac-black) !important;
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .error-btn-outline:hover {
-    background: var(--mac-black);
-    color: var(--mac-white) !important;
+    background: var(--select-bg);
+    color: var(--select-text) !important;
 }
 
 .error-hint {
@@ -109,6 +103,6 @@
     font-family: var(--font-mono);
     background: var(--mac-grey-1);
     padding: 1px 5px;
-    border-radius: 0;
+    border-radius: var(--radius-tag);
     border: 1px solid var(--mac-grey-4);
 }

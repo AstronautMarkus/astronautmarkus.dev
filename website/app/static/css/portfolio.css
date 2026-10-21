@@ -32,8 +32,8 @@
 
 .portfolio-card {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow-flat-1);
     overflow: hidden;
     display: flex;
@@ -49,7 +49,7 @@
     height: 130px;
     object-fit: cover;
     display: block;
-    border-bottom: 1px solid var(--mac-black);
+    border-bottom: 1px solid var(--line);
 }
 
 .portfolio-card-thumb-placeholder {
@@ -58,7 +58,7 @@
     background-image: repeating-linear-gradient(45deg,
             var(--mac-grey-1) 0 8px,
             var(--mac-grey-2) 8px 16px);
-    border-bottom: 1px solid var(--mac-black);
+    border-bottom: 1px solid var(--line);
 }
 
 .portfolio-card-body {
@@ -106,18 +106,18 @@
     font-family: var(--font-chrome);
     font-size: 8.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     color: var(--mac-black);
-    background: var(--mac-grey-2);
-    border: 1px solid var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     padding: 3px 8px;
     text-decoration: none;
 }
 
 .portfolio-link-btn:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .portfolio-link-btn.source {
@@ -126,7 +126,7 @@
 }
 
 .portfolio-link-btn.source:hover {
-    background: var(--mac-black);
+    background: var(--select-bg);
 }
 
 .portfolio-link-btn img {
@@ -162,7 +162,7 @@
     font-size: 9.5px;
     font-weight: bold;
     color: var(--mac-grey-6);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     margin-bottom: 10px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--mac-grey-4);

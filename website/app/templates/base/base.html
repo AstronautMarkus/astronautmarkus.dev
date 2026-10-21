@@ -49,6 +49,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/image-modal.css') }}">
     {% block head %}{% endblock %}
     {% block extra_css %}{% endblock %}
+    {% if theme_stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('static', filename=theme_stylesheet) }}">{% endif %}
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 
@@ -57,11 +59,16 @@
     <div class="page-wrapper">
         <div class="rainbow-bar" aria-hidden="true"></div>
         <div class="header-top-nav">
+            {% for name, label in themes.items() %}
+            <a href="/theme/{{ name }}?next={{ request.path }}" {% if current_theme==name %} class="active" {% endif
+                %}><img src="{{ url_for('static', filename='images/icons/' ~ name ~ '/theme-logo.png') }}" alt=""
+                    class="icon">{{ label }}</a>
+            {% endfor %}
             <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}><img
-                    src="{{ url_for('static', filename='images/icons/flag_usa.png') }}" alt="English" class="icon">{% if
+                    src="{{ icon('flag_usa.png') }}" alt="English" class="icon">{% if
                 current_lang == 'en' %}English{% else %}Inglés{% endif %}</a>
             <a href="/lang/es?next={{ request.path }}" {% if current_lang=='es' %} class="active" {% endif %}><img
-                    src="{{ url_for('static', filename='images/icons/flag_chile.png') }}" alt="Español" class="icon">{%
+                    src="{{ icon('flag_chile.png') }}" alt="Español" class="icon">{%
                 if
                 current_lang == 'en' %}Spanish{% else %}Español{% endif %}</a>
         </div>
@@ -77,36 +84,36 @@
         </header>
 
         <nav class="main-nav">
-            <a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/icons/house.png') }}"
+            <a href="{{ url_for('main.home') }}"><img src="{{ icon('house.png') }}"
                     alt="" class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
             <a href="{{ url_for('main.about_me') }}"><img
-                    src="{{ url_for('static', filename='images/icons/vcard.png') }}" alt="" class="nav-icon">{% if
+                    src="{{ icon('vcard.png') }}" alt="" class="nav-icon">{% if
                 current_lang == 'en' %}About Me{% else %}Sobre Mí{% endif
                 %}</a>
             <a href="{{ url_for('main.portfolio_list') }}"><img
-                    src="{{ url_for('static', filename='images/icons/briefcase.png') }}" alt="" class="nav-icon">{% if
+                    src="{{ icon('briefcase.png') }}" alt="" class="nav-icon">{% if
                 current_lang == 'en' %}Portfolio{% else %}Portafolio{% endif %}</a>
             <a href="{{ url_for('main.gallery_list') }}"><img
-                    src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon">{% if
+                    src="{{ icon('photos.png') }}" alt="" class="nav-icon">{% if
                 current_lang == 'en' %}Image Gallery{% else %}Galería de Imágenes{% endif %}</a>
             <a href="{{ url_for('main.blog_list') }}"><img
-                    src="{{ url_for('static', filename='images/icons/newspaper.png') }}" alt="" class="nav-icon">{% if
+                    src="{{ icon('newspaper.png') }}" alt="" class="nav-icon">{% if
                 current_lang == 'en' %}Blog{% else %}Blog{% endif %}</a>
             <a href="{{ url_for('contact.contact') }}"><img
-                    src="{{ url_for('static', filename='images/icons/email.png') }}" alt="" class="nav-icon">{% if
+                    src="{{ icon('email.png') }}" alt="" class="nav-icon">{% if
                 current_lang == 'en' %}Contact Me{% else %}Contáctame{% endif %}</a>
             <div class="nav-dropdown">
                 <a href="#" class="nav-dropdown-toggle"><img
-                        src="{{ url_for('static', filename='images/icons/toolbox.png') }}" alt=""
+                        src="{{ icon('toolbox.png') }}" alt=""
                         class="nav-icon">Extras <span class="nav-caret">&#9662;</span></a>
                 <div class="nav-dropdown-menu">
                     <a href="{{ url_for('extras.pdf_generator') }}"><img
-                            src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt=""
+                            src="{{ icon('page_white_acrobat.png') }}" alt=""
                             class="nav-icon">{% if current_lang == 'en' %}PDF Generator{% else %}Generador de PDF{%
                         endif %}</a>
                 </div>
             </div>
-            <a href="{{ url_for('main.beercat') }}"><img src="{{ url_for('static', filename='images/icons/beer.png') }}"
+            <a href="{{ url_for('main.beercat') }}"><img src="{{ icon('beer.png') }}"
                     alt="" class="nav-icon">{% if current_lang == 'en' %}Beercat Project{% else %}Proyecto Beercat{%
                 endif %}</a>
         </nav>
@@ -116,30 +123,30 @@
                 <div class="panel-box">
                     <ul class="menu-list">
                         <li><a href="{{ url_for('main.home') }}"><img
-                                    src="{{ url_for('static', filename='images/icons/house.png') }}" alt=""
+                                    src="{{ icon('house.png') }}" alt=""
                                     class="nav-icon">{% if current_lang == 'en' %}Home{% else %}Inicio{% endif %}</a>
                         </li>
                         {% if cv_url %}
                         <li><a href="{{ cv_url }}"><img
-                                    src="{{ url_for('static', filename='images/icons/page_white_acrobat.png') }}" alt=""
+                                    src="{{ icon('page_white_acrobat.png') }}" alt=""
                                     class="nav-icon">{% if current_lang == 'en' %}Download CV{% else
                                 %}Descargar CV{% endif %}</a></li>
                         {% endif %}
                         <li><a href="{{ url_for('main.homelab') }}"><img
-                                    src="{{ url_for('static', filename='images/icons/servers.png') }}" alt=""
+                                    src="{{ icon('servers.png') }}" alt=""
                                     class="nav-icon">Homelab</a></li>
                         <li><a href="{{ url_for('main.setup') }}"><img
-                                    src="{{ url_for('static', filename='images/icons/pc_linux_os.png') }}" alt=""
+                                    src="{{ icon('pc_linux_os.png') }}" alt=""
                                     class="nav-icon">Setup</a></li>
                         <li><a href="{{ url_for('main.guestbook') }}"><img
-                                    src="{{ url_for('static', filename='images/icons/book_open.png') }}" alt=""
+                                    src="{{ icon('book_open.png') }}" alt=""
                                     class="nav-icon">{% if current_lang == 'en' %}Guest Book{% else %}Libro de
                                 Visitas{% endif %}</a></li>
                     </ul>
                 </div>
 
                 <div class="panel-box">
-                    <div class="panel-header"><img src="{{ url_for('static', filename='images/icons/beer.png') }}"
+                    <div class="panel-header"><img src="{{ icon('beer.png') }}"
                             alt="" class="nav-icon">{% if current_lang == 'en' %}BeerCat Project{% else %}Proyecto
                         BeerCat{%
                         endif %}</div>
@@ -187,17 +194,17 @@
                 <span class="image-modal-counter" id="image-modal-counter"></span>
                 <button type="button" class="image-modal-close" id="image-modal-close"
                     aria-label="{% if current_lang == 'en' %}Close{% else %}Cerrar{% endif %}"><img
-                        src="{{ url_for('static', filename='images/icons/cross.png') }}" alt="" class="nav-icon"></button>
+                        src="{{ icon('cross.png') }}" alt="" class="nav-icon"></button>
             </div>
             <div class="image-modal-body">
                 <button type="button" class="image-modal-nav prev" id="image-modal-prev"
                     aria-label="{% if current_lang == 'en' %}Previous{% else %}Anterior{% endif %}"><img
-                        src="{{ url_for('static', filename='images/icons/resultset_previous.png') }}" alt=""
+                        src="{{ icon('resultset_previous.png') }}" alt=""
                         class="nav-icon"></button>
                 <img src="" alt="" class="image-modal-img" id="image-modal-img">
                 <button type="button" class="image-modal-nav next" id="image-modal-next"
                     aria-label="{% if current_lang == 'en' %}Next{% else %}Siguiente{% endif %}"><img
-                        src="{{ url_for('static', filename='images/icons/resultset_next.png') }}" alt=""
+                        src="{{ icon('resultset_next.png') }}" alt=""
                         class="nav-icon"></button>
             </div>
             <div class="image-modal-caption" id="image-modal-caption">

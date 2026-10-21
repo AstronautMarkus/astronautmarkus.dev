@@ -11,7 +11,29 @@
 {% block content %}
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
-        <img src="{{ url_for('static', filename='images/icons/apple.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.5
+        <img src="{{ icon('arrow_refresh.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.67
+    </div>
+    <div class="alert-stripe"></div>
+    <div class="alert-body">
+        <div class="alert-intro">
+            El sitio ahora tiene dos personalidades. Elige una desde la barra superior; el registro de cambios está abajo:
+        </div>
+        <ul class="alert-list">
+            <li><span class="alert-tag new">NUEVO</span> Un selector de temas en la barra superior: cambia entre System 7 y Mac OS X Aqua. Tu elección queda recordada.</li>
+            <li><span class="alert-tag new">NUEVO</span> El tema Mac OS X Aqua: botones de gel, semáforos en las ventanas, rayas finas y un banner completamente nuevo.</li>
+            <li><span class="alert-tag new">NUEVO</span> Íconos según el tema. El modo Aqua usa el set brillante Crystal Clear de Everaldo Coelho.</li>
+            <li><span class="alert-tag improved">MEJORADO</span> Todas las hojas de estilo reconstruidas sobre tokens de diseño. Una nueva piel ahora es un solo archivo CSS, no una reescritura.</li>
+            <li><span class="alert-tag removed">ELIMINADO</span> La bomba del 404. Duró exactamente una versión.</li>
+            <li><span class="alert-tag fixed">CORREGIDO</span> Una manzana Aqua que se escapaba de su propio botón.</li>
+            <li><span class="alert-tag security">SEGURIDAD</span> El selector de temas solo acepta temas conocidos y solo te devuelve a este sitio.</li>
+        </ul>
+    </div>
+    <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+</section>
+
+<section class="welcome-card alert-card">
+    <div class="card-header alert-header">
+        <img src="{{ icon('apple.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.5
     </div>
     <div class="alert-stripe"></div>
     <div class="alert-body">
@@ -27,12 +49,12 @@
             <li><span class="alert-tag new">NUEVO</span> Botones que parecen a punto de expulsar un disquete si les haces clic mal.</li>
         </ul>
     </div>
-    <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+    <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
 </section>
 
 <section class="welcome-card payday-card">
     <div class="card-header payday-header">
-        <img src="{{ url_for('static', filename='images/icons/ecommerce_server.png') }}" alt="" class="nav-icon"> Proyecto Destacado
+        <img src="{{ icon('ecommerce_server.png') }}" alt="" class="nav-icon"> Proyecto Destacado
         <span class="payday-ribbon">PAYDAY BANK</span>
     </div>
     <div class="payday-stripe"></div>
@@ -52,28 +74,28 @@
 
         <div class="payday-features">
             <div class="payday-feature">
-                <img src="{{ url_for('static', filename='images/icons/cobol.webp') }}" alt="" class="payday-feature-icon">
+                <img src="{{ icon('cobol.webp') }}" alt="" class="payday-feature-icon">
                 <div>
                     <div class="payday-feature-title">Núcleo bancario en COBOL</div>
                     <div class="payday-feature-desc">Subproceso legado que procesa cuentas y transacciones como un sistema real.</div>
                 </div>
             </div>
             <div class="payday-feature">
-                <img src="{{ url_for('static', filename='images/icons/tick_circle_frame.png') }}" alt="" class="payday-feature-icon">
+                <img src="{{ icon('tick_circle_frame.png') }}" alt="" class="payday-feature-icon">
                 <div>
                     <div class="payday-feature-title">Seguridad primero</div>
                     <div class="payday-feature-desc">Autenticación, validaciones y buenas prácticas contra vulnerabilidades comunes.</div>
                 </div>
             </div>
             <div class="payday-feature">
-                <img src="{{ url_for('static', filename='images/icons/chart_line.png') }}" alt="" class="payday-feature-icon">
+                <img src="{{ icon('chart_line.png') }}" alt="" class="payday-feature-icon">
                 <div>
                     <div class="payday-feature-title">Gestión de transacciones</div>
                     <div class="payday-feature-desc">Transferencias, historial y saldos en tiempo real entre cuentas.</div>
                 </div>
             </div>
             <div class="payday-feature">
-                <img src="{{ url_for('static', filename='images/icons/layer.png') }}" alt="" class="payday-feature-icon">
+                <img src="{{ icon('layer.png') }}" alt="" class="payday-feature-icon">
                 <div>
                     <div class="payday-feature-title">Arquitectura híbrida</div>
                     <div class="payday-feature-desc">Un puente entre tecnología antigua y moderna dentro de una sola aplicación.</div>
@@ -83,7 +105,7 @@
 
         <div class="payday-gallery-wrap">
             <div class="payday-gallery-title">
-                <img src="{{ url_for('static', filename='images/icons/photos.png') }}" alt="" class="nav-icon"> Capturas del Proyecto
+                <img src="{{ icon('photos.png') }}" alt="" class="nav-icon"> Capturas del Proyecto
             </div>
             {% if payday_screenshots %}
             <div class="payday-gallery-grid" id="payday-gallery-grid">
@@ -104,11 +126,11 @@
 
         <div class="payday-links">
             <a href="https://payday-bank.astronautmarkus.dev" target="_blank" rel="noopener noreferrer" class="payday-link-btn">
-                <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
+                <img src="{{ icon('rocket.png') }}" alt="">
                 Ver Sitio Web
             </a>
             <a href="https://github.com/astronautmarkus/payday-bank" target="_blank" rel="noopener noreferrer" class="payday-link-btn source">
-                <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="">
+                <img src="{{ icon('open_source.png') }}" alt="">
                 Ver Repositorio
             </a>
         </div>
@@ -117,7 +139,7 @@
 
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
-        <img src="{{ url_for('static', filename='images/icons/warning.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.0
+        <img src="{{ icon('warning.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.0
     </div>
     <div class="alert-stripe"></div>
     <div class="alert-body">
@@ -133,12 +155,12 @@
             <li><span class="alert-tag fixed">PARCHEADO</span> Mainframe blindado contra duendes del dial-up.</li>
         </ul>
     </div>
-    <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+    <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
 </section>
 
 <section class="welcome-card">
     <div class="card-header">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Te damos la bienvenida al sitio web de AstronautMarkus.Dev
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Te damos la bienvenida al sitio web de AstronautMarkus.Dev
     </div>
     <div class="card-body">
         <div class="card-text">
@@ -161,7 +183,7 @@
 {% if latest_posts %}
 <section class="welcome-card">
     <div class="card-header">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Noticias
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Noticias
     </div>
     <table class="news-table">
         {% for post in latest_posts %}
@@ -173,7 +195,7 @@
         {% endfor %}
     </table>
     <div class="news-footer">
-        <a href="{{ url_for('main.blog_list') }}">Ver Más <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"></a>
+        <a href="{{ url_for('main.blog_list') }}">Ver Más <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></a>
     </div>
 </section>
 {% endif %}

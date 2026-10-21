@@ -13,8 +13,8 @@
 
 <section class="welcome-card">
     <div class="card-header portfolio-banner-title">
-        <img src="{{ url_for('static', filename='images/icons/briefcase.png') }}" class="icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Portafolio
+        <img src="{{ icon('briefcase.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Portafolio
     </div>
     <div class="card-body">
         <div class="portfolio-banner-intro">
@@ -25,7 +25,7 @@
 
 <section class="welcome-card">
     <div class="card-header">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Proyectos
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Proyectos
     </div>
 
     {% if projects %}
@@ -56,13 +56,13 @@
                 <div class="portfolio-card-links">
                     {% if project.project_url %}
                     <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn">
-                        <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
+                        <img src="{{ icon('rocket.png') }}" alt="">
                         Ver Proyecto
                     </a>
                     {% endif %}
                     {% if project.github_repo_url %}
                     <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn source">
-                        <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="">
+                        <img src="{{ icon('open_source.png') }}" alt="">
                         Código
                     </a>
                     {% endif %}

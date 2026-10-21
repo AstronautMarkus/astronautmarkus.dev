@@ -9,9 +9,9 @@
 .beercat-hero-wrap {
     position: relative;
     margin-bottom: 15px;
-    border-radius: 0;
+    border-radius: var(--radius-card);
     overflow: hidden;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
 }
 
@@ -59,11 +59,11 @@
     font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     color: var(--mac-white);
     background: rgba(0, 0, 0, 0.6);
     border: 1px solid var(--mac-white);
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
     padding: 4px 8px;
     text-decoration: none;
 }
@@ -114,8 +114,8 @@
     display: flex;
     gap: 8px;
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     padding: 9px;
 }
 
@@ -149,8 +149,8 @@
 
 .beercat-fact-item {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     padding: 8px;
     font-size: 10px;
     line-height: 1.4;
@@ -163,7 +163,7 @@
     font-size: 9px;
     font-weight: bold;
     color: var(--mac-black);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     margin-bottom: 3px;
 }
 
@@ -176,12 +176,12 @@
 
 .beercat-tag {
     background: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     color: var(--mac-black);
     font-size: 9px;
     font-weight: bold;
     padding: 3px 7px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
 }
 
 /* ── Media / logo placeholders ─────────────────────────────────────────── */
@@ -202,7 +202,7 @@
     text-align: center;
     background: var(--mac-grey-1);
     border: 2px dashed var(--mac-grey-4);
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
     color: var(--mac-grey-6);
     padding: 8px;
 }
@@ -218,7 +218,7 @@
     font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.3px;
 }
 
@@ -259,12 +259,12 @@
     font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.3px;
     color: var(--mac-black);
-    background: var(--mac-grey-2);
-    border: 1px solid var(--mac-black);
-    border-top: 3px solid var(--rainbow-orange);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
+    border-top: var(--button-accent);
     border-radius: var(--radius-button);
     padding: 10px 18px;
     text-decoration: none;
@@ -272,8 +272,8 @@
 }
 
 .beercat-cta-btn:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .beercat-cta-btn img {

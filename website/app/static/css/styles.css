@@ -15,9 +15,7 @@ html {
 }
 
 body {
-    background-color: var(--mac-grey-3);
-    background-image: radial-gradient(var(--mac-grey-5) 1px, transparent 0);
-    background-size: 4px 4px;
+    background: var(--desktop-bg);
     color: var(--mac-black);
     font-family: var(--font-body);
     display: flex;
@@ -42,13 +40,7 @@ a:hover {
 }
 
 .rainbow-stripe-diagonal {
-    background-image: repeating-linear-gradient(45deg,
-            var(--rainbow-green) 0 8px,
-            var(--rainbow-yellow) 8px 16px,
-            var(--rainbow-orange) 16px 24px,
-            var(--rainbow-red) 24px 32px,
-            var(--rainbow-purple) 32px 40px,
-            var(--rainbow-blue) 40px 48px);
+    background-image: var(--accent-stripe);
 }
 
 .rainbow-stripe-diagonal-grey {
@@ -60,20 +52,22 @@ a:hover {
 .page-wrapper {
     width: 920px;
     background-color: var(--mac-white);
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-3);
     zoom: 1.1;
+    border-radius: var(--radius-card);
+    overflow: clip;
 }
 
 .header-top-nav {
-    background: repeating-linear-gradient(to bottom, var(--mac-white) 0 1px, var(--mac-grey-2) 1px 2px);
+    background: var(--titlebar-bg);
     text-align: right;
     padding: 3px 15px;
     font-family: var(--font-chrome);
-    font-size: 10px;
-    font-weight: bold;
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
     color: var(--mac-black);
-    border-bottom: 1px solid var(--mac-black);
+    border-bottom: 1px solid var(--line);
 }
 
 .header-top-nav a {
@@ -84,8 +78,8 @@ a:hover {
 }
 
 .header-top-nav a:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
     text-decoration: none;
 }
 
@@ -95,19 +89,21 @@ a:hover {
 }
 
 .header-top-nav a.active:hover {
-    color: var(--mac-white);
+    color: var(--select-text);
 }
 
 .header-main {
     height: 85px;
-    background: url('/static/images/banner.png') no-repeat center center;
+    background-image: var(--banner-image);
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 20px;
     position: relative;
-    border-bottom: 2px solid var(--mac-black);
+    border-bottom: var(--frame);
 }
 
 .logo-area {
@@ -139,7 +135,7 @@ a:hover {
     font-weight: bold;
     letter-spacing: 3px;
     color: var(--mac-white);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     text-shadow: 1px 1px 0px var(--mac-black);
     display: block;
     text-align: center;
@@ -147,20 +143,20 @@ a:hover {
 
 
 .audio-btn {
-    background: var(--mac-grey-2);
+    background: var(--button-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
     padding: 3px 6px;
     border-radius: var(--radius-button);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     cursor: pointer;
 }
 
 .main-nav {
-    background: repeating-linear-gradient(to bottom, var(--mac-white) 0 1px, var(--mac-grey-2) 1px 2px);
-    border-bottom: 2px solid var(--mac-black);
+    background: var(--toolbar-bg);
+    border-bottom: var(--frame);
     display: flex;
     justify-content: space-around;
     padding: 4px 0;
@@ -168,13 +164,13 @@ a:hover {
 
 .main-nav a {
     font-family: var(--font-chrome);
-    font-size: 10px;
-    font-weight: bold;
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
     color: var(--mac-black);
     text-decoration: none;
     padding: 2px 8px;
     border-right: 1px solid var(--mac-grey-4);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
 }
 
 .main-nav a:last-child {
@@ -182,8 +178,8 @@ a:hover {
 }
 
 .main-nav a:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
     text-decoration: none;
 }
 
@@ -207,7 +203,7 @@ a:hover {
     left: 0;
     min-width: 170px;
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     box-shadow: var(--shadow-flat-2);
     z-index: 50;
 }
@@ -228,8 +224,8 @@ a:hover {
 }
 
 .nav-dropdown-menu a:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
     text-decoration: none;
 }
 
@@ -244,29 +240,29 @@ a:hover {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background: var(--mac-grey-2);
+    background: var(--sidebar-bg);
     padding: 15px 10px;
-    border-right: 2px solid var(--mac-black);
+    border-right: var(--frame);
 }
 
 .panel-box {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     margin-bottom: 15px;
     overflow: hidden;
 }
 
 .panel-header {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
-    font-size: 10px;
+    font-size: var(--chrome-size);
     font-weight: bold;
     padding: 5px 8px;
-    text-transform: uppercase;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    text-transform: var(--chrome-case);
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .menu-list {
@@ -281,17 +277,17 @@ a:hover {
     display: block;
     padding: 5px 8px;
     font-family: var(--font-chrome);
-    font-size: 10px;
-    font-weight: bold;
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
     color: var(--mac-black);
     text-decoration: none;
     background: var(--mac-white);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
 }
 
 .menu-list a:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .spotlight-content {
@@ -308,7 +304,8 @@ a:hover {
     height: 45px;
     background: url('/static/images/announces/beercat-banner.png') no-repeat center center;
     background-size: cover;
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     flex-shrink: 0;
     object-fit: cover;
 }
@@ -323,7 +320,7 @@ a:hover {
     overflow-y: auto;
     background: var(--mac-white);
     scrollbar-width: thin;
-    scrollbar-color: var(--mac-grey-5) var(--mac-grey-1);
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
 }
 
 .main-content::-webkit-scrollbar {
@@ -331,29 +328,29 @@ a:hover {
 }
 
 .main-content::-webkit-scrollbar-track {
-    background: var(--mac-grey-1);
+    background: var(--scroll-track);
 }
 
 .main-content::-webkit-scrollbar-thumb {
-    background: var(--mac-grey-5);
+    background: var(--scroll-thumb);
     border-radius: 2px;
     border: 2px solid var(--mac-grey-1);
 }
 
 .main-content::-webkit-scrollbar-thumb:hover {
-    background: var(--mac-grey-6);
+    background: var(--scroll-thumb-hover);
 }
 
 footer {
-    background: var(--mac-grey-2);
-    border-top: 2px solid var(--mac-black);
+    background: var(--bar-bg);
+    border-top: var(--frame);
     padding: 5px 15px;
     display: flex;
     justify-content: space-between;
     font-family: var(--font-chrome);
     font-size: 9px;
     color: var(--mac-black);
-    font-weight: bold;
+    font-weight: var(--chrome-weight);
 }
 
 footer a {
@@ -365,7 +362,8 @@ footer a {
     width: 200px;
     display: block;
     margin: 0 auto;
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     box-shadow: var(--shadow-flat-1);
     pointer-events: none;
     margin-bottom: 10px;
@@ -401,9 +399,9 @@ button,
 input[type="submit"],
 input[type="button"] {
     font-family: var(--font-chrome);
-    background: var(--mac-grey-2);
+    background: var(--button-bg);
     color: var(--mac-black);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     box-shadow: var(--shadow-flat-1);
     padding: 6px 14px;
@@ -437,8 +435,8 @@ select {
     font-family: var(--font-body);
     background: var(--mac-white);
     color: var(--mac-black);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-field);
     padding: 5px 8px;
 }
 
@@ -452,8 +450,8 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 textarea:focus,
 select:focus {
-    outline: 1px dashed var(--mac-black);
-    outline-offset: 2px;
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
 }
 
 table {
@@ -463,15 +461,15 @@ table {
 
 th,
 td {
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     padding: 6px 8px;
     text-align: left;
 }
 
 th {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     font-family: var(--font-chrome);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     font-size: 10px;
 }
 
@@ -483,7 +481,7 @@ code {
     font-family: var(--font-mono);
     background: var(--mac-grey-1);
     border: 1px solid var(--mac-grey-4);
-    border-radius: 0;
+    border-radius: var(--radius-tag);
     padding: 1px 4px;
     color: var(--mac-black);
 }
@@ -492,7 +490,8 @@ pre {
     font-family: var(--font-mono);
     background: var(--mac-grey-6);
     color: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     padding: 10px;
     overflow-x: auto;
 }
@@ -505,7 +504,7 @@ pre code {
 }
 
 blockquote {
-    border-left: 4px solid var(--mac-black);
+    border-left: 4px solid var(--line);
     background: var(--mac-grey-1);
     padding: 8px 12px;
     margin: 10px 0;
@@ -531,6 +530,7 @@ hr {
     .page-wrapper {
         width: 100%;
         zoom: 1;
+        border-radius: 0;
     }
 
     .header-main {
@@ -569,7 +569,7 @@ hr {
         min-width: 0;
         box-shadow: none;
         border: none;
-        border-top: 1px solid var(--mac-black);
+        border-top: 1px solid var(--line);
     }
 
     .content-container {
@@ -583,7 +583,7 @@ hr {
         height: auto;
         overflow-y: visible;
         border-right: none;
-        border-top: 2px solid var(--mac-black);
+        border-top: var(--frame);
     }
 
     .main-content {

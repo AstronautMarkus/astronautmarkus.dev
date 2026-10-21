@@ -65,7 +65,7 @@
 
         {% if post.images %}
         <div class="post-gallery">
-            <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Post Images</h4>
+            <h4><img src="{{ icon('photos.png') }}" class="pixel-icon-inline" alt="">Post Images</h4>
             <div class="post-gallery-grid">
                 {% for img in post.images %}
                 <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}" class="modal-image"
@@ -82,7 +82,7 @@
     <div id="post-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">Post Info</h4>
+            <h4><img src="{{ icon('information.png') }}" class="pixel-icon-inline" alt="">Post Info</h4>
             <ul class="sidebar-info-list">
                 <li>Published: {{ post.created_at.strftime('%d %b %Y') }}</li>
                 <li>Views: {{ post.view_count }}</li>
@@ -103,14 +103,14 @@
         </div>
 
         <div class="blog-sidebar-box" id="toc-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="pixel-icon-inline" alt="">Contents</h4>
+            <h4><img src="{{ icon('application_view_list.png') }}" class="pixel-icon-inline" alt="">Contents</h4>
             <ul id="toc-list">
                 <li class="toc-empty">No headings found.</li>
             </ul>
         </div>
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/share.png') }}" class="pixel-icon-inline" alt="">Share</h4>
+            <h4><img src="{{ icon('share.png') }}" class="pixel-icon-inline" alt="">Share</h4>
             <ul>
                 <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
                        target="_blank" rel="noopener noreferrer">Share on Twitter/X</a></li>

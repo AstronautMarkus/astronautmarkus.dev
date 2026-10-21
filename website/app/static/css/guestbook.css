@@ -13,7 +13,8 @@
 
 .guestbook-entry {
     background: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     padding: 8px 10px;
 }
 
@@ -53,8 +54,8 @@
 /* ── Pagination (matches .blog-pagination-footer) ───────────────────────── */
 
 .guestbook-pagination-footer {
-    background: var(--mac-grey-2);
-    border-top: 1px solid var(--mac-black);
+    background: var(--bar-bg);
+    border-top: 1px solid var(--line);
     padding: 6px 8px;
 }
 
@@ -75,20 +76,20 @@
     font-weight: bold;
     color: var(--mac-black);
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     text-decoration: none;
 }
 
 .guestbook-page-btn:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .guestbook-page-btn.current {
-    background: var(--mac-black);
-    border-color: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    border-color: var(--line);
+    color: var(--select-text);
 }
 
 .guestbook-page-btn.disabled {

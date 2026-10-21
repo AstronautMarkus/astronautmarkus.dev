@@ -6,23 +6,24 @@
 
 .homelab-card {
     background: var(--mac-white);
-    border: 2px solid var(--mac-black);
-    border-radius: 0;
-    padding: 2px;
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    padding: var(--card-inset);
+    overflow: clip;
     box-shadow: var(--shadow-flat-2);
     margin-bottom: 15px;
 }
 
 .homelab-card-header {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
     padding: 6px 10px;
     border-radius: 0;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -49,8 +50,9 @@
     height: 165px;
     object-fit: cover;
     display: block;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
 }
 
 .homelab-hero-text {
@@ -82,7 +84,7 @@
     gap: 8px;
     background: var(--mac-grey-1);
     border: 1px dashed var(--rainbow-orange);
-    border-radius: 0;
+    border-radius: var(--radius-card);
     padding: 8px 10px;
     font-size: 9.5px;
     line-height: 1.4;
@@ -110,13 +112,13 @@
 .topology-canvas-wrap {
     overflow-x: auto;
     overflow-y: hidden;
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     background-color: var(--mac-grey-1);
     background-image: radial-gradient(var(--mac-grey-4) 1px, transparent 0);
     background-size: 14px 14px;
     scrollbar-width: thin;
-    scrollbar-color: var(--mac-grey-5) var(--mac-grey-1);
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
 }
 
 .topology-canvas-wrap::-webkit-scrollbar {
@@ -124,23 +126,23 @@
 }
 
 .topology-canvas-wrap::-webkit-scrollbar-track {
-    background: var(--mac-grey-1);
-    border-top: 1px solid var(--mac-black);
+    background: var(--scroll-track);
+    border-top: 1px solid var(--line);
     border-radius: 0;
 }
 
 .topology-canvas-wrap::-webkit-scrollbar-thumb {
-    background: var(--mac-grey-5);
+    background: var(--scroll-thumb);
     border: 2px solid var(--mac-grey-1);
     border-radius: 2px;
 }
 
 .topology-canvas-wrap::-webkit-scrollbar-thumb:hover {
-    background: var(--mac-grey-6);
+    background: var(--scroll-thumb-hover);
 }
 
 .topology-canvas-wrap::-webkit-scrollbar-corner {
-    background: var(--mac-grey-1);
+    background: var(--scroll-track);
 }
 
 .topology-canvas {
@@ -152,7 +154,7 @@
 .topo-zone {
     position: absolute;
     border: 1px dashed var(--mac-grey-4);
-    border-radius: 0;
+    border-radius: var(--radius-card);
     background: rgba(255, 255, 255, 0.5);
 }
 
@@ -160,12 +162,12 @@
     position: absolute;
     top: -9px;
     left: 10px;
-    background: var(--mac-black);
+    background: var(--badge-bg);
     color: var(--mac-white);
     font-family: var(--font-chrome);
     font-size: 8px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.5px;
     padding: 2px 8px;
     border-radius: 0;
@@ -191,8 +193,8 @@
     user-select: none;
     touch-action: none;
     background: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
-    border-radius: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     padding: 5px 10px;
     font-size: 9px;
     font-weight: bold;
@@ -219,19 +221,19 @@
 .topo-node.wan {
     background: var(--rainbow-orange);
     color: var(--mac-black);
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .topo-node.security {
     background: var(--rainbow-red);
     color: var(--mac-white);
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .topo-node.core {
     background: var(--rainbow-blue);
     color: var(--mac-white);
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .topology-legend-canvas {
@@ -281,20 +283,20 @@
 }
 
 .vlan-table th {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     text-align: left;
     padding: 5px 8px;
     font-family: var(--font-chrome);
     font-size: 8.5px;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.3px;
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
 }
 
 .vlan-table td {
     padding: 5px 8px;
-    border-bottom: 1px solid var(--mac-black);
+    border-bottom: 1px solid var(--line);
 }
 
 .vlan-table tr:nth-child(even) td {
@@ -318,8 +320,8 @@
 
 .homelab-item {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow-flat-1);
     overflow: hidden;
     display: flex;
@@ -331,7 +333,7 @@
     height: 120px;
     object-fit: cover;
     display: block;
-    border-bottom: 1px solid var(--mac-black);
+    border-bottom: 1px solid var(--line);
     background: var(--mac-grey-1);
 }
 
@@ -356,13 +358,13 @@
     font-family: var(--font-chrome);
     font-size: 8.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.4px;
     color: var(--mac-white);
-    background: var(--mac-black);
+    background: var(--badge-bg);
     display: inline-block;
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
     align-self: flex-start;
 }
 
@@ -381,19 +383,19 @@
 
 .homelab-tag {
     background: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     color: var(--mac-black);
     font-size: 8.5px;
     font-weight: bold;
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
 }
 
 .homelab-item-floor {
     font-family: var(--font-chrome);
     font-size: 8px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.3px;
     color: var(--mac-grey-6);
 }
@@ -417,7 +419,7 @@
     font-size: 9px;
     font-weight: bold;
     color: var(--mac-black);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.5px;
     margin-bottom: 5px;
     border-bottom: 1px solid var(--mac-grey-4);
@@ -448,13 +450,13 @@
     font-family: var(--font-chrome);
     font-size: 8px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.3px;
     color: var(--mac-white);
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
     text-align: center;
-    background: var(--mac-black);
+    background: var(--badge-bg);
 }
 
 .homelab-roadmap-status.done {
@@ -492,8 +494,8 @@
 
 .power-box {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -504,7 +506,7 @@
     height: 120px;
     object-fit: cover;
     display: block;
-    border-bottom: 1px solid var(--mac-black);
+    border-bottom: 1px solid var(--line);
     background: var(--mac-grey-1);
 }
 
@@ -541,7 +543,7 @@
 .homelab-dream-header {
     background: var(--rainbow-purple);
     color: var(--mac-white);
-    border-bottom: 2px solid var(--mac-black);
+    border-bottom: 2px solid var(--line);
 }
 
 .homelab-dream-intro {
@@ -560,8 +562,8 @@
 
 .homelab-dream-item {
     background: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     padding: 8px 10px;
     display: flex;
     gap: 8px;

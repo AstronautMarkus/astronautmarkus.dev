@@ -1,26 +1,20 @@
 .alert-card {
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .alert-header {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     display: flex;
     align-items: center;
     gap: 6px;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .alert-stripe {
     height: 4px;
-    background: repeating-linear-gradient(45deg,
-            var(--rainbow-green) 0 8px,
-            var(--rainbow-yellow) 8px 16px,
-            var(--rainbow-orange) 16px 24px,
-            var(--rainbow-red) 24px 32px,
-            var(--rainbow-purple) 32px 40px,
-            var(--rainbow-blue) 40px 48px);
+    background: var(--accent-stripe);
 }
 
 .alert-body {
@@ -63,8 +57,8 @@
     letter-spacing: 0.5px;
     color: var(--mac-white);
     padding: 2px 5px;
-    border-radius: 2px;
-    background: var(--mac-black);
+    border-radius: var(--radius-tag);
+    background: var(--badge-bg);
 }
 
 .alert-tag.security {
@@ -89,8 +83,8 @@
 }
 
 .alert-footer {
-    background: var(--mac-grey-2);
-    border-top: 1px solid var(--mac-black);
+    background: var(--bar-bg);
+    border-top: 1px solid var(--line);
     text-align: right;
     padding: 4px 8px;
     font-size: 9px;
@@ -105,17 +99,17 @@
 */
 
 .payday-card {
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .payday-header {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     display: flex;
     align-items: center;
     gap: 6px;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .payday-ribbon {
@@ -126,19 +120,13 @@
     color: var(--mac-black);
     background: var(--rainbow-yellow);
     padding: 2px 8px;
-    border-radius: 2px;
-    border: 1px solid var(--mac-black);
+    border-radius: var(--radius-tag);
+    border: 1px solid var(--line);
 }
 
 .payday-stripe {
     height: 4px;
-    background: repeating-linear-gradient(45deg,
-            var(--rainbow-green) 0 8px,
-            var(--rainbow-yellow) 8px 16px,
-            var(--rainbow-orange) 16px 24px,
-            var(--rainbow-red) 24px 32px,
-            var(--rainbow-purple) 32px 40px,
-            var(--rainbow-blue) 40px 48px);
+    background: var(--accent-stripe);
 }
 
 .payday-body {
@@ -171,9 +159,9 @@
     font-size: 9px;
     font-weight: bold;
     color: var(--mac-white);
-    background: var(--mac-black);
+    background: var(--badge-bg);
     padding: 3px 8px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
     letter-spacing: 0.3px;
 }
 
@@ -189,8 +177,8 @@
     align-items: flex-start;
     gap: 8px;
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     padding: 8px;
 }
 
@@ -242,8 +230,8 @@
     width: 100%;
     aspect-ratio: 4 / 3;
     padding: 0;
-    border: 1px solid var(--mac-black);
-    border-radius: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     overflow: hidden;
     cursor: pointer;
     background: var(--mac-white);
@@ -267,7 +255,7 @@
     font-style: italic;
     background: var(--mac-white);
     border: 1px dashed var(--mac-grey-4);
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
     padding: 14px;
     text-align: center;
 }
@@ -286,11 +274,11 @@
     font-size: 9.5px;
     font-weight: bold;
     color: var(--mac-black);
-    background: var(--mac-grey-2);
+    background: var(--button-bg);
     padding: 5px 10px;
     border-radius: var(--radius-button);
     text-decoration: none;
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
 }
 
 .payday-link-btn img {
@@ -300,18 +288,18 @@
 }
 
 .payday-link-btn:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .payday-link-btn.source {
     background: var(--mac-grey-6);
     color: var(--mac-white);
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .payday-link-btn.source:hover {
-    background: var(--mac-black);
+    background: var(--select-bg);
 }
 
 @media (max-width: 480px) {
@@ -326,23 +314,24 @@
 
 .welcome-card {
     background: var(--mac-white);
-    border: 2px solid var(--mac-black);
-    border-radius: 0;
-    padding: 2px;
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    padding: var(--card-inset);
+    overflow: clip;
     box-shadow: var(--shadow-flat-2);
     margin-bottom: 15px;
 }
 
 .card-header {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
     padding: 6px 10px;
     border-radius: 0;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .card-body {
@@ -370,7 +359,7 @@
     height: 180px;
     background: url('https://github.com/astronautmarkus.png') no-repeat center center;
     background-size: cover;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
     flex-shrink: 0;
     display: flex;
@@ -382,6 +371,7 @@
     font-weight: bold;
     font-size: 10px;
     text-align: center;
+    border-radius: var(--radius-card);
 }
 
 .news-table {
@@ -417,8 +407,8 @@
 }
 
 .news-footer {
-    background: var(--mac-grey-2);
-    border-top: 1px solid var(--mac-black);
+    background: var(--bar-bg);
+    border-top: 1px solid var(--line);
     text-align: right;
     padding: 4px 8px;
     font-size: 9px;

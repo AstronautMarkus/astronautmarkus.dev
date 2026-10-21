@@ -14,8 +14,8 @@
 
 <section class="welcome-card">
     <div class="card-header contact-banner-title">
-        <img src="{{ url_for('static', filename='images/icons/book_open.png') }}" class="icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Libro de Visitas
+        <img src="{{ icon('book_open.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Libro de Visitas
     </div>
     <div class="card-body">
         <div class="contact-banner-intro">
@@ -54,14 +54,14 @@
             {% if 'message' in field_errors %}<span class="field-error">El mensaje no puede estar vacío.</span>{% endif %}
         </div>
 
-        <button type="submit" class="contact-btn"><img src="{{ url_for('static', filename='images/icons/pencil.png') }}" alt="" class="nav-icon"> Firmar el Libro de Visitas</button>
+        <button type="submit" class="contact-btn"><img src="{{ icon('pencil.png') }}" alt="" class="nav-icon"> Firmar el Libro de Visitas</button>
 
     </form>
 </section>
 
 <section class="welcome-card">
     <div class="card-header">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Entradas
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Entradas
     </div>
 
     {% if entries %}

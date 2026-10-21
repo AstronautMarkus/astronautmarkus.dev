@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request, redirect, url_for, g, abort, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -26,6 +28,13 @@ from app.storage.url_cache import get_or_set as _cache_get_or_set
 # reuses the same link instead of hitting S3 on every page view.
 PRESIGNED_URL_TTL = 60 * 60 * 24  # 1 day
 PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
+
+# Public site skins: name -> switcher label. Each theme owns
+# static/images/icons/<name>/ (its theme-logo.png plus any icon overrides) and,
+# except the default, static/css/themes/<name>.css loaded last over tokens.css.
+THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X'}
+THEME_COOKIE_NAME = 'theme'
+DEFAULT_THEME     = 'system7'
 
 db             = SQLAlchemy()
 migrate        = Migrate()
@@ -114,6 +123,22 @@ def create_app():
 		)
 		return response
 
+	# ── Theme switcher route ──────────────────────────────────────
+	@app.get('/theme/<theme_name>')
+	def set_theme(theme_name):
+		theme = theme_name.lower()
+		if theme not in THEMES:
+			theme = DEFAULT_THEME
+
+		response = redirect(safe_redirect_target(request.args.get('next')))
+		response.set_cookie(
+			THEME_COOKIE_NAME,
+			theme,
+			max_age=60 * 60 * 24 * 365,
+			samesite='Lax',
+		)
+		return response
+
 	# ── Blueprints ────────────────────────────────────────────────
 	from app.routes.main import main_bp
 	app.register_blueprint(main_bp)
@@ -160,7 +185,6 @@ def create_app():
 	# reproducing that exact path keeps the fake directory listings pixel-for-pixel authentic.
 	@app.get('/icons/<path:filename>')
 	def serve_apache_icon(filename):
-		import os
 		icons_dir = os.path.join(app.static_folder, 'apache_icons')
 		return send_from_directory(icons_dir, filename)
 
@@ -224,9 +248,24 @@ def create_app():
 
 	@app.context_processor
 	def inject_globals():
+		theme = request.cookies.get(THEME_COOKIE_NAME)
+		if theme not in THEMES:
+			theme = DEFAULT_THEME
+
+		def icon(name):
+			# Themes only ship the icons they restyle; the rest come from the default set.
+			path = f'images/icons/{theme}/{name}'
+			if not os.path.isfile(os.path.join(app.static_folder, path)):
+				path = f'images/icons/{DEFAULT_THEME}/{name}'
+			return url_for('static', filename=path)
+
 		return {
 			'current_year': datetime.now().year,
 			'current_lang': get_current_language(),
+			'themes': THEMES,
+			'current_theme': theme,
+			'icon': icon,
+			'theme_stylesheet': None if theme == DEFAULT_THEME else f'css/themes/{theme}.css',
 			'storage_url': _storage_url,
 			'cv_url': _cv_url(),
 		}

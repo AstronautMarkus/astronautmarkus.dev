@@ -73,7 +73,7 @@
     font-family: var(--font-chrome);
     font-size: 9.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.4px;
     color: var(--mac-black);
     margin-bottom: 4px;
@@ -88,8 +88,8 @@
 .form-group textarea {
     padding: 7px 9px;
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-field);
     color: var(--mac-black);
     font-size: 11px;
     font-family: inherit;
@@ -100,8 +100,8 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-    outline: 1px dashed var(--mac-black);
-    outline-offset: 2px;
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
 }
 
 .form-group.has-error input,
@@ -131,20 +131,20 @@
     font-family: var(--font-chrome);
     font-size: 10.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.4px;
     color: var(--mac-black);
-    background: var(--mac-grey-2);
-    border: 1px solid var(--mac-black);
-    border-top: 3px solid var(--rainbow-orange);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
+    border-top: var(--button-accent);
     border-radius: var(--radius-button);
     padding: 8px 18px;
     cursor: pointer;
 }
 
 .contact-btn:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .contact-btn:disabled {

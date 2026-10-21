@@ -51,13 +51,13 @@
 <div class="portfolio-links-bar">
     {% if project.project_url %}
     <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn">
-        <img src="{{ url_for('static', filename='images/icons/rocket.png') }}" alt="">
+        <img src="{{ icon('rocket.png') }}" alt="">
         Visit Project
     </a>
     {% endif %}
     {% if project.github_repo_url %}
     <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn source">
-        <img src="{{ url_for('static', filename='images/icons/open_source.png') }}" alt="">
+        <img src="{{ icon('open_source.png') }}" alt="">
         View Source
     </a>
     {% endif %}
@@ -74,7 +74,7 @@
 
 {% if project.extra_images %}
 <div class="post-gallery">
-    <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Project Screenshots</h4>
+    <h4><img src="{{ icon('photos.png') }}" class="pixel-icon-inline" alt="">Project Screenshots</h4>
     <div class="post-gallery-grid">
         {% for img in project.extra_images %}
         <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}" class="modal-image"

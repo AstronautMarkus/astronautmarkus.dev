@@ -45,8 +45,8 @@
 
 <section class="welcome-card">
     <div class="card-header blog-banner-title">
-        <img src="{{ url_for('static', filename='images/icons/newspaper.png') }}" class="pixel-icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Blog{% if current_category %} · {{ current_category.name_es if current_category.has_es and current_category.name_es else current_category.name }}{% endif %}
+        <img src="{{ icon('newspaper.png') }}" class="pixel-icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Blog{% if current_category %} · {{ current_category.name_es if current_category.has_es and current_category.name_es else current_category.name }}{% endif %}
     </div>
     <div class="card-body">
         <div class="blog-banner-intro">
@@ -62,7 +62,7 @@
         {% if posts %}
         <section class="welcome-card">
             <div class="card-header">
-                <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Publicaciones
+                <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Publicaciones
             </div>
 
             {% for post in posts %}
@@ -134,7 +134,7 @@
         {% else %}
         <section class="welcome-card">
             <div class="card-header">
-                <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Publicaciones
+                <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Publicaciones
             </div>
             <div class="card-body">
                 <div class="card-text">No hay publicaciones todavía. Vuelve pronto.</div>
@@ -147,7 +147,7 @@
     <div id="blog-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/category.png') }}" class="pixel-icon-inline" alt="">Categorías</h4>
+            <h4><img src="{{ icon('category.png') }}" class="pixel-icon-inline" alt="">Categorías</h4>
             <ul>
                 <li>
                     <a href="{{ url_for('main.blog_list') }}"
@@ -171,7 +171,7 @@
         </div>
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/bell.png') }}" class="pixel-icon-inline" alt="">Suscríbete</h4>
+            <h4><img src="{{ icon('bell.png') }}" class="pixel-icon-inline" alt="">Suscríbete</h4>
             <ul>
                 <li>
                     <a href="{{ url_for('main.blog_rss', lang='es') }}" type="application/rss+xml">Feed RSS</a>
@@ -180,7 +180,7 @@
         </div>
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/note.png') }}" class="pixel-icon-inline" alt="">Publicaciones recientes</h4>
+            <h4><img src="{{ icon('note.png') }}" class="pixel-icon-inline" alt="">Publicaciones recientes</h4>
             <ul>
                 {% for post in posts[:5] %}
                 {% set p_title = post.title_es if post.has_es and post.title_es else post.title %}

@@ -1,0 +1,209 @@
+/* Mac OS X Aqua (10.2/10.3). Loaded after every other stylesheet when the
+   theme cookie is "macosx". Mostly token overrides; the rules at the bottom are
+   the bits of Aqua chrome that tokens alone can't express. */
+:root {
+    /* blue-grey Aqua ramp in place of the System 7 greys */
+    --mac-white: #ffffff;
+    --mac-grey-1: #eef4fb;
+    --mac-grey-2: #dce8f5;
+    --mac-grey-3: #c5d7ec;
+    --mac-grey-4: #8199b6;
+    --mac-grey-5: #6f8db0;
+    --mac-grey-6: #33506f;
+    --mac-black: #1a2f4a;
+
+    --shadow-flat-1: 0 1px 2px rgba(30, 74, 124, 0.3);
+    --shadow-flat-2: 0 3px 10px rgba(30, 74, 124, 0.22);
+    --shadow-flat-3: 0 14px 40px rgba(5, 30, 70, 0.55);
+    --radius-button: 12px;
+
+    /* Garamond stays: it was Apple's marketing face in the Aqua years */
+    --font-chrome: 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    --font-body: 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    --font-mono: Monaco, 'Lucida Console', ui-monospace, Menlo, monospace;
+
+    --aqua-ink: #153c67;
+    --aqua-gel: linear-gradient(#76b9f8, #3a95e8 48%, #1672c5 52%, #0758a7);
+    --aqua-glass: linear-gradient(#ffffff, #eef3f9 48%, #dbe5f1 52%, #f3f7fc);
+
+    /* theme layer */
+    --line: #a9c2df;
+    --frame: 1px solid #8fa9c8;
+    --radius-card: 8px;
+    --radius-tag: 4px;
+    --radius-field: 3px;
+    --card-inset: 0px;
+
+    --chrome-case: none;
+    --chrome-size: 11px;
+    --chrome-weight: normal;
+    --bar-bg: linear-gradient(#f8fcff, #dbe9f8 48%, #c6dcf3 52%, #e5f0fc);
+    --bar-rule: 1px solid var(--line);
+    --bar-rule-image: none;
+    --titlebar-bg: linear-gradient(#e8f4ff, #bcd6f1 48%, #a7c9ed 52%, #d5e7f9);
+    --toolbar-bg: var(--bar-bg);
+    --sidebar-bg: repeating-linear-gradient(0deg, #eef4fb 0 2px, #e3ecf7 2px 4px);
+
+    --button-bg: var(--aqua-glass);
+    --button-accent: 1px solid var(--line);
+    --select-bg: var(--aqua-gel);
+    --select-text: #ffffff;
+    --badge-bg: linear-gradient(#8ea3bb, #5d7189 50%, #4a5d74);
+    --focus-ring: 3px solid rgba(63, 145, 230, 0.6);
+    --focus-offset: 0px;
+    --scroll-thumb: #3a95e8;
+    --scroll-thumb-hover: #1672c5;
+    --scroll-track: var(--mac-grey-1);
+
+    --desktop-bg: radial-gradient(ellipse at 50% 0%, #6db3f2 0%, #2f78c8 45%, #0f4689 100%) fixed;
+    /* the gradient shows through until/unless the banner image loads */
+    --banner-image: url('/static/images/banner-aqua.png'), linear-gradient(#6fb6f5, #1a6fc4 55%, #0c4f9c);
+    --accent-stripe: repeating-linear-gradient(45deg, #3a95e8 0 8px, #a9d4ff 8px 16px);
+}
+
+a {
+    color: #0b5cad;
+}
+
+.rainbow-bar {
+    display: none;
+}
+
+/* glossy icons (images/icons/macosx/) want smooth scaling, not System 7 pixels */
+.nav-icon,
+.logo-icon {
+    image-rendering: auto;
+}
+
+/* Window title bar: traffic lights drawn as one decorative pseudo-element */
+.header-top-nav {
+    position: relative;
+    padding: 4px 12px 4px 72px;
+    color: var(--aqua-ink);
+}
+
+.header-top-nav::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    width: 52px;
+    height: 12px;
+    transform: translateY(-50%);
+    background:
+        radial-gradient(circle at 6px 4px, rgba(255, 255, 255, 0.8) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 26px 4px, rgba(255, 255, 255, 0.8) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 46px 4px, rgba(255, 255, 255, 0.8) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 6px 6px, #ee453f 0 4.5px, #ad3535 5px 5.5px, transparent 6px),
+        radial-gradient(circle at 26px 6px, #e8b22a 0 4.5px, #ad8a25 5px 5.5px, transparent 6px),
+        radial-gradient(circle at 46px 6px, #48b82e 0 4.5px, #3d8f2c 5px 5.5px, transparent 6px);
+}
+
+.header-top-nav a,
+.main-nav a {
+    margin-left: 4px;
+    padding: 2px 9px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    color: var(--aqua-ink);
+}
+
+/* a plain inline link only sizes to its text, so the 16px icon poked out of the pill */
+.header-top-nav a {
+    display: inline-flex;
+    align-items: center;
+}
+
+.header-top-nav a.active {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.65);
+    border-color: #89acd2;
+}
+
+.logo-title {
+    -webkit-text-stroke: 0;
+    text-shadow: 0 1px 2px rgba(0, 30, 80, 0.8), 0 0 14px rgba(120, 190, 255, 0.6);
+}
+
+.logo-subtitle {
+    text-shadow: 0 1px 2px rgba(0, 30, 80, 0.8);
+}
+
+.main-nav {
+    padding: 5px 6px;
+}
+
+.nav-dropdown-menu {
+    padding: 4px 0;
+    border-radius: 0 0 6px 6px;
+}
+
+.nav-dropdown-menu a {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+}
+
+.panel-header {
+    color: var(--aqua-ink);
+}
+
+.menu-list li {
+    border-bottom-color: var(--mac-grey-2);
+}
+
+/* Gel text needs the engraved shadow to read on the blue */
+.header-top-nav a:hover,
+.main-nav a:hover,
+.menu-list a:hover {
+    border-color: #2a6fb8;
+    text-shadow: 0 -1px 0 rgba(0, 40, 100, 0.5);
+}
+
+/* Tag-level push-buttons are Aqua's default (pulsing-blue) button */
+button,
+input[type="submit"],
+input[type="button"] {
+    background: var(--aqua-gel);
+    color: #ffffff;
+    border-color: #2a6fb8;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background: linear-gradient(#8fcbff, #4aa3f0 48%, #2080d6 52%, #1a6cc0);
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    background: linear-gradient(#4f97dd, #1f6fc0 48%, #0b5aa8 52%, #064a8c);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="tel"],
+textarea,
+select {
+    box-shadow: inset 0 1px 2px rgba(26, 47, 74, 0.2);
+}
+
+footer {
+    color: var(--mac-grey-6);
+}
+
+footer a {
+    color: #0b5cad;
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        border: 0;
+    }
+}

@@ -1,22 +1,23 @@
 .about-card {
     background: var(--mac-white);
-    border: 2px solid var(--mac-black);
-    border-radius: 0;
-    padding: 2px;
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    padding: var(--card-inset);
+    overflow: clip;
     box-shadow: var(--shadow-flat-2);
     margin-bottom: 15px;
 }
 
 .about-card-header {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
     padding: 6px 10px;
     border-radius: 0;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .about-card-body {
@@ -34,9 +35,10 @@
     height: 180px;
     background: url('/static/images/home/profile.jpg') no-repeat center center;
     background-size: cover;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
     flex-shrink: 0;
+    border-radius: var(--radius-card);
 }
 
 .bio-text {
@@ -73,7 +75,7 @@
     font-size: 9px;
     font-weight: bold;
     color: var(--mac-black);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.5px;
     margin-bottom: 5px;
     border-bottom: 1px solid var(--mac-grey-4);
@@ -88,12 +90,12 @@
 
 .tag {
     background: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     color: var(--mac-black);
     font-size: 9px;
     font-weight: bold;
     padding: 3px 7px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
 }
 
 /* Timeline */
@@ -139,8 +141,8 @@
 
 .fact-item {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     padding: 8px;
     font-size: 10px;
     line-height: 1.4;
@@ -153,7 +155,7 @@
     font-size: 9px;
     font-weight: bold;
     color: var(--mac-black);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     margin-bottom: 3px;
 }
 

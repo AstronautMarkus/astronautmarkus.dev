@@ -32,4 +32,48 @@
     --font-body: 'Arimo', Helvetica, Arial, sans-serif;
     --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
     --font-wordmark: 'EB Garamond', Georgia, 'Times New Roman', serif;
+
+    /* ── Theme layer ───────────────────────────────────────────────────────
+       Page CSS reaches anything a theme may reshape through these, never
+       through raw values. Defaults below are the System 7 look; a theme in
+       css/themes/<name>.css overrides them (plus the primitives above). */
+
+    /* lines and shapes */
+    --line: var(--mac-black);
+    --frame: 2px solid var(--mac-black);
+    --radius-card: 0px;
+    --radius-tag: 2px;
+    --radius-field: 0px;
+    --card-inset: 2px;
+
+    /* chrome: title bars, toolbars, labels */
+    --chrome-case: uppercase;
+    --chrome-size: 10px;
+    --chrome-weight: bold;
+    --bar-bg: var(--mac-grey-2);
+    --bar-rule: 3px solid;
+    --bar-rule-image: var(--rainbow-gradient) 1;
+    --titlebar-bg: repeating-linear-gradient(to bottom, var(--mac-white) 0 1px, var(--mac-grey-2) 1px 2px);
+    --toolbar-bg: var(--titlebar-bg);
+    --sidebar-bg: var(--mac-grey-2);
+
+    /* controls and states */
+    --button-bg: var(--mac-grey-2);
+    --button-accent: 3px solid var(--rainbow-orange);
+    --select-bg: var(--mac-black);
+    --select-text: var(--mac-white);
+    --badge-bg: var(--mac-black);
+    --focus-ring: 1px dashed var(--mac-black);
+    --focus-offset: 2px;
+    --scroll-thumb: var(--mac-grey-5);
+    --scroll-thumb-hover: var(--mac-grey-6);
+    --scroll-track: var(--mac-grey-1);
+
+    /* surfaces and art */
+    --desktop-bg: radial-gradient(var(--mac-grey-5) 1px, transparent 0) 0 0 / 4px 4px var(--mac-grey-3);
+    --banner-image: url('/static/images/banner.png');
+    --accent-stripe: repeating-linear-gradient(45deg,
+            var(--rainbow-green) 0 8px, var(--rainbow-yellow) 8px 16px,
+            var(--rainbow-orange) 16px 24px, var(--rainbow-red) 24px 32px,
+            var(--rainbow-purple) 32px 40px, var(--rainbow-blue) 40px 48px);
 }

@@ -13,8 +13,8 @@
 
 <section class="welcome-card">
     <div class="card-header gallery-banner-title">
-        <img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="icon" alt="">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Galería
+        <img src="{{ icon('photos.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Galería
     </div>
     <div class="card-body">
         <div class="gallery-banner-intro">
@@ -25,7 +25,7 @@
 
 <section class="welcome-card">
     <div class="card-header">
-        <img src="{{ url_for('static', filename='images/icons/bullet_arrow_right.png') }}" alt="" class="nav-icon"> Fotos
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Fotos
     </div>
 
     {% if photos %}

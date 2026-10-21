@@ -78,8 +78,8 @@
 
 .blog-sidebar-box {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     overflow: hidden;
     /* Flex children of the sticky column default to flex-shrink: 1, which
        squeezes this box below its content height (clipped by overflow:
@@ -92,15 +92,15 @@
 .blog-sidebar-box h4 {
     display: flex;
     align-items: center;
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
     font-size: 10px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     padding: 5px 8px;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .blog-sidebar-box ul {
@@ -130,13 +130,13 @@
 }
 
 .blog-sidebar-box a:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .blog-sidebar-box a.blog-cat-active {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 /* "Post Info" box: plain label/value lines, some with an inline link mixed
@@ -147,7 +147,7 @@
     font-size: 9.5px;
     font-weight: bold;
     color: var(--mac-black);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
 }
 
 .sidebar-info-list a {
@@ -183,7 +183,8 @@
     height: 90px;
     object-fit: cover;
     display: block;
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     box-shadow: var(--shadow-flat-1);
 }
 
@@ -195,7 +196,8 @@
     background-image: repeating-linear-gradient(45deg,
             var(--mac-grey-1) 0 8px,
             var(--mac-grey-2) 8px 16px);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     box-shadow: var(--shadow-flat-1);
 }
 
@@ -211,7 +213,7 @@
     font-size: 9px;
     font-weight: bold;
     color: var(--mac-grey-6);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     margin-bottom: 3px;
 }
 
@@ -252,26 +254,26 @@
     font-family: var(--font-chrome);
     font-size: 8.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     color: var(--mac-black);
-    background: var(--mac-grey-2);
-    border: 1px solid var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     padding: 3px 8px;
     text-decoration: none;
 }
 
 .blog-read-more:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 /* ── Pagination ────────────────────────────────────────────────────────── */
 /* Footer bar inside the .welcome-card, same idiom as .news-footer/.alert-footer. */
 
 .blog-pagination-footer {
-    background: var(--mac-grey-2);
-    border-top: 1px solid var(--mac-black);
+    background: var(--bar-bg);
+    border-top: 1px solid var(--line);
     padding: 6px 8px;
 }
 
@@ -292,20 +294,20 @@
     font-weight: bold;
     color: var(--mac-black);
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     text-decoration: none;
 }
 
 .blog-page-btn:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .blog-page-btn.current {
-    background: var(--mac-black);
-    border-color: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    border-color: var(--line);
+    color: var(--select-text);
 }
 
 .blog-page-btn.disabled {
@@ -321,8 +323,9 @@
 .post-cover-wrap {
     position: relative;
     margin-bottom: 12px;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
 }
 
 .post-cover-img {
@@ -367,7 +370,7 @@
     font-size: 9.5px;
     font-weight: bold;
     color: var(--mac-grey-6);
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     margin-bottom: 10px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--mac-grey-4);
@@ -376,15 +379,15 @@
 .post-meta-cat {
     color: var(--mac-black);
     background: var(--mac-grey-2);
-    border: 1px solid var(--mac-black);
-    border-radius: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
     padding: 2px 6px;
     text-decoration: none;
 }
 
 .post-meta-cat:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .post-meta-lang a {
@@ -420,8 +423,8 @@
 .prose h1 {
     font-size: 15px;
     padding-bottom: 6px;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .prose h2 {
@@ -439,7 +442,7 @@
 .prose h5,
 .prose h6 {
     font-size: 11px;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     color: var(--mac-grey-6);
 }
 
@@ -465,7 +468,7 @@
 }
 
 .prose blockquote {
-    border-left: 4px solid var(--mac-black);
+    border-left: 4px solid var(--line);
     background: var(--mac-grey-1);
     color: var(--mac-black);
     padding: 6px 10px;
@@ -488,8 +491,9 @@
     width: auto;
     height: auto;
     margin: 0 auto;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
 }
 
 .prose iframe {
@@ -497,8 +501,9 @@
     max-width: 100%;
     max-height: 420px;
     margin: 0 auto;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
 }
 
 .prose code {
@@ -518,22 +523,23 @@
     background: var(--mac-grey-6);
     padding: 10px 12px;
     overflow-x: auto;
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
 }
 
 .code-copy-btn {
     position: absolute;
     top: 6px;
     right: 6px;
-    background: var(--mac-grey-2);
+    background: var(--button-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
     font-size: 9px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.3px;
     padding: 3px 8px;
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     cursor: pointer;
     opacity: 0.85;
@@ -542,15 +548,15 @@
 
 .code-copy-btn:hover {
     opacity: 1;
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .code-copy-btn.copied {
     opacity: 1;
     background: var(--rainbow-green);
     color: var(--mac-black);
-    border-color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .prose pre code {
@@ -570,13 +576,13 @@
 
 .prose th,
 .prose td {
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     padding: 5px 7px;
     text-align: left;
 }
 
 .prose th {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
 }
 
@@ -596,7 +602,7 @@
     font-family: var(--font-chrome);
     font-size: 10px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     color: var(--mac-black);
     margin-bottom: 6px;
 }
@@ -611,8 +617,9 @@
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-1);
+    border-radius: var(--radius-card);
 }
 
 /* CRT power-on flicker, staggered per-thumbnail as it enters view */
@@ -690,18 +697,18 @@
     font-family: var(--font-chrome);
     font-size: 9.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     color: var(--mac-black);
-    background: var(--mac-grey-2);
-    border: 1px solid var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
     border-radius: var(--radius-button);
     padding: 5px 10px;
     text-decoration: none;
 }
 
 .post-back:hover {
-    background: var(--mac-black);
-    color: var(--mac-white);
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 /* ── Table of contents ────────────────────────────────────────────────── */
@@ -725,7 +732,7 @@
     min-height: 40px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--mac-grey-5) var(--mac-grey-1);
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
 }
 
 #toc-list::-webkit-scrollbar {
@@ -733,16 +740,16 @@
 }
 
 #toc-list::-webkit-scrollbar-track {
-    background: var(--mac-grey-1);
+    background: var(--scroll-track);
 }
 
 #toc-list::-webkit-scrollbar-thumb {
-    background: var(--mac-grey-5);
+    background: var(--scroll-thumb);
     border-radius: 2px;
 }
 
 #toc-list::-webkit-scrollbar-thumb:hover {
-    background: var(--mac-grey-6);
+    background: var(--scroll-thumb-hover);
 }
 
 #toc-list li {
@@ -770,8 +777,8 @@
 }
 
 #toc-list a:hover {
-    background: var(--mac-black) !important;
-    color: var(--mac-white) !important;
+    background: var(--select-bg) !important;
+    color: var(--select-text) !important;
 }
 
 #toc-list a.toc-active {

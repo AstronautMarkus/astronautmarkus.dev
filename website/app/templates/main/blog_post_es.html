@@ -69,7 +69,7 @@
 
         {% if post.images %}
         <div class="post-gallery">
-            <h4><img src="{{ url_for('static', filename='images/icons/photos.png') }}" class="pixel-icon-inline" alt="">Imágenes del Post</h4>
+            <h4><img src="{{ icon('photos.png') }}" class="pixel-icon-inline" alt="">Imágenes del Post</h4>
             <div class="post-gallery-grid">
                 {% for img in post.images %}
                 <img src="{{ storage_url(img.image_path) }}" alt="Imagen {{ loop.index }}" class="modal-image"
@@ -86,7 +86,7 @@
     <div id="post-sidebar">
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/information.png') }}" class="pixel-icon-inline" alt="">Info del Post</h4>
+            <h4><img src="{{ icon('information.png') }}" class="pixel-icon-inline" alt="">Info del Post</h4>
             <ul class="sidebar-info-list">
                 <li>Publicado: {{ post.created_at | dtfmt('%d %b %Y') }}</li>
                 <li>Visitas: {{ post.view_count }}</li>
@@ -111,14 +111,14 @@
         </div>
 
         <div class="blog-sidebar-box" id="toc-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/application_view_list.png') }}" class="pixel-icon-inline" alt="">Contenido</h4>
+            <h4><img src="{{ icon('application_view_list.png') }}" class="pixel-icon-inline" alt="">Contenido</h4>
             <ul id="toc-list">
                 <li class="toc-empty">No hay encabezados.</li>
             </ul>
         </div>
 
         <div class="blog-sidebar-box">
-            <h4><img src="{{ url_for('static', filename='images/icons/share.png') }}" class="pixel-icon-inline" alt="">Compartir</h4>
+            <h4><img src="{{ icon('share.png') }}" class="pixel-icon-inline" alt="">Compartir</h4>
             <ul>
                 <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
                        target="_blank" rel="noopener noreferrer">Compartir en Twitter/X</a></li>

@@ -1,0 +1,49 @@
+Icons in this folder (except theme-logo.png and apple.png) are from the Crystal Clear
+icon set by Everaldo Coelho, licensed under the GNU LGPL 2.1 or later:
+https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+Source: Wikimedia Commons, https://commons.wikimedia.org/wiki/Crystal_Clear
+Modifications: scaled down to 32x32 px.
+
+theme-logo.png and apple.png are derived from the Apple logo on Wikimedia Commons;
+the Apple logo is a trademark of Apple Inc.
+
+File mapping (this folder -> Commons file):
+administrator.png -> File:Crystal Clear app personal admin.png
+application_view_list.png -> File:Crystal Clear action view detailed.png
+arrow_refresh.png -> File:Crystal Clear action reload.png
+bell.png -> File:Crystal Clear app bell.png
+book_open.png -> File:Crystal Clear app kaddressbook.png
+brain.png -> File:Crystal Clear app ktip.png
+briefcase.png -> File:Crystal Clear app my documents.png
+bullet_arrow_right.png -> File:Crystal Clear action player play.png
+category.png -> File:Crystal Clear action view icon.png
+chart_line.png -> File:Crystal Clear app kchart.png
+computer_error.png -> File:Crystal Clear app virus detected.png
+cross.png -> File:Crystal Clear action button cancel.png
+download_for_linux.png -> File:Crystal Clear app download manager.png
+ecommerce_server.png -> File:Crystal Clear app warehause.png
+email.png -> File:Crystal Clear app email.png
+house.png -> File:Crystal Clear app kfm home.png
+information.png -> File:Crystal Clear action info.png
+layer.png -> File:Crystal Clear app 3d.png
+newspaper.png -> File:Crystal Clear app kontact.png
+note.png -> File:Crystal Clear app knotes.png
+open_source.png -> File:Crystal Clear app package.png
+page_white_acrobat.png -> File:Crystal Clear mimetype pdf.png
+pc_linux_os.png -> File:Crystal Clear app tux.png
+pencil.png -> File:Crystal Clear action edit.png
+photos.png -> File:Crystal Clear app lphoto.png
+prohibition_button.png -> File:Crystal Clear action stop.png
+resultset_next.png -> File:Crystal Clear action forward.png
+resultset_previous.png -> File:Crystal Clear action back.png
+rocket.png -> File:Crystal Clear app launch.png
+server_database.png -> File:Crystal Clear app database.png
+servers.png -> File:Crystal Clear app network local.png
+share.png -> File:Crystal Clear action share.png
+shop_network.png -> File:Crystal Clear app internet.png
+tick_circle_frame.png -> File:Crystal Clear action apply.png
+timeline.png -> File:Crystal Clear action history.png
+toolbox.png -> File:Crystal Clear app package utilities.png
+vcard.png -> File:Crystal Clear mimetype vcard.png
+warning.png -> File:Crystal Clear app error.png
+wrench.png -> File:Crystal Clear action configure.png

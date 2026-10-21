@@ -6,23 +6,24 @@
 
 .setup-card {
     background: var(--mac-white);
-    border: 2px solid var(--mac-black);
-    border-radius: 0;
-    padding: 2px;
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    padding: var(--card-inset);
+    overflow: clip;
     box-shadow: var(--shadow-flat-2);
     margin-bottom: 15px;
 }
 
 .setup-card-header {
-    background: var(--mac-grey-2);
+    background: var(--bar-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
     font-size: 11px;
     font-weight: bold;
     padding: 6px 10px;
     border-radius: 0;
-    border-bottom: 3px solid;
-    border-image: var(--rainbow-gradient) 1;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -49,8 +50,9 @@
     height: 165px;
     object-fit: cover;
     display: block;
-    border: 2px solid var(--mac-black);
+    border: var(--frame);
     box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
 }
 
 .setup-hero-text {
@@ -87,8 +89,8 @@
 
 .setup-item {
     background: var(--mac-white);
-    border: 1px solid var(--mac-black);
-    border-radius: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow-flat-1);
     overflow: hidden;
     display: flex;
@@ -100,7 +102,7 @@
     height: 130px;
     object-fit: cover;
     display: block;
-    border-bottom: 1px solid var(--mac-black);
+    border-bottom: 1px solid var(--line);
     background: var(--mac-grey-1);
 }
 
@@ -125,13 +127,13 @@
     font-family: var(--font-chrome);
     font-size: 8.5px;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: var(--chrome-case);
     letter-spacing: 0.4px;
     color: var(--mac-white);
-    background: var(--mac-black);
+    background: var(--badge-bg);
     display: inline-block;
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
     align-self: flex-start;
 }
 
@@ -150,12 +152,12 @@
 
 .setup-tag {
     background: var(--mac-grey-1);
-    border: 1px solid var(--mac-black);
+    border: 1px solid var(--line);
     color: var(--mac-black);
     font-size: 8.5px;
     font-weight: bold;
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: var(--radius-tag);
 }
 
 @media (max-width: 480px) {
