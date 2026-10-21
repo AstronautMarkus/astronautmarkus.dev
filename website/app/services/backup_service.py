@@ -1,8 +1,13 @@
+import gzip
+from datetime import datetime
+
 from pymysql.converters import encoders, escape_sequence
 from sqlalchemy import inspect, text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app import db
+from app.models.models import Backup
+from app.storage import storage
 
 # Binary values as hex literals: PyMySQL's default bytes encoder emits raw
 # bytes that would not survive the UTF-8 text dump.
@@ -23,7 +28,8 @@ class BackupError(Exception):
 
 
 def generate_data_dump() -> bytes:
-    """Build a data-only, row-per-INSERT SQL dump of the app database in Python.
+    """Build a gzip-compressed, data-only, row-per-INSERT SQL dump of the app
+    database in Python (restore with `gunzip < dump.sql.gz | mysql <db>`).
 
     No table structure (schema is expected to already exist wherever the dump
     is restored), one row per INSERT so a human can read/diff the file, and
@@ -50,4 +56,18 @@ def generate_data_dump() -> bytes:
         raise BackupError(f'Backup query failed: {exc}') from exc
 
     lines.append(_FOOTER)
-    return ''.join(lines).encode('utf-8')
+    return gzip.compress(''.join(lines).encode('utf-8'))
+
+
+def create_backup() -> Backup:
+    """Generate a dump, store it via the configured storage driver (local or
+    S3) and record it so it shows up in the admin backups list."""
+    dump_bytes = generate_data_dump()
+    filename = f"backup_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.sql.gz"
+    path = f'backups/{filename}'
+    storage.put(path, dump_bytes, content_type='application/gzip')
+
+    backup = Backup(filename=filename, file_path=path, size_bytes=len(dump_bytes))
+    db.session.add(backup)
+    db.session.commit()
+    return backup

@@ -1,4 +1,3 @@
-from datetime import datetime
 from io import BytesIO
 
 from flask import flash, redirect, render_template, request, send_file, url_for
@@ -8,7 +7,7 @@ from app import db
 from app.i18n import t
 from app.models.models import Backup
 from app.routes.admin import admin_bp
-from app.services.backup_service import BackupError, generate_data_dump
+from app.services.backup_service import BackupError, create_backup
 from app.storage import storage
 
 PER_PAGE = 50
@@ -28,20 +27,12 @@ def backups_list():
 @login_required
 def backups_generate():
     try:
-        dump_bytes = generate_data_dump()
+        backup = create_backup()
     except BackupError as exc:
         flash(str(exc), 'error')
         return redirect(url_for('admin.backups_list'))
 
-    filename = f"backup_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.sql"
-    path = f'backups/{filename}'
-    storage.put(path, dump_bytes, content_type='application/sql')
-
-    backup = Backup(filename=filename, file_path=path, size_bytes=len(dump_bytes))
-    db.session.add(backup)
-    db.session.commit()
-
-    flash(t('flash.backup_generated', filename=filename, kb=len(dump_bytes) // 1024), 'success')
+    flash(t('flash.backup_generated', filename=backup.filename, kb=backup.size_bytes // 1024), 'success')
     return redirect(url_for('admin.backups_list'))
 
 
@@ -56,7 +47,8 @@ def backups_download(backup_id):
     data = storage.get(backup.file_path)
     return send_file(
         BytesIO(data),
-        mimetype='application/sql',
+        # Older backups were stored as plain .sql before dumps were gzipped.
+        mimetype='application/gzip' if backup.filename.endswith('.gz') else 'application/sql',
         as_attachment=True,
         download_name=backup.filename,
     )
