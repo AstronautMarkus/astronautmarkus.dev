@@ -128,12 +128,13 @@
     background: var(--mac-grey-1);
 }
 
-.blog-sidebar-box a:hover {
+/* "li" keeps these as specific as the even-row stripe above, so they win on even rows too */
+.blog-sidebar-box li a:hover {
     background: var(--select-bg);
     color: var(--select-text);
 }
 
-.blog-sidebar-box a.blog-cat-active {
+.blog-sidebar-box li a.blog-cat-active {
     background: var(--select-bg);
     color: var(--select-text);
 }
