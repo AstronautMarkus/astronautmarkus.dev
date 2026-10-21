@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 
 from app import db
 from app.i18n import t
-from app.models.models import BlogCategory, BlogPost, BlogPostImage, BlogTag
+from app.models.models import BlogCategory, BlogPost, BlogPostImage, BlogPostView, BlogTag
 from app.routes.admin import admin_bp
 from app.services.ai_service import AIServiceError, is_enabled, suggest_blog_metadata
 from app.storage import storage
@@ -25,6 +25,11 @@ def _allowed_md(filename: str) -> bool:
 
 def _allowed_img(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_IMG
+
+
+def _post_files(post) -> list[str]:
+    paths = [post.cover_image_path, post.markdown_path, post.markdown_path_es]
+    return [p for p in paths if p] + [img.image_path for img in post.images]
 
 
 def _store_md(file, dest_path: str) -> bool:
@@ -365,18 +370,15 @@ def blog_post_delete(post_id):
         flash(t('flash.post_not_found'), 'error')
         return redirect(url_for('admin.blog_posts_list'))
 
-    if post.cover_image_path:
-        storage.delete(post.cover_image_path)
-    if post.markdown_path:
-        storage.delete(post.markdown_path)
-    if post.markdown_path_es:
-        storage.delete(post.markdown_path_es)
-    for img in post.images:
-        storage.delete(img.image_path)
-
     title = post.title
+    files = _post_files(post)
+    # Also covered by ON DELETE CASCADE in the model; kept so deletes work on a DB that predates it.
+    BlogPostView.query.filter_by(post_id=post.id).delete()
     db.session.delete(post)
     db.session.commit()
+    # Files go only after the commit, so a failed delete can't leave a post without its content.
+    for path in files:
+        storage.delete(path)
     flash(t('flash.post_deleted', title=title), 'success')
     return redirect(url_for('admin.blog_posts_list'))
 
@@ -387,22 +389,15 @@ def blog_posts_bulk_delete():
     ids = request.form.getlist('post_ids', type=int)
     if ids:
         posts = BlogPost.query.filter(BlogPost.id.in_(ids)).all()
+        files = [path for post in posts for path in _post_files(post)]
+        BlogPostView.query.filter(BlogPostView.post_id.in_(ids)).delete(synchronize_session=False)
+        # Per-object delete (not Query.delete) so the images/tags cascades run.
         for post in posts:
-            if post.cover_image_path:
-                storage.delete(post.cover_image_path)
-            if post.markdown_path:
-                storage.delete(post.markdown_path)
-            if post.markdown_path_es:
-                storage.delete(post.markdown_path_es)
-            for img in post.images:
-                storage.delete(img.image_path)
-        deleted = (
-            BlogPost.query
-            .filter(BlogPost.id.in_(ids))
-            .delete(synchronize_session=False)
-        )
+            db.session.delete(post)
         db.session.commit()
-        flash(t('flash.posts_bulk_deleted', n=deleted), 'success')
+        for path in files:
+            storage.delete(path)
+        flash(t('flash.posts_bulk_deleted', n=len(posts)), 'success')
     else:
         flash(t('flash.no_posts_selected'), 'error')
     return redirect(url_for('admin.blog_posts_list'))

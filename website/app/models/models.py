@@ -50,7 +50,7 @@ class PortfolioProject(db.Model):
 
 class ExtraPortfolioImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id', ondelete='CASCADE'), nullable=False)
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
@@ -105,8 +105,8 @@ class BlogCategory(db.Model):
 
 blog_post_tags = db.Table(
     'blog_post_tags',
-    db.Column('post_id', db.Integer, db.ForeignKey('blog_post.id'), primary_key=True),
-    db.Column('tag_id', db.Integer, db.ForeignKey('blog_tag.id'), primary_key=True),
+    db.Column('post_id', db.Integer, db.ForeignKey('blog_post.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('blog_tag.id', ondelete='CASCADE'), primary_key=True),
 )
 
 
@@ -159,7 +159,7 @@ class BlogPost(db.Model):
 
 class BlogPostImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id', ondelete='CASCADE'), nullable=False)
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
@@ -167,7 +167,7 @@ class BlogPostImage(db.Model):
 class BlogPostView(db.Model):
     """Per-visitor view log for BlogPost, used to dedupe view_count increments by IP within a rolling window."""
     id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False, index=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id', ondelete='CASCADE'), nullable=False, index=True)
     ip_address = db.Column(db.String(45), nullable=False)
     viewed_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 

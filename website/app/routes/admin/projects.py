@@ -23,6 +23,11 @@ def _allowed_md(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_MD
 
 
+def _project_files(project) -> list[str]:
+    paths = [project.image_path, project.markdown_path, project.markdown_path_es]
+    return [p for p in paths if p] + [img.image_path for img in project.extra_images]
+
+
 def _store_image(file, dest_path: str) -> bool:
     """Validate and persist an uploaded image file. Returns True on success."""
     if not file or not file.filename:
@@ -71,22 +76,15 @@ def projects_bulk_delete():
     ids = request.form.getlist('project_ids', type=int)
     if ids:
         projects = PortfolioProject.query.filter(PortfolioProject.id.in_(ids)).all()
+        files = [path for project in projects for path in _project_files(project)]
+        # Per-object delete (not Query.delete) so the extra_images cascade runs.
         for project in projects:
-            if project.image_path:
-                storage.delete(project.image_path)
-            if project.markdown_path:
-                storage.delete(project.markdown_path)
-            if project.markdown_path_es:
-                storage.delete(project.markdown_path_es)
-            for img in project.extra_images:
-                storage.delete(img.image_path)
-        deleted = (
-            PortfolioProject.query
-            .filter(PortfolioProject.id.in_(ids))
-            .delete(synchronize_session=False)
-        )
+            db.session.delete(project)
         db.session.commit()
-        flash(t('flash.projects_bulk_deleted', n=deleted), 'success')
+        # Files go only after the commit, so a failed delete can't leave a project without its content.
+        for path in files:
+            storage.delete(path)
+        flash(t('flash.projects_bulk_deleted', n=len(projects)), 'success')
     else:
         flash(t('flash.no_projects_selected'), 'error')
     return redirect(url_for('admin.projects_list'))
@@ -231,18 +229,12 @@ def projects_delete(project_id):
         flash(t('flash.project_not_found'), 'error')
         return redirect(url_for('admin.projects_list'))
 
-    if project.image_path:
-        storage.delete(project.image_path)
-    if project.markdown_path:
-        storage.delete(project.markdown_path)
-    if project.markdown_path_es:
-        storage.delete(project.markdown_path_es)
-    for img in project.extra_images:
-        storage.delete(img.image_path)
-
     title = project.title
+    files = _project_files(project)
     db.session.delete(project)
     db.session.commit()
+    for path in files:
+        storage.delete(path)
     flash(t('flash.project_deleted', title=title), 'success')
     return redirect(url_for('admin.projects_list'))
 

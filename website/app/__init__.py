@@ -277,6 +277,8 @@ def create_app():
 
 	@app.errorhandler(500)
 	def internal_server_error(e):
+		# The failed request may have left the session mid-transaction; the 500 page queries the DB (cv_url).
+		db.session.rollback()
 		return render_localized_template('errors/500.html'), 500
 
 	# Scanner-bait paths (/wp-admin, /.git/config, etc.) — registered last so
