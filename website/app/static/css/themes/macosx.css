@@ -33,6 +33,7 @@
     --radius-tag: 4px;
     --radius-field: 3px;
     --card-inset: 0px;
+    --divider: 1px solid var(--mac-grey-2);
 
     --chrome-case: none;
     --chrome-size: 11px;
@@ -49,6 +50,9 @@
     --select-bg: var(--aqua-gel);
     --select-text: #ffffff;
     --badge-bg: linear-gradient(#8ea3bb, #5d7189 50%, #4a5d74);
+    --link: #0b5cad;
+    --accent: #3a95e8;
+    --icon-rendering: auto;
     --focus-ring: 3px solid rgba(63, 145, 230, 0.6);
     --focus-offset: 0px;
     --scroll-thumb: #3a95e8;
@@ -61,18 +65,8 @@
     --accent-stripe: repeating-linear-gradient(45deg, #3a95e8 0 8px, #a9d4ff 8px 16px);
 }
 
-a {
-    color: #0b5cad;
-}
-
 .rainbow-bar {
     display: none;
-}
-
-/* glossy icons (images/icons/macosx/) want smooth scaling, not System 7 pixels */
-.nav-icon,
-.logo-icon {
-    image-rendering: auto;
 }
 
 /* Window title bar: traffic lights drawn as one decorative pseudo-element */
@@ -148,7 +142,8 @@ a {
     color: var(--aqua-ink);
 }
 
-.menu-list li {
+.menu-list li,
+.blog-sidebar-box li {
     border-bottom-color: var(--mac-grey-2);
 }
 
@@ -196,10 +191,6 @@ select {
 
 footer {
     color: var(--mac-grey-6);
-}
-
-footer a {
-    color: #0b5cad;
 }
 
 @media (max-width: 768px) {

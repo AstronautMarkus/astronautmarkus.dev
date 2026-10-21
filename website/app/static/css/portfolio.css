@@ -132,7 +132,7 @@
 .portfolio-link-btn img {
     width: 11px;
     height: 11px;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
     pointer-events: none;
 }
 

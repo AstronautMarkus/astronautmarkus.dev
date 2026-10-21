@@ -123,7 +123,7 @@
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
 }
 
 .beercat-service-title {
@@ -211,7 +211,7 @@
     width: 20px;
     height: 20px;
     opacity: 0.6;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
 }
 
 .beercat-media-placeholder-label {
@@ -279,7 +279,7 @@
 .beercat-cta-btn img {
     width: 14px;
     height: 14px;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
 }
 
 .beercat-contact-list {

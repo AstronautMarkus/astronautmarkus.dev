@@ -1,7 +1,6 @@
 /* ── Blog: list + post detail ──────────────────────────────────────────────
-   Reuses the Mac System 7 chrome tokens (tokens.css): black hairline
-   borders, flat title-bar boxes, no radius except buttons, hard-edged
-   shadows only on outer/floating elements. No new breakpoints: the rest of
+   Styled only through the theme tokens (tokens.css), so the active theme
+   decides lines, radii, bars and shadows. No new breakpoints: the rest of
    the site is a fixed 820px desktop-only layout, so this doesn't add any
    either.
 */
@@ -25,14 +24,14 @@
 .pixel-icon {
     width: 16px;
     height: 16px;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
     flex-shrink: 0;
 }
 
 .pixel-icon-inline {
     width: 12px;
     height: 12px;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
     vertical-align: -1px;
     margin-right: 4px;
 }
@@ -95,7 +94,7 @@
     background: var(--bar-bg);
     color: var(--mac-black);
     font-family: var(--font-chrome);
-    font-size: 10px;
+    font-size: var(--chrome-size);
     font-weight: bold;
     text-transform: var(--chrome-case);
     padding: 5px 8px;
@@ -154,7 +153,7 @@
     display: inline;
     padding: 0;
     background: none;
-    color: var(--mac-black);
+    color: var(--link);
     text-decoration: underline;
 }
 
@@ -165,7 +164,7 @@
 .blog-post-row {
     display: flex;
     padding: 10px 12px;
-    border-bottom: 1px dashed var(--mac-grey-4);
+    border-bottom: var(--divider);
 }
 
 .blog-post-row:last-of-type {
@@ -322,6 +321,7 @@
 
 .post-cover-wrap {
     position: relative;
+    overflow: clip;
     margin-bottom: 12px;
     border: var(--frame);
     box-shadow: var(--shadow-flat-2);
@@ -378,7 +378,7 @@
 
 .post-meta-cat {
     color: var(--mac-black);
-    background: var(--mac-grey-2);
+    background: var(--button-bg);
     border: 1px solid var(--line);
     border-radius: var(--radius-tag);
     padding: 2px 6px;
@@ -391,7 +391,7 @@
 }
 
 .post-meta-lang a {
-    color: var(--mac-black);
+    color: var(--link);
     text-decoration: underline;
 }
 
@@ -451,7 +451,7 @@
 }
 
 .prose a {
-    color: var(--mac-black);
+    color: var(--link);
 }
 
 .prose strong {
@@ -468,7 +468,7 @@
 }
 
 .prose blockquote {
-    border-left: 4px solid var(--line);
+    border-left: 4px solid var(--accent);
     background: var(--mac-grey-1);
     color: var(--mac-black);
     padding: 6px 10px;
@@ -480,7 +480,7 @@
 
 .prose hr {
     border: none;
-    border-top: 1px dashed var(--mac-grey-4);
+    border-top: var(--divider);
     margin: 2px 0;
 }
 
@@ -511,6 +511,7 @@
     font-size: 10px;
     background: var(--mac-grey-1);
     border: 1px solid var(--mac-grey-4);
+    border-radius: var(--radius-tag);
     padding: 1px 4px;
     color: var(--mac-black);
 }
@@ -600,7 +601,7 @@
     display: flex;
     align-items: center;
     font-family: var(--font-chrome);
-    font-size: 10px;
+    font-size: var(--chrome-size);
     font-weight: bold;
     text-transform: var(--chrome-case);
     color: var(--mac-black);
@@ -620,73 +621,6 @@
     border: var(--frame);
     box-shadow: var(--shadow-flat-1);
     border-radius: var(--radius-card);
-}
-
-/* CRT power-on flicker, staggered per-thumbnail as it enters view */
-.post-gallery-grid img.crt-power-on {
-    animation: crt-power-on 0.5s steps(12) 1;
-}
-
-.post-gallery-grid img.crt-glitch {
-    animation: crt-glitch 0.35s steps(3) 1;
-}
-
-@keyframes crt-power-on {
-    0% {
-        filter: brightness(3) contrast(0.4) saturate(0);
-        transform: scaleY(0.05);
-        opacity: 0;
-    }
-
-    15% {
-        opacity: 1;
-        transform: scaleY(1.02);
-    }
-
-    30% {
-        filter: brightness(0.4) contrast(1.6) saturate(0.2);
-        transform: scaleY(0.85);
-    }
-
-    45% {
-        filter: brightness(2) contrast(1.2) saturate(0.6);
-        transform: scaleY(1);
-    }
-
-    100% {
-        filter: brightness(1) contrast(1) saturate(1);
-        transform: scaleY(1);
-    }
-}
-
-@keyframes crt-glitch {
-    0% {
-        filter: brightness(1) saturate(1);
-        transform: translateX(0);
-    }
-
-    30% {
-        filter: brightness(1.6) saturate(0.3) hue-rotate(10deg);
-        transform: translateX(-2px);
-    }
-
-    60% {
-        filter: brightness(0.8) saturate(1.4) hue-rotate(-8deg);
-        transform: translateX(2px);
-    }
-
-    100% {
-        filter: brightness(1) saturate(1);
-        transform: translateX(0);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .post-gallery-grid img.crt-power-on,
-    .post-gallery-grid img.crt-glitch {
-        animation: none;
-    }
 }
 
 /* ── Back link ─────────────────────────────────────────────────────────── */
@@ -782,7 +716,7 @@
 }
 
 #toc-list a.toc-active {
-    border-left-color: var(--mac-black);
+    border-left-color: var(--accent);
     background: var(--mac-grey-1) !important;
     color: var(--mac-black) !important;
     font-weight: bold !important;

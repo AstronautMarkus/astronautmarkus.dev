@@ -45,6 +45,7 @@
     --radius-tag: 2px;
     --radius-field: 0px;
     --card-inset: 2px;
+    --divider: 1px dashed var(--mac-grey-4);
 
     /* chrome: title bars, toolbars, labels */
     --chrome-case: uppercase;
@@ -63,6 +64,9 @@
     --select-bg: var(--mac-black);
     --select-text: var(--mac-white);
     --badge-bg: var(--mac-black);
+    --link: var(--mac-black);
+    --accent: var(--mac-black);
+    --icon-rendering: pixelated;
     --focus-ring: 1px dashed var(--mac-black);
     --focus-offset: 2px;
     --scroll-thumb: var(--mac-grey-5);

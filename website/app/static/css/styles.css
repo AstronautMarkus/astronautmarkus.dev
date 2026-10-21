@@ -24,7 +24,7 @@ body {
 }
 
 a {
-    color: var(--mac-black);
+    color: var(--link);
     text-decoration: underline;
     font-weight: bold;
 }
@@ -354,7 +354,7 @@ footer {
 }
 
 footer a {
-    color: var(--mac-black);
+    color: var(--link);
     text-decoration: underline;
 }
 
@@ -380,7 +380,7 @@ footer a {
 .nav-icon {
     width: 12px;
     height: 12px;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
     vertical-align: -1px;
     margin-right: 4px;
     pointer-events: none;
@@ -389,7 +389,7 @@ footer a {
 .logo-icon {
     width: 28px;
     height: 28px;
-    image-rendering: pixelated;
+    image-rendering: var(--icon-rendering);
     margin-bottom: 4px;
     pointer-events: none;
 }
@@ -504,7 +504,7 @@ pre code {
 }
 
 blockquote {
-    border-left: 4px solid var(--line);
+    border-left: 4px solid var(--accent);
     background: var(--mac-grey-1);
     padding: 8px 12px;
     margin: 10px 0;
