@@ -1,5 +1,7 @@
+import re
 import subprocess
 import tempfile
+from datetime import date
 from pathlib import Path
 
 RENDERCV_TIMEOUT_SECONDS = 25
@@ -8,6 +10,13 @@ MAX_CV_YAML_BYTES = 2 * 1024 * 1024  # 2 MB
 
 class RenderCVError(Exception):
     """Raised when rendercv fails to produce a PDF from the given YAML."""
+
+
+def with_current_date(yaml_text: str) -> str:
+    """Rewrite any `current_date:` value to today (YYYY-MM-DD) so an uploaded YAML never
+    pins a stale date. Without the key rendercv already defaults to today."""
+    return re.sub(r'^([ \t]*current_date:)[^\r\n]*', rf'\g<1> {date.today().isoformat()}',
+                  yaml_text, flags=re.MULTILINE)
 
 
 def render_yaml_to_pdf(yaml_text: str, assets: dict[str, bytes] | None = None) -> bytes:

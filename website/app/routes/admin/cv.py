@@ -8,7 +8,7 @@ from app import db
 from app.i18n import t
 from app.models.models import CvFile
 from app.routes.admin import admin_bp
-from app.services.rendercv_service import MAX_CV_YAML_BYTES, RenderCVError, render_yaml_to_pdf
+from app.services.rendercv_service import MAX_CV_YAML_BYTES, RenderCVError, render_yaml_to_pdf, with_current_date
 from app.storage import storage
 
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -80,6 +80,7 @@ def _store_generated_cv(yaml_text: str, cv_id: int, language: str,
                         new_images: dict[str, bytes], removed: set[str] = frozenset()) -> tuple[str, str]:
     """Render the YAML (with the CV's stored images minus `removed`, plus any new ones) to a
     PDF and persist everything. Raises RenderCVError on failure, before anything is changed."""
+    yaml_text = with_current_date(yaml_text)
     prefix = _images_prefix(cv_id)
     stored_paths = {path.rsplit('/', 1)[-1]: path for path in storage.list(prefix)}
     kept = {name: storage.get(path) for name, path in stored_paths.items() if name not in removed}
