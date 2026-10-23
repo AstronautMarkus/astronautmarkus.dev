@@ -114,6 +114,19 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label for="slug">{{ t('blog.slug') }}</label>
+        <input type="text" id="slug" name="slug"
+               value="{{ project.slug if is_edit else '' }}"
+               placeholder="auto-generated-from-title"
+               {{ 'readonly' if is_edit else '' }}>
+        {% if is_edit %}
+        <span class="form-hint">{{ t('blog.slug_locked_hint') }}</span>
+        {% else %}
+        <span class="form-hint">{{ t('blog.slug_blank_hint_title') }}</span>
+        {% endif %}
+      </div>
+
       <!-- ── Cover image ────────────────────────────────────── -->
       <div class="form-group">
         <label for="cover_image">{{ t('projects.cover_image') }}</label>

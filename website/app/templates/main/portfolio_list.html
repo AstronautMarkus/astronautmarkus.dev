@@ -33,18 +33,18 @@
         {% for project in projects %}
         <div class="portfolio-card">
             {% if project.image_path %}
-            <a href="{{ url_for('main.portfolio_detail', project_id=project.id) }}" class="portfolio-card-thumb-link">
+            <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}" class="portfolio-card-thumb-link">
                 <img src="{{ storage_url(project.image_path) }}" class="portfolio-card-thumb" alt="{{ project.title }}">
             </a>
             {% else %}
-            <a href="{{ url_for('main.portfolio_detail', project_id=project.id) }}" class="portfolio-card-thumb-link">
+            <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}" class="portfolio-card-thumb-link">
                 <div class="portfolio-card-thumb-placeholder"></div>
             </a>
             {% endif %}
 
             <div class="portfolio-card-body">
                 <h3 class="portfolio-card-title">
-                    <a href="{{ url_for('main.portfolio_detail', project_id=project.id) }}">{{ project.title }}</a>
+                    <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}">{{ project.title }}</a>
                 </h3>
 
                 {% if project.description %}

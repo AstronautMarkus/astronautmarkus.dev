@@ -26,6 +26,7 @@ class User(UserMixin, db.Model):
 
 class PortfolioProject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(200), nullable=False, unique=True)
     # English content (required)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
@@ -56,6 +57,7 @@ class ExtraPortfolioImage(db.Model):
 
 class GalleryPhoto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(200), nullable=False, unique=True)
     # English content (required)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)

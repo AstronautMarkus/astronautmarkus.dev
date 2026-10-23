@@ -7,6 +7,7 @@ from app.i18n import t
 from app.models.models import GalleryPhoto
 from app.routes.admin import admin_bp
 from app.storage import storage
+from app.utils import slugify, unique_slug
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
@@ -86,9 +87,11 @@ def gallery_create():
         has_es = request.form.get('has_es') == '1'
         title_es = request.form.get('title_es', '').strip() or None
         description_es = request.form.get('description_es', '').strip() or None
+        slug_input = request.form.get('slug', '').strip()
 
         photo = GalleryPhoto(
             title=title,
+            slug=unique_slug(GalleryPhoto, slugify(slug_input or title)),
             description=request.form.get('description', '').strip() or None,
             has_es=has_es,
             title_es=title_es if has_es else None,

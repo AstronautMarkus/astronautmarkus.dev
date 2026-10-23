@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort, redirect, url_for
 
 from app import db
 from app.i18n import get_current_language, render_localized_template
@@ -18,11 +18,15 @@ def portfolio_list():
     return render_localized_template('main/portfolio_list.html', projects=projects)
 
 
-@main_bp.get('/portfolio/<int:project_id>')
-def portfolio_detail(project_id):
-    project = db.session.get(PortfolioProject, project_id)
+@main_bp.get('/portfolio/<slug>')
+def portfolio_detail(slug):
+    project = PortfolioProject.query.filter_by(slug=slug).first()
     if project is None:
-        abort(404)
+        # Old /portfolio/<id> links (shared, indexed) move permanently to the slug URL.
+        project = db.session.get(PortfolioProject, int(slug)) if slug.isdecimal() else None
+        if project is None:
+            abort(404)
+        return redirect(url_for('main.portfolio_detail', slug=project.slug), 301)
 
     lang = get_current_language()
     use_es = lang == 'es' and project.has_es

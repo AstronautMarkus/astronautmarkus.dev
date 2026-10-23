@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 
 from flask import flash, jsonify, redirect, render_template, request, url_for
@@ -11,6 +10,7 @@ from app.models.models import BlogCategory, BlogPost, BlogPostImage, BlogPostVie
 from app.routes.admin import admin_bp
 from app.services.ai_service import AIServiceError, is_enabled, suggest_blog_metadata
 from app.storage import storage
+from app.utils import slugify, unique_slug
 
 ALLOWED_MD  = {'md', 'markdown'}
 ALLOWED_IMG = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
@@ -58,15 +58,6 @@ def _store_img(file, dest_path: str) -> bool:
     return True
 
 
-def _slugify(text: str) -> str:
-    text = text.lower().strip()
-    text = re.sub(r'[^\w\s-]', '', text)
-    text = re.sub(r'[\s_]+', '-', text)
-    text = re.sub(r'-{2,}', '-', text)
-    text = re.sub(r'^-+|-+$', '', text)
-    return text or 'post'
-
-
 def _parse_tags(raw: str) -> list[BlogTag]:
     """Parse a comma-separated tag string, returning existing or newly created BlogTags."""
     seen = set()
@@ -87,19 +78,6 @@ def _parse_tags(raw: str) -> list[BlogTag]:
             db.session.flush()
         tags.append(tag)
     return tags
-
-
-def _unique_slug(model, base: str, exclude_id: int | None = None) -> str:
-    slug = base
-    i = 2
-    while True:
-        q = model.query.filter_by(slug=slug)
-        if exclude_id:
-            q = q.filter(model.id != exclude_id)
-        if not q.first():
-            return slug
-        slug = f'{base}-{i}'
-        i += 1
 
 
 # ══ Categories ════════════════════════════════════════════════════════════════
@@ -126,7 +104,7 @@ def blog_category_create():
         has_es = request.form.get('has_es') == '1'
         name_es = request.form.get('name_es', '').strip() or None
         slug_input = request.form.get('slug', '').strip()
-        base_slug = _slugify(slug_input) if slug_input else _slugify(name)
+        base_slug = slugify(slug_input) if slug_input else slugify(name)
 
         cat = BlogCategory(
             name=name,
@@ -137,7 +115,7 @@ def blog_category_create():
         db.session.add(cat)
         db.session.flush()
 
-        cat.slug = _unique_slug(BlogCategory, base_slug, exclude_id=cat.id)
+        cat.slug = unique_slug(BlogCategory, base_slug, exclude_id=cat.id)
 
         db.session.commit()
         flash(t('flash.category_created', name=cat.name), 'success')
@@ -224,7 +202,7 @@ def blog_post_create():
         published   = request.form.get('published') == '1'
         category_id = request.form.get('category_id') or None
         slug_input  = request.form.get('slug', '').strip()
-        base_slug   = _slugify(slug_input) if slug_input else _slugify(title)
+        base_slug   = slugify(slug_input) if slug_input else slugify(title)
 
         created_at_raw = request.form.get('created_at', '').strip()
         try:
@@ -248,7 +226,7 @@ def blog_post_create():
         db.session.add(post)
         db.session.flush()
 
-        post.slug = _unique_slug(BlogPost, base_slug, exclude_id=post.id)
+        post.slug = unique_slug(BlogPost, base_slug, exclude_id=post.id)
 
         # Cover image
         cover = request.files.get('cover_image')

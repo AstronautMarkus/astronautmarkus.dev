@@ -285,3 +285,27 @@ def safe_redirect_target(target: str | None, fallback: str = '/') -> str:
     if not target or not target.startswith('/') or target.startswith(('//', '/\\')):
         return fallback
     return target
+
+
+# ── Slugs ────────────────────────────────────────────────────────────────────
+
+def slugify(text: str) -> str:
+    text = text.lower().strip()
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[\s_]+', '-', text)
+    text = re.sub(r'-{2,}', '-', text)
+    text = re.sub(r'^-+|-+$', '', text)
+    return text or 'post'
+
+
+def unique_slug(model, base: str, exclude_id: int | None = None) -> str:
+    slug = base
+    i = 2
+    while True:
+        q = model.query.filter_by(slug=slug)
+        if exclude_id:
+            q = q.filter(model.id != exclude_id)
+        if not q.first():
+            return slug
+        slug = f'{base}-{i}'
+        i += 1

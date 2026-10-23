@@ -29,7 +29,7 @@ def test_cards():
 
     # Hostile rows inside a transaction that is rolled back, never committed.
     with app.test_request_context('/'):
-        project = PortfolioProject(title=HOSTILE[:200], description=HOSTILE, github_repo_url='https://github.com/' + 'a' * 80)
+        project = PortfolioProject(title=HOSTILE[:200], slug='test-cards-hostile', description=HOSTILE, github_repo_url='https://github.com/' + 'a' * 80)
         entry = GuestbookEntry(name=HOSTILE[:100], message=HOSTILE, approved=True)
         db.session.add_all([project, entry])
         db.session.flush()

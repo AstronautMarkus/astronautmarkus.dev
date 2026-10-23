@@ -7,6 +7,7 @@ from app.i18n import t
 from app.models.models import ExtraPortfolioImage, PortfolioProject
 from app.routes.admin import admin_bp
 from app.storage import storage
+from app.utils import slugify, unique_slug
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
 ALLOWED_MD = {'md', 'markdown'}
@@ -104,9 +105,11 @@ def projects_create():
         has_es = request.form.get('has_es') == '1'
         title_es = request.form.get('title_es', '').strip() or None
         description_es = request.form.get('description_es', '').strip() or None
+        slug_input = request.form.get('slug', '').strip()
 
         project = PortfolioProject(
             title=title,
+            slug=unique_slug(PortfolioProject, slugify(slug_input or title)),
             description=request.form.get('description', '').strip() or None,
             project_url=request.form.get('project_url', '').strip() or None,
             github_repo_url=request.form.get('github_repo_url', '').strip() or None,

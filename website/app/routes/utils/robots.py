@@ -55,7 +55,7 @@ def sitemap():
     projects = PortfolioProject.query.order_by(PortfolioProject.created_at.desc()).all()
     urls += [
         {
-            'loc': url_for('main.portfolio_detail', project_id=project.id, _external=True),
+            'loc': url_for('main.portfolio_detail', slug=project.slug, _external=True),
             'lastmod': project.created_at.strftime('%Y-%m-%d'),
         }
         for project in projects
