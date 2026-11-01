@@ -135,11 +135,19 @@ body::after {
     text-shadow: -2px 0 var(--cp-red), 2px 0 var(--cp-cyan), 0 0 18px rgba(255, 0, 60, 0.6);
 }
 
+/* yellow-on-black HUD tag (the game's own label style): the plate, not the
+   glow, is what keeps it readable over a busy banner */
 .logo-subtitle {
-    color: var(--cp-cyan);
+    width: fit-content;
+    margin: 6px auto 0;
+    padding: 2px 14px 2px 10px;
+    color: var(--rainbow-yellow);
+    background: rgba(0, 0, 0, 0.78);
+    border-left: 3px solid var(--cp-red);
     font-size: 12px;
     letter-spacing: 5px;
-    text-shadow: 0 0 6px rgba(0, 240, 255, 0.6);
+    text-shadow: 0 0 6px rgba(252, 238, 10, 0.55), 1px 1px 0 #000000;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
 }
 
 .logo-subtitle::before {

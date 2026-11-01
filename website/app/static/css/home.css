@@ -420,13 +420,139 @@
     text-decoration: none;
 }
 
-.home-sdlc {
-    display: block;
-    margin: 0 auto;
-    width: 350px;
-    max-width: 100%;
-    pointer-events: none;
-    height: auto;
+/* ── SDLC ring ──────────────────────────────────────────────────────────
+   Six stages on a circle; a packet orbits once per --t and each stage lights
+   up (and shows its caption in the middle) as the packet reaches it. Colors
+   come from the rainbow tokens, so every theme repaints it for free. */
+.sdlc {
+    --r: 120px;
+    --t: 12s;
+    position: relative;
+    width: 310px;
+    height: 285px;
+    margin: 14px auto;
+    list-style: none;
+    text-align: center;
+}
+
+/* dashed track */
+.sdlc::before {
+    content: "";
+    position: absolute;
+    top: calc(50% - var(--r));
+    left: calc(50% - var(--r));
+    width: calc(var(--r) * 2);
+    height: calc(var(--r) * 2);
+    border: 2px dashed var(--mac-grey-4);
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: sdlc-spin 60s linear infinite;
+}
+
+/* the packet: starts at the top, where stage 1 sits */
+.sdlc::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    animation: sdlc-orbit var(--t) linear infinite;
+}
+
+.sdlc li {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.sdlc li:nth-child(1) { --i: 0; --c: var(--rainbow-green); }
+.sdlc li:nth-child(2) { --i: 1; --c: var(--rainbow-yellow); }
+.sdlc li:nth-child(3) { --i: 2; --c: var(--rainbow-orange); }
+.sdlc li:nth-child(4) { --i: 3; --c: var(--rainbow-red); }
+.sdlc li:nth-child(5) { --i: 4; --c: var(--rainbow-purple); }
+.sdlc li:nth-child(6) { --i: 5; --c: var(--rainbow-blue); }
+
+.sdlc-node {
+    --a: calc(var(--i) * 60deg - 90deg);
+    position: absolute;
+    /* onto the circle at 60° steps from the top, centered on that point; kept
+       out of transform so the scale animation grows in place instead of outward */
+    translate: calc(cos(var(--a)) * var(--r) - 50%) calc(sin(var(--a)) * var(--r) - 50%);
+    z-index: 1;
+    padding: 3px 7px;
+    white-space: nowrap;
+    background: var(--mac-white);
+    color: var(--mac-black);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--c);
+    border-radius: var(--radius-tag);
+    box-shadow: var(--shadow-flat-1);
+    outline: 2px solid transparent;
+    outline-offset: 1px;
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
+    text-transform: var(--chrome-case);
+    animation: sdlc-node var(--t) infinite;
+    /* start lighting up just before the packet arrives */
+    animation-delay: calc(var(--i) * var(--t) / 6 - 0.5s);
+}
+
+.sdlc-desc {
+    position: absolute;
+    top: -45px;
+    left: -75px;
+    width: 150px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9.5px;
+    line-height: 1.35;
+    color: var(--mac-black);
+    opacity: 0;
+    animation: sdlc-desc var(--t) infinite;
+    animation-delay: calc(var(--i) * var(--t) / 6 - 0.5s);
+}
+
+@keyframes sdlc-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes sdlc-orbit {
+    from { transform: rotate(-90deg) translateX(var(--r)); }
+    to { transform: rotate(270deg) translateX(var(--r)); }
+}
+
+/* each stage owns 1/6 (16.66%) of the cycle; slow ramps so it glides, not snaps */
+@keyframes sdlc-node {
+    0% { transform: scale(1); outline-color: transparent; }
+    6%, 13% { transform: scale(1.12); outline-color: var(--c); }
+    20%, 100% { transform: scale(1); outline-color: transparent; }
+}
+
+/* fade out ends exactly where the next caption starts fading in: no overlap */
+@keyframes sdlc-desc {
+    0% { opacity: 0; }
+    5%, 12% { opacity: 1; }
+    16.66%, 100% { opacity: 0; }
+}
+
+/* no motion: captions still cross-fade, but nothing spins, orbits or grows */
+@media (prefers-reduced-motion: reduce) {
+    .sdlc::before,
+    .sdlc-node {
+        animation: none;
+    }
+
+    .sdlc::after {
+        display: none;
+    }
 }
 
 @media (max-width: 480px) {
