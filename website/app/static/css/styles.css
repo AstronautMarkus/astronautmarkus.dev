@@ -252,6 +252,12 @@ a:hover {
     margin: 0;
 }
 
+/* beats theme .header-top-nav a.active backgrounds, which left hover text white-on-white */
+.header-top-nav .nav-dropdown-menu a:hover {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
 .content-container {
     position: relative;
     background: var(--mac-grey-1);
