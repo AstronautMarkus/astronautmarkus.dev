@@ -229,6 +229,29 @@ a:hover {
     text-decoration: none;
 }
 
+/* Theme picker: same dropdown, inline in the right-aligned top bar */
+.theme-hint .nav-icon {
+    margin: 0 0 0 4px;
+}
+
+
+.header-top-nav .nav-dropdown {
+    display: inline-block;
+}
+
+.header-top-nav .nav-dropdown-menu {
+    left: auto;
+    right: 0;
+    text-align: left;
+}
+
+/* (0,2,1) so theme rules for plain .header-top-nav a can't turn items inline */
+.header-top-nav .nav-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
 .content-container {
     position: relative;
     background: var(--mac-grey-1);
