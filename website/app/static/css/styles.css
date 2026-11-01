@@ -588,17 +588,24 @@ hr {
        On a wrapped mobile nav the toggle can land anywhere in the row, so an
        absolutely-positioned box can run off the right edge — instead let it
        take the dropdown's full row and expand in normal flow underneath. */
-    .nav-dropdown.open {
+    .main-nav .nav-dropdown.open {
         width: 100%;
     }
 
-    .nav-dropdown-menu {
+    .main-nav .nav-dropdown-menu {
         position: static;
         width: 100%;
         min-width: 0;
         box-shadow: none;
         border: none;
         border-top: 1px solid var(--line);
+    }
+
+    /* The theme picker sits at the right end of the top bar, so it keeps
+       floating as an overlay anchored to its toggle's right edge instead of
+       stretching across the bar and pushing the language links around. */
+    .header-top-nav .nav-dropdown-menu {
+        max-width: calc(100vw - 24px);
     }
 
     .content-container {
