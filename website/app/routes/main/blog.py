@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from email.utils import format_datetime
 
 from flask import abort, current_app, render_template, request, url_for
-from markupsafe import escape
+from markupsafe import Markup, escape
 
 from app import db
 from app.i18n import (
@@ -56,14 +56,31 @@ def _localized_fields(post: BlogPost, lang: str) -> tuple[str, str | None, str |
     return post.title, post.description, post.markdown_path
 
 
-def _render_post_content(post: BlogPost, md_path: str | None):
+# A paragraph holding only an image with alt text (already escaped by render_markdown).
+_FIGURE_IMG = re.compile(r'<p>(<img [^>]*\balt="([^"]+)"[^>]*>)</p>')
+
+
+def _number_figures(html: str, lang: str) -> Markup:
+    """Wrap standalone images in <figure> with a numbered caption built from their alt."""
+    label = 'Figura' if lang == 'es' else 'Figure'
+    count = 0
+
+    def _figure(m: re.Match) -> str:
+        nonlocal count
+        count += 1
+        return f'<figure>{m.group(1)}<figcaption>{label} {count}: {m.group(2)}</figcaption></figure>'
+
+    return Markup(_FIGURE_IMG.sub(_figure, html))
+
+
+def _render_post_content(post: BlogPost, md_path: str | None, lang: str):
     if not md_path or not storage.exists(md_path):
         return None
     raw = storage.get(md_path)
     if not raw:
         return None
     text = expand_media_shorthand(raw.decode('utf-8'), f'blog/posts/{post.slug}/images')
-    return render_markdown(text)
+    return _number_figures(render_markdown(text), lang)
 
 
 @main_bp.get('/blog/')
@@ -160,7 +177,7 @@ def blog_rss():
         title, description, md_path = _localized_fields(post, lang)
 
         # Plain str, not Markup, so the .xml template's autoescape encodes the HTML.
-        content_html = str(_render_post_content(post, md_path) or '')
+        content_html = str(_render_post_content(post, md_path, lang) or '')
         content_html = _ROOT_RELATIVE_URL.sub(lambda m: f'{m.group(1)}{site_root}/', content_html)
 
         cover_url = None
@@ -205,8 +222,9 @@ def blog_post_detail(slug):
 
     _register_post_view(post)
 
-    title, description, md_path = _localized_fields(post, get_current_language())
-    content_html = _render_post_content(post, md_path)
+    lang = get_current_language()
+    title, description, md_path = _localized_fields(post, lang)
+    content_html = _render_post_content(post, md_path, lang)
 
     return render_localized_template(
         'main/blog_post.html',

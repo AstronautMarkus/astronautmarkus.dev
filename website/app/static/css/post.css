@@ -497,6 +497,17 @@
     border-radius: var(--radius-card);
 }
 
+.prose figure {
+    margin: 0;
+}
+
+.prose figcaption {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.85em;
+    opacity: 0.75;
+}
+
 .prose iframe {
     display: block;
     max-width: 100%;
