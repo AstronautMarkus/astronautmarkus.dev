@@ -192,7 +192,7 @@
         </div>
 
         <footer>
-            <div>&copy;2024 - {{ current_year }} AstronautMarkus.Dev - ALL RIGHTS RESERVED</div>
+            <div>&copy;2024 - {{ current_year }} AstronautMarkus.Dev - {% if current_lang == 'en' %}All Rights Reserved{% else %}Todos los derechos reservados{% endif %}</div>
             <div>POWERED BY: <a href="https://flask.palletsprojects.com/" target="_blank">Flask</a>, <a
                     href="https://caddyserver.com/" target="_blank">Caddy Http Server</a>, <a
                     href="https://www.debian.org/" target="_blank">Debian 13</a></div>
