@@ -1,0 +1,15 @@
+[Unit]
+Description=AstronautMarkusDev YouTube videos sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=astronautmarkus
+Group=astronautmarkus
+
+WorkingDirectory=/var/www/astronautmarkus.dev
+
+Environment="PYTHONUNBUFFERED=1"
+
+ExecStart=/var/www/astronautmarkus.dev/.venv/bin/flask --app main sync-youtube

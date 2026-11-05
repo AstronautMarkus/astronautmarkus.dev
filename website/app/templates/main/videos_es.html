@@ -1,0 +1,75 @@
+{% extends "base/base.html" %}
+
+{% block title %}Videos{% endblock %}
+{% block description %}Últimos videos del canal de YouTube AstronautMarkusDev.{% endblock %}
+{% block keywords %}videos, youtube, homelab, proyectos{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/videos.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="welcome-card">
+    <div class="card-header videos-banner-title">
+        <img src="{{ icon('rocket.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Videos
+    </div>
+    <div class="card-body videos-banner-body">
+        <div class="videos-banner-intro">
+            Proyectos, setups y experimentos de mi canal de YouTube. Se actualiza automáticamente.
+        </div>
+        <a class="videos-btn" href="{{ channel_url }}" target="_blank" rel="noopener">
+            <img src="{{ icon('external.png') }}" alt="" class="nav-icon"> Visitar canal
+        </a>
+    </div>
+</section>
+
+{% if featured %}
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Último video
+    </div>
+    <a class="video-featured" href="{{ featured.url }}" target="_blank" rel="noopener">
+        <span class="video-thumb">
+            <img src="{{ featured.thumbnail_url }}" alt="{{ featured.title }}">
+            <span class="video-play"></span>
+        </span>
+        <span class="video-featured-info">
+            <span class="video-badge">Nuevo</span>
+            <span class="video-title">{{ featured.title }}</span>
+            <span class="video-meta">{{ featured.published_at|dtfmt('%d %b %Y') }} · {{ '{:,}'.format(featured.view_count).replace(',', '.') }} vistas</span>
+            {% if featured.description %}<span class="video-featured-desc">{{ featured.description }}</span>{% endif %}
+        </span>
+    </a>
+</section>
+
+{% if videos %}
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Más videos
+    </div>
+    <div class="video-grid">
+        {% for video in videos %}
+        <a class="video-card" href="{{ video.url }}" target="_blank" rel="noopener">
+            <span class="video-thumb">
+                <img src="{{ video.thumbnail_url }}" alt="" loading="lazy">
+                <span class="video-play"></span>
+            </span>
+            <span class="video-title">{{ video.title }}</span>
+            <span class="video-meta">{{ video.published_at|dtfmt('%d %b %Y') }} · {{ '{:,}'.format(video.view_count).replace(',', '.') }} vistas</span>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% else %}
+<section class="welcome-card">
+    <div class="videos-empty">
+        <div class="card-text">Aún no hay videos. Vuelve pronto.</div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

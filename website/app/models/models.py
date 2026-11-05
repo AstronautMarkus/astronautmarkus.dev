@@ -238,3 +238,21 @@ class HoneypotHit(db.Model):
     headers = db.Column(db.Text, nullable=True)
     body = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(), index=True)
+
+class YoutubeVideo(db.Model):
+    """Video from the YouTube channel RSS feed, kept after it drops out of the feed (15 latest only)."""
+    id = db.Column(db.Integer, primary_key=True)
+    video_id = db.Column(db.String(20), nullable=False, unique=True)
+    title = db.Column(db.String(300), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    published_at = db.Column(db.DateTime, nullable=False, index=True)
+    view_count = db.Column(db.Integer, nullable=False, default=0, server_default='0')
+    synced_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @property
+    def url(self):
+        return f'https://www.youtube.com/watch?v={self.video_id}'
+
+    @property
+    def thumbnail_url(self):
+        return f'https://i.ytimg.com/vi/{self.video_id}/hqdefault.jpg'

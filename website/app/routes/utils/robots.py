@@ -11,6 +11,7 @@ SITEMAP_PAGES = (
     'main.portfolio_list',
     'main.blog_list',
     'main.gallery_list',
+    'main.videos_list',
     'main.homelab',
     'main.setup',
     'main.beercat',

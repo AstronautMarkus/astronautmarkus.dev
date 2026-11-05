@@ -161,6 +161,18 @@ def create_app():
 	from app.routes.kanarianlintu import kanarianlintu_bp
 	app.register_blueprint(kanarianlintu_bp)
 
+	# ── CLI ───────────────────────────────────────────────────────
+	@app.cli.command('sync-youtube')
+	def sync_youtube_command():
+		"""Fetch the channel's latest videos into the database."""
+		import click
+		from app.services.youtube_service import YoutubeSyncError, sync_videos
+		try:
+			result = sync_videos()
+		except YoutubeSyncError as exc:
+			raise click.ClickException(str(exc))
+		click.echo(f"YouTube sync done: {result['fetched']} fetched, {result['created']} new.")
+
 	# ── Media proxy ───────────────────────────────────────────────
 	# All stored files are served through /media/<path> so the
 	# real storage backend (local or S3) is never exposed to the
