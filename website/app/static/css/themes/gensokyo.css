@@ -314,4 +314,33 @@ code {
         border: 0;
         box-shadow: none;
     }
+
+    /* keep the whole banner on phones: the text shrinks to fit the art instead
+       of the art being cropped to fit the text */
+    .header-main {
+        aspect-ratio: 2418 / 416;
+        background-size: 100% 100%;
+        padding: 0 8px;
+    }
+
+    .logo-title {
+        font-size: clamp(14px, 4.6vw, 26px);
+        letter-spacing: 0;
+        -webkit-text-stroke-width: 0.5px;
+        text-stroke-width: 0.5px;
+    }
+
+    .logo-subtitle {
+        gap: 5px;
+        margin-top: 2px;
+        padding: 1px 8px;
+        font-size: clamp(7px, 2.2vw, 11px);
+        letter-spacing: 2px;
+    }
+
+    .logo-subtitle::before,
+    .logo-subtitle::after {
+        width: 9px;
+        height: 9px;
+    }
 }

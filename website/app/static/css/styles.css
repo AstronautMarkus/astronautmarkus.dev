@@ -111,12 +111,13 @@ a:hover {
     color: var(--select-text);
 }
 
+/* Every banner image is 2418x416: the aspect ratio shows it uncropped */
 .header-main {
-    height: 85px;
+    aspect-ratio: 2418 / 416;
     background-image: var(--banner-image);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -581,8 +582,10 @@ hr {
         border-radius: 0;
     }
 
+    /* too narrow for the full-height banner: let the text set the height and crop the art */
     .header-main {
-        height: auto;
+        aspect-ratio: auto;
+        background-size: cover;
         padding: 12px;
     }
 
