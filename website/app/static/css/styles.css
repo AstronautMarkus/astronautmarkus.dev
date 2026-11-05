@@ -6,6 +6,25 @@
 
 html {
     scroll-behavior: smooth;
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+
+html::-webkit-scrollbar {
+    width: 14px;
+}
+
+html::-webkit-scrollbar-track {
+    background: var(--scroll-track);
+}
+
+html::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border: 3px solid var(--scroll-track);
+    border-radius: 7px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
 }
 
 @media (prefers-reduced-motion: reduce) {
