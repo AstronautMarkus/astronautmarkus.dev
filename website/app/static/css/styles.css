@@ -636,6 +636,46 @@ hr {
         max-width: calc(100vw - 24px);
     }
 
+    /* Two rows: the theme picker alone on top, the language links below. The
+       "Choose a theme" hint is dropped here; it doesn't fit beside the picker. */
+    .header-top-nav {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: center;
+        align-items: center;
+        column-gap: 14px;
+        row-gap: 3px;
+        text-align: left;
+    }
+
+    .header-top-nav .theme-hint {
+        display: none;
+    }
+
+    .header-top-nav .nav-dropdown {
+        grid-column: 1 / -1;
+        justify-self: center;
+    }
+
+    .header-top-nav .nav-dropdown-toggle,
+    .header-top-nav > a {
+        white-space: nowrap;
+    }
+
+    .header-top-nav > a {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 0;
+    }
+
+    .header-top-nav > a:nth-of-type(odd) {
+        justify-self: end;
+    }
+
+    .header-top-nav > a:nth-of-type(even) {
+        justify-self: start;
+    }
+
     .content-container {
         display: flex;
         flex-direction: column;
