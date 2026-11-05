@@ -240,6 +240,11 @@
     background: var(--gs-orb);
 }
 
+/* headers that already carry their own icon don't need the orb bullet too */
+.panel-header:has(> img)::before {
+    display: none;
+}
+
 .menu-list li {
     border-bottom-color: var(--mac-grey-2);
 }

@@ -302,6 +302,12 @@ a:hover {
     overflow: hidden;
 }
 
+/* the sidebar is a fixed-height flex column that scrolls; panels clip their
+   content (overflow: hidden), so they must never be squeezed to fit it */
+.sidebar > .panel-box {
+    flex-shrink: 0;
+}
+
 .panel-header {
     background: var(--bar-bg);
     color: var(--mac-black);
