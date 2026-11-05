@@ -1,21 +1,46 @@
-from flask import abort, redirect, url_for
+from flask import abort, redirect, request, url_for
 
 from app import db
 from app.i18n import get_current_language, render_localized_template
 from app.models.models import PortfolioProject
 from app.routes.main import main_bp
 from app.storage import storage
+from app.tech_stack import get_tags
 from app.utils import expand_media_shorthand, render_markdown
 
 
 @main_bp.get('/portfolio/')
 def portfolio_list():
+    lang = get_current_language()
     projects = (
         PortfolioProject.query
-        .order_by(PortfolioProject.created_at.desc())
+        .order_by(PortfolioProject.featured.desc(), PortfolioProject.created_at.desc())
         .all()
     )
-    return render_localized_template('main/portfolio_list.html', projects=projects)
+
+    tags_by_project = {p.id: get_tags(p.tech_list, lang) for p in projects}
+    counts = {}
+    for tags in tags_by_project.values():
+        for tag in tags:
+            entry = counts.setdefault(tag['key'].lower(), {**tag, 'count': 0})
+            entry['count'] += 1
+    tech_filters = sorted(counts.values(), key=lambda tag: (-tag['count'], tag['name'].lower()))
+
+    requested = request.args.get('tech', '').strip().lower()
+    active_tech = requested if requested in counts else ''
+    if active_tech:
+        projects = [
+            p for p in projects
+            if any(tag['key'].lower() == active_tech for tag in tags_by_project[p.id])
+        ]
+
+    return render_localized_template(
+        'main/portfolio_list.html',
+        projects=projects,
+        tags_by_project=tags_by_project,
+        tech_filters=tech_filters,
+        active_tech=active_tech,  # lowercase key; compare with tag.key|lower
+    )
 
 
 @main_bp.get('/portfolio/<slug>')
@@ -43,4 +68,5 @@ def portfolio_detail(slug):
         'main/portfolio_detail.html',
         project=project,
         content_html=content_html,
+        tags=get_tags(project.tech_list, lang),
     )

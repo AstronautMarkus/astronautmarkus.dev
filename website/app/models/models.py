@@ -24,6 +24,10 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+PORTFOLIO_STATUSES = ('production', 'development', 'archived')
+PORTFOLIO_ROLES = ('solo', 'team', 'lead')
+
+
 class PortfolioProject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(200), nullable=False, unique=True)
@@ -40,7 +44,17 @@ class PortfolioProject(db.Model):
     image_path = db.Column(db.String(200), nullable=True)
     project_url = db.Column(db.String(200), nullable=True)
     github_repo_url = db.Column(db.String(200), nullable=True)
+    # Comma-separated tech names; known ones (tech_stack.py) get their color.
+    tech_stack = db.Column(db.Text, nullable=True)
+    # One of PORTFOLIO_STATUSES / PORTFOLIO_ROLES (below); NULL means "not shown".
+    status = db.Column(db.String(20), nullable=True)
+    role = db.Column(db.String(20), nullable=True)
+    featured = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    @property
+    def tech_list(self):
+        return [name.strip() for name in (self.tech_stack or '').split(',') if name.strip()]
 
     extra_images = db.relationship(
         'ExtraPortfolioImage',

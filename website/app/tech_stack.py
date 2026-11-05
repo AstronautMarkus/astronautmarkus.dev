@@ -131,6 +131,25 @@ def text_color(background: str) -> str:
     return '#000000' if (luminance + 0.05) / 0.05 >= 1.05 / (luminance + 0.05) else '#ffffff'
 
 
+def known_tech_names() -> list[str]:
+    """English names of every tech in TECH_STACK, for admin autocompletion."""
+    return [tech[0] for _, _, _, techs in TECH_STACK for tech in techs]
+
+
+def get_tags(names: list[str], lang: str) -> list[dict]:
+    """Tags for `names` (English names, matched case-insensitively); unknown names get a neutral color."""
+    known = {}
+    for group, localized in zip(TECH_STACK, get_tech_stack(lang)):
+        for tech, tag in zip(group[3], localized['tags']):
+            known[tech[0].lower()] = {'key': tech[0], **tag}
+    fallback_bg = '#546E7A'
+    return [
+        known.get(name.lower())
+        or {'key': name, 'name': name, 'bg': fallback_bg, 'fg': text_color(fallback_bg)}
+        for name in names
+    ]
+
+
 def get_tech_stack(lang: str) -> list[dict]:
     """TECH_STACK localized for `lang`, with each tag's background and text color resolved."""
     groups = []

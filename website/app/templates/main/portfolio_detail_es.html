@@ -25,6 +25,7 @@
 {% endblock %}
 
 {% block content %}
+{% from "main/_portfolio_macros.html" import badges, tag_list %}
 
 {% if project.image_path %}
 <div class="post-cover-wrap">
@@ -49,6 +50,9 @@
         {% endif %}
     </div>
 </div>
+
+{{ badges(project) }}
+{{ tag_list(tags) }}
 
 {% if project.project_url or project.github_repo_url %}
 <div class="portfolio-links-bar">

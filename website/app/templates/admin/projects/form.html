@@ -115,6 +115,44 @@
       </div>
 
       <div class="form-group">
+        <label for="tech_stack">{{ t('projects.tech_stack') }}</label>
+        <input type="text" id="tech_stack" name="tech_stack" list="tech-suggestions"
+               value="{{ project.tech_stack if is_edit and project.tech_stack else '' }}"
+               placeholder="Python, Flask, Docker">
+        <datalist id="tech-suggestions">
+          {% for name in tech_suggestions %}<option value="{{ name }}">{% endfor %}
+        </datalist>
+        <span class="form-hint">{{ t('projects.tech_stack_hint') }}</span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="status">{{ t('projects.status') }}</label>
+          <select id="status" name="status">
+            <option value="">{{ t('projects.not_set') }}</option>
+            {% for value in statuses %}
+            <option value="{{ value }}" {{ 'selected' if is_edit and project.status == value else '' }}>{{ t('portfolio.status.' ~ value) }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="role">{{ t('projects.role') }}</label>
+          <select id="role" name="role">
+            <option value="">{{ t('projects.not_set') }}</option>
+            {% for value in roles %}
+            <option value="{{ value }}" {{ 'selected' if is_edit and project.role == value else '' }}>{{ t('portfolio.role.' ~ value) }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="es-enable-row">
+        <input type="checkbox" id="featured" name="featured" value="1"
+               {{ 'checked' if is_edit and project.featured else '' }}>
+        <label for="featured" class="es-enable-label">{{ t('projects.featured') }}</label>
+      </div>
+
+      <div class="form-group">
         <label for="slug">{{ t('blog.slug') }}</label>
         <input type="text" id="slug" name="slug"
                value="{{ project.slug if is_edit else '' }}"

@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+{% from "main/_portfolio_macros.html" import badges, tag_list %}
 
 <section class="welcome-card">
     <div class="card-header portfolio-banner-title">
@@ -28,12 +29,22 @@
         <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Proyectos
     </div>
 
+    {% if tech_filters %}
+    <div class="portfolio-filter">
+        <span class="portfolio-filter-label">{{ t('portfolio.filter_label') }}</span>
+        <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-filter-chip{{ ' active' if not active_tech else '' }}">{{ t('portfolio.filter_all') }}</a>
+        {% for tag in tech_filters %}
+        <a href="{{ url_for('main.portfolio_list', tech=tag.key) }}" class="portfolio-filter-chip{{ ' active' if active_tech == tag.key|lower else '' }}">{{ tag.name }} <span class="portfolio-filter-count">{{ tag.count }}</span></a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {% if projects %}
     <div class="portfolio-grid">
         {% for project in projects %}
         {% set p_title = project.title_es if project.has_es and project.title_es else project.title %}
         {% set p_desc  = project.description_es if project.has_es and project.description_es else project.description %}
-        <div class="portfolio-card">
+        <div class="portfolio-card{{ ' featured' if project.featured else '' }}">
             {% if project.image_path %}
             <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}" class="portfolio-card-thumb-link">
                 <img src="{{ storage_url(project.image_path) }}" class="portfolio-card-thumb" alt="{{ p_title }}">
@@ -48,10 +59,13 @@
                 <h3 class="portfolio-card-title">
                     <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}">{{ p_title }}</a>
                 </h3>
+                {{ badges(project) }}
 
                 {% if p_desc %}
                 <p class="portfolio-card-desc">{{ p_desc | truncate(120) }}</p>
                 {% endif %}
+
+                {{ tag_list(tags_by_project[project.id]) }}
 
                 <div class="portfolio-card-links">
                     {% if project.project_url %}

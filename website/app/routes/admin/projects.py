@@ -4,9 +4,10 @@ from werkzeug.utils import secure_filename
 
 from app import db
 from app.i18n import t
-from app.models.models import ExtraPortfolioImage, PortfolioProject
+from app.models.models import PORTFOLIO_ROLES, PORTFOLIO_STATUSES, ExtraPortfolioImage, PortfolioProject
 from app.routes.admin import admin_bp
 from app.storage import storage
+from app.tech_stack import known_tech_names
 from app.utils import slugify, unique_slug
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
@@ -55,6 +56,33 @@ def _store_md(file, dest_path: str) -> bool:
     return True
 
 
+def _meta_fields(form) -> dict:
+    """Tech stack / status / role / featured from the project form, normalized for the model."""
+    techs = []
+    for name in form.get('tech_stack', '').split(','):
+        name = name.strip()
+        if name and name.lower() not in {tech.lower() for tech in techs}:
+            techs.append(name)
+    status = form.get('status', '')
+    role = form.get('role', '')
+    return {
+        'tech_stack': ', '.join(techs) or None,
+        'status': status if status in PORTFOLIO_STATUSES else None,
+        'role': role if role in PORTFOLIO_ROLES else None,
+        'featured': form.get('featured') == '1',
+    }
+
+
+def _form_context(**context):
+    return render_template(
+        'admin/projects/form.html',
+        tech_suggestions=known_tech_names(),
+        statuses=PORTFOLIO_STATUSES,
+        roles=PORTFOLIO_ROLES,
+        **context,
+    )
+
+
 # ── List ─────────────────────────────────────────────────────────────────────
 
 @admin_bp.get('/projects/')
@@ -100,7 +128,7 @@ def projects_create():
         title = request.form.get('title', '').strip()
         if not title:
             flash(t('flash.title_required'), 'error')
-            return render_template('admin/projects/form.html', project=None, extra_images=[])
+            return _form_context(project=None, extra_images=[])
 
         has_es = request.form.get('has_es') == '1'
         title_es = request.form.get('title_es', '').strip() or None
@@ -116,6 +144,7 @@ def projects_create():
             has_es=has_es,
             title_es=title_es if has_es else None,
             description_es=description_es if has_es else None,
+            **_meta_fields(request.form),
         )
         db.session.add(project)
         db.session.flush()  # get id before commit
@@ -152,7 +181,7 @@ def projects_create():
         flash(t('flash.project_created', title=project.title), 'success')
         return redirect(url_for('admin.projects_edit', project_id=project.id))
 
-    return render_template('admin/projects/form.html', project=None, extra_images=[])
+    return _form_context(project=None, extra_images=[])
 
 
 # ── Edit ──────────────────────────────────────────────────────────────────────
@@ -169,8 +198,7 @@ def projects_edit(project_id):
         title = request.form.get('title', '').strip()
         if not title:
             flash(t('flash.title_required'), 'error')
-            return render_template('admin/projects/form.html',
-                                   project=project, extra_images=project.extra_images)
+            return _form_context(project=project, extra_images=project.extra_images)
 
         has_es = request.form.get('has_es') == '1'
         title_es = request.form.get('title_es', '').strip() or None
@@ -183,6 +211,8 @@ def projects_edit(project_id):
         project.has_es = has_es
         project.title_es = title_es if has_es else None
         project.description_es = description_es if has_es else None
+        for field, value in _meta_fields(request.form).items():
+            setattr(project, field, value)
 
         cover = request.files.get('cover_image')
         if cover and cover.filename:
@@ -218,8 +248,7 @@ def projects_edit(project_id):
         flash(t('flash.project_updated'), 'success')
         return redirect(url_for('admin.projects_edit', project_id=project.id))
 
-    return render_template('admin/projects/form.html',
-                           project=project, extra_images=project.extra_images)
+    return _form_context(project=project, extra_images=project.extra_images)
 
 
 # ── Delete ────────────────────────────────────────────────────────────────────

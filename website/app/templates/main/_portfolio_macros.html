@@ -1,0 +1,19 @@
+{% macro badges(project) %}
+{% if project.featured or project.status or project.role %}
+<div class="portfolio-badges">
+    {% if project.featured %}<span class="portfolio-badge featured">★ {{ t('portfolio.featured') }}</span>{% endif %}
+    {% if project.status %}<span class="portfolio-badge status-{{ project.status }}">{{ t('portfolio.status.' ~ project.status) }}</span>{% endif %}
+    {% if project.role %}<span class="portfolio-badge">{{ t('portfolio.role.' ~ project.role) }}</span>{% endif %}
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro tag_list(tags) %}
+{% if tags %}
+<div class="portfolio-tags">
+    {% for tag in tags %}
+    <span class="portfolio-tag" style="--tag-bg: {{ tag.bg }}; --tag-fg: {{ tag.fg }}">{{ tag.name }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+{% endmacro %}
