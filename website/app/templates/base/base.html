@@ -163,6 +163,9 @@
                                     src="{{ icon('book_open.png') }}" alt=""
                                     class="nav-icon">{% if current_lang == 'en' %}Guest Book{% else %}Libro de
                                 Visitas{% endif %}</a></li>
+                        <li><a href="{{ url_for('main.blog_rss', lang='es' if current_lang == 'es' else None) }}"
+                                type="application/rss+xml"><img src="{{ icon('rss.png') }}" alt=""
+                                    class="nav-icon">{% if current_lang == 'en' %}Blog RSS{% else %}RSS del Blog{% endif %}</a></li>
                     </ul>
                 </div>
 
