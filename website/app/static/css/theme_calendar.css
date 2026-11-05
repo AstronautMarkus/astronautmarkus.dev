@@ -1,0 +1,80 @@
+/* ── Theme calendar: weekly rotation table ────────────────────────────────
+   Built on the theme tokens and .welcome-card/.card-header from home.css, so
+   it restyles itself under every theme.
+*/
+
+.theme-cal-body {
+    padding: 12px 14px;
+    font-size: 11px;
+    line-height: 1.5;
+    background: var(--mac-white);
+}
+
+.theme-cal-body p + p {
+    margin-top: 8px;
+}
+
+.theme-cal-status {
+    padding: 6px 8px;
+    border-left: 4px solid var(--accent);
+    background: var(--mac-grey-1);
+}
+
+.theme-cal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    background: var(--mac-white);
+}
+
+.theme-cal-table th,
+.theme-cal-table td {
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: var(--divider);
+}
+
+.theme-cal-table th {
+    font-family: var(--font-chrome);
+    background: var(--bar-bg);
+}
+
+.theme-cal-table td:first-child {
+    font-family: var(--font-mono);
+    white-space: nowrap;
+}
+
+.theme-cal-table .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.theme-cal-table tr.current td {
+    background: var(--mac-grey-1);
+    font-weight: bold;
+}
+
+.theme-cal-now {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 0 5px;
+    border-radius: var(--radius-tag);
+    background: var(--badge-bg);
+    color: var(--mac-white);
+    font-family: var(--font-chrome);
+    font-size: 9px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .theme-cal-table th,
+    .theme-cal-table td {
+        padding: 6px;
+    }
+
+    .theme-cal-table td:first-child {
+        white-space: normal;
+    }
+}

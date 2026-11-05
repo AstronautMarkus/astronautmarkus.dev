@@ -2,4 +2,4 @@ from flask import Blueprint
 
 main_bp = Blueprint('main', __name__)
 
-from app.routes.main import index, about, blog, portfolio, proyectadas, profile, gallery, homelab, setup, beercat, guestbook, widgets, videos  # noqa: E402, F401
+from app.routes.main import index, about, blog, portfolio, proyectadas, profile, gallery, homelab, setup, beercat, guestbook, widgets, videos, theme_calendar  # noqa: E402, F401

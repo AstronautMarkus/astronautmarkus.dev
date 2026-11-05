@@ -22,6 +22,7 @@ from werkzeug.exceptions import NotFound as _WerkzeugNotFound
 from app.storage import storage
 from app.utils import safe_redirect_target
 from app.storage.url_cache import get_or_set as _cache_get_or_set
+from app import theme_schedule
 
 # S3-backed files are served via temporary presigned URLs, cached
 # server-side for almost as long as they remain valid so every visitor
@@ -35,6 +36,9 @@ PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
 THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo'}
 THEME_COOKIE_NAME = 'theme'
 DEFAULT_THEME     = 'system7'
+# A picked theme is remembered for a week, then the visitor goes back to the weekly rotation.
+THEME_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+THEME_AUTO        = 'auto'
 
 db             = SQLAlchemy()
 migrate        = Migrate()
@@ -127,14 +131,20 @@ def create_app():
 	@app.get('/theme/<theme_name>')
 	def set_theme(theme_name):
 		theme = theme_name.lower()
+		response = redirect(safe_redirect_target(request.args.get('next')))
+
+		# "auto" drops the cookie so the weekly rotation applies again
+		if theme == THEME_AUTO:
+			response.delete_cookie(THEME_COOKIE_NAME, samesite='Lax')
+			return response
+
 		if theme not in THEMES:
 			theme = DEFAULT_THEME
 
-		response = redirect(safe_redirect_target(request.args.get('next')))
 		response.set_cookie(
 			THEME_COOKIE_NAME,
 			theme,
-			max_age=60 * 60 * 24 * 365,
+			max_age=THEME_COOKIE_MAX_AGE,
 			samesite='Lax',
 		)
 		return response
@@ -260,9 +270,11 @@ def create_app():
 
 	@app.context_processor
 	def inject_globals():
+		# No (or an unknown) cookie means the visitor never picked: follow the weekly rotation.
 		theme = request.cookies.get(THEME_COOKIE_NAME)
-		if theme not in THEMES:
-			theme = DEFAULT_THEME
+		theme_is_auto = theme not in THEMES
+		if theme_is_auto:
+			theme = theme_schedule.theme_for_week(theme_schedule.today(), list(THEMES))
 
 		def icon(name):
 			# Themes only ship the icons they restyle; the rest come from the default set.
@@ -276,6 +288,7 @@ def create_app():
 			'current_lang': get_current_language(),
 			'themes': THEMES,
 			'current_theme': theme,
+			'theme_is_auto': theme_is_auto,
 			'icon': icon,
 			'theme_stylesheet': None if theme == DEFAULT_THEME else f'css/themes/{theme}.css',
 			'storage_url': _storage_url,

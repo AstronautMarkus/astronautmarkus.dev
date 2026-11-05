@@ -64,13 +64,19 @@
             <div class="nav-dropdown">
                 <a href="#" class="nav-dropdown-toggle" title="{% if current_lang == 'en' %}Theme{% else %}Tema{% endif %}"><img
                         src="{{ url_for('static', filename='images/icons/' ~ current_theme ~ '/theme-logo.png') }}" alt=""
-                        class="icon">{{ themes[current_theme] }} <span class="nav-caret">&#9662;</span></a>
+                        class="icon">{% if theme_is_auto %}Auto &middot; {% endif %}{{ themes[current_theme] }} <span class="nav-caret">&#9662;</span></a>
                 <div class="nav-dropdown-menu">
                     {% for name, label in themes.items() %}
-                    <a href="/theme/{{ name }}?next={{ request.path }}" {% if current_theme==name %} class="active" {%
+                    <a href="/theme/{{ name }}?next={{ request.path }}" {% if current_theme==name and not theme_is_auto %} class="active" {%
                         endif %}><img src="{{ url_for('static', filename='images/icons/' ~ name ~ '/theme-logo.png') }}"
                             alt="" class="icon">{{ label }}</a>
                     {% endfor %}
+                    <a href="/theme/auto?next={{ request.path }}" {% if theme_is_auto %} class="active" {% endif %}
+                        title="{% if current_lang == 'en' %}A different theme every week{% else %}Un tema distinto cada semana{% endif %}"><img
+                            src="{{ icon('arrow_refresh.png') }}" alt=""
+                            class="icon">{% if current_lang == 'en' %}Auto (weekly){% else %}Auto (semanal){% endif %}</a>
+                    <a href="{{ url_for('main.theme_calendar') }}"><img src="{{ icon('calendar.png') }}" alt=""
+                            class="icon">{% if current_lang == 'en' %}Theme calendar{% else %}Calendario de temas{% endif %}</a>
                 </div>
             </div>
             <a href="/lang/en?next={{ request.path }}" {% if current_lang=='en' %} class="active" {% endif %}><img
