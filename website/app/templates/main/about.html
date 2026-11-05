@@ -44,138 +44,16 @@
         <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Tech Stack
     </div>
     <div class="about-card-body stack-grid">
+        {% for group in tech_stack %}
         <div>
-            <div class="stack-group-title">Programming Languages &amp; Scripting</div>
+            <div class="stack-group-title">{{ group.title }}</div>
             <div class="tag-list">
-                <span class="tag">Python</span>
-                <span class="tag">PHP</span>
-                <span class="tag">HTML</span>
-                <span class="tag">CSS</span>
-                <span class="tag">JavaScript</span>
-                <span class="tag">TypeScript</span>
-                <span class="tag">SQL</span>
-                <span class="tag">Bash</span>
-                <span class="tag">Dockerfile</span>
-                <span class="tag">Arduino</span>
+                {% for tag in group.tags %}
+                <span class="tag" style="--tag-bg: {{ tag.bg }}; --tag-fg: {{ tag.fg }}">{{ tag.name }}</span>
+                {% endfor %}
             </div>
         </div>
-        <div>
-            <div class="stack-group-title">Frameworks &amp; Libraries</div>
-            <div class="tag-list">
-                <span class="tag">React</span>
-                <span class="tag">React Router</span>
-                <span class="tag">Laravel</span>
-                <span class="tag">Laravel Reverb</span>
-                <span class="tag">Livewire</span>
-                <span class="tag">TailwindCSS</span>
-                <span class="tag">Vue.js</span>
-                <span class="tag">Node.js</span>
-                <span class="tag">Flask</span>
-                <span class="tag">Django</span>
-                <span class="tag">FastAPI</span>
-                <span class="tag">Alpine.js</span>
-                <span class="tag">Chart.js</span>
-            </div>
-        </div>
-        <div>
-            <div class="stack-group-title">Artificial Intelligence</div>
-            <div class="tag-list">
-                <span class="tag">Google Gemini API</span>
-                <span class="tag">Gemini Live API</span>
-                <span class="tag">Function Calling / Tool Use</span>
-                <span class="tag">RAG</span>
-                <span class="tag">OCR</span>
-                <span class="tag">TTS</span>
-                <span class="tag">Prompt Engineering</span>
-                <span class="tag">Strategy Pattern for AI Report Generation</span>
-            </div>
-        </div>
-        <div>
-            <div class="stack-group-title">Methodologies &amp; Management</div>
-            <div class="tag-list">
-                <span class="tag">Agile</span>
-                <span class="tag">Scrum</span>
-                <span class="tag">Kanban</span>
-                <span class="tag">Sprints</span>
-                <span class="tag">SDLC</span>
-                <span class="tag">Technical Leadership</span>
-                <span class="tag">Mentoring</span>
-                <span class="tag">Problem Solving</span>
-                <span class="tag">Troubleshooting</span>
-            </div>
-        </div>
-        <div>
-            <div class="stack-group-title">Testing &amp; Quality</div>
-            <div class="tag-list">
-                <span class="tag">Unit Testing</span>
-                <span class="tag">Integration Testing</span>
-                <span class="tag">TDD</span>
-                <span class="tag">Jest</span>
-                <span class="tag">PHPUnit</span>
-                <span class="tag">PyTest</span>
-                <span class="tag">Software Quality</span>
-                <span class="tag">Code Review</span>
-            </div>
-        </div>
-        <div>
-            <div class="stack-group-title">Infrastructure &amp; Tools</div>
-            <div class="tag-list">
-                <span class="tag">Apache</span>
-                <span class="tag">Nginx</span>
-                <span class="tag">Linux (Ubuntu/Debian/RHEL)</span>
-                <span class="tag">VPS</span>
-                <span class="tag">Cloudflare</span>
-                <span class="tag">SSL</span>
-                <span class="tag">DNS</span>
-                <span class="tag">Git</span>
-                <span class="tag">GitHub</span>
-                <span class="tag">GitHub Actions</span>
-                <span class="tag">CI/CD</span>
-                <span class="tag">RESTful APIs</span>
-                <span class="tag">Docker</span>
-                <span class="tag">System Administration</span>
-                <span class="tag">systemd</span>
-                <span class="tag">WebSockets</span>
-                <span class="tag">Queue Workers</span>
-                <span class="tag">Web Security</span>
-                <span class="tag">2FA/TOTP</span>
-                <span class="tag">SEO</span>
-                <span class="tag">Microservices Architecture</span>
-                <span class="tag">Multi-tenant SaaS Architecture</span>
-            </div>
-        </div>
-        <div>
-            <div class="stack-group-title">Databases</div>
-            <div class="tag-list">
-                <span class="tag">MySQL</span>
-                <span class="tag">MariaDB</span>
-                <span class="tag">SQLite</span>
-                <span class="tag">Redis</span>
-                <span class="tag">Oracle Database</span>
-                <span class="tag">Cassandra</span>
-                <span class="tag">MongoDB</span>
-            </div>
-        </div>
-        <div>
-            <div class="stack-group-title">Platform Deployment</div>
-            <div class="tag-list">
-                <span class="tag">AWS S3</span>
-                <span class="tag">AWS EC2</span>
-                <span class="tag">AWS SES</span>
-                <span class="tag">Hostinger</span>
-                <span class="tag">WebPay</span>
-                <span class="tag">Stripe</span>
-            </div>
-        </div>
-        <div>
-            <div class="stack-group-title">Networking &amp; Security</div>
-            <div class="tag-list">
-                <span class="tag">Fortinet</span>
-                <span class="tag">FortiGate</span>
-                <span class="tag">Firewalls</span>
-                <span class="tag">VPN</span>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </section>
 

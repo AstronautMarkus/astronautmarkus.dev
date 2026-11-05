@@ -89,9 +89,9 @@
 }
 
 .tag {
-    background: var(--mac-grey-1);
+    background: var(--tag-bg, var(--mac-grey-1));
     border: 1px solid var(--line);
-    color: var(--mac-black);
+    color: var(--tag-fg, var(--mac-black));
     font-size: 9px;
     font-weight: bold;
     padding: 3px 7px;
