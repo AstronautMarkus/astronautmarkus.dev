@@ -54,7 +54,7 @@
     --bar-bg: var(--mac-grey-2);
     --bar-rule: 3px solid;
     --bar-rule-image: var(--rainbow-gradient) 1;
-    --titlebar-bg: repeating-linear-gradient(to bottom, var(--mac-white) 0 1px, var(--mac-grey-2) 1px 2px);
+    --titlebar-bg: #e8e8e8;
     --toolbar-bg: var(--titlebar-bg);
     --sidebar-bg: var(--mac-grey-2);
 
