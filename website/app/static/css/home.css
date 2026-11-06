@@ -134,6 +134,15 @@
     background: var(--mac-grey-1);
 }
 
+.payday-cover {
+    display: block;
+    width: 100%;
+    margin: 0 auto 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    cursor: zoom-in;
+}
+
 .payday-lead {
     margin-bottom: 12px;
 }

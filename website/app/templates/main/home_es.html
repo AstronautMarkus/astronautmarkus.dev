@@ -76,15 +76,19 @@
     </div>
     <div class="payday-stripe"></div>
     <div class="payday-body">
+        <img src="{{ url_for('static', filename='images/home/payday-bank-cover-es.webp') }}"
+             class="payday-cover modal-image" data-modal-group="payday-cover" data-title="PAYDAY BANK"
+             alt="Portada de PAYDAY BANK: un núcleo bancario en COBOL detrás de una app web moderna en Flask">
         <div class="payday-lead">
             <p class="payday-intro">
-                Desarrollé un proyecto de banco ficticio llamado <strong>PAYDAY BANK</strong>, un ejemplo de extremo a extremo de mis habilidades en desarrollo web y seguridad. Un subproceso en COBOL simula el núcleo bancario original, mientras que una capa web moderna gestiona cuentas, transacciones y autenticación por encima. El resultado combina tecnología legada con herramientas actuales, con foco en seguridad y eficiencia.
+                <strong>PAYDAY BANK</strong> es un banco ficticio donde un programa COBOL compilado es dueño de todos los saldos, clientes, tarjetas y reglas de negocio, y una app en Flask le pone encima una interfaz web moderna, sin base de datos de por medio. Flask le pasa cada operación al núcleo por línea de comandos y lee una sola línea de respuesta. En noviembre rediseñé toda la interfaz con Metro UI y le di pantalla a cada operación que el núcleo ya sabía hacer.
             </p>
             <div class="payday-tags">
                 <span class="payday-tag">Python</span>
                 <span class="payday-tag">Flask</span>
-                <span class="payday-tag">COBOL</span>
-                <span class="payday-tag">PostgreSQL</span>
+                <span class="payday-tag">GnuCOBOL</span>
+                <span class="payday-tag">Metro UI</span>
+                <span class="payday-tag">Docker</span>
                 <span class="payday-tag">Seguridad</span>
             </div>
         </div>
@@ -94,28 +98,42 @@
                 <img src="{{ icon('cobol.webp') }}" alt="" class="payday-feature-icon">
                 <div>
                     <div class="payday-feature-title">Núcleo bancario en COBOL</div>
-                    <div class="payday-feature-desc">Subproceso legado que procesa cuentas y transacciones como un sistema real.</div>
+                    <div class="payday-feature-desc">21 operaciones en GnuCOBOL sobre archivos indexados, con saldos en decimal empaquetado y sin base de datos.</div>
                 </div>
             </div>
             <div class="payday-feature">
                 <img src="{{ icon('tick_circle_frame.png') }}" alt="" class="payday-feature-icon">
                 <div>
-                    <div class="payday-feature-title">Seguridad primero</div>
-                    <div class="payday-feature-desc">Autenticación, validaciones y buenas prácticas contra vulnerabilidades comunes.</div>
+                    <div class="payday-feature-title">Las reglas viven en el núcleo</div>
+                    <div class="payday-feature-desc">COBOL verifica propiedad, estado y saldo de cada cuenta; contraseñas con scrypt y CSRF en cada formulario.</div>
                 </div>
             </div>
             <div class="payday-feature">
                 <img src="{{ icon('chart_line.png') }}" alt="" class="payday-feature-icon">
                 <div>
-                    <div class="payday-feature-title">Gestión de transacciones</div>
-                    <div class="payday-feature-desc">Transferencias, historial y saldos en tiempo real entre cuentas.</div>
+                    <div class="payday-feature-title">Cuentas y cartolas</div>
+                    <div class="payday-feature-desc">Cuentas corrientes y de ahorro que se congelan o cierran, con la cartola de cada movimiento.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('arrow_refresh.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Transferencias</div>
+                    <div class="payday-feature-desc">Entre cuentas propias o a otros clientes, sin revelar nunca el saldo del destinatario.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('shop_network.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Tarjetas y pagos</div>
+                    <div class="payday-feature-desc">Débito o crédito con límite por compra, un CVV que se muestra una sola vez y un checkout simulado.</div>
                 </div>
             </div>
             <div class="payday-feature">
                 <img src="{{ icon('layer.png') }}" alt="" class="payday-feature-icon">
                 <div>
-                    <div class="payday-feature-title">Arquitectura híbrida</div>
-                    <div class="payday-feature-desc">Un puente entre tecnología antigua y moderna dentro de una sola aplicación.</div>
+                    <div class="payday-feature-title">Interfaz nueva, mismo núcleo</div>
+                    <div class="payday-feature-desc">Rediseño completo con Metro UI: 57 archivos cambiados y una sola línea de lógica COBOL.</div>
                 </div>
             </div>
         </div>
@@ -127,7 +145,8 @@
             {% if payday_screenshots %}
             <div class="payday-gallery-grid" id="payday-gallery-grid">
                 {% for shot in payday_screenshots %}
-                {% set shot_name = shot.rsplit('.', 1)[0].replace('payday-bank-', '').replace('-', ' ')|title %}
+                {# files are named payday-bank-NN-name: NN only sets the gallery order #}
+                {% set shot_name = shot.rsplit('.', 1)[0].replace('payday-bank-', '').lstrip('0123456789-').replace('-', ' ')|title %}
                 <button type="button" class="payday-gallery-item modal-image" data-modal-group="payday"
                         data-full="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
                         data-title="PAYDAY BANK — {{ shot_name }}">
