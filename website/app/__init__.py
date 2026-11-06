@@ -33,7 +33,7 @@ PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
 # Public site skins: name -> switcher label. Each theme owns
 # static/images/icons/<name>/ (its theme-logo.png plus any icon overrides) and,
 # except the default, static/css/themes/<name>.css loaded last over tokens.css.
-THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo'}
+THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo', 'win95': '95'}
 THEME_COOKIE_NAME = 'theme'
 DEFAULT_THEME     = 'system7'
 # A picked theme is remembered for a week, then the visitor goes back to the weekly rotation.
