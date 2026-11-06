@@ -172,13 +172,13 @@
         <div id="cover-current-wrap" style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-current-img"
                src="{{ storage_url(project.image_path) }}"
-               style="height:72px;width:72px;object-fit:cover;border:1px solid #cccccc">
+               style="height:72px;width:128px;object-fit:cover;border:1px solid #cccccc">
           <span class="form-hint">{{ t('projects.upload_replace_cover') }}</span>
         </div>
         {% endif %}
         <div id="cover-preview-wrap" style="display:none;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <img id="cover-preview-img" src="" alt="New cover preview"
-               style="height:72px;width:72px;object-fit:cover;border:2px dashed #2b5797">
+               style="height:72px;width:128px;object-fit:cover;border:2px dashed #2b5797">
           <span class="form-hint" style="color:#2b5797">{{ t('projects.new_cover_not_saved') }}</span>
         </div>
         <input type="file" id="cover_image" name="cover_image" accept="image/*">
