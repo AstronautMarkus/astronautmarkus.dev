@@ -65,8 +65,9 @@
     --chrome-size: 12px;
     --chrome-weight: 700;
     --bar-bg: linear-gradient(#fff0c2, #f8d673);
-    --bar-rule: 3px solid;
-    --bar-rule-image: linear-gradient(to right, var(--gs-red) 0 40%, var(--gs-gold) 40% 70%, var(--gs-red) 70%) 1;
+    /* plain red so it doesn't compete with the woven stripe below it */
+    --bar-rule: 3px solid var(--gs-red);
+    --bar-rule-image: none;
     --titlebar-bg: linear-gradient(#d71f26, #a30f14);
     --toolbar-bg: linear-gradient(#fffaf0, #f4e1b8);
     --sidebar-bg: radial-gradient(rgba(200, 22, 29, 0.12) 1px, transparent 1.5px) 0 0 / 10px 10px var(--mac-grey-1);
@@ -92,9 +93,15 @@
         radial-gradient(ellipse at 50% 0%, #e0352a 0%, #a30f14 45%, #4a0709 100%) fixed;
     /* the gradient shows through until/unless the banner image loads */
     --banner-image: url('/static/images/banner-gensokyo.png'), radial-gradient(circle at 82% 50%, rgba(255, 227, 154, 0.95) 0 5%, transparent 26%), linear-gradient(100deg, #7a0d12 0%, #c8161d 55%, #f2b705 135%);
-    --accent-stripe: repeating-linear-gradient(45deg,
-            var(--gs-red) 0 8px, var(--gs-paper) 8px 12px,
-            var(--gs-gold) 12px 20px, var(--gs-paper) 20px 24px);
+    /* woven gold squares on orange, alternating horizontal and vertical
+       lines; diagonals are System 7's */
+    --accent-stripe: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='12' shape-rendering='crispEdges'><rect width='24' height='12' fill='%23ee8a12'/><path d='M1 2h10M1 6h10M1 10h10M14 1v10M18 1v10M22 1v10' stroke='%23ffe39a' stroke-width='2'/></svg>") 0 0 / 24px 12px;
+}
+
+/* one full row of woven squares; at 4px the lines vanish */
+.alert-stripe,
+.payday-stripe {
+    height: 12px;
 }
 
 ::selection {
@@ -102,12 +109,10 @@
     color: var(--gs-red-dark);
 }
 
-/* ofuda-style paper trim: red and gold with white ties */
+/* the same woven squares as --accent-stripe, in shrine red and gold */
 .rainbow-bar {
-    height: 6px;
-    background: repeating-linear-gradient(90deg,
-            var(--gs-red) 0 24px, var(--gs-paper) 24px 27px,
-            var(--gs-gold) 27px 51px, var(--gs-paper) 51px 54px);
+    height: 12px;
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='12' shape-rendering='crispEdges'><rect width='24' height='12' fill='%23c8161d'/><path d='M1 2h10M1 6h10M1 10h10M14 1v10M18 1v10M22 1v10' stroke='%23f2b705' stroke-width='2'/></svg>") 0 0 / 24px 12px;
 }
 
 /* ── Chrome ─────────────────────────────────────────────────────────────── */

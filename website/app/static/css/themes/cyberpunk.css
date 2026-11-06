@@ -54,8 +54,8 @@
     --chrome-size: 12px;
     --chrome-weight: 700;
     --bar-bg: var(--mac-grey-1);
-    --bar-rule: 2px solid;
-    --bar-rule-image: linear-gradient(to right, var(--cp-red) 0 70%, var(--cp-cyan) 70%) 1;
+    --bar-rule: 2px solid var(--cp-red);
+    --bar-rule-image: none;
     --titlebar-bg: #000000;
     --toolbar-bg: linear-gradient(#14141c, #0b0b10);
     --sidebar-bg: var(--mac-grey-1);
@@ -80,7 +80,8 @@
         radial-gradient(ellipse at 50% 0%, #3a0010 0%, #0a0005 55%, #000000 100%) fixed;
     /* the gradient shows through until/unless the banner image loads */
     --banner-image: url('/static/images/banner-cyberpunk.png'), linear-gradient(120deg, #000000 0%, #2b0010 50%, #ff003c 140%);
-    --accent-stripe: repeating-linear-gradient(-45deg, var(--cp-red) 0 8px, #000000 8px 16px);
+    /* cyan HUD segments under the red rule; no rainbow, no diagonals */
+    --accent-stripe: repeating-linear-gradient(90deg, var(--cp-cyan) 0 16px, #000000 16px 20px);
 }
 
 /* CRT scanlines over the whole viewport; purely decorative */
@@ -266,6 +267,13 @@ pre {
     color: var(--cp-cyan);
     border-color: var(--cp-red-dim);
     border-left: 3px solid var(--cp-red);
+}
+
+/* --mac-black is light here, and light-on-yellow vanishes; the game's own
+   labels are black on yellow */
+.payday-ribbon {
+    color: #000000;
+    border-color: #000000;
 }
 
 th {

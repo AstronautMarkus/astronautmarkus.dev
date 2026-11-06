@@ -59,7 +59,7 @@ a:hover {
 }
 
 .rainbow-stripe-diagonal {
-    background-image: var(--accent-stripe);
+    background: var(--accent-stripe);
 }
 
 .rainbow-stripe-diagonal-grey {
