@@ -74,7 +74,7 @@ class Config:
 
     # ── YouTube videos ────────────────────────────────────────────────
     # Synced from the channel's public RSS feed (no API key needed) by
-    # `flask --app main sync`, run hourly by systemd/astronautmarkus_sync.timer.
+    # `flask --app main sync`, run hourly by cron/astronautmarkus_sync.
     YOUTUBE_CHANNEL_ID = clean_env(os.getenv('YOUTUBE_CHANNEL_ID'), 'UC6yLEBuobzgJ6rupuqCVCRQ')
     YOUTUBE_CHANNEL_URL = clean_env(
         os.getenv('YOUTUBE_CHANNEL_URL'), 'https://www.youtube.com/@astronautmarkusdev',
