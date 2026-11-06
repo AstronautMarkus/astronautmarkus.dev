@@ -18,6 +18,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+<script>try { if (localStorage.getItem('post-sidebar') === 'hidden') document.documentElement.classList.add('post-sidebar-hidden'); } catch (e) {}</script>
 {% endblock %}
 
 {% block content %}
@@ -56,6 +57,8 @@
                     <a href="/lang/en?next={{ request.path }}">EN</a>
                 </span>
                 {% endif %}
+                <button type="button" id="post-sidebar-toggle" class="post-sidebar-toggle"
+                        aria-controls="post-sidebar" aria-expanded="true">Ocultar panel</button>
             </div>
         </div>
 
@@ -136,6 +139,23 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+(function () {
+    var btn  = document.getElementById('post-sidebar-toggle');
+    var root = document.documentElement;
+    function sync() {
+        var hidden = root.classList.contains('post-sidebar-hidden');
+        btn.textContent = hidden ? 'Mostrar panel' : 'Ocultar panel';
+        btn.setAttribute('aria-expanded', String(!hidden));
+    }
+    btn.addEventListener('click', function () {
+        var hidden = root.classList.toggle('post-sidebar-hidden');
+        try { localStorage.setItem('post-sidebar', hidden ? 'hidden' : 'shown'); } catch (e) {}
+        sync();
+    });
+    sync();
+})();
+</script>
 <script>
 (function () {
     var prose = document.querySelector('.prose');

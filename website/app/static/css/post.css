@@ -377,7 +377,8 @@
     border-bottom: 1px solid var(--mac-grey-4);
 }
 
-.post-meta-cat {
+.post-meta-cat,
+.post-sidebar-toggle {
     color: var(--mac-black);
     background: var(--button-bg);
     border: 1px solid var(--line);
@@ -386,9 +387,22 @@
     text-decoration: none;
 }
 
-.post-meta-cat:hover {
+.post-meta-cat:hover,
+.post-sidebar-toggle:hover {
     background: var(--select-bg);
     color: var(--select-text);
+}
+
+.post-sidebar-toggle {
+    margin-left: auto;
+    font: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+}
+
+/* class set on <html> from localStorage in the post template's <head> */
+.post-sidebar-hidden #post-sidebar {
+    display: none;
 }
 
 .post-meta-lang a {
@@ -765,6 +779,15 @@
 
     #toc-box {
         flex: none;
+    }
+
+    /* sidebar already sits below the article here, so there's no width to win back */
+    .post-sidebar-toggle {
+        display: none;
+    }
+
+    .post-sidebar-hidden #post-sidebar {
+        display: flex;
     }
 
     #toc-list {
