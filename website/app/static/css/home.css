@@ -574,3 +574,80 @@
         height: 160px;
     }
 }
+
+/* ── Metrics card ───────────────────────────────────────────────────────
+   Stat tiles count up once the card scrolls into view (JS adds .in-view).
+   Colors are rainbow tokens, so every theme repaints it. Without JS or
+   with reduced motion, the final numbers show. */
+.stats-body {
+    padding: 12px;
+    background: var(--mac-grey-1);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.stat {
+    background: var(--mac-white);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--c);
+    border-radius: var(--radius-tag);
+    padding: 8px;
+    transition: translate 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat:hover {
+    translate: -1px -1px;
+    box-shadow: var(--shadow-flat-2);
+}
+
+.stat-value {
+    font-family: var(--font-chrome);
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--mac-black);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.stat-label {
+    font-size: 9.5px;
+    font-weight: bold;
+    color: var(--mac-black);
+    margin-top: 2px;
+}
+
+.stat-note {
+    font-size: 9px;
+    color: var(--mac-grey-6);
+    margin-top: 2px;
+}
+
+/* hide the start state only when JS will animate it */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .stats-card:not(.in-view) .stat-value {
+        visibility: hidden;
+    }
+}
+
+/* a lone tile on the last row stretches across it */
+.stat:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat:last-child:nth-child(n) {
+        grid-column: auto;
+    }
+
+    .stat:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+}
