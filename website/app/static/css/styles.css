@@ -220,7 +220,8 @@ a:hover {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
+    /* right-anchored: both toggles sit at the right end of their bar, and .page-wrapper clips overflow */
+    right: 0;
     min-width: 170px;
     background: var(--mac-white);
     border: 1px solid var(--line);
@@ -260,8 +261,6 @@ a:hover {
 }
 
 .header-top-nav .nav-dropdown-menu {
-    left: auto;
-    right: 0;
     text-align: left;
 }
 
