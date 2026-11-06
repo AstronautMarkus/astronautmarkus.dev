@@ -270,3 +270,10 @@ class YoutubeVideo(db.Model):
     @property
     def thumbnail_url(self):
         return f'https://i.ytimg.com/vi/{self.video_id}/hqdefault.jpg'
+
+
+class SyncedSnapshot(db.Model):
+    """Latest validated payload from an external source, one row per source (e.g. 'github'). Written by `flask sync`."""
+    source = db.Column(db.String(30), primary_key=True)
+    data = db.Column(db.JSON, nullable=False)
+    synced_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

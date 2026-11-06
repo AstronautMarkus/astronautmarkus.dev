@@ -1,5 +1,5 @@
 [Unit]
-Description=AstronautMarkusDev YouTube videos sync
+Description=AstronautMarkusDev external data sync (YouTube, GitHub)
 After=network-online.target
 Wants=network-online.target
 
@@ -12,4 +12,4 @@ WorkingDirectory=/var/www/astronautmarkus.dev
 
 Environment="PYTHONUNBUFFERED=1"
 
-ExecStart=/var/www/astronautmarkus.dev/.venv/bin/flask --app main sync-youtube
+ExecStart=/var/www/astronautmarkus.dev/.venv/bin/flask --app main sync

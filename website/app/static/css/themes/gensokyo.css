@@ -354,3 +354,20 @@ code {
         height: 9px;
     }
 }
+
+/* GitHub contribution chart: danmaku. Every day is a bullet that turns shrine red as it fills,
+   and the busiest days become yin-yang orbs */
+.gh-days::after {
+    content: none;
+}
+
+.gh-cal i {
+    border: 0;
+    border-radius: 50%;
+    background: var(--mac-grey-2);
+}
+
+.gh-cal i[data-l="1"] { background: radial-gradient(circle, var(--gs-paper) 0 30%, #eba2a2 38%); }
+.gh-cal i[data-l="2"] { background: radial-gradient(circle, var(--gs-paper) 0 30%, #dd5a5f 38%); }
+.gh-cal i[data-l="3"] { background: radial-gradient(circle, var(--gs-gold-soft) 0 30%, var(--gs-red) 38%); }
+.gh-cal i[data-l="4"] { background: var(--gs-orb); box-shadow: 0 0 0 1px var(--gs-gold), 0 0 4px var(--gs-gold); }

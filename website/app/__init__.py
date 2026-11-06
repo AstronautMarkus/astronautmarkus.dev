@@ -172,16 +172,29 @@ def create_app():
 	app.register_blueprint(kanarianlintu_bp)
 
 	# ── CLI ───────────────────────────────────────────────────────
-	@app.cli.command('sync-youtube')
-	def sync_youtube_command():
-		"""Fetch the channel's latest videos into the database."""
-		import click
-		from app.services.youtube_service import YoutubeSyncError, sync_videos
-		try:
-			result = sync_videos()
-		except YoutubeSyncError as exc:
-			raise click.ClickException(str(exc))
-		click.echo(f"YouTube sync done: {result['fetched']} fetched, {result['created']} new.")
+	import click
+
+	@app.cli.command('sync')
+	@click.argument('sources', nargs=-1)
+	def sync_command(sources):
+		"""Pull external data into the database: `sync` runs every source, `sync github` just one."""
+		from app.services.github_service import sync_github
+		from app.services.youtube_service import sync_videos
+		jobs = {'youtube': sync_videos, 'github': sync_github}
+		unknown = set(sources) - jobs.keys()
+		if unknown:
+			raise click.BadParameter(f"unknown source(s) {', '.join(sorted(unknown))}; pick from {', '.join(jobs)}")
+
+		failed = []
+		for name in sources or jobs:
+			try:
+				click.echo(f'[{name}] ok: {jobs[name]()}')
+			except Exception as exc:  # one broken source must not stop the others; exit code still reports it
+				db.session.rollback()
+				failed.append(name)
+				click.echo(f'[{name}] failed: {exc}', err=True)
+		if failed:
+			raise click.ClickException(f"sync failed for: {', '.join(failed)}")
 
 	# ── Media proxy ───────────────────────────────────────────────
 	# All stored files are served through /media/<path> so the
@@ -225,7 +238,7 @@ def create_app():
 			# treat zero/null MySQL dates as missing
 			if not value or value.startswith('0000'):
 				return '—'
-			for pattern in ('%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M'):
+			for pattern in ('%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d'):
 				try:
 					value = datetime.strptime(value, pattern)
 					break

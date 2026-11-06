@@ -6,7 +6,8 @@ from flask import current_app
 from app.routes.main import main_bp
 from app.i18n import render_localized_template
 from app.theme_schedule import today
-from app.models.models import BlogPost, BlogTag, PortfolioProject, Proyectada, Visit
+from app import db
+from app.models.models import BlogPost, BlogTag, PortfolioProject, Proyectada, SyncedSnapshot, Visit
 
 PAYDAY_SCREENSHOTS_DIR = 'images/home/payday-bank'
 PAYDAY_SCREENSHOT_EXTS = ('.png', '.jpg', '.jpeg', '.webp')
@@ -66,5 +67,6 @@ def home():
         coffee_cups=int(caffeine_days * COFFEE_PER_DAY),
         monster_cans=int(caffeine_days * MONSTERS_PER_DAY),
         payday_screenshots=_payday_screenshots(),
+        github=db.session.get(SyncedSnapshot, 'github'),
         payday_screenshots_dir=PAYDAY_SCREENSHOTS_DIR,
     )

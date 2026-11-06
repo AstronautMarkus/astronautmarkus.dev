@@ -1,0 +1,236 @@
+/* ── GitHub: contribution chart (home + about) and the about-me card ─────
+   Data comes from the hourly `flask sync` snapshot. The chart cells are
+   <i data-l="0..4"> (GitHub's quartile levels). The look below is System 7:
+   1-bit dither patterns, darker = more commits. Every theme file restyles
+   the levels at its bottom, so each theme draws the chart its own way. */
+
+.gh-cal {
+    margin: 12px 0 0;
+    --gh-gap: clamp(1px, 0.35vw, 3px);
+}
+
+.gh-months,
+.gh-days {
+    display: grid;
+    grid-template-columns: repeat(var(--weeks), 1fr);
+    column-gap: var(--gh-gap);
+}
+
+.gh-months {
+    height: 12px;
+    font-family: var(--font-chrome);
+    font-size: 8px;
+    color: var(--mac-grey-6);
+    text-transform: var(--chrome-case);
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.gh-days {
+    grid-template-rows: repeat(7, auto);
+    grid-auto-flow: column;
+    row-gap: var(--gh-gap);
+    position: relative; /* no isolation on purpose: the gaps must blend with the card behind, not with nothing */
+}
+
+/* the Apple rainbow sweeps the year left to right: black ink takes the stripe color above it, white stays white.
+   Themes that draw their own cells turn this off with `content: none`. */
+.gh-days::after {
+    content: '';
+    position: absolute;
+    inset: -1px; /* cells can round a pixel past the grid edge */
+    background: var(--rainbow-gradient);
+    mix-blend-mode: lighten;
+    pointer-events: none;
+}
+
+.gh-cal i {
+    display: block;
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border: 1px solid var(--mac-black);
+    background: var(--mac-white);
+}
+
+/* dither: one pixel in four, checkerboard, three in four, solid */
+.gh-cal i[data-l="0"] { border-color: var(--mac-grey-3); }
+.gh-cal i[data-l="1"] { background: conic-gradient(at 1px 1px, transparent 75%, var(--mac-black) 0) 0 0 / 2px 2px var(--mac-white); }
+.gh-cal i[data-l="2"] { background: repeating-conic-gradient(var(--mac-black) 0 25%, var(--mac-white) 0 50%) 0 0 / 2px 2px; }
+.gh-cal i[data-l="3"] { background: conic-gradient(at 1px 1px, var(--mac-black) 75%, var(--mac-white) 0) 0 0 / 2px 2px; }
+.gh-cal i[data-l="4"] { background: var(--mac-black); }
+
+.gh-days i:hover {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.gh-legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+    margin-top: 6px;
+    font-size: 9px;
+    color: var(--mac-grey-6);
+}
+
+.gh-legend i {
+    width: 10px;
+}
+
+.gh-legend span:first-child {
+    margin-right: 2px;
+}
+
+.gh-legend span:last-child {
+    margin-left: 2px;
+}
+
+/* ── About-me card ─────────────────────────────────────────────────── */
+.gh-numbers {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.gh-number {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 8px;
+    background: var(--mac-grey-1);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+}
+
+.gh-number strong {
+    font-family: var(--font-chrome);
+    font-size: 18px;
+    color: var(--mac-black);
+    font-variant-numeric: tabular-nums;
+}
+
+.gh-number span {
+    font-size: 9px;
+    color: var(--mac-grey-6);
+}
+
+.gh-section-title {
+    margin: 14px 0 6px;
+    font-family: var(--font-chrome);
+    font-size: 9px;
+    font-weight: bold;
+    color: var(--mac-black);
+    text-transform: var(--chrome-case);
+    letter-spacing: 0.5px;
+}
+
+.gh-lang-bar {
+    display: flex;
+    height: 10px;
+    background: var(--mac-grey-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    overflow: hidden;
+}
+
+.gh-lang-bar span {
+    background: var(--c);
+}
+
+.gh-lang-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 10px;
+    color: var(--mac-black);
+}
+
+.gh-lang-list li::before,
+.gh-dot {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 4px;
+    border-radius: 50%;
+    background: var(--c);
+    border: 1px solid var(--line);
+    vertical-align: -1px;
+}
+
+.gh-lang-list small {
+    color: var(--mac-grey-6);
+}
+
+.gh-repos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.gh-repo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    background: var(--mac-white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    color: var(--mac-black);
+    font-weight: normal;
+    text-decoration: none;
+    transition: translate 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gh-repo:hover {
+    translate: -1px -1px;
+    box-shadow: var(--shadow-flat-2);
+}
+
+.gh-repo strong {
+    font-size: 11px;
+    color: var(--link);
+}
+
+.gh-repo-desc {
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.gh-repo-meta {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    font-size: 9px;
+    color: var(--mac-grey-6);
+}
+
+.gh-footer {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: var(--divider);
+    font-size: 9px;
+    color: var(--mac-grey-6);
+}
+
+.gh-footer a {
+    color: var(--link);
+}
+
+@media (max-width: 600px) {
+    .gh-numbers {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gh-number:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .gh-repos {
+        grid-template-columns: 1fr;
+    }
+}

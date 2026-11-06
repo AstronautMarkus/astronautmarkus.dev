@@ -1,0 +1,26 @@
+{# GitHub contribution chart. Needs `github` (SyncedSnapshot). Weeks are columns, Sunday on top; the first week
+   is usually partial, so its first day starts lower. How each level looks is per theme: css/github.css + themes/*.css. #}
+{% set es = current_lang == 'es' %}
+{% set weeks = github.data.weeks %}
+<figure class="gh-cal" style="--weeks: {{ weeks|length }}">
+    <div class="gh-months" aria-hidden="true">
+        {% for week in weeks %}
+        {% if not loop.first and week[0][0][5:7] != weeks[loop.index0 - 1][0][0][5:7] %}
+        <span style="grid-column: {{ loop.index }}">{{ week[0][0]|dtfmt('%b') }}</span>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="gh-days" role="img"
+        aria-label="{{ github.data.contributions }} {{ 'contribuciones en GitHub el último año' if es else 'GitHub contributions in the last year' }}">
+        {% for week in weeks %}{% set first_week = loop.first %}
+        {% for day, count, level in week %}
+        <i data-l="{{ level }}" title="{{ count }} · {{ day|dtfmt('%d %b %Y') }}" {% if first_week and loop.first %}style="grid-row-start: {{ 8 - week|length }}"{% endif %}></i>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    <figcaption class="gh-legend">
+        <span>{{ 'Menos' if es else 'Less' }}</span>
+        {% for level in range(5) %}<i data-l="{{ level }}"></i>{% endfor %}
+        <span>{{ 'Más' if es else 'More' }}</span>
+    </figcaption>
+</figure>

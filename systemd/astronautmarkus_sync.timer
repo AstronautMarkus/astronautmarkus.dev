@@ -1,5 +1,5 @@
 [Unit]
-Description=Sync AstronautMarkusDev YouTube videos every hour
+Description=Sync AstronautMarkusDev external data (YouTube, GitHub) every hour
 
 [Timer]
 OnBootSec=2min

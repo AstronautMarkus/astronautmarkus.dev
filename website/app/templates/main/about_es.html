@@ -2,6 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/about_me.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/github.css') }}">
 {% endblock %}
 
 {% block title %}Sobre Mí{% endblock %}
@@ -39,6 +40,8 @@
         </div>
     </div>
 </section>
+
+{% if github %}{% include "main/_github_card.html" %}{% endif %}
 
 <section class="about-card">
     <div class="about-card-header">

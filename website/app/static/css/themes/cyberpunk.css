@@ -300,3 +300,18 @@ th {
         border-right: 0;
     }
 }
+
+/* GitHub contribution chart: HUD heat grid. Dim cells ignite to neon red; the hottest days burn cyan */
+.gh-days::after {
+    content: none;
+}
+
+.gh-cal i {
+    border: 1px solid var(--mac-grey-3);
+    background: var(--mac-grey-1);
+}
+
+.gh-cal i[data-l="1"] { background: #3d0814; border-color: var(--cp-red-dim); }
+.gh-cal i[data-l="2"] { background: var(--cp-red-dim); border-color: var(--cp-red); }
+.gh-cal i[data-l="3"] { background: var(--cp-red); border-color: var(--cp-red); box-shadow: 0 0 4px rgba(255, 0, 60, 0.7); }
+.gh-cal i[data-l="4"] { background: var(--cp-cyan); border-color: var(--cp-cyan); box-shadow: 0 0 6px var(--cp-cyan); }
