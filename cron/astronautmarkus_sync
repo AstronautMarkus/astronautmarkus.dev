@@ -3,4 +3,4 @@
 SHELL=/bin/sh
 PYTHONUNBUFFERED=1
 
-0 * * * * astronautmarkus cd /var/www/astronautmarkus.dev && .venv/bin/flask --app main sync 2>&1 | logger -t astronautmarkus_sync
+0 * * * * astronautmarkus cd /var/www/astronautmarkus.dev && .venv/bin/python app/scripts/sync.py 2>&1 | logger -t astronautmarkus_sync

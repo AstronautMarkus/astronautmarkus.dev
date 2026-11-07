@@ -273,7 +273,7 @@ class YoutubeVideo(db.Model):
 
 
 class SyncedSnapshot(db.Model):
-    """Latest validated payload from an external source, one row per source (e.g. 'github'). Written by `flask sync`."""
+    """Latest validated payload from an external source, one row per source (e.g. 'github'). Written by `app/scripts/sync.py`."""
     source = db.Column(db.String(30), primary_key=True)
     data = db.Column(db.JSON, nullable=False)
     synced_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

@@ -1,5 +1,5 @@
 /* ── GitHub: contribution chart (home + about) and the about-me card ─────
-   Data comes from the hourly `flask sync` snapshot. The chart cells are
+   Data comes from the hourly `app/scripts/sync.py` snapshot. The chart cells are
    <i data-l="0..4"> (GitHub's quartile levels). The look below is System 7:
    1-bit dither patterns, darker = more commits. Every theme file restyles
    the levels at its bottom, so each theme draws the chart its own way. */
