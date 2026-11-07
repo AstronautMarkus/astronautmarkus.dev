@@ -53,6 +53,14 @@ class Config:
     # Optional: override public base URL (e.g. a CDN in front of the bucket)
     STORAGE_S3_PUBLIC_URL = clean_env(os.getenv('STORAGE_S3_PUBLIC_URL'), '')
 
+    # ── CDN (CloudFront) for static assets ───────────────────────
+    # Bucket mirrors static/: static/images/banner.png -> <CDN_URL>/images/banner.png.
+    # Empty = serve from /static as usual.
+    CDN_URL = clean_env(os.getenv('CDN_URL'), '').rstrip('/')
+    # a bare host would be read by the browser as a path on this site
+    if CDN_URL and '://' not in CDN_URL:
+        CDN_URL = f'https://{CDN_URL}'
+
     # ── Cloudflare Turnstile ─────────────────────────────────────
     TURNSTILE_SITE_KEY = os.getenv('TURNSTILE_SITE_KEY', '')
     TURNSTILE_SECRET_KEY = clean_env(os.getenv('TURNSTILE_SECRET_KEY'), '')
@@ -62,3 +70,26 @@ class Config:
     CONTACT_FORM_ENABLED = clean_env(os.getenv('CONTACT_FORM_ENABLED'), 'true').lower() not in (
         '0', 'false', 'no', 'off',
     )
+
+    # ── AI content suggestions (Gemini) ─────────────────────────────
+    # Used by the admin "Generate with AI" button (blog excerpt + tags for now).
+    GEMINI_API_KEY = clean_env(os.getenv('GEMINI_API_KEY'), '')
+    GEMINI_MODEL = clean_env(os.getenv('GEMINI_MODEL'), 'gemini-3.6-flash')
+    # Set to 'false' to hide the AI button even if a key is configured.
+    AI_FEATURES_ENABLED = clean_env(os.getenv('AI_FEATURES_ENABLED'), 'true').lower() not in (
+        '0', 'false', 'no', 'off',
+    )
+
+    # ── YouTube videos ────────────────────────────────────────────────
+    # Synced from the channel's public RSS feed (no API key needed) by
+    # `python app/scripts/sync.py`, run hourly by cron/astronautmarkus_sync.
+    YOUTUBE_CHANNEL_ID = clean_env(os.getenv('YOUTUBE_CHANNEL_ID'), 'UC6yLEBuobzgJ6rupuqCVCRQ')
+    YOUTUBE_CHANNEL_URL = clean_env(
+        os.getenv('YOUTUBE_CHANNEL_URL'), 'https://www.youtube.com/@astronautmarkusdev',
+    )
+
+    # ── GitHub stats ──────────────────────────────────────────────────
+    # Pulled by the same `python app/scripts/sync.py` (GraphQL API). The token is a
+    # fine-grained PAT with no permissions: it only reads public data. No token = GitHub sync fails, site still works.
+    GITHUB_USERNAME = clean_env(os.getenv('GITHUB_USERNAME'), 'AstronautMarkus')
+    GITHUB_TOKEN = clean_env(os.getenv('GITHUB_TOKEN'), '')

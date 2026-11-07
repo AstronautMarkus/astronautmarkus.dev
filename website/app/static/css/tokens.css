@@ -1,0 +1,83 @@
+:root {
+    /* greyscale chrome ramp */
+    --mac-white: #ffffff;
+    --mac-grey-1: #eeeeee;
+    --mac-grey-2: #dddddd;
+    --mac-grey-3: #c0c0c0;
+    --mac-grey-4: #999999;
+    --mac-grey-5: #808080;
+    --mac-grey-6: #404040;
+    --mac-black: #000000;
+
+    /* rainbow accent — real 1977 logo order, top to bottom */
+    --rainbow-green: #61bb46;
+    --rainbow-yellow: #fdb827;
+    --rainbow-orange: #f5821f;
+    --rainbow-red: #e03a3e;
+    --rainbow-purple: #963d97;
+    --rainbow-blue: #009ddc;
+    --rainbow-gradient: linear-gradient(to right,
+            var(--rainbow-green), var(--rainbow-yellow), var(--rainbow-orange),
+            var(--rainbow-red), var(--rainbow-purple), var(--rainbow-blue));
+
+    /* shape */
+    --radius-none: 0px;
+    --radius-button: 4px;
+    --shadow-flat-1: 1px 1px 0 var(--mac-black);
+    --shadow-flat-2: 2px 2px 0 var(--mac-black);
+    --shadow-flat-3: 4px 4px 0 var(--mac-black);
+
+    /* type */
+    --font-chrome: 'Silkscreen', Geneva, 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Arimo', Helvetica, Arial, sans-serif;
+    --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+    --font-wordmark: 'EB Garamond', Georgia, 'Times New Roman', serif;
+
+    /* ── Theme layer ───────────────────────────────────────────────────────
+       Page CSS reaches anything a theme may reshape through these, never
+       through raw values. Defaults below are the System 7 look; a theme in
+       css/themes/<name>.css overrides them (plus the primitives above). */
+
+    /* lines and shapes */
+    --line: var(--mac-black);
+    --frame: 2px solid var(--mac-black);
+    --radius-card: 0px;
+    --radius-tag: 2px;
+    --radius-field: 0px;
+    --card-inset: 2px;
+    --divider: 1px dashed var(--mac-grey-4);
+
+    /* chrome: title bars, toolbars, labels */
+    --chrome-case: uppercase;
+    --chrome-size: 10px;
+    --chrome-weight: bold;
+    --bar-bg: var(--mac-grey-2);
+    --bar-rule: 3px solid;
+    --bar-rule-image: var(--rainbow-gradient) 1;
+    --titlebar-bg: #e8e8e8;
+    --toolbar-bg: var(--titlebar-bg);
+    --sidebar-bg: var(--mac-grey-2);
+
+    /* controls and states */
+    --button-bg: var(--mac-grey-2);
+    --button-accent: 3px solid var(--rainbow-orange);
+    --select-bg: var(--mac-black);
+    --select-text: var(--mac-white);
+    --badge-bg: var(--mac-black);
+    --link: var(--mac-black);
+    --accent: var(--mac-black);
+    --icon-rendering: pixelated;
+    --focus-ring: 1px dashed var(--mac-black);
+    --focus-offset: 2px;
+    --scroll-thumb: var(--mac-grey-5);
+    --scroll-thumb-hover: var(--mac-grey-6);
+    --scroll-track: var(--mac-grey-1);
+
+    /* surfaces and art */
+    --desktop-bg: radial-gradient(var(--mac-grey-5) 1px, transparent 0) 0 0 / 4px 4px var(--mac-grey-3);
+    --banner-image: var(--banner-art);
+    --accent-stripe: repeating-linear-gradient(45deg,
+            var(--rainbow-green) 0 8px, var(--rainbow-yellow) 8px 16px,
+            var(--rainbow-orange) 16px 24px, var(--rainbow-red) 24px 32px,
+            var(--rainbow-purple) 32px 40px, var(--rainbow-blue) 40px 48px);
+}

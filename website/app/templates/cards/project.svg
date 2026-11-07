@@ -1,0 +1,15 @@
+{% extends "cards/_card.svg" %}
+{% block body %}
+{% for line in title_lines %}<text y="{{ 15 + loop.index0 * 20 }}" font-size="15" font-weight="600">{{ line }}</text>
+{% endfor %}
+{% set y = title_lines|length * 20 %}
+{% for line in desc_lines %}<text y="{{ y + 19 + loop.index0 * 17 }}" font-size="12">{{ line }}</text>
+{% endfor %}
+{% if links %}
+{% set y = y + 6 + desc_lines|length * 17 %}
+<line class="rule" x2="{{ inner }}" y1="{{ y + 8.5 }}" y2="{{ y + 8.5 }}"/>
+{% for label, url in links %}
+<text x="{{ loop.index0 * inner / 2 }}" y="{{ y + 26 }}" font-size="11"><tspan class="muted">{{ label }}  </tspan><tspan class="accent">{{ url }}</tspan></text>
+{% endfor %}
+{% endif %}
+{% endblock %}

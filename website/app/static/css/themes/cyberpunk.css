@@ -1,0 +1,317 @@
+/* Cyberpunk 2077 (cyberpunk.net) with red in place of the official yellow.
+   Loaded after every other stylesheet when the theme cookie is "cyberpunk".
+   The grey ramp is inverted: page CSS paints surfaces with --mac-white and
+   text with --mac-black, so flipping both turns every page dark at once.
+   The rules at the bottom handle the places where those tokens mean a
+   literal white (text over photos), plus the HUD chrome: clipped corners,
+   scanlines and "///" labels. */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Chakra+Petch:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap');
+
+:root {
+    /* inverted ramp: "white" is the darkest surface, "black" the brightest text */
+    --mac-white: #0b0b10;
+    --mac-grey-1: #121219;
+    --mac-grey-2: #1a1a24;
+    --mac-grey-3: #282836;
+    --mac-grey-4: #46465a;
+    --mac-grey-5: #6c6c82;
+    --mac-grey-6: #b4b4c6;
+    --mac-black: #ebe8e3;
+
+    /* neon set: dark text stays readable on every one of them */
+    --rainbow-green: #00ff9f;
+    --rainbow-yellow: #fcee0a;
+    --rainbow-orange: #ff6b1a;
+    --rainbow-red: #ff003c;
+    --rainbow-purple: #c13cff;
+    --rainbow-blue: #00f0ff;
+
+    --cp-red: #ff003c;
+    --cp-red-dim: #7a1027;
+    --cp-cyan: #00f0ff;
+    --cp-cut: 10px;
+
+    --radius-button: 0px;
+    --shadow-flat-1: 0 0 0 1px var(--cp-red-dim);
+    --shadow-flat-2: 0 0 14px rgba(255, 0, 60, 0.35);
+    --shadow-flat-3: 0 0 0 1px var(--cp-red), 0 0 40px rgba(255, 0, 60, 0.35);
+
+    --font-chrome: 'Rajdhani', 'Arial Narrow', sans-serif;
+    --font-body: 'Chakra Petch', 'Arial Narrow', sans-serif;
+    --font-mono: 'Share Tech Mono', ui-monospace, Menlo, monospace;
+    --font-wordmark: 'Rajdhani', 'Arial Narrow', sans-serif;
+
+    /* theme layer */
+    --line: var(--cp-red-dim);
+    --frame: 1px solid var(--cp-red);
+    --radius-card: 0px;
+    --radius-tag: 0px;
+    --radius-field: 0px;
+    --card-inset: 0px;
+    --divider: 1px solid var(--cp-red-dim);
+
+    --chrome-case: uppercase;
+    --chrome-size: 12px;
+    --chrome-weight: 700;
+    --bar-bg: var(--mac-grey-1);
+    --bar-rule: 2px solid var(--cp-red);
+    --bar-rule-image: none;
+    --titlebar-bg: #000000;
+    --toolbar-bg: linear-gradient(#14141c, #0b0b10);
+    --sidebar-bg: var(--mac-grey-1);
+
+    --button-bg: var(--cp-red);
+    --button-accent: 2px solid var(--cp-red);
+    --select-bg: var(--cp-red);
+    --select-text: #000000;
+    --badge-bg: var(--cp-red);
+    --link: var(--cp-cyan);
+    --accent: var(--cp-red);
+    --icon-rendering: auto;
+    --focus-ring: 2px solid var(--cp-cyan);
+    --focus-offset: 2px;
+    --scroll-thumb: var(--cp-red);
+    --scroll-thumb-hover: var(--cp-cyan);
+    --scroll-track: #000000;
+
+    --desktop-bg:
+        linear-gradient(rgba(255, 0, 60, 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(90deg, rgba(255, 0, 60, 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
+        radial-gradient(ellipse at 50% 0%, #3a0010 0%, #0a0005 55%, #000000 100%) fixed;
+    /* the gradient shows through until/unless the banner image loads */
+    --banner-image: var(--banner-art), linear-gradient(120deg, #000000 0%, #2b0010 50%, #ff003c 140%);
+    /* cyan HUD segments under the red rule; no rainbow, no diagonals */
+    --accent-stripe: repeating-linear-gradient(90deg, var(--cp-cyan) 0 16px, #000000 16px 20px);
+}
+
+/* CRT scanlines over the whole viewport; purely decorative */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(transparent 0 2px, rgba(0, 0, 0, 0.18) 2px 3px);
+}
+
+::selection {
+    background: var(--cp-red);
+    color: #000000;
+}
+
+.rainbow-bar {
+    height: 3px;
+    background: linear-gradient(to right, var(--cp-red) 0 82%, var(--cp-cyan) 82% 88%, var(--cp-red) 88%);
+}
+
+/* ── Chrome ─────────────────────────────────────────────────────────────── */
+.header-top-nav {
+    color: var(--mac-grey-6);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.header-top-nav a {
+    color: var(--mac-grey-6);
+}
+
+.header-top-nav a.active {
+    color: var(--cp-red);
+    text-decoration: none;
+    box-shadow: inset 0 -2px 0 var(--cp-red);
+}
+
+.header-main {
+    border-bottom: 2px solid var(--cp-red);
+}
+
+/* chromatic-aberration wordmark, like the game's logo treatment */
+.logo-title {
+    color: #ffffff;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 0;
+    text-stroke: 0;
+    text-shadow: -2px 0 var(--cp-red), 2px 0 var(--cp-cyan), 0 0 18px rgba(255, 0, 60, 0.6);
+}
+
+/* yellow-on-black HUD tag (the game's own label style): the plate, not the
+   glow, is what keeps it readable over a busy banner */
+.logo-subtitle {
+    width: fit-content;
+    margin: 6px auto 0;
+    padding: 2px 14px 2px 10px;
+    color: var(--rainbow-yellow);
+    background: rgba(0, 0, 0, 0.78);
+    border-left: 3px solid var(--cp-red);
+    font-size: 12px;
+    letter-spacing: 5px;
+    text-shadow: 0 0 6px rgba(252, 238, 10, 0.55), 1px 1px 0 #000000;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+}
+
+.logo-subtitle::before {
+    content: "/// ";
+    color: var(--cp-red);
+}
+
+.main-nav a {
+    color: var(--mac-black);
+    letter-spacing: 1px;
+    border-right-color: var(--cp-red-dim);
+}
+
+.main-nav a:hover,
+.header-top-nav a:hover,
+.nav-dropdown-menu a:hover,
+.menu-list a:hover {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+}
+
+.nav-dropdown-menu {
+    border-color: var(--cp-red);
+}
+
+.nav-dropdown-menu a {
+    border-bottom-color: var(--mac-grey-3);
+}
+
+.content-container {
+    background: var(--mac-grey-1);
+}
+
+/* ── HUD panels: clipped corner + terminal label ───────────────────────── */
+.panel-box {
+    border-color: var(--cp-red-dim);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cp-cut)), calc(100% - var(--cp-cut)) 100%, 0 100%);
+}
+
+.panel-header {
+    color: var(--cp-red);
+    letter-spacing: 1.5px;
+}
+
+.panel-header::before {
+    content: "/// ";
+    color: var(--cp-cyan);
+}
+
+.menu-list li {
+    border-bottom-color: var(--mac-grey-3);
+}
+
+.menu-list a {
+    letter-spacing: 1px;
+}
+
+footer {
+    color: var(--mac-grey-5);
+    letter-spacing: 1px;
+    border-top-color: var(--cp-red);
+}
+
+/* ── Controls ──────────────────────────────────────────────────────────── */
+button,
+input[type="submit"],
+input[type="button"] {
+    color: #000000;
+    border: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background: var(--cp-cyan);
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    background: #ffffff;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="tel"],
+textarea,
+select {
+    background: #000000;
+    border-color: var(--cp-red-dim);
+    border-left: 3px solid var(--cp-red);
+    color-scheme: dark;
+}
+
+a:hover {
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+}
+
+/* ── Code ──────────────────────────────────────────────────────────────── */
+code {
+    color: var(--cp-cyan);
+    border-color: var(--mac-grey-3);
+}
+
+/* inversion would make pre light; keep the terminal dark */
+pre {
+    background: #000000;
+    color: var(--cp-cyan);
+    border-color: var(--cp-red-dim);
+    border-left: 3px solid var(--cp-red);
+}
+
+/* --mac-black is light here, and light-on-yellow vanishes; the game's own
+   labels are black on yellow */
+.payday-ribbon {
+    color: #000000;
+    border-color: #000000;
+}
+
+th {
+    color: var(--cp-red);
+}
+
+/* ── Text over photos and fixed dark overlays: these mean literal white ─ */
+.beercat-hero-title,
+.beercat-hero-external,
+.gallery-item-title,
+.post-cover-title,
+.image-modal-nav,
+.feature-image {
+    color: #ffffff;
+}
+
+.beercat-hero-external {
+    border-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        border-left: 0;
+        border-right: 0;
+    }
+}
+
+/* GitHub contribution chart: HUD heat grid. Dim cells ignite to neon red; the hottest days burn cyan */
+.gh-days::after {
+    content: none;
+}
+
+.gh-cal i {
+    border: 1px solid var(--mac-grey-3);
+    background: var(--mac-grey-1);
+}
+
+.gh-cal i[data-l="1"] { background: #3d0814; border-color: var(--cp-red-dim); }
+.gh-cal i[data-l="2"] { background: var(--cp-red-dim); border-color: var(--cp-red); }
+.gh-cal i[data-l="3"] { background: var(--cp-red); border-color: var(--cp-red); box-shadow: 0 0 4px rgba(255, 0, 60, 0.7); }
+.gh-cal i[data-l="4"] { background: var(--cp-cyan); border-color: var(--cp-cyan); box-shadow: 0 0 6px var(--cp-cyan); }

@@ -1,13 +1,16 @@
 {% extends "admin/base.html" %}
 
 {% set is_edit = cv is not none %}
-{% set current_source = submitted_source if submitted_source is defined else (cv.source if is_edit else 'upload') %}
+{% set current_source = submitted_source if submitted_source is defined
+    else (cv.source if is_edit else 'upload') %}
+{% set selected_language = submitted_language if submitted_language is defined
+    else (cv.language if is_edit else none) %}
 
-{% block title %}{{ 'Edit CV' if is_edit else 'Upload CV' }}{% endblock %}
-{% block page_title %}{{ 'Edit CV' if is_edit else 'Upload CV' }}{% endblock %}
+{% block title %}{{ t('cv.edit_title') if is_edit else t('cv.upload_title') }}{% endblock %}
+{% block page_title %}{{ t('cv.edit_title') if is_edit else t('cv.upload_title') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.cv_list') }}">← Back to list</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.cv_list') }}">{{ t('common.back_to_list') }}</a>
 {% endblock %}
 
 {% block content %}
@@ -15,46 +18,46 @@
 {% set action_url = url_for('admin.cv_edit', cv_id=cv.id) if is_edit else url_for('admin.cv_upload') %}
 
 <div class="card">
-  <div class="card-title">{{ 'CV Details' }}</div>
+  <div class="card-title">{{ t('cv.details') }}</div>
   <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
     <div class="form-grid">
 
       <div class="form-group">
-        <label for="language">Language <span style="color:#cc0000">*</span></label>
+        <label for="language">{{ t('common.language') }} <span style="color:#cc0000">*</span></label>
         <select id="language" name="language" required>
-          <option value="" disabled {{ 'selected' if not is_edit else '' }}>— select —</option>
+          <option value="" disabled {{ 'selected' if not selected_language else '' }}>{{ t('cv.select_placeholder') }}</option>
           {% for code, label in languages %}
           <option value="{{ code }}"
-            {{ 'selected' if is_edit and cv.language == code else '' }}>
+            {{ 'selected' if selected_language == code else '' }}>
             {{ label }} ({{ code.upper() }})
           </option>
           {% endfor %}
         </select>
-        <span class="form-hint">Each language identifies a distinct CV version.</span>
+        <span class="form-hint">{{ t('cv.lang_hint') }}</span>
       </div>
 
       <!-- ── Source tabs ───────────────────────────────────────── -->
       <div class="lang-tabs">
         <button type="button" class="lang-tab {{ 'active' if current_source == 'upload' else '' }}"
-                data-target="panel-source-upload">Upload PDF</button>
+                data-target="panel-source-upload">{{ t('cv.tab_upload') }}</button>
         <button type="button" class="lang-tab {{ 'active' if current_source == 'generated' else '' }}"
-                data-target="panel-source-generate">Generate from YAML</button>
+                data-target="panel-source-generate">{{ t('cv.tab_generate') }}</button>
       </div>
       <input type="hidden" name="source" id="source_field" value="{{ current_source }}">
 
       <!-- ── Upload panel ──────────────────────────────────────── -->
       <div class="lang-panel {{ 'active' if current_source == 'upload' else '' }}" id="panel-source-upload">
         <div class="form-group">
-          <label for="cv_file">PDF File</label>
+          <label for="cv_file">{{ t('cv.pdf_file') }}</label>
           {% if is_edit and cv.source == 'upload' %}
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
             <a href="{{ storage_url(cv.file_path) }}" target="_blank" rel="noopener noreferrer"
-               class="btn btn-ghost btn-sm">View current file ↗</a>
-            <span class="form-hint">Upload a new file to replace it.</span>
+               class="btn btn-ghost btn-sm">{{ t('cv.view_current_file') }}</a>
+            <span class="form-hint">{{ t('common.upload_replace_hint') }}</span>
           </div>
           {% endif %}
           <input type="file" id="cv_file" name="cv_file" accept=".pdf,application/pdf">
-          <span class="form-hint">PDF only — max 10 MB</span>
+          <span class="form-hint">{{ t('cv.pdf_hint') }}</span>
         </div>
       </div>
 
@@ -63,24 +66,47 @@
         {% if is_edit and cv.source == 'generated' and cv.yaml_path %}
         <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <a href="{{ storage_url(cv.yaml_path) }}" target="_blank" rel="noopener noreferrer"
-             class="btn btn-ghost btn-sm">View current YAML ↗</a>
-          <span class="form-hint">The PDF is regenerated whenever the YAML below changes.</span>
+             class="btn btn-ghost btn-sm">{{ t('cv.view_current_yaml') }}</a>
+          <span class="form-hint">{{ t('cv.regenerate_hint') }}</span>
         </div>
         {% endif %}
         <div class="form-group">
-          <label for="cv_yaml">RenderCV YAML</label>
+          <label for="cv_yaml">{{ t('cv.yaml_field') }}</label>
           <textarea id="cv_yaml" name="cv_yaml" rows="16"
                     placeholder="Paste the RenderCV YAML here…">{{ submitted_yaml or '' }}</textarea>
-          <span class="form-hint">Or upload a .yaml/.yml file below — max 2 MB. Leave both empty to keep the current version.</span>
+          <span class="form-hint">{{ t('cv.yaml_hint') }}</span>
         </div>
         <div class="form-group">
           <input type="file" id="cv_yaml_file" name="cv_yaml_file" accept=".yaml,.yml">
+        </div>
+        <div class="form-group">
+          <label for="cv_images">{{ t('cv.images_field') }}</label>
+          {% if cv_images %}
+          <div class="img-grid" style="margin-bottom:0.5rem">
+            {% for path in cv_images %}
+            {% set name = path.rsplit('/', 1)[-1] %}
+            <div class="img-item">
+              <a href="{{ storage_url(path) }}" target="_blank" rel="noopener noreferrer">
+                <img src="{{ storage_url(path) }}" alt="{{ name }}">
+              </a>
+              <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.78rem;max-width:88px">
+                <input type="checkbox" name="cv_images_delete" value="{{ name }}">
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ t('cv.image_delete') }} {{ name }}">{{ name }}</span>
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+          <span class="form-hint">{{ t('cv.images_delete_hint') }}</span>
+          {% endif %}
+          <input type="file" id="cv_images" name="cv_images" multiple
+                 accept=".png,.jpg,.jpeg,.webp,.gif">
+          <span class="form-hint">{{ t('cv.images_hint') }}</span>
         </div>
       </div>
 
       <div>
         <button type="submit" class="btn btn-primary">
-          {{ 'Save Changes' if is_edit else 'Upload CV' }}
+          {{ t('common.save_changes') if is_edit else t('cv.upload_title') }}
         </button>
       </div>
 
@@ -90,15 +116,16 @@
 
 <script>
 (function () {
+  // The lang-tabs here select an upload-vs-generate *mode*, not a
+  // language — admin.js handles the tab switching itself; this just keeps the
+  // hidden "source" field in sync with whichever mode tab is now active.
   var sourceField = document.getElementById('source_field');
-  document.querySelectorAll('.lang-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.lang-tab').forEach(function (t) { t.classList.remove('active'); });
-      document.querySelectorAll('.lang-panel').forEach(function (p) { p.classList.remove('active'); });
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.target).classList.add('active');
-      sourceField.value = tab.dataset.target === 'panel-source-generate' ? 'generated' : 'upload';
-    });
+  var sourceMap = {
+    'panel-source-upload': 'upload',
+    'panel-source-generate': 'generated',
+  };
+  document.addEventListener('admin:langtab', function (e) {
+    sourceField.value = sourceMap[e.detail.target] || 'upload';
   });
 })();
 </script>

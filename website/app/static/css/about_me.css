@@ -1,0 +1,447 @@
+.about-card {
+    background: var(--mac-white);
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    padding: var(--card-inset);
+    overflow: clip;
+    box-shadow: var(--shadow-flat-2);
+    margin-bottom: 15px;
+}
+
+.about-card-header {
+    background: var(--bar-bg);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 0;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
+}
+
+.about-card-body {
+    padding: 12px;
+}
+
+/* Profile */
+.profile-body {
+    display: flex;
+    gap: 12px;
+}
+
+.profile-photo {
+    width: 150px;
+    height: 180px;
+    background: no-repeat center center;
+    background-size: cover;
+    border: var(--frame);
+    box-shadow: var(--shadow-flat-2);
+    flex-shrink: 0;
+    border-radius: var(--radius-card);
+}
+
+.bio-text {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: var(--mac-black);
+    text-align: justify;
+}
+
+.bio-text::first-letter {
+    font-family: var(--font-wordmark);
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--mac-black);
+}
+
+.bio-text p {
+    margin-bottom: 8px;
+}
+
+.bio-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Tech stack grid */
+.stack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stack-group-title {
+    font-family: var(--font-chrome);
+    font-size: 9px;
+    font-weight: bold;
+    color: var(--mac-black);
+    text-transform: var(--chrome-case);
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.stack-count {
+    color: var(--mac-grey-6);
+}
+
+/* how many techs each group has, relative to the biggest group */
+.stack-bar {
+    height: 4px;
+    margin-bottom: 6px;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag {
+    background: var(--tag-bg, var(--mac-grey-1));
+    border: 1px solid var(--line);
+    color: var(--tag-fg, var(--mac-black));
+    font-size: 9px;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: var(--radius-tag);
+}
+
+/* Timeline: a rail with a colored dot per milestone; the newest (first) one pulses */
+.timeline {
+    position: relative;
+    list-style: none;
+    padding-left: 18px;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 4px;
+    width: 2px;
+    background: var(--mac-grey-4);
+    transform-origin: top;
+}
+
+/* centered on the rail: 18px padding - 4px rail offset - 1px half rail + 5px half dot */
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -18px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--c);
+    border: 1px solid var(--line);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+
+.timeline-item:nth-child(1) { --i: 0; --c: var(--rainbow-green); }
+.timeline-item:nth-child(2) { --i: 1; --c: var(--rainbow-yellow); }
+.timeline-item:nth-child(3) { --i: 2; --c: var(--rainbow-orange); }
+.timeline-item:nth-child(4) { --i: 3; --c: var(--rainbow-red); }
+.timeline-item:nth-child(5) { --i: 4; --c: var(--rainbow-purple); }
+.timeline-item:nth-child(6) { --i: 5; --c: var(--rainbow-blue); }
+
+.timeline-item:first-child::before {
+    animation: timeline-pulse 2s ease-in-out infinite;
+}
+
+@keyframes timeline-pulse {
+    50% { outline-color: var(--c); }
+}
+
+.timeline-item {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--mac-grey-4);
+}
+
+.timeline-item:last-child {
+    border-bottom: none;
+}
+
+.timeline-year {
+    flex-shrink: 0;
+    width: 60px;
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--mac-black);
+}
+
+.timeline-text {
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--mac-grey-6);
+}
+
+.timeline-text strong {
+    color: var(--mac-black);
+}
+
+/* Fun facts */
+.facts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.fact-item {
+    background: var(--mac-white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 8px;
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--mac-black);
+}
+
+.fact-item .fact-label {
+    display: block;
+    font-family: var(--font-chrome);
+    font-size: 9px;
+    font-weight: bold;
+    color: var(--mac-black);
+    text-transform: var(--chrome-case);
+    margin-bottom: 3px;
+}
+
+/* ── System Properties ──────────────────────────────────────────────── */
+.sys-body {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 12px;
+    align-items: start;
+}
+
+.sys-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    image-rendering: var(--icon-rendering);
+}
+
+.sys-specs {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 3px 12px;
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--mac-black);
+}
+
+.sys-specs dt {
+    font-weight: bold;
+}
+
+.sys-meters {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 6px;
+}
+
+.sys-meter {
+    display: grid;
+    grid-template-columns: 140px 1fr 36px;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: var(--mac-black);
+}
+
+.sys-meter-bar {
+    height: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+}
+
+.sys-meter-value {
+    text-align: right;
+    font-weight: bold;
+}
+
+/* Both fill bars: --c over a grey track, --v wide */
+.stack-bar,
+.sys-meter-bar {
+    background: linear-gradient(var(--c), var(--c)) no-repeat 0 0 / var(--v) 100%, var(--mac-grey-2);
+    transition: background-size 1s ease-out;
+}
+
+/* ── OS journey (Fun Facts) ─────────────────────────────────────────────
+   A packet runs along the path and each stop lights up as it passes, like
+   the SDLC ring on home. Stops sit at the column centers: 12.5% … 87.5%. */
+.os-journey {
+    --t: 8s;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    list-style: none;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/* the path, through the middle of the 26px-tall stops */
+.os-journey::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 12.5%;
+    right: 12.5%;
+    border-top: 2px dashed var(--mac-grey-4);
+}
+
+.os-journey::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 12.5%;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    animation: os-packet var(--t) linear infinite;
+}
+
+.os-journey li {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 0 4px;
+}
+
+.os-journey li:nth-child(1) { --i: 0; --c: var(--rainbow-blue); }
+.os-journey li:nth-child(2) { --i: 1; --c: var(--rainbow-orange); }
+.os-journey li:nth-child(3) { --i: 2; --c: var(--rainbow-yellow); }
+.os-journey li:nth-child(4) { --i: 3; --c: var(--rainbow-purple); }
+
+.os-node {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 7px;
+    white-space: nowrap;
+    background: var(--mac-white);
+    color: var(--mac-black);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--c);
+    border-radius: var(--radius-tag);
+    box-shadow: var(--shadow-flat-1);
+    outline: 2px solid transparent;
+    outline-offset: 1px;
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
+    text-transform: var(--chrome-case);
+    animation: os-node var(--t) infinite;
+    /* the packet reaches stop i at i/4 of the cycle; light up just before */
+    animation-delay: calc(var(--i) * var(--t) / 4 - 0.3s);
+}
+
+.os-note {
+    font-size: 9px;
+    line-height: 1.3;
+    color: var(--mac-grey-6);
+}
+
+/* travel 0-75%, rest on Darwin, fade, start over */
+@keyframes os-packet {
+    0% { left: 12.5%; opacity: 1; }
+    75%, 85% { left: 87.5%; opacity: 1; }
+    95%, 100% { left: 87.5%; opacity: 0; }
+}
+
+@keyframes os-node {
+    0% { transform: scale(1); outline-color: transparent; }
+    4%, 12% { transform: scale(1.12); outline-color: var(--c); }
+    20%, 100% { transform: scale(1); outline-color: transparent; }
+}
+
+/* ── Scroll reveal ──────────────────────────────────────────────────────
+   reveal.js adds .reveal (start state) to [data-reveal] cards, then .in-view.
+   It never arms them with reduced motion or without JS. */
+.reveal .stack-bar,
+.reveal .sys-meter-bar {
+    background-size: 0 100%;
+}
+
+.reveal.in-view .stack-bar,
+.reveal.in-view .sys-meter-bar {
+    background-size: var(--v) 100%;
+}
+
+.reveal .tag {
+    opacity: 0;
+    scale: 0.6;
+    transition: opacity 0.3s, scale 0.3s;
+    transition-delay: calc(var(--n) * 40ms);
+}
+
+.reveal.in-view .tag {
+    opacity: 1;
+    scale: 1;
+}
+
+.reveal .timeline::before {
+    transform: scaleY(0);
+    transition: transform 1.2s ease-out;
+}
+
+.reveal .timeline-item {
+    opacity: 0;
+    translate: -8px 0;
+    transition: opacity 0.4s, translate 0.4s;
+    transition-delay: calc(var(--i) * 0.2s + 0.2s);
+}
+
+.reveal.in-view .timeline::before {
+    transform: none;
+}
+
+.reveal.in-view .timeline-item {
+    opacity: 1;
+    translate: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .timeline-item:first-child::before,
+    .os-node {
+        animation: none;
+    }
+
+    .os-journey::after {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-body {
+        flex-direction: column;
+    }
+
+    .profile-photo {
+        width: 100%;
+        height: 200px;
+    }
+
+    .stack-grid,
+    .facts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sys-meter {
+        grid-template-columns: 100px 1fr 36px;
+    }
+}

@@ -9,101 +9,105 @@
 {% endblock %}
 
 {% block content %}
-<div id="page-content">
-  <div id="pdf-gen-wrap">
 
-    <div class="pdf-gen-header">
-      <h2>// PDF Generator</h2>
-      <p class="pdf-gen-intro">
-        Generate a dummy PDF document for testing, integration, or demonstration purposes.
-        Choose between a lightweight single-page report or a full corporate multi-page document.
-      </p>
+<section class="pdfgen-card">
+    <div class="pdfgen-card-header">
+        <img src="{{ icon('page_white_acrobat.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> PDF Generator
     </div>
-
-    <form method="POST" action="{{ url_for('extras.pdf_generator') }}" id="pdf-gen-form">
-
-      <div class="mode-cards">
-
-        <label class="mode-card" id="card-light">
-          <input type="radio" name="mode" value="light" checked>
-          <div class="mode-card-inner">
-            <div class="mode-card-icon"><img src="{{ url_for('static', filename='images/icons/Icon_pdf_file.png')}}" style="width: auto; height: 40px; pointer-events: none;"></div>
-            <div class="mode-card-title">Light</div>
-            <div class="mode-card-desc">
-              Single-page document. Minimal corporate header, three short sections,
-              and a confidential stamp. Fast to generate, easy on the eyes.
-            </div>
-            <ul class="mode-card-specs">
-              <li>1 page</li>
-              <li>Text only</li>
-              <li>~10 KB</li>
-            </ul>
-          </div>
-        </label>
-
-        <label class="mode-card" id="card-heavy">
-          <input type="radio" name="mode" value="heavy">
-          <div class="mode-card-inner">
-            <div class="mode-card-icon"><img src="{{ url_for('static', filename='images/icons/Icon_pdf_file.png')}}" style="width: auto; height: 40px; pointer-events: none;"></div>
-            <div class="mode-card-title">Heavy</div>
-            <div class="mode-card-desc">
-              Full corporate report. Navy cover page with the punk Tux mascot,
-              table of contents, executive summary, financial tables, tech specs,
-              and a legal notice. The real deal.
-            </div>
-            <ul class="mode-card-specs">
-              <li>6 pages</li>
-              <li>Tables + image</li>
-              <li>~150 KB</li>
-            </ul>
-          </div>
-        </label>
-
-      </div>
-
-      <div class="pdf-gen-submit">
-        <button type="submit" class="btn-generate">
-          &#8659; Generate &amp; Download PDF
-        </button>
-        <p class="pdf-gen-note">
-          The document is generated server-side and downloaded immediately.
-          Language matches your current site language selection.
+    <div class="pdfgen-card-body">
+        <p class="pdfgen-intro">
+            Generate a dummy PDF document for testing, integration, or demonstration purposes.
+            Choose between a lightweight single-page report or a full corporate multi-page document.
         </p>
-      </div>
+    </div>
+</section>
 
-    </form>
+<form method="POST" action="{{ url_for('extras.pdf_generator') }}" id="pdf-gen-form">
 
-    <div class="pdf-gen-info">
-      <h3 class="section-title">About This Tool</h3>
-      <ul class="tech-list">
-        <li><strong>Library:</strong> ReportLab (Python)</li>
-        <li><strong>Formats:</strong> A4, PDF 1.4</li>
-        <li><strong>Content:</strong> Entirely fictional — no real data</li>
-        <li><strong>Languages:</strong> English / Español (follows site language)</li>
-        <li><strong>Mascot:</strong> Tux the Linux Penguin — punk edition</li>
-      </ul>
+    <div class="pdfgen-mode-grid">
+
+        <label class="pdfgen-mode-card" id="pdfgen-card-light">
+            <input type="radio" name="mode" value="light" checked>
+            <div class="pdfgen-mode-title">
+                <img src="{{ icon('note.png') }}" class="icon" alt="">
+                Light
+            </div>
+            <div class="pdfgen-mode-desc">
+                Single-page document. Minimal corporate header, three short sections,
+                and a confidential stamp. Fast to generate, easy on the eyes.
+            </div>
+            <div class="pdfgen-mode-tags">
+                <span class="pdfgen-tag">1 page</span>
+                <span class="pdfgen-tag">Text only</span>
+                <span class="pdfgen-tag">~3.5 KB</span>
+            </div>
+        </label>
+
+        <label class="pdfgen-mode-card" id="pdfgen-card-heavy">
+            <input type="radio" name="mode" value="heavy">
+            <div class="pdfgen-mode-title">
+                <img src="{{ icon('briefcase.png') }}" class="icon" alt="">
+                Heavy
+            </div>
+            <div class="pdfgen-mode-desc">
+                Full corporate report. Navy cover page with the Tux mascot,
+                table of contents, executive summary, financial tables, tech specs,
+                and a legal notice. The real deal.
+            </div>
+            <div class="pdfgen-mode-tags">
+                <span class="pdfgen-tag">6 pages</span>
+                <span class="pdfgen-tag">Tables + image</span>
+                <span class="pdfgen-tag">~670 KB</span>
+            </div>
+        </label>
+
     </div>
 
-  </div>
-</div>
+    <div class="pdfgen-submit-row">
+        <button type="submit" class="pdfgen-btn">
+            <img src="{{ icon('download_for_linux.png') }}" class="icon" alt="">
+            Generate &amp; Download PDF
+        </button>
+        <p class="pdfgen-note">
+            The document is generated server-side and downloaded immediately.
+            Language matches your current site language selection.
+        </p>
+    </div>
+
+</form>
+
+<section class="pdfgen-card">
+    <div class="pdfgen-card-header">
+        <img src="{{ icon('wrench.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> About This Tool
+    </div>
+    <div class="pdfgen-card-body">
+        <ul class="pdfgen-tech-list">
+            <li><img src="{{ icon('page_white_acrobat.png') }}" class="icon" alt=""><strong>Library:</strong> ReportLab (Python)</li>
+            <li><img src="{{ icon('application_view_list.png') }}" class="icon" alt=""><strong>Format:</strong> A4, PDF 1.4</li>
+            <li><img src="{{ icon('information.png') }}" class="icon" alt=""><strong>Content:</strong> Entirely fictional — no real data</li>
+            <li><img src="{{ icon('flag_usa.png') }}" class="icon" alt=""><strong>Languages:</strong> English / Español (follows site language)</li>
+            <li><img src="{{ icon('pc_linux_os.png') }}" class="icon" alt=""><strong>Mascot:</strong> Tux the Linux Penguin</li>
+        </ul>
+    </div>
+</section>
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
-  // Highlight selected card
-  document.querySelectorAll('.mode-card input[type="radio"]').forEach(function(radio) {
-    radio.addEventListener('change', function() {
-      document.querySelectorAll('.mode-card').forEach(function(c) {
-        c.classList.remove('selected');
-      });
-      if (this.checked) {
-        this.closest('.mode-card').classList.add('selected');
-      }
+    document.querySelectorAll('.pdfgen-mode-card input[type="radio"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            document.querySelectorAll('.pdfgen-mode-card').forEach(function (c) {
+                c.classList.remove('selected');
+            });
+            if (this.checked) {
+                this.closest('.pdfgen-mode-card').classList.add('selected');
+            }
+        });
     });
-  });
-  // Set initial state
-  var checked = document.querySelector('.mode-card input[type="radio"]:checked');
-  if (checked) checked.closest('.mode-card').classList.add('selected');
+    var checked = document.querySelector('.pdfgen-mode-card input[type="radio"]:checked');
+    if (checked) checked.closest('.pdfgen-mode-card').classList.add('selected');
 </script>
 {% endblock %}

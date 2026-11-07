@@ -1,6 +1,15 @@
 import re
 from markupsafe import Markup
-from flask import url_for
+from flask import current_app, url_for
+
+
+
+def cdn_url(filename: str, external: bool = False) -> str:
+    """URL of a static/ file: from CDN_URL (same relative path) when set, else /static."""
+    base = current_app.config.get('CDN_URL')
+    if base:
+        return f'{base}/{filename}'
+    return url_for('static', filename=filename, _external=external)
 
 
 # ── Markdown renderer ─────────────────────────────────────────────────────────
@@ -17,10 +26,11 @@ def _esc(s: str) -> str:
 
 def _inline_markup(t: str) -> str:
     """Apply inline patterns to already-HTML-escaped text."""
-    # Images: ![alt](url)
+    # Images: ![alt](url) — tagged modal-image so the global lightbox
+    # (js/image-modal.js) picks them up; it falls back to alt as the title.
     t = re.sub(
         r'!\[([^\]]*)\]\(([^)\s]+)\)',
-        lambda m: f'<img src="{m.group(2)}" alt="{m.group(1)}" style="max-width:100%;height:auto">',
+        lambda m: f'<img src="{m.group(2)}" alt="{m.group(1)}" class="modal-image" style="max-width:100%;height:auto">',
         t,
     )
     # Links: [text](url)
@@ -54,6 +64,48 @@ def _inline(text: str) -> str:
     if tail:
         result.append(_inline_markup(_esc(tail)))
     return ''.join(result)
+
+
+def _split_table_row(line: str) -> list[str]:
+    """Split a GFM table row on unescaped '|' into trimmed cell strings."""
+    s = line.strip()
+    if s.startswith('|'):
+        s = s[1:]
+    if s.endswith('|') and not s.endswith('\\|'):
+        s = s[:-1]
+    cells: list[str] = []
+    cur: list[str] = []
+    i = 0
+    while i < len(s):
+        c = s[i]
+        if c == '\\' and i + 1 < len(s) and s[i + 1] == '|':
+            cur.append('|')
+            i += 2
+            continue
+        if c == '|':
+            cells.append(''.join(cur).strip())
+            cur = []
+            i += 1
+            continue
+        cur.append(c)
+        i += 1
+    cells.append(''.join(cur).strip())
+    return cells
+
+
+def _table_alignments(sep_line: str) -> list[str] | None:
+    """Parse a '|---|:---:|---:|' separator row into alignments, or None if invalid."""
+    cells = _split_table_row(sep_line)
+    if not cells:
+        return None
+    aligns: list[str] = []
+    for cell in cells:
+        c = cell.strip()
+        if not re.match(r'^:?-{1,}:?$', c):
+            return None
+        left, right = c.startswith(':'), c.endswith(':')
+        aligns.append('center' if left and right else 'right' if right else 'left' if left else '')
+    return aligns
 
 
 def render_markdown(md: str) -> Markup:
@@ -145,6 +197,38 @@ def render_markdown(md: str) -> Markup:
             out.append('<ol>\n' + '\n'.join(items) + '\n</ol>')
             continue
 
+        # ── Table (GFM) ──────────────────────────────────────────
+        if '|' in stripped and i + 1 < n:
+            aligns = _table_alignments(lines[i + 1].strip())
+            if aligns is not None:
+                header_cells = _split_table_row(line)
+                i += 2
+                body_rows: list[list[str]] = []
+                while i < n and lines[i].strip() and '|' in lines[i]:
+                    body_rows.append(_split_table_row(lines[i]))
+                    i += 1
+
+                def _style(idx: int) -> str:
+                    if idx < len(aligns) and aligns[idx]:
+                        return f' style="text-align:{aligns[idx]}"'
+                    return ''
+
+                thead = '<tr>' + ''.join(
+                    f'<th{_style(idx)}>{_inline(c)}</th>' for idx, c in enumerate(header_cells)
+                ) + '</tr>'
+                tbody_rows = []
+                for row in body_rows:
+                    cells_html = []
+                    for idx in range(len(header_cells)):
+                        c = row[idx] if idx < len(row) else ''
+                        cells_html.append(f'<td{_style(idx)}>{_inline(c)}</td>')
+                    tbody_rows.append('<tr>' + ''.join(cells_html) + '</tr>')
+                out.append(
+                    '<table>\n<thead>\n' + thead + '\n</thead>\n<tbody>\n'
+                    + '\n'.join(tbody_rows) + '\n</tbody>\n</table>'
+                )
+                continue
+
         # ── Paragraph ────────────────────────────────────────────
         para: list[str] = []
         while i < n:
@@ -157,7 +241,8 @@ def render_markdown(md: str) -> Markup:
                     or re.match(r'^[\*\-\+]\s', s)
                     or re.match(r'^\d+\.\s', s)
                     or re.match(r'^(\*{3,}|-{3,}|_{3,})\s*$', s)
-                    or s.startswith('>')):
+                    or s.startswith('>')
+                    or ('|' in s and i + 1 < n and _table_alignments(lines[i + 1].strip()) is not None)):
                 break
             para.append(_inline(l))
             i += 1
@@ -170,7 +255,7 @@ def render_markdown(md: str) -> Markup:
 
 # ── Image shorthand expander ──────────────────────────────────────────────────
 
-def expand_post_images(text: str, post_slug: str) -> str:
+def expand_media_shorthand(text: str, base_path: str) -> str:
     """
     Replace ``@filename.ext`` shorthands in markdown with full /media/ URLs.
 
@@ -178,9 +263,9 @@ def expand_post_images(text: str, post_slug: str) -> str:
     function rewrites every occurrence so the browser sees real URLs.
 
     Pattern matched:  @<filename>.<extension>
-    Expands to:       /media/blog/posts/<post-slug>/images/<filename>.<extension>
+    Expands to:       /media/<base_path>/<filename>.<extension>
 
-    Example in the .md file:
+    Example in the .md file (base_path='blog/posts/how-dns-works/images'):
         ![DNS Flow diagram](@dns-flow.png)
         ![Server setup](@server-setup.jpg)
 
@@ -190,8 +275,46 @@ def expand_post_images(text: str, post_slug: str) -> str:
     """
     def _replace(m: re.Match) -> str:
         filename = m.group(1)
-        path = f'blog/posts/{post_slug}/images/{filename}'
+        path = f'{base_path}/{filename}'
         return url_for('serve_media', file_path=path)
 
     # Match @word[word/-/.]*.ext — must start with word char, must have extension
     return re.sub(r'@([\w][\w\.\-]*\.\w+)', _replace, text)
+
+
+# ── Redirect targets ──────────────────────────────────────────────────────────
+
+def safe_redirect_target(target: str | None, fallback: str = '/') -> str:
+    """
+    Return `target` if it is a path on this site, otherwise `fallback`.
+
+    A plain startswith('/') check is not enough: browsers read '//evil.com'
+    and '/\\evil.com' as another host, which turns ?next= into an open redirect.
+    """
+    if not target or not target.startswith('/') or target.startswith(('//', '/\\')):
+        return fallback
+    return target
+
+
+# ── Slugs ────────────────────────────────────────────────────────────────────
+
+def slugify(text: str) -> str:
+    text = text.lower().strip()
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[\s_]+', '-', text)
+    text = re.sub(r'-{2,}', '-', text)
+    text = re.sub(r'^-+|-+$', '', text)
+    return text or 'post'
+
+
+def unique_slug(model, base: str, exclude_id: int | None = None) -> str:
+    slug = base
+    i = 2
+    while True:
+        q = model.query.filter_by(slug=slug)
+        if exclude_id:
+            q = q.filter(model.id != exclude_id)
+        if not q.first():
+            return slug
+        slug = f'{base}-{i}'
+        i += 1

@@ -1,0 +1,373 @@
+/* Gensokyo: a Touhou Project skin built around the Hakurei Shrine. Vermilion
+   torii red and gold on warm washi paper, with the yin-yang orb as the
+   emblem. Loaded after every other stylesheet when the theme cookie is
+   "gensokyo". Mostly token overrides; the rules at the bottom are the shrine
+   details (orb, ofuda trim, danmaku dots) that tokens alone can't express. */
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap');
+
+:root {
+    /* washi-paper ramp: warm creams down to lacquered dark red-brown */
+    --mac-white: #fffaf0;
+    --mac-grey-1: #fbf0da;
+    --mac-grey-2: #f4e1b8;
+    --mac-grey-3: #e5c98e;
+    --mac-grey-4: #b8935c;
+    --mac-grey-5: #8c6a45;
+    --mac-grey-6: #5a2b26;
+    --mac-black: #2b1210;
+
+    /* the same six slots as the rainbow, tuned to the shrine palette */
+    --rainbow-green: #7aa63c;
+    --rainbow-yellow: #f2b705;
+    --rainbow-orange: #ee8a12;
+    --rainbow-red: #c8161d;
+    --rainbow-purple: #a3305f;
+    --rainbow-blue: #2c6f9a;
+    --rainbow-gradient: linear-gradient(to right,
+            var(--rainbow-red), var(--rainbow-orange), var(--rainbow-yellow),
+            var(--rainbow-orange), var(--rainbow-red));
+
+    --gs-red: #c8161d;
+    --gs-red-deep: #7a0d12;
+    --gs-red-dark: #4a0709;
+    --gs-gold: #f2b705;
+    --gs-gold-soft: #ffe39a;
+    --gs-paper: #fffaf0;
+
+    /* the emblem: left half white, right half red, a dot of each in the
+       opposite lobe. Sized by the element that paints it. */
+    --gs-orb:
+        radial-gradient(circle at 50% 25%, var(--gs-red) 0 12%, transparent 13%),
+        radial-gradient(circle at 50% 75%, var(--gs-paper) 0 12%, transparent 13%),
+        radial-gradient(circle at 50% 25%, var(--gs-paper) 0 25%, transparent 26%),
+        radial-gradient(circle at 50% 75%, var(--gs-red) 0 25%, transparent 26%),
+        linear-gradient(90deg, var(--gs-paper) 50%, var(--gs-red) 50%);
+
+    --shadow-flat-1: 1px 1px 0 rgba(122, 13, 18, 0.45);
+    --shadow-flat-2: 2px 2px 0 rgba(122, 13, 18, 0.35);
+    --shadow-flat-3: 0 0 0 3px var(--gs-gold), 0 0 0 5px var(--gs-red-deep), 0 18px 48px rgba(40, 0, 2, 0.6);
+    --radius-button: 3px;
+
+    --font-chrome: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+    --font-body: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'Helvetica Neue', Arial, sans-serif;
+    --font-wordmark: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+
+    /* theme layer */
+    --line: #b8935c;
+    --frame: 2px solid var(--gs-red-deep);
+    --radius-card: 6px;
+    --radius-tag: 3px;
+    --radius-field: 3px;
+    --card-inset: 2px;
+    --divider: 1px dashed var(--mac-grey-4);
+
+    --chrome-case: none;
+    --chrome-size: 12px;
+    --chrome-weight: 700;
+    --bar-bg: linear-gradient(#fff0c2, #f8d673);
+    /* plain red so it doesn't compete with the woven stripe below it */
+    --bar-rule: 3px solid var(--gs-red);
+    --bar-rule-image: none;
+    --titlebar-bg: linear-gradient(#d71f26, #a30f14);
+    --toolbar-bg: linear-gradient(#fffaf0, #f4e1b8);
+    --sidebar-bg: radial-gradient(rgba(200, 22, 29, 0.12) 1px, transparent 1.5px) 0 0 / 10px 10px var(--mac-grey-1);
+
+    --button-bg: linear-gradient(#fffaf0, #f4e1b8);
+    --button-accent: 3px solid var(--gs-gold);
+    --select-bg: var(--gs-red);
+    --select-text: #fff6d6;
+    --badge-bg: var(--gs-red-deep);
+    --link: #b3121a;
+    --accent: var(--gs-red);
+    --icon-rendering: auto;
+    --focus-ring: 2px solid var(--gs-red-deep);
+    --focus-offset: 2px;
+    --scroll-thumb: var(--gs-red);
+    --scroll-thumb-hover: var(--gs-red-deep);
+    --scroll-track: var(--mac-grey-2);
+
+    /* danmaku-style gold dots over a torii-red sky */
+    --desktop-bg:
+        radial-gradient(rgba(255, 214, 102, 0.22) 2px, transparent 2.5px) 0 0 / 34px 34px,
+        radial-gradient(rgba(255, 214, 102, 0.12) 1.5px, transparent 2px) 17px 17px / 34px 34px,
+        radial-gradient(ellipse at 50% 0%, #e0352a 0%, #a30f14 45%, #4a0709 100%) fixed;
+    /* the gradient shows through until/unless the banner image loads */
+    --banner-image: var(--banner-art), radial-gradient(circle at 82% 50%, rgba(255, 227, 154, 0.95) 0 5%, transparent 26%), linear-gradient(100deg, #7a0d12 0%, #c8161d 55%, #f2b705 135%);
+    /* woven gold squares on orange, alternating horizontal and vertical
+       lines; diagonals are System 7's */
+    --accent-stripe: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='12' shape-rendering='crispEdges'><rect width='24' height='12' fill='%23ee8a12'/><path d='M1 2h10M1 6h10M1 10h10M14 1v10M18 1v10M22 1v10' stroke='%23ffe39a' stroke-width='2'/></svg>") 0 0 / 24px 12px;
+}
+
+/* one full row of woven squares; at 4px the lines vanish */
+.alert-stripe,
+.payday-stripe {
+    height: 12px;
+}
+
+::selection {
+    background: var(--gs-gold);
+    color: var(--gs-red-dark);
+}
+
+/* the same woven squares as --accent-stripe, in shrine red and gold */
+.rainbow-bar {
+    height: 12px;
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='12' shape-rendering='crispEdges'><rect width='24' height='12' fill='%23c8161d'/><path d='M1 2h10M1 6h10M1 10h10M14 1v10M18 1v10M22 1v10' stroke='%23f2b705' stroke-width='2'/></svg>") 0 0 / 24px 12px;
+}
+
+/* ── Chrome ─────────────────────────────────────────────────────────────── */
+.header-top-nav {
+    color: var(--gs-gold-soft);
+    border-bottom: 2px solid var(--gs-gold);
+}
+
+.header-top-nav a {
+    color: #fff6d6;
+}
+
+.header-top-nav a.active {
+    color: var(--gs-gold);
+    text-decoration: none;
+    box-shadow: inset 0 -2px 0 var(--gs-gold);
+}
+
+.header-top-nav a.active:hover {
+    color: var(--select-text);
+}
+
+/* inverted on hover: red-on-red would vanish in the title bar */
+.header-top-nav a:hover,
+.header-top-nav .nav-dropdown-menu a:hover {
+    background: var(--gs-gold);
+    color: var(--gs-red-dark);
+}
+
+/* the dropdown is a cream panel, so it can't inherit the title bar's light text */
+.header-top-nav .nav-dropdown-menu a,
+.header-top-nav .nav-dropdown-menu a.active {
+    color: var(--gs-red-deep);
+    box-shadow: none;
+}
+
+.header-top-nav .nav-dropdown-menu a.active {
+    background: var(--mac-grey-2);
+}
+
+.header-main {
+    border-bottom: 3px solid var(--gs-gold);
+    box-shadow: inset 0 -3px 0 var(--gs-red-deep);
+}
+
+/* white title, deep-red outline, golden halo: legible over any banner art */
+.logo-title {
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #fffaf0;
+    -webkit-text-stroke: 1px var(--gs-red-deep);
+    text-stroke: 1px var(--gs-red-deep);
+    text-shadow: 0 2px 0 var(--gs-red-deep), 0 0 16px rgba(255, 214, 102, 0.8);
+}
+
+/* gold-on-vermilion plate flanked by two orbs; the plate keeps it readable */
+.logo-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin: 6px auto 0;
+    padding: 2px 12px;
+    color: var(--gs-gold-soft);
+    background: rgba(74, 7, 9, 0.8);
+    border-top: 1px solid var(--gs-gold);
+    border-bottom: 1px solid var(--gs-gold);
+    border-radius: 3px;
+    letter-spacing: 4px;
+    text-shadow: 0 1px 0 #000000;
+}
+
+.logo-subtitle::before,
+.logo-subtitle::after {
+    content: "";
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid var(--gs-gold);
+    background: var(--gs-orb);
+}
+
+.main-nav a {
+    color: var(--gs-red-deep);
+    border-right-color: var(--mac-grey-3);
+}
+
+.main-nav a:hover,
+.menu-list a:hover,
+.nav-dropdown-menu a:hover {
+    color: var(--select-text);
+}
+
+.nav-dropdown-menu {
+    border: 2px solid var(--gs-red-deep);
+    border-top-color: var(--gs-gold);
+}
+
+.nav-dropdown-menu a {
+    border-bottom-color: var(--mac-grey-2);
+}
+
+.content-container {
+    background: var(--mac-grey-1);
+}
+
+/* ── Panels: gold title bar, orb as the bullet ─────────────────────────── */
+.panel-box {
+    border: 1px solid var(--gs-red-deep);
+    border-top: 3px solid var(--gs-red);
+    box-shadow: var(--shadow-flat-2);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--gs-red-deep);
+}
+
+.panel-header::before {
+    content: "";
+    flex: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--gs-red-deep);
+    background: var(--gs-orb);
+}
+
+/* headers that already carry their own icon don't need the orb bullet too */
+.panel-header:has(> img)::before {
+    display: none;
+}
+
+.menu-list li {
+    border-bottom-color: var(--mac-grey-2);
+}
+
+.menu-list a {
+    color: var(--gs-red-deep);
+}
+
+footer {
+    color: var(--mac-grey-6);
+    border-top: 2px solid var(--gs-red);
+}
+
+/* ── Controls ──────────────────────────────────────────────────────────── */
+button,
+input[type="submit"],
+input[type="button"] {
+    background: linear-gradient(#e0352a, #a30f14);
+    color: #fff6d6;
+    border: 1px solid var(--gs-red-dark);
+    border-bottom: 3px solid var(--gs-gold);
+    font-weight: 700;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background: linear-gradient(#f2483a, #c8161d);
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    background: var(--gs-red-deep);
+    border-bottom-width: 1px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="tel"],
+textarea,
+select {
+    background: #ffffff;
+    border-color: var(--mac-grey-4);
+    border-left: 3px solid var(--gs-red);
+    color: var(--mac-black);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--gs-gold);
+    box-shadow: 0 0 0 2px rgba(242, 183, 5, 0.45);
+}
+
+th {
+    color: var(--gs-red-deep);
+}
+
+code {
+    color: var(--gs-red-deep);
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        border: 0;
+        box-shadow: none;
+    }
+
+    /* keep the whole banner on phones: the text shrinks to fit the art instead
+       of the art being cropped to fit the text */
+    .header-main {
+        aspect-ratio: 2418 / 416;
+        background-size: 100% 100%;
+        padding: 0 8px;
+    }
+
+    .logo-title {
+        font-size: clamp(14px, 4.6vw, 26px);
+        letter-spacing: 0;
+        -webkit-text-stroke-width: 0.5px;
+        text-stroke-width: 0.5px;
+    }
+
+    .logo-subtitle {
+        gap: 5px;
+        margin-top: 2px;
+        padding: 1px 8px;
+        font-size: clamp(7px, 2.2vw, 11px);
+        letter-spacing: 2px;
+    }
+
+    .logo-subtitle::before,
+    .logo-subtitle::after {
+        width: 9px;
+        height: 9px;
+    }
+}
+
+/* GitHub contribution chart: danmaku. Every day is a bullet that turns shrine red as it fills,
+   and the busiest days become yin-yang orbs */
+.gh-days::after {
+    content: none;
+}
+
+.gh-cal i {
+    border: 0;
+    border-radius: 50%;
+    background: var(--mac-grey-2);
+}
+
+.gh-cal i[data-l="1"] { background: radial-gradient(circle, var(--gs-paper) 0 30%, #eba2a2 38%); }
+.gh-cal i[data-l="2"] { background: radial-gradient(circle, var(--gs-paper) 0 30%, #dd5a5f 38%); }
+.gh-cal i[data-l="3"] { background: radial-gradient(circle, var(--gs-gold-soft) 0 30%, var(--gs-red) 38%); }
+.gh-cal i[data-l="4"] { background: var(--gs-orb); box-shadow: 0 0 0 1px var(--gs-gold), 0 0 4px var(--gs-gold); }

@@ -1,0 +1,56 @@
+Icons in this folder are from the Chicago95 icon theme by grassmunk and
+contributors, licensed under the GNU GPL 3.0 or later / MIT:
+https://github.com/grassmunk/Chicago95
+Modifications: none (32x32 px originals, renamed).
+
+File mapping (this folder -> Icons/Chicago95/<context>/32/<file>):
+administrator.png -> apps/32/system-users.png
+application_view_list.png -> mimes/32/application-x-executable.png
+arrow_refresh.png -> actions/32/view-refresh.png
+bell.png -> status/32/software-update-available.png
+book_open.png -> apps/32/accessories-dictionary.png
+brain.png -> apps/32/help-browser.png
+briefcase.png -> places/32/folder-documents.png
+bullet_arrow_right.png -> actions/32/go-next.png
+calendar.png -> apps/32/x-office-calendar.png
+category.png -> mimes/32/x-office-drawing.png
+chart_line.png -> mimes/32/x-office-spreadsheet.png
+computer_error.png -> status/32/dialog-error.png
+cross.png -> actions/32/process-stop.png
+dashboard.png -> apps/32/utilities-system-monitor.png
+door_out.png -> actions/32/system-log-out.png
+download_for_linux.png -> apps/32/system-software-install.png
+ecommerce_server.png -> places/32/network-server.png
+email.png -> apps/32/internet-mail.png
+email_open.png -> status/32/stock_mail-open.png
+external.png -> apps/32/internet-web-browser.png
+house.png -> places/32/user-home.png
+information.png -> status/32/dialog-information.png
+layer.png -> apps/32/preferences-desktop-theme.png
+newspaper.png -> apps/32/internet-news-reader.png
+note.png -> apps/32/accessories-text-editor.png
+open_source.png -> mimes/32/package.png
+page_white_acrobat.png -> mimes/32/application-pdf.png
+pc_linux_os.png -> apps/32/utilities-terminal.png
+pencil.png -> mimes/32/image-x-generic.png
+photos.png -> places/32/folder-pictures.png
+plus_button.png -> actions/32/list-add.png
+prohibition_button.png -> status/32/dialog-error.png
+resultset_next.png -> actions/32/go-next.png
+resultset_previous.png -> actions/32/go-previous.png
+rocket.png -> actions/32/system-run.png
+rss.png -> mimes/32/application-rss+xml.png
+server.png -> places/32/network-server.png
+server_database.png -> devices/32/drive-harddisk.png
+servers.png -> devices/32/network-workgroup.png
+share.png -> places/32/user-share.png
+shop_network.png -> categories/32/applications-internet.png
+three_tags.png -> actions/32/tag-new.png
+tick_circle_frame.png -> actions/32/dialog-apply.png
+timeline.png -> actions/32/document-open-recent.png
+toolbox.png -> apps/32/preferences-system.png
+vcard.png -> mimes/32/x-office-address-book.png
+warning.png -> status/32/dialog-warning.png
+wrench.png -> emblems/32/emblem-system.png
+quill.png -> apps/32/accessories-text-editor.png
+theme-logo.png -> places/32/start-here.png

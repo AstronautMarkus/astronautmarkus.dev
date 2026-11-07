@@ -1,0 +1,153 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/setup.css') }}">
+{% endblock %}
+
+{% block title %}Setup{% endblock %}
+{% block description %}El escritorio, no el rack — los equipos, monitor y periféricos que uso a diario, por AstronautMarkus.{% endblock %}
+{% block keywords %}AstronautMarkus, setup, battlestation, Mac Mini M1, HP OMEN, teclado mecánico, Logitech G502, Sony MDR-7506{% endblock %}
+
+{% block content %}
+
+<section class="setup-card">
+    <div class="setup-card-header">
+        <img src="{{ icon('apple.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon">
+        Setup
+    </div>
+    <div class="setup-card-body setup-hero">
+        <div class="setup-hero-photo-wrap">
+            <img src="{{ cdn_url('images/setup/the-setup.jpg') }}" class="setup-hero-photo modal-image" data-modal-group="setup"
+                alt="El setup">
+        </div>
+        <div class="setup-hero-text">
+            <p>
+                La página de <a href="{{ url_for('main.homelab') }}">Homelab</a> es el lado servidor de las cosas —
+                esta es el escritorio. Lo que realmente tengo enfrente todos los días: el equipo de escritorio, los
+                laptops, y el teclado/mouse/audífonos en los que terminé después de demasiados cambios.
+            </p>
+            <p>
+                Acá no hay pila tecnológica — eso ya está cubierto en la página <a
+                    href="{{ url_for('main.about_me') }}">Sobre Mí</a>. Esto es solo el hardware: qué es, para qué
+                sirve, y por qué sigue en el escritorio.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="setup-card">
+    <div class="setup-card-header">
+        <img src="{{ icon('toolbox.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Lista de Setup
+    </div>
+
+    <div class="setup-grid">
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/mac-mini-m1.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Mac Mini M1">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('apple.png') }}" class="icon" alt="">
+                    Mac Mini M1
+                </div>
+                <span class="setup-item-role">Escritorio</span>
+                <div class="setup-item-desc">
+                    El equipo principal del escritorio. Silencioso, chico, y todavía no se ha agitado ni una vez —
+                    daily driver para todo lo que no sea gaming o trabajo de lab.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Apple M1</span>
+                    <span class="setup-tag">Daily Driver</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/samsung-monitor.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Monitor Samsung ViewFinity S7">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('photos.png') }}" class="icon" alt="">
+                    Samsung ViewFinity S7
+                </div>
+                <span class="setup-item-role">Monitor</span>
+                <div class="setup-item-desc">
+                    4K, buenos colores, pero solo 60Hz. Aun así, cumple con lo que necesito.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Samsung</span>
+                    <span class="setup-tag">4K</span>
+                    <span class="setup-tag">60Hz</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/macbook-neo.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Laptop de trabajo MacBook Neo">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('apple.png') }}" class="icon" alt="">
+                    MacBook Neo
+                </div>
+                <span class="setup-item-role">Laptop de Trabajo</span>
+                <div class="setup-item-desc">
+                    El "iPhone de los laptops", como lo puse en la página Sobre Mí — el que viaja, el que hace el
+                    trabajo con clientes de verdad.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Apple Silicon</span>
+                    <span class="setup-tag">Trabajo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/ajazz-keyboard.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Teclado mecánico Ajazz AK820 Pro">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('wrench.png') }}" class="icon" alt="">
+                    Ajazz AK820 Pro
+                </div>
+                <span class="setup-item-role">Teclado</span>
+                <div class="setup-item-desc">
+                    Mi teclado mecánico personalizado con estilo Mac. Lo uso para trabajar desde casa, jugar, y
+                    tareas generales de escritura.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Mecánico</span>
+                    <span class="setup-tag">Hot-Swap</span>
+                    <span class="setup-tag">Estilo Mac</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/g502.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Mouse Logitech G502 KDA Edition">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('toolbox.png') }}" class="icon" alt="">
+                    Logitech G502 KDA Edition
+                </div>
+                <span class="setup-item-role">Mouse</span>
+                <div class="setup-item-desc">
+                    La edición K/DA de la forma más confiable de Logitech. Pasé por más mouses de los que quiero
+                    admitir; este se quedó.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Logitech G502</span>
+                    <span class="setup-tag">Edición K/DA</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+{% endblock %}

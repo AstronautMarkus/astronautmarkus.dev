@@ -1,56 +1,94 @@
 {% extends "admin/base.html" %}
 
-{% block title %}Dashboard{% endblock %}
-{% block breadcrumb %}Overview{% endblock %}
-{% block page_title %}Dashboard{% endblock %}
+{% block title %}{{ t('nav.dashboard') }}{% endblock %}
+{% block breadcrumb %}{{ t('dashboard.overview') }}{% endblock %}
+{% block page_title %}{{ t('nav.dashboard') }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-sm" href="{{ url_for('admin.projects_create') }}"><i class="fa-solid fa-plus"></i> Portfolio</a>
-  <a class="btn btn-sm" href="{{ url_for('admin.blog_post_create') }}"><i class="fa-solid fa-plus"></i> Post</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_create') }}"><i class="fa-solid fa-plus"></i> {{ t('nav.portfolio') }}</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.blog_post_create') }}"><i class="fa-solid fa-plus"></i> {{ t('blog.post_singular') }}</a>
   <a class="btn btn-primary btn-sm" href="{{ url_for('admin.contact_inbox') }}">
-    <i class="fa-solid fa-envelope"></i> Inbox{% if unread_messages %} ({{ unread_messages }}){% endif %}
+    <i class="fa-solid fa-envelope"></i> {{ t('nav.inbox') }}{% if unread_messages %} ({{ unread_messages }}){% endif %}
   </a>
 {% endblock %}
 
 {% block content %}
 
 <!-- ── Stats ── -->
-<div class="stat-grid">
-  <div class="stat-box accent">
-    <div class="stat-box-label"><i class="fa-solid fa-briefcase"></i> Portfolio Projects</div>
-    <div class="stat-box-value">{{ total_projects }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.projects_list') }}">View all →</a></div>
+<div class="row g-3 mb-3">
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-aqua">
+      <div class="inner">
+        <h3>{{ total_projects }}</h3>
+        <p>{{ t('dashboard.portfolio_projects') }}</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-briefcase"></i></div>
+      <a href="{{ url_for('admin.projects_list') }}" class="small-box-footer">{{ t('dashboard.view_all') }} <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
-  <div class="stat-box">
-    <div class="stat-box-label"><i class="fa-solid fa-file-pdf"></i> CV Files</div>
-    <div class="stat-box-value">{{ total_cvs }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.cv_list') }}">View all →</a></div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-blue">
+      <div class="inner">
+        <h3>{{ total_cvs }}</h3>
+        <p>{{ t('nav.cv_files') }}</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-file-pdf"></i></div>
+      <a href="{{ url_for('admin.cv_list') }}" class="small-box-footer">{{ t('dashboard.view_all') }} <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
-  <div class="stat-box accent">
-    <div class="stat-box-label"><i class="fa-solid fa-pen-nib"></i> Blog Posts</div>
-    <div class="stat-box-value">{{ total_posts }}</div>
-    <div class="stat-box-sub">{{ total_categories }} categor{{ 'y' if total_categories == 1 else 'ies' }}</div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-purple">
+      <div class="inner">
+        <h3>{{ total_posts }}</h3>
+        <p>{{ t('nav.blog_posts') }}</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-feather"></i></div>
+      <span class="small-box-footer">{{ total_categories }} {{ t('dashboard.category_one' if total_categories == 1 else 'dashboard.category_other') }}</span>
+    </div>
   </div>
-  <div class="stat-box">
-    <div class="stat-box-label"><i class="fa-solid fa-tags"></i> Categories</div>
-    <div class="stat-box-value">{{ total_categories }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.blog_categories_list') }}">Manage →</a></div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-yellow">
+      <div class="inner">
+        <h3>{{ total_categories }}</h3>
+        <p>{{ t('nav.categories') }}</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-tags"></i></div>
+      <a href="{{ url_for('admin.blog_categories_list') }}" class="small-box-footer">{{ t('dashboard.manage') }} <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
-  <div class="stat-box {{ 'accent-red' if unread_messages else '' }}">
-    <div class="stat-box-label"><i class="fa-solid fa-envelope"></i> Messages</div>
-    <div class="stat-box-value">{{ total_messages }}</div>
-    <div class="stat-box-sub">
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box {{ 'bg-red' if unread_messages else 'bg-grey' }}">
+      <div class="inner">
+        <h3>{{ total_messages }}</h3>
+        <p>{{ t('dashboard.messages') }}</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-envelope"></i></div>
       {% if unread_messages %}
-        <a href="{{ url_for('admin.contact_inbox') }}" class="text-danger">{{ unread_messages }} unread →</a>
+      <a href="{{ url_for('admin.contact_inbox') }}" class="small-box-footer">{{ unread_messages }} {{ t('dashboard.unread') }} <i class="fa-solid fa-circle-arrow-right"></i></a>
       {% else %}
-        all read
+      <span class="small-box-footer">{{ t('dashboard.all_read') }}</span>
       {% endif %}
     </div>
   </div>
-  <div class="stat-box accent-green">
-    <div class="stat-box-label"><i class="fa-solid fa-chart-line"></i> Total Visits</div>
-    <div class="stat-box-value">{{ total_visits }}</div>
-    <div class="stat-box-sub"><a href="{{ url_for('admin.visits_list') }}">Analytics →</a></div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box bg-green">
+      <div class="inner">
+        <h3>{{ total_visits }}</h3>
+        <p>{{ t('dashboard.total_visits') }}</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-chart-line"></i></div>
+      <a href="{{ url_for('admin.visits_list') }}" class="small-box-footer">{{ t('dashboard.analytics') }} <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="small-box {{ 'bg-red' if total_honeypot_hits else 'bg-grey' }}">
+      <div class="inner">
+        <h3>{{ total_honeypot_hits }}</h3>
+        <p>{{ t('dashboard.honeypot_hits') }}</p>
+      </div>
+      <div class="icon-bg"><i class="fa-solid fa-bug"></i></div>
+      <a href="{{ url_for('admin.honeypot_list') }}" class="small-box-footer">{{ t('dashboard.view_log') }} <i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
   </div>
 </div>
 
@@ -59,32 +97,32 @@
 
   <!-- Recent messages -->
   <div class="card">
-    <div class="card-title red"><i class="fa-solid fa-envelope"></i> Recent Messages</div>
+    <div class="card-title red"><i class="fa-solid fa-envelope"></i> {{ t('dashboard.recent_messages') }}</div>
     {% if recent_messages %}
-    <table>
+    <table class="table-responsive">
       <thead>
         <tr>
-          <th>From</th>
-          <th>Subject</th>
-          <th>Date</th>
+          <th>{{ t('dashboard.from') }}</th>
+          <th>{{ t('dashboard.subject') }}</th>
+          <th>{{ t('common.date') }}</th>
         </tr>
       </thead>
       <tbody>
       {% for m in recent_messages %}
       <tr>
-        <td>
+        <td data-label="{{ t('dashboard.from') }}">
           <a href="{{ url_for('admin.contact_message_detail', message_id=m.id) }}"
              class="{{ 'text-strong' if not m.is_read else '' }}">
             {{ m.name }}
           </a>
           {% if not m.is_read %}
-            <span class="lang-badge lang-badge-danger">new</span>
+            <span class="lang-badge lang-badge-danger">{{ t('dashboard.new_badge') }}</span>
           {% endif %}
         </td>
-        <td class="text-muted text-sm truncate" style="max-width:120px">
+        <td data-label="{{ t('dashboard.subject') }}" class="text-muted text-sm truncate" style="max-width:120px">
           {{ m.subject or '—' }}
         </td>
-        <td class="text-muted text-sm nowrap">
+        <td data-label="{{ t('common.date') }}" class="text-muted text-sm nowrap">
           {{ m.created_at | dtfmt('%b %d') }}
         </td>
       </tr>
@@ -92,38 +130,38 @@
       </tbody>
     </table>
     {% else %}
-    <div class="empty-state">No messages yet.</div>
+    <div class="empty-state">{{ t('dashboard.no_messages') }}</div>
     {% endif %}
   </div>
 
   <!-- Recent posts -->
   <div class="card">
-    <div class="card-title"><i class="fa-solid fa-pen-nib"></i> Recent Blog Posts</div>
+    <div class="card-title"><i class="fa-solid fa-feather"></i> {{ t('dashboard.recent_posts') }}</div>
     {% if recent_posts %}
-    <table>
+    <table class="table-responsive">
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Status</th>
-          <th>Date</th>
+          <th>{{ t('common.title') }}</th>
+          <th>{{ t('common.status') }}</th>
+          <th>{{ t('common.date') }}</th>
         </tr>
       </thead>
       <tbody>
       {% for p in recent_posts %}
       <tr>
-        <td>
+        <td data-label="{{ t('common.title') }}">
           <a href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}" class="text-strong">
             {{ p.title }}
           </a>
         </td>
-        <td>
+        <td data-label="{{ t('common.status') }}">
           {% if p.published %}
-            <span class="lang-badge lang-badge-success">Live</span>
+            <span class="lang-badge lang-badge-success">{{ t('dashboard.live') }}</span>
           {% else %}
-            <span class="lang-badge">Draft</span>
+            <span class="lang-badge">{{ t('dashboard.draft') }}</span>
           {% endif %}
         </td>
-        <td class="text-muted text-sm nowrap">
+        <td data-label="{{ t('common.date') }}" class="text-muted text-sm nowrap">
           {{ p.created_at | dtfmt('%b %d') }}
         </td>
       </tr>
@@ -131,7 +169,7 @@
       </tbody>
     </table>
     {% else %}
-    <div class="empty-state">No posts yet. <a href="{{ url_for('admin.blog_post_create') }}">Write one →</a></div>
+    <div class="empty-state">{{ t('dashboard.no_posts') }} <a href="{{ url_for('admin.blog_post_create') }}">{{ t('dashboard.write_one') }}</a></div>
     {% endif %}
   </div>
 
@@ -139,26 +177,26 @@
 
 <!-- ── Recent projects table ── -->
 <div class="card">
-  <div class="card-title"><i class="fa-solid fa-briefcase"></i> Recent Projects</div>
+  <div class="card-title"><i class="fa-solid fa-briefcase"></i> {{ t('dashboard.recent_projects') }}</div>
   {% if recent_projects %}
-  <table>
+  <table class="table-responsive">
     <thead>
       <tr>
         <th>#</th>
-        <th>Title</th>
-        <th>Created</th>
-        <th style="text-align:right">Actions</th>
+        <th>{{ t('common.title') }}</th>
+        <th>{{ t('common.created') }}</th>
+        <th style="text-align:right">{{ t('common.actions') }}</th>
       </tr>
     </thead>
     <tbody>
     {% for p in recent_projects %}
     <tr>
-      <td class="text-muted nowrap">{{ p.id }}</td>
-      <td class="text-strong">{{ p.title }}</td>
-      <td class="text-muted text-sm">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
-      <td>
+      <td data-label="#" class="text-muted nowrap">{{ p.id }}</td>
+      <td data-label="{{ t('common.title') }}" class="text-strong">{{ p.title }}</td>
+      <td data-label="{{ t('common.created') }}" class="text-muted text-sm">{{ p.created_at | dtfmt('%b %d, %Y') }}</td>
+      <td data-label="{{ t('common.actions') }}">
         <div class="td-actions">
-          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}"><i class="fa-solid fa-pen"></i> Edit</a>
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.projects_edit', project_id=p.id) }}"><i class="fa-solid fa-pen"></i> {{ t('common.edit') }}</a>
         </div>
       </td>
     </tr>
@@ -166,7 +204,7 @@
     </tbody>
   </table>
   {% else %}
-  <div class="empty-state">No projects yet. <a href="{{ url_for('admin.projects_create') }}">Add one →</a></div>
+  <div class="empty-state">{{ t('dashboard.no_projects') }} <a href="{{ url_for('admin.projects_create') }}">{{ t('dashboard.add_one') }}</a></div>
   {% endif %}
 </div>
 

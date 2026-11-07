@@ -1,7 +1,13 @@
 from app.routes.main import main_bp
-from app import render_localized_template
+from app import db, render_localized_template
+from app.models.models import SyncedSnapshot
+from app.i18n import get_current_language
+from app.tech_stack import get_tech_stack
+from app.theme_schedule import today
+from app.routes.main.index import CODING_SINCE
 
-
-@main_bp.route('/about')
-def about():
-    return render_localized_template('main/about.html')
+@main_bp.route('/about-me')
+def about_me():
+    return render_localized_template('main/about.html', tech_stack=get_tech_stack(get_current_language()),
+                                     github=db.session.get(SyncedSnapshot, 'github'),
+                                     years_coding=today().year - CODING_SINCE)

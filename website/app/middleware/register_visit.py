@@ -13,6 +13,14 @@ def _is_valid_request_for_visit_register() -> bool:
 	if request.endpoint and request.endpoint == 'static':
 		return False
 
+	# Feed readers (FeedBurner, Feedly, ...) and crawlers poll these on a schedule; that's not a visit.
+	if request.endpoint in ('main.blog_rss', 'utils.robots', 'utils.sitemap'):
+		return False
+
+	# Embedded cards are fetched by image proxies (GitHub camo, ...), not people.
+	if request.endpoint and request.endpoint.startswith('utils.card_'):
+		return False
+
 	return True
 
 

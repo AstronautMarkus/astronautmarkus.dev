@@ -2,7 +2,7 @@ from flask import render_template
 from flask_login import login_required
 
 from app.models.models import (
-    BlogCategory, BlogPost, ContactMessage, CvFile, PortfolioProject, Visit,
+    BlogCategory, BlogPost, ContactMessage, CvFile, HoneypotHit, PortfolioProject, Visit,
 )
 from app.routes.admin import admin_bp
 
@@ -17,6 +17,7 @@ def dashboard():
     total_messages = ContactMessage.query.count()
     unread_messages = ContactMessage.query.filter_by(is_read=False).count()
     total_visits = Visit.query.count()
+    total_honeypot_hits = HoneypotHit.query.count()
 
     recent_projects = (
         PortfolioProject.query
@@ -43,6 +44,7 @@ def dashboard():
         total_messages=total_messages,
         unread_messages=unread_messages,
         total_visits=total_visits,
+        total_honeypot_hits=total_honeypot_hits,
         recent_projects=recent_projects,
         recent_posts=recent_posts,
         recent_messages=recent_messages,

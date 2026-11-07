@@ -1,0 +1,369 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block description %}{{ description or title }}{% endblock %}
+{% block keywords %}{{ post.category.name ~ ', ' if post.category else '' }}blog, desarrollo, AstronautMarkus.dev{% endblock %}
+
+{% block og_type %}article{% endblock %}
+
+{% block og_image %}
+{% if post.cover_image_path %}
+{% set og_img = storage_url(post.cover_image_path) %}
+<meta property="og:image" content="{{ og_img if og_img.startswith('http') else request.url_root.rstrip('/') + og_img }}">
+<meta name="twitter:image" content="{{ og_img if og_img.startswith('http') else request.url_root.rstrip('/') + og_img }}">
+{% else %}
+{{ super() }}
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+<script>try { if (localStorage.getItem('post-sidebar') === 'hidden') document.documentElement.classList.add('post-sidebar-hidden'); } catch (e) {}</script>
+{% endblock %}
+
+{% block content %}
+
+{% if post.cover_image_path %}
+<div class="post-cover-wrap">
+    <img src="{{ storage_url(post.cover_image_path) }}" class="post-cover-img modal-image"
+         data-modal-group="post-images" alt="{{ title }}">
+    <div class="post-cover-overlay">
+        <div class="post-cover-title">{{ title }}</div>
+    </div>
+</div>
+{% endif %}
+
+<div id="post-content">
+
+    <div id="post-main">
+
+        <div class="post-header">
+            {% if not post.cover_image_path %}
+            <h1>{{ title }}</h1>
+            {% endif %}
+            <div class="post-meta-row">
+                <span>{{ post.created_at | dtfmt('%B %d, %Y') }}</span>
+                {% if post.category %}
+                <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}" class="post-meta-cat">
+                    {% if post.category.has_es and post.category.name_es %}
+                        {{ post.category.name_es }}
+                    {% else %}
+                        {{ post.category.name }}
+                    {% endif %}
+                </a>
+                {% endif %}
+                {% if post.has_es %}
+                <span class="post-meta-lang">
+                    <a href="/lang/en?next={{ request.path }}">EN</a>
+                </span>
+                {% endif %}
+                <button type="button" id="post-sidebar-toggle" class="post-sidebar-toggle"
+                        aria-controls="post-sidebar" aria-expanded="true">Ocultar panel</button>
+            </div>
+        </div>
+
+        <div class="prose">
+            {% if content_html %}
+                {{ content_html }}
+            {% else %}
+            <p style="color:#7a8a9a;font-style:italic">No hay contenido disponible para este post aún.</p>
+            {% endif %}
+        </div>
+
+        {% if post.images %}
+        <div class="post-gallery">
+            <h4><img src="{{ icon('photos.png') }}" class="pixel-icon-inline" alt="">Imágenes del Post</h4>
+            <div class="post-gallery-grid">
+                {% for img in post.images %}
+                <img src="{{ storage_url(img.image_path) }}" alt="Imagen {{ loop.index }}" class="modal-image"
+                     data-modal-group="post-images">
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <a href="{{ url_for('main.blog_list') }}" class="post-back">Volver al Blog</a>
+
+    </div>
+
+    <div id="post-sidebar">
+
+        <div class="blog-sidebar-box">
+            <h4><img src="{{ icon('information.png') }}" class="pixel-icon-inline" alt="">Info del Post</h4>
+            <ul class="sidebar-info-list">
+                <li>Publicado: {{ post.created_at | dtfmt('%d %b %Y') }}</li>
+                <li>Visitas: {{ post.view_count }}</li>
+                {% if post.category %}
+                <li>
+                    Categoría:
+                    <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}">
+                        {% if post.category.has_es and post.category.name_es %}
+                            {{ post.category.name_es }}
+                        {% else %}
+                            {{ post.category.name }}
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if post.has_es %}
+                <li>
+                    <a href="/lang/en?next={{ request.path }}">Read in English</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="blog-sidebar-box" id="toc-box">
+            <h4><img src="{{ icon('application_view_list.png') }}" class="pixel-icon-inline" alt="">Contenido</h4>
+            <ul id="toc-list">
+                <li class="toc-empty">No hay encabezados.</li>
+            </ul>
+        </div>
+
+        <div class="blog-sidebar-box">
+            <h4><img src="{{ icon('share.png') }}" class="pixel-icon-inline" alt="">Compartir</h4>
+            <ul>
+                <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">Compartir en Twitter/X</a></li>
+                <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">Compartir en LinkedIn</a></li>
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
+                       target="_blank" rel="noopener noreferrer">Compartir en Facebook</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var btn  = document.getElementById('post-sidebar-toggle');
+    var root = document.documentElement;
+    function sync() {
+        var hidden = root.classList.contains('post-sidebar-hidden');
+        btn.textContent = hidden ? 'Mostrar panel' : 'Ocultar panel';
+        btn.setAttribute('aria-expanded', String(!hidden));
+    }
+    btn.addEventListener('click', function () {
+        var hidden = root.classList.toggle('post-sidebar-hidden');
+        try { localStorage.setItem('post-sidebar', hidden ? 'hidden' : 'shown'); } catch (e) {}
+        sync();
+    });
+    sync();
+})();
+</script>
+<script>
+(function () {
+    var prose = document.querySelector('.prose');
+    var tocList = document.getElementById('toc-list');
+    var tocBox  = document.getElementById('toc-box');
+
+    /* the actual scrolling viewport is .main-content (see base.html), not
+       the window — headings must be brought into view inside it, and its
+       scroll position (not window.scrollY) drives the active-heading state */
+    var scroller = document.querySelector('.main-content') || window;
+
+    if (!prose || !tocList || !tocBox) return;
+
+    var headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    if (!headings.length) return;
+
+    /* slugify heading text to create unique IDs */
+    var usedIds = {};
+    function slugify(text) {
+        var base = text.toLowerCase()
+            .replace(/[^\w\s\-áéíóúüñàèìòùâêîôûäëïöü]/g, '')
+            .trim()
+            .replace(/[\s_]+/g, '-')
+            .replace(/-+/g, '-');
+        if (!base) base = 'heading';
+        var id = base;
+        var n = 1;
+        while (usedIds[id]) { id = base + '-' + (++n); }
+        usedIds[id] = true;
+        return id;
+    }
+
+    /* scroll a heading to the top of .main-content without touching
+       window scroll or the URL hash (#id) */
+    function scrollToHeading(h) {
+        if (scroller === window) {
+            h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+        var headingTop   = h.getBoundingClientRect().top;
+        var containerTop = scroller.getBoundingClientRect().top;
+        var offset = 15; /* matches .prose heading scroll-margin-top */
+        scroller.scrollTo({
+            top: scroller.scrollTop + (headingTop - containerTop) - offset,
+            behavior: 'smooth'
+        });
+    }
+
+    /* assign IDs and build TOC items */
+    var items = [];
+    headings.forEach(function (h) {
+        var level = parseInt(h.tagName.charAt(1), 10);
+        var text  = h.textContent.trim();
+        var id    = h.id || slugify(text);
+        h.id = id;
+
+        var li = document.createElement('li');
+        li.setAttribute('data-level', level);
+
+        var a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = text;
+        a.addEventListener('click', function (e) {
+            /* let modified/middle clicks behave natively (open in new tab, etc.) */
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            scrollToHeading(h);
+        });
+        li.appendChild(a);
+        items.push({ el: h, link: a });
+        tocList.appendChild(li);
+    });
+
+    /* remove placeholder */
+    var empty = tocList.querySelector('.toc-empty');
+    if (empty) tocList.removeChild(empty);
+
+    /* show the TOC box */
+    tocBox.style.display = 'flex';
+
+    /* .main-content's scrollable range is capped at scrollHeight - clientHeight,
+       so a heading near the very end of a post can run out of room to reach
+       the top offset before the click even starts (nothing trails it to
+       "push" it up). Pad the bottom with just enough blank space for the
+       last heading specifically — recomputed on load too, since images
+       finishing can change scrollHeight. */
+    var scrollSpacer = null;
+    function ensureScrollRoom() {
+        if (scroller === window) return;
+        var last = items[items.length - 1].el;
+        var maxScrollTop = scroller.scrollHeight - scroller.clientHeight - (scrollSpacer ? parseFloat(scrollSpacer.style.height) : 0);
+        var desiredScrollTop = last.offsetTop - 15;
+        var shortfall = Math.ceil(desiredScrollTop - maxScrollTop);
+        if (shortfall > 0) {
+            if (!scrollSpacer) {
+                scrollSpacer = document.createElement('div');
+                scrollSpacer.setAttribute('aria-hidden', 'true');
+                (document.getElementById('post-main') || prose.parentNode).appendChild(scrollSpacer);
+            }
+            scrollSpacer.style.height = shortfall + 'px';
+        }
+    }
+    ensureScrollRoom();
+    window.addEventListener('load', ensureScrollRoom);
+
+    /* deep link support: if the page was opened with #some-heading, jump to
+       it, then strip the hash so the URL stays clean (matches the
+       no-visible-# behavior of TOC clicks). The browser's own native
+       fragment-scroll keeps retrying as late-loading images resize the
+       page, racing our own positioning — so strip the hash first (removing
+       the target it retries against) and re-assert our own instant jump on
+       'load' as the final, authoritative correction. */
+    if (location.hash.length > 1) {
+        var target = null;
+        for (var j = 0; j < items.length; j++) {
+            if ('#' + items[j].el.id === location.hash) { target = items[j].el; break; }
+        }
+        if (target) {
+            history.replaceState(null, '', location.pathname + location.search);
+            var jumpToTarget = function () {
+                ensureScrollRoom();
+                var headingTop   = target.getBoundingClientRect().top;
+                var containerTop = scroller === window ? 0 : scroller.getBoundingClientRect().top;
+                if (scroller === window) {
+                    window.scrollTo(0, headingTop + window.scrollY - 15);
+                } else {
+                    scroller.scrollTop = scroller.scrollTop + (headingTop - containerTop) - 15;
+                }
+            };
+            jumpToTarget();
+            window.addEventListener('load', jumpToTarget);
+        }
+    }
+
+    /* active-heading tracking on scroll */
+    function onScroll() {
+        var containerTop = scroller === window ? 0 : scroller.getBoundingClientRect().top;
+        var active = null;
+        for (var i = 0; i < items.length; i++) {
+            var top = items[i].el.getBoundingClientRect().top - containerTop;
+            if (top <= 80) {
+                active = items[i];
+            }
+        }
+        items.forEach(function (it) {
+            it.link.classList.toggle('toc-active', it === active);
+        });
+    }
+
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+})();
+</script>
+<script>
+(function () {
+    var blocks = document.querySelectorAll('.prose pre');
+    if (!blocks.length) return;
+
+    var copyLabel   = 'Copiar';
+    var copiedLabel = '¡Copiado!';
+
+    function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+    }
+
+    blocks.forEach(function (pre) {
+        var code = pre.querySelector('code');
+        if (!code) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block-wrap';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy-btn';
+        btn.textContent = copyLabel;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+            var text = code.textContent;
+            var done = function () {
+                btn.textContent = copiedLabel;
+                btn.classList.add('copied');
+                setTimeout(function () {
+                    btn.textContent = copyLabel;
+                    btn.classList.remove('copied');
+                }, 1500);
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(done, function () {
+                    fallbackCopy(text);
+                    done();
+                });
+            } else {
+                fallbackCopy(text);
+                done();
+            }
+        });
+    });
+})();
+</script>
+{% endblock %}

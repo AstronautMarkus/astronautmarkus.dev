@@ -1,90 +1,156 @@
 {% extends "base/base.html" %}
 
-{% block title %}Acerca de{% endblock %}
-
-{% block description %}Acerca de Marcos Reyes - Desarrollador, entusiasta de la tecnología y la persona detrás de AstronautMarkus.dev{% endblock %}
-{% block keywords %}Marcos Reyes, acerca de, desarrollador, tecnología, biografía, AstronautMarkus{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about_me.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/github.css') }}">
 {% endblock %}
 
+{% block title %}Sobre Mí{% endblock %}
+{% block description %}Desarrollador de software full-cycle con experiencia en desarrollo web, móvil y de escritorio — stack tecnológico, cronología profesional y trayectoria de AstronautMarkus.{% endblock %}
+{% block keywords %}AstronautMarkus, sobre mí, stack tecnológico, desarrollador, python, flask, react, linux{% endblock %}
+
 {% block content %}
-
-<div id="page-content">
-
-    <div id="primary">
-
-        <div class="about-section">
-            <h3 class="section-title">Acerca del Sitio</h3>
-            <p>Creé este sitio web para compartir un poco sobre quién soy, compartir recursos que me han ayudado o que he
-                creado, y también para practicar mis habilidades de desarrollo web. Espero que te guste el sitio y encuentres
-                algo útil en él.</p>
-        </div>
-
-        <div class="about-section">
-            <h3 class="section-title">Detalles Técnicos</h3>
-            <p>Este sitio web está construido con Flask, un framework web ligero para Python. Usa plantillas Jinja2 para
-                renderizar páginas HTML y está estilizado con CSS. El objetivo es que el sitio no pese más de 5MB en
-                tamaño absoluto — un guiño a la filosofía de diseño web de finales de los 2000, y una excusa para mantenerlo súper rápido.</p>
-            <ul class="tech-list">
-                <li><strong>Framework:</strong> Flask</li>
-                <li><strong>Motor de Plantillas:</strong> Jinja2</li>
-                <li><strong>Estilos:</strong> CSS — sin frameworks, sin responsive jeje</li>
-                <li><strong>Contenedor:</strong> Docker + Docker Compose</li>
-                <li><strong>Servidor HTTP:</strong> Nginx (front-end) + Apache (back-end)</li>
-                <li><strong>Tamaño del Sitio:</strong> &lt; 5MB</li>
-            </ul>
-        </div>
-
-        <div class="about-section">
-            <h3 class="section-title">Licencia</h3>
-            <p>¿Licencia MIT? Para nada. Este sitio web y todo su contenido están licenciados bajo la
-                <strong>Licencia Pública Haz Lo Que Te Dé La Gana</strong> (WTFPL), porque soy un rebelde, supongo, mamá.
+<section class="about-card">
+    <div class="about-card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Sobre Mí
+    </div>
+    <div class="about-card-body profile-body">
+        <div class="profile-photo" style="background-image: url('{{ cdn_url('images/home/profile.jpg') }}')"></div>
+        <div class="bio-text">
+            <p>
+                Mi nombre es <strong>Marcos Andrés Alberto Reyes Martínez</strong> — un poco largo para una tarjeta de
+                presentación — así que uso "Markus". Es un nombre lo bastante común como para sentirme cómodo
+                usándolo como identidad para mi presencia en línea. Soy un <strong>desarrollador de software
+                    full-cycle</strong>
+                <img src="{{ icon('briefcase.png') }}" alt="Desarrollador de Software"
+                    class="icon"> apasionado por construir aplicaciones web, móviles y de escritorio. Disfruto
+                trabajar en proyectos que me desafíen a aprender nuevas tecnologías y mejorar mis habilidades.
             </p>
-            <p><em>Por favor revisa el archivo <a href="https://github.com/astronautmarkus/website/tree/main/LICENSE"
-                        target="_blank">LICENSE</a> en GitHub para más detalles.</em></p>
+            <p>
+                Trabajo en <strong>proyectos privados</strong> para clientes, construyendo <strong>CRM</strong>,
+                <strong>ERP</strong>
+                <img src="{{ icon('server_database.png') }}"
+                    alt="Software de Negocios" class="icon">, y otro software de negocios. Es una experiencia
+                gratificante, pero la parte más difícil es entender las <strong>necesidades del negocio</strong> y
+                traducirlas en soluciones de software. Siempre estoy buscando nuevas oportunidades para colaborar en
+                proyectos interesantes y contribuir a la <strong>comunidad de código abierto</strong>.
+                <img src="{{ icon('open_source.png') }}" alt="Código Abierto"
+                    class="icon">
+            </p>
         </div>
+    </div>
+</section>
 
-        <div class="about-section">
-            <h3 class="section-title">Personal</h3>
-            <div class="personal-content">
-                <div class="personal-text">
-                    <p>No hay mucho que decir sobre mí. No soy muy extrovertido ni sociable — simplemente hago lo que me gusta,
-                        que es el área de TI y todo lo relacionado con la tecnología y las telecomunicaciones.</p>
-                    <p><em>Soy chileno, me gustan los gatos y los perros que no son demasiado energéticos ni obsesivos contigo.</em></p>
-                    <p>Tengo muchos hobbies: redes, aprender sobre nuevas tecnologías, la radio. Las únicas cosas que
-                        ya no disfruto mucho son los videojuegos y ver televisión. Los juegos ya no me dan el mismo
-                        subidón de dopamina de antes — ahora solo la tecnología lo hace.</p>
-                    <p><em>Y la tele ni se diga — eso no me hace absolutamente nada.</em></p>
-                </div>
+{% include "main/_about_system.html" %}
+
+{% if github %}{% include "main/_github_card.html" %}{% endif %}
+
+<section class="about-card" data-reveal>
+    <div class="about-card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Stack Tecnológico
+    </div>
+    {% set max_tags = tech_stack | map(attribute='tags') | map('length') | max %}
+    {% set colors = ['green', 'yellow', 'orange', 'red', 'purple', 'blue'] %}
+    <div class="about-card-body stack-grid">
+        {% for group in tech_stack %}
+        <div>
+            <div class="stack-group-title">{{ group.title }} <span class="stack-count">{{ group.tags | length }}</span></div>
+            <div class="stack-bar" style="--c: var(--rainbow-{{ colors[loop.index0 % 6] }}); --v: {{ (group.tags | length * 100 / max_tags) | round(1) }}%"></div>
+            <div class="tag-list">
+                {% for tag in group.tags %}
+                <span class="tag" style="--tag-bg: {{ tag.bg }}; --tag-fg: {{ tag.fg }}; --n: {{ loop.index0 }}">{{ tag.name }}</span>
+                {% endfor %}
             </div>
         </div>
-
-        <div class="about-section">
-            <h3 class="section-title">Universidad</h3>
-            <p>En enero de 2022, elegí estudiar "Analista Programador Computacional" por impulso, sin cuestionarlo más de dos veces.
-                Durante ese tiempo, hasta julio de 2025 cuando me gradué, viví de todo: felicidad, enojo,
-                tristeza, rabia, estrés, injusticia — todo lo que uno puede imaginar del mundo universitario. Pero gracias a
-                esa base, ahora sé mucho más por mi cuenta. Eso es lo bonito, ¿no?</p>
-
-            <em>
-               - Actualización (15 de mayo, 2026): Ahora mismo finalmente dirijo un proyecto y soy el encargado de la infraestructura de una empresa. Tengo el poder total por decirlo, creo que ese cartón si valió la pena. No me arrepiento de nada, aunque sí me hubiera gustado haber aprendido muchas cosas de joven y no tener ciertas malas prácticas que arrastro hasta el día de hoy. Pero bueno, lo importante es que ahora sé lo que sé, y con eso me basta para seguir adelante.
-            </em>
-        </div>
-
+        {% endfor %}
     </div>
+</section>
 
-    <div id="secondary">
+<section class="about-card" data-reveal>
+    <div class="about-card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Cronología
+    </div>
+    <div class="about-card-body">
+        <ul class="timeline">
+            <li class="timeline-item">
+                <div class="timeline-year">2026</div>
+                <div class="timeline-text">
+                    <img src="{{ icon('briefcase.png') }}" alt="Trabajando"
+                        class="icon"> <strong>Trabajando</strong> — Empecé a trabajar en un colegio — no el mismo
+                    colegio donde escribí ese script .vbs, por cierto — construyendo una <strong>plataforma CRM +
+                        SaaS de gestión escolar</strong>. También estoy trabajando en un proyecto personal, un
+                    <strong>SaaS para gestionar tiendas de e-commerce</strong>
+                    <img src="{{ icon('shop_network.png') }}" alt="SaaS E-commerce"
+                        class="icon">.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-text">
+                    <img src="{{ icon('medal_gold_blue.png') }}" alt="Título Profesional"
+                        class="icon"> <strong>Título Profesional</strong> — Se espera que me titule con un grado en
+                    <strong>Ingeniería en Informática</strong>, con puntaje perfecto en mi proyecto de título. Jeje.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-text">
+                    <img src="{{ icon('ecommerce_server.png') }}"
+                        alt="Práctica Profesional" class="icon"> <strong>Práctica Profesional</strong> — Empecé a
+                    trabajar en proyectos reales, construyendo un <strong>ERP</strong> para gestionar tiendas de
+                    e-commerce e integrándolo con la <strong>API de MercadoLibre</strong>.
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-text">
+                    <img src="{{ icon('rocket.png') }}" alt="Comencé una carrera"
+                        class="icon"> <strong>Comencé una carrera</strong> — empecé a construir software real para
+                    usuarios reales. <strong>Tengo un sueño.</strong>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-year">Antes</div>
+                <div class="timeline-text">
+                    <img src="{{ icon('computer_error.png') }}" alt="Primer Script"
+                        class="icon"> <strong>Escribí mi primer script .vbs</strong> — un simple script "troll" para
+                    apagar los computadores con Windows de mi colegio. Me prohibieron usar los computadores del
+                    colegio, jaja.
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
 
-        <div class="sidebar-box">
-            <h4>Enlaces Disponibles</h4>
-            <ul>
-                <li><a href="{{ url_for('main.home') }}">Volver al Inicio</a></li>
-            </ul>
+<section class="about-card">
+    <div class="about-card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Datos Curiosos
+    </div>
+    <div class="about-card-body">
+        {% include "main/_about_os_journey.html" %}
+        <div class="facts-grid">
+        <div class="fact-item">
+            <span class="fact-label">Prohibido de los Computadores del Colegio... y después admin</span>
+            En la básica, me prohibieron usar los computadores del colegio por escribir un simple script .vbs que los apagaba. Ahora soy el <strong>administrador</strong> de la red y los servidores del colegio <img src="{{ icon('administrator.png') }}" alt="Administrador" class="icon"> — y soy yo quien prohíbe a los estudiantes que intentan hackear los computadores del colegio. <img src="{{ icon('prohibition_button.png') }}" alt="Prohibido" class="icon">
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Chao Windows, Hola Unix</span>
+            En 2024, a mitad de la carrera, después de una situación tensa y un primer intento fallido con <strong>Ubuntu</strong> <img src="{{ icon('ubuntu.png') }}" alt="Ubuntu" class="icon">, le di otra oportunidad — pero esta vez con más cabeza. El cambio fue radical: la optimización, la experiencia, todo. Estaba aprendiendo de todo — la terminal, los comandos, el sistema de archivos, la filosofía detrás. Finalmente entendí qué es realmente un <strong>kernel</strong>, qué es <strong>Unix</strong>, la diferencia entre <strong>Linux</strong> y <strong>Windows NT</strong>, qué significa <strong>GNU/Linux</strong>, y más. Estaba aprendiendo, y me encantaba. Finalmente estaba libre de las cadenas de Windows, y listo para abrazar el poder de Unix. <img src="{{ icon('download_for_linux.png') }}" alt="Abrazando Unix" class="icon">
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Después Linux, Ahora Darwin</span>
+            <strong>Linux</strong> <img src="{{ icon('pc_linux_os.png') }}" alt="Linux" class="icon"> es único, genial y poderoso, pero quería probar algo nuevo, algo diferente. La filosofía importa, pero en el trabajo también hay que hacer las cosas, así que decidí comprarme un Intel <strong>MacBook Air 2017</strong>, el A1466 <img src="{{ icon('apple.png') }}" alt="Apple" class="icon"> — y quedé impresionado: la experiencia, la optimización, el rendimiento, la batería, todo. Después me compré un <strong>Mac Mini M1</strong>, y quedé impresionado de nuevo: la experiencia, la optimización, el rendimiento, la eficiencia energética, todo. Finalmente, me compré un <strong>MacBook Neo</strong>, el "iPhone" de los laptops, y quedé impresionado otra vez. Para el día a día, definitivamente elegiría un Mac; no hay nada mejor para trabajar. Pero para el verdadero yo — el sysadmin, el hacker, el tinkerer, el que ama explorar y aprender — Linux sigue siendo mi primer amor. Siempre voy a tener un lugar especial en mi corazón tanto para Linux como para Darwin. Por cierto, ¿quién diablos es ese tipo "Windows"?
+        </div>
+        <div class="fact-item">
+            <span class="fact-label">Siempre Aprendiendo</span>
+            "Hay conocimiento que no es poder" - Ralph Waldo Emerson. Siempre estoy aprendiendo, siempre explorando, siempre toqueteando cosas. Soy un aprendiz de por vida, y nunca voy a dejar de aprender. Soy un hacker, un tinkerer, un sysadmin, un desarrollador, un estudiante, un profesor, un mentor, un amigo, un ser humano. Soy Markus. AstronautMarkusDev. <img src="{{ icon('brain.png') }}" alt="Siempre Aprendiendo" class="icon"> <br><br>La vida es difícil, pero es hermosa. Sé fuerte, sé amable, sé humilde, sé honesto, sé valiente, sé curioso, sé creativo, sé apasionado, sé paciente, sé persistente, sé resiliente, sé recursivo, sé respetuoso, sé responsable, sé consciente de ti mismo, sé autodisciplinado, sé automotivado, sé autosuficiente, sé desprendido, sé empático, sé compasivo, sé generoso, sé agradecido, sé feliz, sé saludable, sé humilde, sé amable, sé cariñoso, sé consciente, sé optimista, sé positivo, sé proactivo, sé productivo, sé decidido, sé resiliente, sé recursivo, sé respetuoso, sé responsable, y lo más importante... sé tú mismo.
+        </div>
         </div>
     </div>
+</section>
 
-</div>
+{% endblock %}
 
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/reveal.js') }}"></script>
 {% endblock %}

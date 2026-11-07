@@ -1,0 +1,23 @@
+{% extends "emails/base.html" %}
+{% set lang = 'en' %}
+
+{% block subject_title %}New message: {{ subject }}{% endblock %}
+
+{% block content %}
+<h1>New contact message</h1>
+<p>You received a new message from the contact form on AstronautMarkus.Dev.</p>
+<table class="data-table">
+    <tr>
+        <td class="label">From</td>
+        <td>{{ name }} &lt;{{ email }}&gt;</td>
+    </tr>
+    <tr>
+        <td class="label">Subject</td>
+        <td>{{ subject }}</td>
+    </tr>
+    <tr>
+        <td class="label">Message</td>
+        <td style="white-space:pre-wrap">{{ message }}</td>
+    </tr>
+</table>
+{% endblock %}

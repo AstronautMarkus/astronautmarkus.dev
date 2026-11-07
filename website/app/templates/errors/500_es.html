@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+
+{% block title %}500 - Error Interno del Servidor{% endblock %}
+{% block description %}Error interno del servidor — AstronautMarkus.dev{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/errors.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="welcome-card">
+    <div class="card-header error-banner-title">
+        <img src="{{ icon('computer_error.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Error 500
+    </div>
+    <div id="error-page">
+        <p class="error-code error-code-danger">500</p>
+        <h2 class="error-title">Error Interno del Servidor</h2>
+        <p class="error-subtitle">
+            Houston, tenemos un problema mayor. Algo falló de nuestro lado,
+            no del tuyo — la tripulación ya fue notificada y está revisando el problema.
+        </p>
+
+        <div class="error-actions">
+            <a href="{{ url_for('main.home') }}" class="error-btn">Volver al Inicio</a>
+            <a href="{{ url_for('contact.contact') }}" class="error-btn error-btn-outline">Contáctame</a>
+        </div>
+
+        <p class="error-hint">
+            Intentaste acceder a: <code>{{ request.path }}</code>
+        </p>
+    </div>
+</section>
+{% endblock %}

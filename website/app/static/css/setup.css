@@ -1,0 +1,180 @@
+/* ── Setup page ─────────────────────────────────────────────────────────
+   Same Mac System 7 chrome tokens (tokens.css) as homelab.css/about_me.css
+   but kept under its own setup- prefix since neither of those files is
+   loaded on this page.
+*/
+
+.setup-card {
+    background: var(--mac-white);
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    padding: var(--card-inset);
+    overflow: clip;
+    box-shadow: var(--shadow-flat-2);
+    margin-bottom: 15px;
+}
+
+.setup-card-header {
+    background: var(--bar-bg);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 0;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.setup-card-body {
+    padding: 12px;
+}
+
+/* ── Hero / intro ─────────────────────────────────────────────────────── */
+
+.setup-hero {
+    display: flex;
+    gap: 14px;
+}
+
+.setup-hero-photo-wrap {
+    flex-shrink: 0;
+    width: 220px;
+}
+
+.setup-hero-photo {
+    width: 220px;
+    height: 165px;
+    object-fit: cover;
+    display: block;
+    border: var(--frame);
+    box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
+}
+
+.setup-hero-text {
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--mac-black);
+    text-align: justify;
+}
+
+.setup-hero-text::first-letter {
+    font-family: var(--font-wordmark);
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--mac-black);
+}
+
+.setup-hero-text p {
+    margin-bottom: 8px;
+}
+
+.setup-hero-text p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ── Gear grid ────────────────────────────────────────────────────────── */
+
+.setup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+}
+
+.setup-item {
+    background: var(--mac-white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-flat-1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.setup-item-photo {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--line);
+    background: var(--mac-grey-1);
+}
+
+.setup-item-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.setup-item-title {
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--mac-black);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.setup-item-role {
+    font-family: var(--font-chrome);
+    font-size: 8.5px;
+    font-weight: bold;
+    text-transform: var(--chrome-case);
+    letter-spacing: 0.4px;
+    color: var(--mac-white);
+    background: var(--badge-bg);
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: var(--radius-tag);
+    align-self: flex-start;
+}
+
+.setup-item-desc {
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: var(--mac-grey-6);
+    flex: 1;
+}
+
+.setup-item-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.setup-tag {
+    background: var(--mac-grey-1);
+    border: 1px solid var(--line);
+    color: var(--mac-black);
+    font-size: 8.5px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: var(--radius-tag);
+}
+
+@media (max-width: 480px) {
+    .setup-hero {
+        flex-direction: column;
+    }
+
+    .setup-hero-photo-wrap {
+        width: 100%;
+    }
+
+    .setup-hero-photo {
+        width: 100%;
+        height: 200px;
+    }
+
+    .setup-grid {
+        grid-template-columns: 1fr;
+    }
+}

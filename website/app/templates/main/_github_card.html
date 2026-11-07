@@ -1,0 +1,63 @@
+{# About-me GitHub card. Needs `github` (SyncedSnapshot); the caller skips it when there is no snapshot yet. #}
+{% set es = current_lang == 'es' %}
+{% set gh = github.data %}
+{% set sep = '.' if es else ',' %}
+<section class="about-card gh-card">
+    <div class="about-card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> {{ 'Actividad en GitHub' if es else 'GitHub Activity' }}
+    </div>
+    <div class="about-card-body">
+        <div class="gh-numbers">
+            {% for value, label in [
+                (gh.contributions, 'contribuciones el último año' if es else 'contributions last year'),
+                (gh.commits, 'commits'),
+                (gh.pull_requests, 'pull requests'),
+                (gh.current_streak, 'racha actual (días)' if es else 'current streak (days)'),
+                (gh.longest_streak, 'racha más larga (días)' if es else 'longest streak (days)'),
+            ] %}
+            <div class="gh-number">
+                <strong>{{ '{:,}'.format(value).replace(',', sep) }}</strong>
+                <span>{{ label }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% include "main/_github_calendar.html" %}
+
+        {% if gh.languages %}
+        <div class="gh-section-title">{{ 'Lenguajes en mis repos públicos' if es else 'Languages across my public repos' }}</div>
+        {# the bar's leftover width is everything outside the top languages #}
+        <div class="gh-lang-bar">
+            {% for lang in gh.languages %}
+            <span style="width: {{ lang.pct }}%; --c: {{ lang.color or 'var(--mac-grey-4)' }}" title="{{ lang.name }} {{ lang.pct }}%"></span>
+            {% endfor %}
+        </div>
+        <ul class="gh-lang-list">
+            {% for lang in gh.languages %}
+            <li style="--c: {{ lang.color or 'var(--mac-grey-4)' }}">{{ lang.name }} <small>{{ lang.pct }}%</small></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if gh.pinned %}
+        <div class="gh-section-title">{{ 'Repos destacados' if es else 'Pinned repos' }}</div>
+        <div class="gh-repos">
+            {% for repo in gh.pinned %}
+            <a class="gh-repo" href="{{ repo.url }}" target="_blank" rel="noopener noreferrer">
+                <strong>{{ repo.name }}</strong>
+                {% if repo.description %}<span class="gh-repo-desc">{{ repo.description }}</span>{% endif %}
+                <span class="gh-repo-meta">
+                    {% if repo.language %}<span><span class="gh-dot" style="--c: {{ repo.color or 'var(--mac-grey-4)' }}"></span>{{ repo.language }}</span>{% endif %}
+                    {% if repo.stars %}<span>★ {{ repo.stars }}</span>{% endif %}
+                </span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="gh-footer">
+            <a href="https://github.com/{{ config.GITHUB_USERNAME }}" target="_blank" rel="noopener noreferrer">github.com/{{ config.GITHUB_USERNAME }}</a>
+            · {{ 'actualizado el' if es else 'updated' }} {{ github.synced_at|dtfmt('%d %b %Y') }}
+        </div>
+    </div>
+</section>

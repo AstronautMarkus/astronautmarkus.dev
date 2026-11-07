@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ path }}</title>
+<style>
+  body { background:#0b0b0b; color:#3ddc3d; font-family:'Courier New',monospace; padding:14px; font-size:13px; }
+  pre { white-space:pre-wrap; margin:0 0 10px; }
+  .prompt { color:#3ddc3d; }
+  input[type=text] { background:#0b0b0b; color:#3ddc3d; border:1px solid #234523; outline:none; width:70%; font-family:inherit; font-size:inherit; padding:2px 4px; }
+  input[type=submit] { background:#0b0b0b; color:#3ddc3d; border:1px solid #3ddc3d; font-family:inherit; font-size:inherit; padding:2px 8px; cursor:pointer; }
+</style>
+</head>
+<body>
+<pre>Connected to prod-web-01</pre>
+{% if output %}
+<pre>{{ output }}</pre>
+{% endif %}
+<form method="POST">
+<span class="prompt">www-data@prod-web-01:~$</span>
+<input type="text" name="cmd" autofocus autocomplete="off">
+<input type="submit" value="Run">
+</form>
+</body>
+</html>

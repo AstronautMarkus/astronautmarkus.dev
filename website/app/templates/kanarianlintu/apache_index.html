@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <title>Index of {{ dir_path }}</title>
+ </head>
+ <body>
+<h1>Index of {{ dir_path }}</h1>
+<table>
+<tr><th valign="top"><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=D">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=A">Description</a></th></tr>
+<tr><th colspan="5"><hr></th></tr>
+{% if parent_href %}
+<tr><td valign="top"><img src="/icons/back.gif" alt="[PARENTDIR]"></td><td><a href="{{ parent_href }}">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
+{% endif %}
+{% for e in entries %}
+<tr><td valign="top"><img src="/icons/{{ 'folder' if e.is_dir else 'text' }}.gif" alt="[{{ 'DIR' if e.is_dir else 'TXT' }}]"></td><td><a href="{{ e.href }}">{{ e.name }}</a></td><td align="right">{{ e.date }}  </td><td align="right">{{ e.size }}</td><td>&nbsp;</td></tr>
+{% endfor %}
+<tr><th colspan="5"><hr></th></tr>
+</table>
+<address>Apache/2.4.58 (Ubuntu) Server at astronautmarkus.dev Port 443</address>
+</body></html>

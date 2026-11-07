@@ -3,16 +3,31 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 from app import db
-from app.models.models import ExtraPortfolioImage, PortfolioProject
+from app.i18n import t
+from app.models.models import PORTFOLIO_ROLES, PORTFOLIO_STATUSES, ExtraPortfolioImage, PortfolioProject
 from app.routes.admin import admin_bp
 from app.storage import storage
+from app.tech_stack import known_tech_names
+from app.utils import slugify, unique_slug
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
+ALLOWED_MD = {'md', 'markdown'}
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
+MAX_MD_BYTES = 2 * 1024 * 1024     # 2 MB
+PER_PAGE = 50
 
 
 def _allowed(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def _allowed_md(filename: str) -> bool:
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_MD
+
+
+def _project_files(project) -> list[str]:
+    paths = [project.image_path, project.markdown_path, project.markdown_path_es]
+    return [p for p in paths if p] + [img.image_path for img in project.extra_images]
 
 
 def _store_image(file, dest_path: str) -> bool:
@@ -28,17 +43,80 @@ def _store_image(file, dest_path: str) -> bool:
     return True
 
 
+def _store_md(file, dest_path: str) -> bool:
+    """Validate and persist an uploaded Markdown file. Returns True on success."""
+    if not file or not file.filename:
+        return False
+    if not _allowed_md(file.filename):
+        return False
+    content = file.read()
+    if len(content) > MAX_MD_BYTES:
+        return False
+    storage.put(dest_path, content, content_type='text/markdown; charset=utf-8')
+    return True
+
+
+def _meta_fields(form) -> dict:
+    """Tech stack / status / role / featured from the project form, normalized for the model."""
+    techs = []
+    for name in form.get('tech_stack', '').split(','):
+        name = name.strip()
+        if name and name.lower() not in {tech.lower() for tech in techs}:
+            techs.append(name)
+    status = form.get('status', '')
+    role = form.get('role', '')
+    return {
+        'tech_stack': ', '.join(techs) or None,
+        'status': status if status in PORTFOLIO_STATUSES else None,
+        'role': role if role in PORTFOLIO_ROLES else None,
+        'featured': form.get('featured') == '1',
+    }
+
+
+def _form_context(**context):
+    return render_template(
+        'admin/projects/form.html',
+        tech_suggestions=known_tech_names(),
+        statuses=PORTFOLIO_STATUSES,
+        roles=PORTFOLIO_ROLES,
+        **context,
+    )
+
+
 # ── List ─────────────────────────────────────────────────────────────────────
 
 @admin_bp.get('/projects/')
 @login_required
 def projects_list():
-    projects = (
-        PortfolioProject.query
-        .order_by(PortfolioProject.created_at.desc())
-        .all()
-    )
-    return render_template('admin/projects/list.html', projects=projects)
+    q = request.args.get('q', '').strip()
+    page = max(request.args.get('page', 1, type=int), 1)
+
+    query = PortfolioProject.query.order_by(PortfolioProject.created_at.desc())
+    if q:
+        query = query.filter(PortfolioProject.title.contains(q))
+
+    pagination = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+    return render_template('admin/projects/list.html', pagination=pagination, projects=pagination.items, q=q)
+
+
+@admin_bp.post('/projects/bulk-delete')
+@login_required
+def projects_bulk_delete():
+    ids = request.form.getlist('project_ids', type=int)
+    if ids:
+        projects = PortfolioProject.query.filter(PortfolioProject.id.in_(ids)).all()
+        files = [path for project in projects for path in _project_files(project)]
+        # Per-object delete (not Query.delete) so the extra_images cascade runs.
+        for project in projects:
+            db.session.delete(project)
+        db.session.commit()
+        # Files go only after the commit, so a failed delete can't leave a project without its content.
+        for path in files:
+            storage.delete(path)
+        flash(t('flash.projects_bulk_deleted', n=len(projects)), 'success')
+    else:
+        flash(t('flash.no_projects_selected'), 'error')
+    return redirect(url_for('admin.projects_list'))
 
 
 # ── Create ────────────────────────────────────────────────────────────────────
@@ -49,21 +127,24 @@ def projects_create():
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash('Title is required.', 'error')
-            return render_template('admin/projects/form.html', project=None, extra_images=[])
+            flash(t('flash.title_required'), 'error')
+            return _form_context(project=None, extra_images=[])
 
         has_es = request.form.get('has_es') == '1'
         title_es = request.form.get('title_es', '').strip() or None
         description_es = request.form.get('description_es', '').strip() or None
+        slug_input = request.form.get('slug', '').strip()
 
         project = PortfolioProject(
             title=title,
+            slug=unique_slug(PortfolioProject, slugify(slug_input or title)),
             description=request.form.get('description', '').strip() or None,
             project_url=request.form.get('project_url', '').strip() or None,
             github_repo_url=request.form.get('github_repo_url', '').strip() or None,
             has_es=has_es,
             title_es=title_es if has_es else None,
             description_es=description_es if has_es else None,
+            **_meta_fields(request.form),
         )
         db.session.add(project)
         db.session.flush()  # get id before commit
@@ -75,13 +156,32 @@ def projects_create():
             if _store_image(cover, path):
                 project.image_path = path
             else:
-                flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
+                flash(t('flash.cover_rejected'), 'error')
+
+        # Markdown EN
+        md_en = request.files.get('markdown_file')
+        if md_en and md_en.filename:
+            path_en = f'portfolio/markdown/{project.id}/content_en.md'
+            if _store_md(md_en, path_en):
+                project.markdown_path = path_en
+            else:
+                flash(t('flash.en_md_rejected'), 'error')
+
+        # Markdown ES
+        if has_es:
+            md_es = request.files.get('markdown_file_es')
+            if md_es and md_es.filename:
+                path_es = f'portfolio/markdown/{project.id}/content_es.md'
+                if _store_md(md_es, path_es):
+                    project.markdown_path_es = path_es
+                else:
+                    flash(t('flash.es_md_rejected'), 'error')
 
         db.session.commit()
-        flash(f'Project "{project.title}" created.', 'success')
-        return redirect(url_for('admin.projects_list'))
+        flash(t('flash.project_created', title=project.title), 'success')
+        return redirect(url_for('admin.projects_edit', project_id=project.id))
 
-    return render_template('admin/projects/form.html', project=None, extra_images=[])
+    return _form_context(project=None, extra_images=[])
 
 
 # ── Edit ──────────────────────────────────────────────────────────────────────
@@ -91,15 +191,14 @@ def projects_create():
 def projects_edit(project_id):
     project = db.session.get(PortfolioProject, project_id)
     if project is None:
-        flash('Project not found.', 'error')
+        flash(t('flash.project_not_found'), 'error')
         return redirect(url_for('admin.projects_list'))
 
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash('Title is required.', 'error')
-            return render_template('admin/projects/form.html',
-                                   project=project, extra_images=project.extra_images)
+            flash(t('flash.title_required'), 'error')
+            return _form_context(project=project, extra_images=project.extra_images)
 
         has_es = request.form.get('has_es') == '1'
         title_es = request.form.get('title_es', '').strip() or None
@@ -112,6 +211,8 @@ def projects_edit(project_id):
         project.has_es = has_es
         project.title_es = title_es if has_es else None
         project.description_es = description_es if has_es else None
+        for field, value in _meta_fields(request.form).items():
+            setattr(project, field, value)
 
         cover = request.files.get('cover_image')
         if cover and cover.filename:
@@ -122,14 +223,32 @@ def projects_edit(project_id):
                     storage.delete(project.image_path)
                 project.image_path = new_path
             else:
-                flash('Cover image rejected — invalid type or exceeds 5 MB.', 'error')
+                flash(t('flash.cover_rejected'), 'error')
+
+        # Markdown EN
+        md_en = request.files.get('markdown_file')
+        if md_en and md_en.filename:
+            path_en = f'portfolio/markdown/{project.id}/content_en.md'
+            if _store_md(md_en, path_en):
+                project.markdown_path = path_en
+            else:
+                flash(t('flash.en_md_rejected'), 'error')
+
+        # Markdown ES
+        if has_es:
+            md_es = request.files.get('markdown_file_es')
+            if md_es and md_es.filename:
+                path_es = f'portfolio/markdown/{project.id}/content_es.md'
+                if _store_md(md_es, path_es):
+                    project.markdown_path_es = path_es
+                else:
+                    flash(t('flash.es_md_rejected'), 'error')
 
         db.session.commit()
-        flash('Project updated.', 'success')
+        flash(t('flash.project_updated'), 'success')
         return redirect(url_for('admin.projects_edit', project_id=project.id))
 
-    return render_template('admin/projects/form.html',
-                           project=project, extra_images=project.extra_images)
+    return _form_context(project=project, extra_images=project.extra_images)
 
 
 # ── Delete ────────────────────────────────────────────────────────────────────
@@ -139,18 +258,16 @@ def projects_edit(project_id):
 def projects_delete(project_id):
     project = db.session.get(PortfolioProject, project_id)
     if project is None:
-        flash('Project not found.', 'error')
+        flash(t('flash.project_not_found'), 'error')
         return redirect(url_for('admin.projects_list'))
 
-    if project.image_path:
-        storage.delete(project.image_path)
-    for img in project.extra_images:
-        storage.delete(img.image_path)
-
     title = project.title
+    files = _project_files(project)
     db.session.delete(project)
     db.session.commit()
-    flash(f'Project "{title}" deleted.', 'success')
+    for path in files:
+        storage.delete(path)
+    flash(t('flash.project_deleted', title=title), 'success')
     return redirect(url_for('admin.projects_list'))
 
 

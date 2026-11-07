@@ -1,0 +1,4 @@
+{% extends "cards/_card.svg" %}
+{% block body %}
+<text y="14" class="muted" font-size="12">{{ message }}</text>
+{% endblock %}

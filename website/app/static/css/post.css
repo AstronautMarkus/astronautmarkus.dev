@@ -1,768 +1,796 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   BLOG LIST
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* ── Blog: list + post detail ──────────────────────────────────────────────
+   Styled only through the theme tokens (tokens.css), so the active theme
+   decides lines, radii, bars and shadows. No new breakpoints: the rest of
+   the site is a fixed 820px desktop-only layout, so this doesn't add any
+   either.
+*/
 
-/* ── Banner ──────────────────────────────────────────────────────────────── */
-#blog-banner {
-    background: var(--bg-base);
-    border-bottom: 3px solid var(--accent);
-    padding: 0;
+/* ── Banner ─────────────────────────────────────────────────────────────── */
+/* Reuses .welcome-card / .card-header from home.css so the blog page matches
+   the home page exactly — same outer window, same title-bar recipe. */
+
+.blog-banner-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.blog-banner-inner {
-    padding: 20px 20px 18px;
+.blog-banner-intro {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: var(--mac-black);
 }
 
-#blog-banner h2 {
-    font-size: 22px;
-    color: var(--text-bright);
-    margin: 0 0 4px 0;
-    letter-spacing: -0.5px;
-    font-family: "Courier New", Courier, monospace;
+.pixel-icon {
+    width: 16px;
+    height: 16px;
+    image-rendering: var(--icon-rendering);
+    flex-shrink: 0;
 }
 
-#blog-banner p {
-    font-size: 12px;
-    color: var(--text-faint);
-    margin: 0;
+.pixel-icon-inline {
+    width: 12px;
+    height: 12px;
+    image-rendering: var(--icon-rendering);
+    vertical-align: -1px;
+    margin-right: 4px;
 }
 
-/* ── Layout ──────────────────────────────────────────────────────────────── */
-#blog-content {
-    padding: 20px;
-    overflow: hidden;
+/* ── Two-column blog layout (list + post share this shell) ───────────────── */
+
+#blog-content,
+#post-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
 }
 
-#blog-main {
-    width: 610px;
-    float: left;
+#blog-main,
+#post-main {
+    flex: 1;
+    min-width: 0;
 }
 
-#blog-sidebar {
-    width: 280px;
-    float: right;
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    padding: 15px;
-    box-sizing: border-box;
+#blog-sidebar,
+#post-sidebar {
+    width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: sticky;
+    top: 10px;
+    align-self: flex-start;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
 }
 
-/* ── Post card ───────────────────────────────────────────────────────────── */
-.blog-card {
-    border: 1px solid var(--border-soft);
-    background: var(--bg-void);
-    margin-bottom: 22px;
-    overflow: hidden;
+/* Post page: #toc-list handles its own internal scroll (below), so the
+   column itself shouldn't also scroll — that would let Info/Share drift
+   out of view above/below instead of staying put. The blog-list sidebar
+   has no such per-box scroll, so it keeps overflow-y: auto above. */
+#post-sidebar {
+    overflow-y: hidden;
 }
 
-.blog-card-cover-link {
-    display: block;
-    overflow: hidden;
-}
+/* ── Sidebar boxes (shared by list + post) — clone of .panel-box/.panel-header */
 
-.blog-card-cover {
-    display: block;
-    width: 100%;
-    height: 170px;
-    object-fit: cover;
-    border-bottom: 2px solid var(--accent);
-    opacity: 0.82;
-    transition: opacity 0.22s, transform 0.3s;
-}
-
-.blog-card:hover .blog-card-cover {
-    opacity: 1;
-    transform: scale(1.02);
-}
-
-.blog-card-cover-placeholder {
-    width: 100%;
-    height: 60px;
-    border-bottom: 1px solid var(--border-soft);
-    background: repeating-linear-gradient(
-        45deg,
-        var(--bg-base),
-        var(--bg-base) 6px,
-        var(--bg-panel) 6px,
-        var(--bg-panel) 12px
-    );
-}
-
-.blog-card-body {
-    padding: 14px 16px 16px;
-}
-
-.blog-card-meta {
-    font-size: 10px;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-}
-
-.blog-card-meta a {
-    color: var(--link-alt);
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.blog-card-meta a:hover {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-.blog-card h3 {
-    font-size: 17px;
-    margin: 0 0 9px 0;
-    line-height: 1.3;
-    letter-spacing: -0.3px;
-}
-
-.blog-card h3 a {
-    color: var(--text-bright);
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.blog-card h3 a:hover {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-.blog-card-excerpt {
-    font-size: 12px;
-    color: var(--text-faint);
-    line-height: 1.75;
-    margin-bottom: 13px;
-}
-
-.blog-read-more {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: bold;
-    color: var(--text-faint);
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: 1px solid var(--border-mid);
-    padding: 4px 11px;
-    background: var(--bg-base);
-    transition: color 0.15s, border-color 0.15s;
-}
-
-.blog-read-more:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    text-decoration: none;
-}
-
-/* ── Sidebar ─────────────────────────────────────────────────────────────── */
 .blog-sidebar-box {
-    margin-bottom: 22px;
+    background: var(--mac-white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    /* Flex children of the sticky column default to flex-shrink: 1, which
+       squeezes this box below its content height (clipped by overflow:
+       hidden above) once the column runs out of room. Only #toc-box should
+       shrink/scroll internally — it overrides this via its higher-
+       specificity ID rule below. */
+    flex-shrink: 0;
 }
 
 .blog-sidebar-box h4 {
-    font-size: 12px;
-    color: var(--text-bright);
-    margin: 0 0 10px 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-left: 3px solid var(--accent);
-    padding-left: 8px;
+    display: flex;
+    align-items: center;
+    background: var(--bar-bg);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: bold;
+    text-transform: var(--chrome-case);
+    padding: 5px 8px;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .blog-sidebar-box ul {
-    margin: 0;
-    padding: 0;
     list-style: none;
 }
 
-.blog-sidebar-box ul li {
-    padding: 5px 0;
-    border-bottom: 1px solid var(--border-soft);
-    font-size: 11px;
-    line-height: 1.45;
-    color: var(--text-faint);
+.blog-sidebar-box li {
+    border-bottom: 1px solid var(--mac-grey-4);
 }
 
-.blog-sidebar-box ul li a {
-    color: var(--text-muted);
+.blog-sidebar-box li:last-child {
+    border-bottom: none;
+}
+
+.blog-sidebar-box a {
+    display: block;
+    padding: 5px 8px;
+    font-size: 9.5px;
     font-weight: normal;
+    color: var(--mac-black);
+    text-decoration: none;
+    background: var(--mac-white);
+}
+
+.blog-sidebar-box li:nth-child(even) a {
+    background: var(--mac-grey-1);
+}
+
+/* "li" keeps these as specific as the even-row stripe above, so they win on even rows too */
+.blog-sidebar-box li a:hover {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+.blog-sidebar-box li a.blog-cat-active {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+/* "Post Info" box: plain label/value lines, some with an inline link mixed
+   into the same <li> as text — these can't use the block pill-button style
+   above (that's for lists made of one <a> per <li>, like Categories/Share). */
+.sidebar-info-list li {
+    padding: 5px 8px;
+    font-size: 9.5px;
+    font-weight: bold;
+    color: var(--mac-black);
+    text-transform: var(--chrome-case);
+}
+
+.sidebar-info-list a {
+    display: inline;
+    padding: 0;
+    background: none;
+    color: var(--link);
+    text-decoration: underline;
+}
+
+/* ── Post rows (blog list) ─────────────────────────────────────────────── */
+/* Plain rows inside a single .welcome-card, no per-item radius/shadow —
+   same idiom as home's .news-table rows, just with a thumbnail column. */
+
+.blog-post-row {
+    display: flex;
+    padding: 10px 12px;
+    border-bottom: var(--divider);
+}
+
+.blog-post-row:last-of-type {
+    border-bottom: none;
+}
+
+.blog-post-thumb-link {
+    flex-shrink: 0;
+    display: block;
+    margin-right: 10px;
+}
+
+.blog-post-thumb {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    box-shadow: var(--shadow-flat-1);
+}
+
+.blog-post-thumb-placeholder {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    background-image: repeating-linear-gradient(45deg,
+            var(--mac-grey-1) 0 8px,
+            var(--mac-grey-2) 8px 16px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    box-shadow: var(--shadow-flat-1);
+}
+
+.blog-post-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-post-meta {
+    font-family: var(--font-chrome);
+    font-size: 9px;
+    font-weight: bold;
+    color: var(--mac-grey-6);
+    text-transform: var(--chrome-case);
+    margin-bottom: 3px;
+}
+
+.blog-post-meta a {
+    color: var(--mac-black);
     text-decoration: none;
 }
 
-.blog-sidebar-box ul li a:hover {
-    color: var(--accent);
+.blog-post-meta a:hover {
+    text-decoration: underline;
+}
+
+.blog-post-body h3 {
+    font-size: 11.5px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.blog-post-body h3 a {
+    color: var(--mac-black);
     text-decoration: none;
 }
 
-.blog-cat-active {
-    color: var(--accent) !important;
-    font-weight: bold !important;
+.blog-post-body h3 a:hover {
+    text-decoration: underline;
 }
 
-/* ── Pagination ──────────────────────────────────────────────────────────── */
+.blog-post-excerpt {
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--mac-grey-6);
+    flex: 1;
+}
+
+.blog-read-more {
+    align-self: flex-start;
+    margin-top: 6px;
+    font-family: var(--font-chrome);
+    font-size: 8.5px;
+    font-weight: bold;
+    text-transform: var(--chrome-case);
+    color: var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-button);
+    padding: 3px 8px;
+    text-decoration: none;
+}
+
+.blog-read-more:hover {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+/* ── Pagination ────────────────────────────────────────────────────────── */
+/* Footer bar inside the .welcome-card, same idiom as .news-footer/.alert-footer. */
+
+.blog-pagination-footer {
+    background: var(--bar-bg);
+    border-top: 1px solid var(--line);
+    padding: 6px 8px;
+}
+
 .blog-pagination {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 4px;
-    align-items: center;
-    padding: 14px 0 6px;
-    clear: both;
 }
 
 .blog-page-btn {
     display: inline-block;
-    padding: 5px 11px;
-    font-size: 10px;
+    min-width: 22px;
+    text-align: center;
+    padding: 3px 7px;
+    font-family: var(--font-chrome);
+    font-size: 9.5px;
     font-weight: bold;
-    border: 1px solid var(--border-mid);
-    background: var(--bg-base);
-    color: var(--text-muted);
+    color: var(--mac-black);
+    background: var(--mac-white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-button);
     text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    transition: color 0.15s, border-color 0.15s;
 }
 
 .blog-page-btn:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    text-decoration: none;
+    background: var(--select-bg);
+    color: var(--select-text);
 }
 
 .blog-page-btn.current {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg-void);
+    background: var(--select-bg);
+    border-color: var(--line);
+    color: var(--select-text);
 }
 
 .blog-page-btn.disabled {
-    opacity: 0.25;
+    color: var(--mac-grey-4);
+    background: var(--mac-grey-1);
     pointer-events: none;
 }
 
+/* ── Post cover ────────────────────────────────────────────────────────── */
+/* Kept small and fixed-height, styled like .feature-image (black border,
+   flat hard-edged shadow, no rounding) so it can never overflow its column. */
 
-/* ── CRT thumbnail effect (blog cards + post gallery) ───────────────────── */
-.blog-card-cover-link,
-.post-gallery-grid a {
-    position: relative;
-    background: #000;
-}
-
-.blog-card-cover-link::before,
-.post-gallery-grid a::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.32) 0px,
-        rgba(0, 0, 0, 0.32) 1px,
-        transparent 2px,
-        transparent 3px
-    );
-    mix-blend-mode: multiply;
-    opacity: 0.6;
-}
-
-.blog-card-cover-link::after,
-.post-gallery-grid a::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-    box-shadow:
-        inset 0 0 24px rgba(0, 0, 0, 0.7),
-        inset 0 0 2px var(--accent-bright);
-    transition: box-shadow 0.25s ease;
-}
-
-.blog-card:hover .blog-card-cover-link::after,
-.post-gallery-grid a:hover::after {
-    box-shadow:
-        inset 0 0 18px rgba(0, 0, 0, 0.55),
-        inset 0 0 6px var(--accent-bright),
-        0 0 16px var(--accent-bright),
-        0 0 34px var(--accent-soft-border);
-}
-
-.blog-card-cover,
-.post-gallery-grid img {
-    position: relative;
-    z-index: 1;
-    filter: saturate(1.1) contrast(1.05);
-}
-
-.blog-card:hover .blog-card-cover {
-    filter: saturate(1.3) contrast(1.12)
-        drop-shadow(1.5px 0 0 rgba(255, 40, 60, 0.45))
-        drop-shadow(-1.5px 0 0 rgba(40, 220, 255, 0.45));
-}
-
-.post-gallery-grid a:hover img {
-    filter: saturate(1.25) contrast(1.1)
-        drop-shadow(1px 0 0 rgba(255, 40, 60, 0.4))
-        drop-shadow(-1px 0 0 rgba(40, 220, 255, 0.4));
-}
-
-/* power-on flicker: JS adds this once, the first time a thumb enters view */
-.crt-power-on {
-    animation: crt-power-on 0.55s steps(8) 1;
-}
-
-@keyframes crt-power-on {
-    0%   { filter: brightness(3.2) saturate(0.2); opacity: 0; transform: scaleY(0.03); }
-    12%  { opacity: 1; transform: scaleY(1.15); }
-    24%  { transform: scaleY(0.9); }
-    40%  { filter: brightness(1.7) saturate(0.6); transform: scaleY(1.02); }
-    65%  { filter: brightness(1.15); transform: scaleY(1); }
-    100% { filter: brightness(1) saturate(1.1) contrast(1.05); transform: scaleY(1); }
-}
-
-/* ambient glitch: JS toggles this briefly at random on a random thumb */
-.crt-glitch {
-    animation: crt-glitch 0.18s steps(2) 1;
-}
-
-@keyframes crt-glitch {
-    0%   { transform: translate(0, 0); filter: brightness(1) saturate(1.1); }
-    20%  { transform: translate(-2px, 0); filter: brightness(1.4) saturate(1.5) hue-rotate(-8deg); }
-    40%  { transform: translate(2px, 0); filter: brightness(0.85); }
-    60%  { transform: translate(-1px, 0); filter: brightness(1.3) hue-rotate(6deg); }
-    100% { transform: translate(0, 0); filter: brightness(1) saturate(1.1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .crt-power-on,
-    .crt-glitch {
-        animation: none !important;
-    }
-}
-
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   POST DETAIL
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* ── Cover image ─────────────────────────────────────────────────────────── */
 .post-cover-wrap {
     position: relative;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    border-bottom: 3px solid var(--accent);
-    background: var(--bg-void);
+    overflow: clip;
+    margin-bottom: 12px;
+    border: var(--frame);
+    box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
 }
 
 .post-cover-img {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
-    opacity: 0.65;
     display: block;
 }
 
 .post-cover-overlay {
     position: absolute;
-    bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(6, 7, 13, 0.88));
-    padding: 30px 22px 18px;
+    bottom: 0;
+    padding: 8px 10px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+    pointer-events: none;
 }
 
 .post-cover-title {
-    font-size: 24px;
+    color: var(--mac-white);
+    font-size: 13px;
     font-weight: bold;
-    color: var(--text-bright);
-    line-height: 1.25;
-    letter-spacing: -0.5px;
-    text-shadow: 0 1px 4px rgba(6, 7, 13, 0.8);
+    line-height: 1.3;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 }
 
-/* ── Post layout ─────────────────────────────────────────────────────────── */
-#post-content {
-    padding: 22px 20px;
-    overflow: hidden;
-}
-
-#post-main {
-    width: 610px;
-    float: left;
-}
-
-#post-sidebar {
-    width: 280px;
-    float: right;
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-/* ── Post header ─────────────────────────────────────────────────────────── */
-.post-header {
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border-soft);
-}
+/* ── Post header / meta ────────────────────────────────────────────────── */
 
 .post-header h1 {
-    font-size: 26px;
-    color: var(--text-bright);
-    margin: 0 0 10px 0;
-    line-height: 1.25;
-    letter-spacing: -0.5px;
+    font-size: 15px;
+    color: var(--mac-black);
+    margin-bottom: 5px;
 }
 
 .post-meta-row {
     display: flex;
-    gap: 12px;
     align-items: center;
     flex-wrap: wrap;
-    font-size: 10px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.post-meta-cat {
-    background: var(--accent-soft-bg);
-    border: 1px solid var(--accent-soft-border);
-    color: var(--accent);
-    padding: 2px 8px;
-    font-size: 10px;
+    gap: 5px;
+    font-family: var(--font-chrome);
+    font-size: 9.5px;
     font-weight: bold;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: background 0.15s, color 0.15s;
+    color: var(--mac-grey-6);
+    text-transform: var(--chrome-case);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--mac-grey-4);
 }
 
-.post-meta-cat:hover {
-    background: var(--accent);
-    color: var(--bg-void);
+.post-meta-cat,
+.post-sidebar-toggle {
+    color: var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    padding: 2px 6px;
     text-decoration: none;
+}
+
+.post-meta-cat:hover,
+.post-sidebar-toggle:hover {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+.post-sidebar-toggle {
+    margin-left: auto;
+    font: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+}
+
+/* class set on <html> from localStorage in the post template's <head> */
+.post-sidebar-hidden #post-sidebar {
+    display: none;
 }
 
 .post-meta-lang a {
-    font-size: 10px;
-    font-weight: bold;
-    color: var(--link-alt);
-    border: 1px solid var(--link-alt-dim);
-    padding: 1px 6px;
-    text-decoration: none;
-    transition: color 0.15s, border-color 0.15s;
+    color: var(--link);
+    text-decoration: underline;
 }
 
-.post-meta-lang a:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    text-decoration: none;
-}
-
-/* ── Gallery ─────────────────────────────────────────────────────────────── */
-.post-gallery {
-    margin-top: 30px;
-    padding-top: 18px;
-    border-top: 1px solid var(--border-soft);
-}
-
-.post-gallery h4 {
-    font-size: 11px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin: 0 0 12px 0;
-}
-
-.post-gallery-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-}
-
-.post-gallery-grid a {
-    display: block;
-    width: 88px;
-    height: 88px;
-    overflow: hidden;
-    border: 1px solid var(--border-soft);
-    transition: border-color 0.15s;
-}
-
-.post-gallery-grid a:hover {
-    border-color: var(--accent);
-}
-
-.post-gallery-grid img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    opacity: 0.8;
-    margin: 0;
-    border: none;
-    transition: opacity 0.15s;
-}
-
-.post-gallery-grid a:hover img {
-    opacity: 1;
-}
-
-/* ── Back link ───────────────────────────────────────────────────────────── */
-.post-back {
-    display: inline-block;
-    margin-top: 24px;
-    font-size: 10px;
-    font-weight: bold;
-    color: var(--text-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-decoration: none;
-    border: 1px solid var(--border-soft);
-    padding: 5px 12px;
-    background: var(--bg-base);
-    transition: color 0.15s, border-color 0.15s;
-}
-
-.post-back:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    text-decoration: none;
-}
-
-
-/* ── Table of Contents (sidebar) ─────────────────────────────────────────── */
-#toc-box {
-    display: none; /* shown by JS when headings exist */
-}
-
-#toc-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-#toc-list li {
-    padding: 4px 0;
-    border-bottom: 1px solid var(--border-soft);
-    line-height: 1.4;
-}
-
-#toc-list li.toc-empty {
-    font-size: 10px;
-    color: var(--text-dim);
-    font-style: italic;
-    border-bottom: none;
-}
-
-#toc-list li a {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-decoration: none;
-    display: block;
-    transition: color 0.15s;
-}
-
-#toc-list li a:hover {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-#toc-list li a.toc-active {
-    color: var(--accent);
-}
-
-/* indentation by heading level */
-#toc-list li[data-level="1"] a { padding-left: 0;    font-weight: bold; }
-#toc-list li[data-level="2"] a { padding-left: 0;    font-weight: bold; }
-#toc-list li[data-level="3"] a { padding-left: 10px; }
-#toc-list li[data-level="4"] a { padding-left: 18px; font-size: 10px; color: var(--text-faint); }
-#toc-list li[data-level="5"] a { padding-left: 24px; font-size: 10px; color: var(--text-faint); }
-#toc-list li[data-level="6"] a { padding-left: 28px; font-size: 10px; color: var(--text-dim); }
-
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   PROSE  (rendered markdown content)
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* ── Prose (rendered markdown content) ────────────────────────────────── */
 
 .prose {
-    font-size: 13px;
-    color: var(--text-body);
-    line-height: 1.9;
+    font-family: var(--font-body);
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--mac-black);
 }
 
-.prose p {
-    margin: 0 0 16px 0;
+.prose>*+* {
+    margin-top: 10px;
 }
 
-/* ── Headings ── */
 .prose h1,
 .prose h2,
 .prose h3,
 .prose h4,
 .prose h5,
 .prose h6 {
+    color: var(--mac-black);
     font-weight: bold;
-    line-height: 1.25;
-    margin: 30px 0 12px 0;
-    color: var(--text-bright);
+    line-height: 1.3;
+    scroll-margin-top: 15px;
 }
 
 .prose h1 {
-    font-size: 22px;
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 7px;
+    font-size: 15px;
+    padding-bottom: 6px;
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
 }
 
 .prose h2 {
-    font-size: 18px;
-    border-bottom: 1px solid var(--border-soft);
-    padding-bottom: 5px;
+    font-size: 13px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--mac-grey-4);
 }
 
 .prose h3 {
-    font-size: 15px;
-    color: var(--accent);
+    font-size: 12px;
+    color: var(--mac-black);
 }
 
-.prose h4 {
-    font-size: 13px;
-    color: var(--text-body);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
+.prose h4,
 .prose h5,
 .prose h6 {
-    font-size: 12px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 11px;
+    text-transform: var(--chrome-case);
+    color: var(--mac-grey-6);
 }
 
-/* ── Links ── */
+.prose p {
+    text-align: justify;
+}
+
 .prose a {
-    color: var(--link-alt);
-    text-decoration: underline;
-    font-weight: normal;
+    color: var(--link);
 }
 
-.prose a:hover {
-    color: var(--accent);
+.prose strong {
+    color: var(--mac-black);
 }
 
-.prose strong { color: var(--text-bright); font-weight: bold; }
-.prose em     { color: var(--text-body); font-style: italic; }
-.prose del    { color: var(--text-faint); text-decoration: line-through; }
+.prose ul,
+.prose ol {
+    padding-left: 20px;
+}
 
-/* ── Horizontal rule ── */
+.prose li+li {
+    margin-top: 3px;
+}
+
+.prose blockquote {
+    border-left: 4px solid var(--accent);
+    background: var(--mac-grey-1);
+    color: var(--mac-black);
+    padding: 6px 10px;
+}
+
+.prose blockquote>*+* {
+    margin-top: 6px;
+}
+
 .prose hr {
     border: none;
-    border-top: 1px solid var(--border-soft);
-    margin: 28px 0;
+    border-top: var(--divider);
+    margin: 2px 0;
 }
 
-/* ── Inline code ── */
+.prose img {
+    display: block;
+    max-width: 100%;
+    max-height: 420px;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    border: var(--frame);
+    box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
+}
+
+.prose figure {
+    margin: 0;
+}
+
+.prose figcaption {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.85em;
+    opacity: 0.75;
+}
+
+.prose iframe {
+    display: block;
+    max-width: 100%;
+    max-height: 420px;
+    margin: 0 auto;
+    border: var(--frame);
+    box-shadow: var(--shadow-flat-2);
+    border-radius: var(--radius-card);
+}
+
 .prose code {
-    font-family: "Courier New", Courier, monospace;
-    font-size: 11.5px;
-    background: var(--bg-base);
-    border: 1px solid var(--border-mid);
-    color: #ff9944;
-    padding: 1px 5px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--mac-grey-1);
+    border: 1px solid var(--mac-grey-4);
+    border-radius: var(--radius-tag);
+    padding: 1px 4px;
+    color: var(--mac-black);
 }
 
-/* ── Code block ── */
+.code-block-wrap {
+    position: relative;
+}
+
 .prose pre {
-    background: var(--bg-base);
-    border: 1px solid var(--border-soft);
-    border-left: 3px solid var(--accent);
-    padding: 16px 18px;
+    background: var(--mac-grey-6);
+    padding: 10px 12px;
     overflow-x: auto;
-    margin: 0 0 18px 0;
-    line-height: 1.6;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+}
+
+.code-copy-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--button-bg);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
+    font-size: 9px;
+    font-weight: bold;
+    text-transform: var(--chrome-case);
+    letter-spacing: 0.3px;
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.code-copy-btn:hover {
+    opacity: 1;
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+.code-copy-btn.copied {
+    opacity: 1;
+    background: var(--rainbow-green);
+    color: var(--mac-black);
+    border-color: var(--line);
 }
 
 .prose pre code {
     background: none;
     border: none;
-    color: var(--text-body);
     padding: 0;
-    font-size: 12px;
-    font-family: "Courier New", Courier, monospace;
+    color: var(--mac-grey-1);
+    font-size: 10px;
+    line-height: 1.5;
 }
 
-/* ── Blockquote ── */
-.prose blockquote {
-    margin: 0 0 16px 0;
-    padding: 12px 18px;
-    border-left: 3px solid var(--accent);
-    background: var(--bg-void);
-    color: var(--text-muted);
-    font-style: italic;
-}
-
-.prose blockquote p {
-    margin: 0;
-}
-
-/* ── Lists ── */
-.prose ul,
-.prose ol {
-    margin: 0 0 16px 0;
-    padding-left: 22px;
-    color: var(--text-body);
-}
-
-.prose ul { list-style: square; }
-.prose ol { list-style: decimal; }
-
-.prose li {
-    margin-bottom: 5px;
-    line-height: 1.75;
-}
-
-/* ── Images ── */
-.prose img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 20px 0;
-    border: 1px solid var(--border-soft);
-}
-
-/* ── Tables ── */
 .prose table {
-    border-collapse: collapse;
     width: 100%;
-    margin-bottom: 18px;
-    font-size: 12px;
+    border-collapse: collapse;
+    font-size: 10px;
+}
+
+.prose th,
+.prose td {
+    border: 1px solid var(--line);
+    padding: 5px 7px;
+    text-align: left;
 }
 
 .prose th {
-    background: var(--bg-panel);
-    color: var(--text-bright);
-    border: 1px solid var(--border-strong);
-    padding: 7px 12px;
-    text-align: left;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 0.4px;
-}
-
-.prose td {
-    border: 1px solid var(--border-soft);
-    padding: 6px 12px;
-    color: var(--text-body);
-    vertical-align: top;
+    background: var(--bar-bg);
+    color: var(--mac-black);
 }
 
 .prose tr:nth-child(even) td {
-    background: var(--bg-base);
+    background: var(--mac-grey-1);
+}
+
+/* ── Post gallery ──────────────────────────────────────────────────────── */
+
+.post-gallery {
+    margin-top: 18px;
+}
+
+.post-gallery h4 {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: bold;
+    text-transform: var(--chrome-case);
+    color: var(--mac-black);
+    margin-bottom: 6px;
+}
+
+.post-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 6px;
+}
+
+.post-gallery-grid img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: var(--frame);
+    box-shadow: var(--shadow-flat-1);
+    border-radius: var(--radius-card);
+}
+
+/* ── Back link ─────────────────────────────────────────────────────────── */
+
+.post-back {
+    display: inline-block;
+    margin-top: 18px;
+    font-family: var(--font-chrome);
+    font-size: 9.5px;
+    font-weight: bold;
+    text-transform: var(--chrome-case);
+    color: var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-button);
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.post-back:hover {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+/* ── Table of contents ────────────────────────────────────────────────── */
+/* The whole #post-sidebar column (Post Info + Contents + Share) is sticky
+   as one unit (see above) so they all travel down/up together and stop
+   together at the end of the article — not just this box on its own. */
+
+#toc-box {
+    /* JS un-hides this once headings are found; hidden by default so a
+       post with no headings doesn't leave an empty "Contents" box. Grows to
+       fill the leftover sticky-column space, so long TOCs scroll internally
+       instead of pushing Info/Share out of the viewport. */
+    display: none;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+}
+
+#toc-list {
+    flex: 1;
+    min-height: 40px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+
+#toc-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#toc-list::-webkit-scrollbar-track {
+    background: var(--scroll-track);
+}
+
+#toc-list::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 2px;
+}
+
+#toc-list::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
+}
+
+#toc-list li {
+    border-bottom: none !important;
+}
+
+#toc-list a {
+    background: none !important;
+    padding: 3px 8px !important;
+    font-size: 9px !important;
+    font-weight: normal !important;
+    color: var(--mac-grey-6) !important;
+    text-transform: none !important;
+    border-left: 2px solid transparent;
+}
+
+#toc-list li[data-level="3"] a {
+    padding-left: 16px !important;
+}
+
+#toc-list li[data-level="4"] a,
+#toc-list li[data-level="5"] a,
+#toc-list li[data-level="6"] a {
+    padding-left: 24px !important;
+}
+
+#toc-list a:hover {
+    background: var(--select-bg) !important;
+    color: var(--select-text) !important;
+}
+
+#toc-list a.toc-active {
+    border-left-color: var(--accent);
+    background: var(--mac-grey-1) !important;
+    color: var(--mac-black) !important;
+    font-weight: bold !important;
+}
+
+.toc-empty {
+    padding: 6px 8px;
+    font-size: 9.5px;
+    color: var(--mac-grey-6);
+    font-style: italic;
+}
+
+/* ── Mobile: stack sidebar below the article instead of beside it ───────── */
+@media (max-width: 768px) {
+
+    #blog-content,
+    #post-content {
+        flex-direction: column;
+        /* align-items: flex-start (desktop) sizes row-children to their
+           content width — once the axis flips to column it would stop
+           #blog-main/#post-main from stretching to the full column width,
+           letting prose/images/code blocks size to their own content
+           width and overflow the viewport instead of wrapping. */
+        align-items: stretch;
+    }
+
+    #blog-sidebar,
+    #post-sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    #toc-box {
+        flex: none;
+    }
+
+    /* sidebar already sits below the article here, so there's no width to win back */
+    .post-sidebar-toggle {
+        display: none;
+    }
+
+    .post-sidebar-hidden #post-sidebar {
+        display: flex;
+    }
+
+    #toc-list {
+        max-height: 220px;
+    }
 }

@@ -3,12 +3,15 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 from app import db
+from app.i18n import t
 from app.models.models import GalleryPhoto
 from app.routes.admin import admin_bp
 from app.storage import storage
+from app.utils import slugify, unique_slug
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
+PER_PAGE = 50
 
 
 def _allowed(filename: str) -> bool:
@@ -33,12 +36,36 @@ def _store_image(file, dest_path: str) -> bool:
 @admin_bp.get('/gallery/')
 @login_required
 def gallery_list():
-    photos = (
-        GalleryPhoto.query
-        .order_by(GalleryPhoto.created_at.desc())
-        .all()
-    )
-    return render_template('admin/gallery/list.html', photos=photos)
+    q = request.args.get('q', '').strip()
+    page = max(request.args.get('page', 1, type=int), 1)
+
+    query = GalleryPhoto.query.order_by(GalleryPhoto.created_at.desc())
+    if q:
+        query = query.filter(GalleryPhoto.title.contains(q))
+
+    pagination = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+    return render_template('admin/gallery/list.html', pagination=pagination, photos=pagination.items, q=q)
+
+
+@admin_bp.post('/gallery/bulk-delete')
+@login_required
+def gallery_bulk_delete():
+    ids = request.form.getlist('photo_ids', type=int)
+    if ids:
+        photos = GalleryPhoto.query.filter(GalleryPhoto.id.in_(ids)).all()
+        for photo in photos:
+            if photo.image_path:
+                storage.delete(photo.image_path)
+        deleted = (
+            GalleryPhoto.query
+            .filter(GalleryPhoto.id.in_(ids))
+            .delete(synchronize_session=False)
+        )
+        db.session.commit()
+        flash(t('flash.gallery_bulk_deleted', n=deleted), 'success')
+    else:
+        flash(t('flash.no_photos_selected'), 'error')
+    return redirect(url_for('admin.gallery_list'))
 
 
 # ── Create ────────────────────────────────────────────────────────────────────
@@ -51,18 +78,20 @@ def gallery_create():
         image = request.files.get('image')
 
         if not title:
-            flash('Title is required.', 'error')
+            flash(t('flash.title_required'), 'error')
             return render_template('admin/gallery/form.html', photo=None)
         if not image or not image.filename:
-            flash('Image is required.', 'error')
+            flash(t('flash.image_required'), 'error')
             return render_template('admin/gallery/form.html', photo=None)
 
         has_es = request.form.get('has_es') == '1'
         title_es = request.form.get('title_es', '').strip() or None
         description_es = request.form.get('description_es', '').strip() or None
+        slug_input = request.form.get('slug', '').strip()
 
         photo = GalleryPhoto(
             title=title,
+            slug=unique_slug(GalleryPhoto, slugify(slug_input or title)),
             description=request.form.get('description', '').strip() or None,
             has_es=has_es,
             title_es=title_es if has_es else None,
@@ -76,12 +105,12 @@ def gallery_create():
         path = f"gallery/{photo.id}.{ext}"
         if not _store_image(image, path):
             db.session.rollback()
-            flash('Image rejected — invalid type or exceeds 5 MB.', 'error')
+            flash(t('flash.image_rejected'), 'error')
             return render_template('admin/gallery/form.html', photo=None)
 
         photo.image_path = path
         db.session.commit()
-        flash(f'Photo "{photo.title}" created.', 'success')
+        flash(t('flash.photo_created', title=photo.title), 'success')
         return redirect(url_for('admin.gallery_list'))
 
     return render_template('admin/gallery/form.html', photo=None)
@@ -94,13 +123,13 @@ def gallery_create():
 def gallery_edit(photo_id):
     photo = db.session.get(GalleryPhoto, photo_id)
     if photo is None:
-        flash('Photo not found.', 'error')
+        flash(t('flash.photo_not_found'), 'error')
         return redirect(url_for('admin.gallery_list'))
 
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash('Title is required.', 'error')
+            flash(t('flash.title_required'), 'error')
             return render_template('admin/gallery/form.html', photo=photo)
 
         has_es = request.form.get('has_es') == '1'
@@ -122,10 +151,10 @@ def gallery_edit(photo_id):
                     storage.delete(photo.image_path)
                 photo.image_path = new_path
             else:
-                flash('Image rejected — invalid type or exceeds 5 MB.', 'error')
+                flash(t('flash.image_rejected'), 'error')
 
         db.session.commit()
-        flash('Photo updated.', 'success')
+        flash(t('flash.photo_updated'), 'success')
         return redirect(url_for('admin.gallery_edit', photo_id=photo.id))
 
     return render_template('admin/gallery/form.html', photo=photo)
@@ -138,7 +167,7 @@ def gallery_edit(photo_id):
 def gallery_delete(photo_id):
     photo = db.session.get(GalleryPhoto, photo_id)
     if photo is None:
-        flash('Photo not found.', 'error')
+        flash(t('flash.photo_not_found'), 'error')
         return redirect(url_for('admin.gallery_list'))
 
     if photo.image_path:
@@ -147,5 +176,5 @@ def gallery_delete(photo_id):
     title = photo.title
     db.session.delete(photo)
     db.session.commit()
-    flash(f'Photo "{title}" deleted.', 'success')
+    flash(t('flash.photo_deleted', title=title), 'success')
     return redirect(url_for('admin.gallery_list'))

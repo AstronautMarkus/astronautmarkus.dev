@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+<channel>
+    <title>AstronautMarkus.Dev Blog</title>
+    <link>{{ channel_link }}</link>
+    {% if lang == 'es' %}
+    <description>Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja.</description>
+    <language>es-CL</language>
+    {% else %}
+    <description>Development notes, system deep-dives, and the occasional rant.</description>
+    <language>en-US</language>
+    {% endif %}
+    <atom:link href="{{ self_url }}" rel="self" type="application/rss+xml"/>
+    {% if last_build_date %}
+    <lastBuildDate>{{ last_build_date }}</lastBuildDate>
+    {% endif %}
+    <image>
+        <url>{{ url_for('static', filename='images/og.jpg', _external=True) }}</url>
+        <title>AstronautMarkus.Dev Blog</title>
+        <link>{{ channel_link }}</link>
+    </image>
+    {% for item in items %}
+    <item>
+        <title>{{ item.title }}</title>
+        <link>{{ item.link }}</link>
+        <guid isPermaLink="true">{{ item.link }}</guid>
+        <pubDate>{{ item.pub_date }}</pubDate>
+        {% if item.description %}
+        <description>{{ item.description }}</description>
+        {% endif %}
+        {% for category in item.categories %}
+        <category>{{ category }}</category>
+        {% endfor %}
+        {% if item.cover_url %}
+        <media:content url="{{ item.cover_url }}" medium="image"/>
+        {% endif %}
+        {% if item.content_html %}
+        <content:encoded>{{ item.content_html }}</content:encoded>
+        {% endif %}
+    </item>
+    {% endfor %}
+</channel>
+</rss>

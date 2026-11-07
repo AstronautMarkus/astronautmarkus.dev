@@ -1,0 +1,325 @@
+/* 95: Windows 95 chrome. Teal desktop, #c0c0c0 3D-bevelled windows, navy
+   title bars and Chicago95 pixel icons. Loaded after every other stylesheet
+   when the theme cookie is "win95". Mostly token overrides; the rules at the
+   bottom are the bevels and caption buttons that tokens alone can't express. */
+:root {
+    /* the 16-colour VGA greys */
+    --mac-white: #ffffff;
+    --mac-grey-1: #c0c0c0;
+    --mac-grey-2: #c0c0c0;
+    --mac-grey-3: #dfdfdf;
+    --mac-grey-4: #808080;
+    --mac-grey-5: #808080;
+    --mac-grey-6: #404040;
+    --mac-black: #000000;
+
+    --w95-navy: #000080;
+    --w95-teal: #008080;
+    /* four-line bevels, outermost line first */
+    --w95-raised: inset -1px -1px #000000, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff;
+    --w95-sunken: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #000000;
+    --w95-pressed: inset -1px -1px #ffffff, inset 1px 1px #000000, inset -2px -2px #dfdfdf, inset 2px 2px #808080;
+
+    --shadow-flat-1: none;
+    --shadow-flat-2: 2px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-flat-3: 4px 4px 0 rgba(0, 0, 0, 0.45);
+    --radius-button: 0px;
+
+    /* MS Sans Serif where it exists; Tahoma/Arial are the closest stand-ins */
+    --font-chrome: 'MS Sans Serif', 'Microsoft Sans Serif', Tahoma, Arial, sans-serif;
+    --font-body: 'MS Sans Serif', 'Microsoft Sans Serif', Tahoma, Arial, sans-serif;
+    --font-mono: 'Fixedsys', 'Courier New', ui-monospace, monospace;
+    --font-wordmark: 'Arial Black', 'Arial Bold', Arial, sans-serif;
+
+    /* theme layer */
+    --line: #808080;
+    --frame: 2px solid #808080;
+    --radius-card: 0px;
+    --radius-tag: 0px;
+    --radius-field: 0px;
+    --card-inset: 2px;
+    --divider: 1px solid #808080;
+
+    --chrome-case: none;
+    --chrome-size: 11px;
+    --chrome-weight: normal;
+    --bar-bg: var(--w95-navy);
+    --bar-rule: 0;
+    --bar-rule-image: none;
+    --titlebar-bg: var(--w95-navy);
+    --toolbar-bg: #c0c0c0;
+    --sidebar-bg: #c0c0c0;
+
+    --button-bg: #c0c0c0;
+    --button-accent: 1px solid #000000;
+    --select-bg: var(--w95-navy);
+    --select-text: #ffffff;
+    --badge-bg: var(--w95-navy);
+    --link: #0000ff;
+    --accent: var(--w95-navy);
+    --icon-rendering: pixelated;
+    --focus-ring: 1px dotted #000000;
+    --focus-offset: -4px;
+    --scroll-thumb: #c0c0c0;
+    --scroll-thumb-hover: #c0c0c0;
+    --scroll-track: #dfdfdf;
+
+    --desktop-bg: var(--w95-teal);
+    /* the gradient shows through until/unless the banner image loads */
+    --banner-image: var(--banner-art), linear-gradient(var(--w95-teal), #004c4c);
+    /* the "Starting Windows 95" progress-bar blocks */
+    --accent-stripe: repeating-linear-gradient(90deg, var(--w95-navy) 0 10px, transparent 10px 12px);
+}
+
+.rainbow-bar {
+    display: none;
+}
+
+/* the whole site is one window: grey frame with the raised bevel */
+.page-wrapper {
+    border: 0;
+    padding: 3px;
+    background: #c0c0c0;
+    box-shadow: var(--w95-raised), var(--shadow-flat-3);
+}
+
+/* Title bar: white caption text, caption buttons drawn on the right edge */
+.header-top-nav {
+    position: relative;
+    padding: 3px 62px 3px 6px;
+    color: #ffffff;
+    font-weight: bold;
+    border-bottom: 0;
+}
+
+.header-top-nav::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    width: 50px;
+    height: 14px;
+    transform: translateY(-50%);
+    /* minimise + maximise touching, 2px gap, close; each with the raised bevel */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='14' shape-rendering='crispEdges'%3E%3Cg transform='translate%280%29'%3E%3Crect width='16' height='14' fill='%23c0c0c0'/%3E%3Cpath d='M0 0h15v1H1v12H0z' fill='%23fff'/%3E%3Cpath d='M15 0h1v14H0v-1h15z' fill='%23000'/%3E%3Cpath d='M1 1h13v1H2v10H1z' fill='%23dfdfdf'/%3E%3Cpath d='M14 1h1v12H1v-1h13z' fill='%23808080'/%3E%3Crect x='4' y='9' width='6' height='2' fill='%23000'/%3E%3C/g%3E%3Cg transform='translate%2816%29'%3E%3Crect width='16' height='14' fill='%23c0c0c0'/%3E%3Cpath d='M0 0h15v1H1v12H0z' fill='%23fff'/%3E%3Cpath d='M15 0h1v14H0v-1h15z' fill='%23000'/%3E%3Cpath d='M1 1h13v1H2v10H1z' fill='%23dfdfdf'/%3E%3Cpath d='M14 1h1v12H1v-1h13z' fill='%23808080'/%3E%3Cpath d='M3 2h9v9H3zM4 4v6h7V4z' fill='%23000' fill-rule='evenodd'/%3E%3C/g%3E%3Cg transform='translate%2834%29'%3E%3Crect width='16' height='14' fill='%23c0c0c0'/%3E%3Cpath d='M0 0h15v1H1v12H0z' fill='%23fff'/%3E%3Cpath d='M15 0h1v14H0v-1h15z' fill='%23000'/%3E%3Cpath d='M1 1h13v1H2v10H1z' fill='%23dfdfdf'/%3E%3Cpath d='M14 1h1v12H1v-1h13z' fill='%23808080'/%3E%3Cpath d='M4 3h2l1.5 2 1.5-2h2L8.5 6.5 11 10H9L7.5 8 6 10H4l2.5-3.5z' fill='%23000'/%3E%3C/g%3E%3C/svg%3E") no-repeat;
+    box-shadow: none;
+    outline: 0;
+}
+
+.header-top-nav a,
+.header-top-nav a.active {
+    color: #ffffff;
+}
+
+.header-top-nav .nav-dropdown-menu a {
+    color: #000000;
+}
+
+/* the bar is already --select-bg navy, so the usual inverted hover is invisible */
+.header-top-nav > a:hover,
+.header-top-nav .nav-dropdown-toggle:hover {
+    text-decoration: underline;
+}
+
+.header-main {
+    margin-top: 2px;
+    border-bottom: 0;
+    box-shadow: var(--w95-sunken);
+}
+
+.logo-title {
+    font-style: normal;
+    letter-spacing: 0;
+    -webkit-text-stroke: 0;
+    text-shadow: 2px 2px 0 #000000;
+}
+
+/* menu bar */
+.main-nav {
+    border-bottom: 0;
+    padding: 2px 0;
+}
+
+.main-nav a {
+    border-right: 0;
+}
+
+/* menus and dropdowns are raised grey panels with navy selection */
+.nav-dropdown-menu {
+    background: #c0c0c0;
+    border: 0;
+    padding: 3px;
+    box-shadow: var(--w95-raised), var(--shadow-flat-2);
+}
+
+.nav-dropdown-menu a {
+    border-bottom: 0;
+}
+
+/* the white pane is absolutely positioned over .content-container, so the
+   sunken bevel lives on it. No inset shadows: scrolled content paints over
+   them. Inner line = border, outer line = outward shadow. */
+.main-content {
+    border: 1px solid;
+    border-color: #000000 #dfdfdf #dfdfdf #000000;
+    box-shadow: -1px -1px #808080, 1px 1px #ffffff;
+}
+
+.sidebar {
+    border-right: 0;
+}
+
+/* each panel is a small window: raised frame + navy caption */
+.panel-box {
+    border: 0;
+    padding: 3px;
+    background: #c0c0c0;
+    box-shadow: var(--w95-raised);
+}
+
+/* content windows: grey frame with the raised bevel, like .panel-box */
+.welcome-card,
+.about-card,
+.homelab-card,
+.pdfgen-card,
+.setup-card {
+    border: 0;
+    padding: 3px;
+    background: #c0c0c0;
+    box-shadow: var(--w95-raised), var(--shadow-flat-2);
+}
+
+/* photos and media sit in sunken wells */
+.feature-image,
+.profile-photo,
+.beercat-hero-wrap,
+.homelab-hero-photo,
+.setup-hero-photo,
+.post-cover-wrap {
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080;
+}
+
+/* stat tiles and SDLC nodes: white sunken fields, coloured top kept as data */
+.stat,
+.sdlc-node {
+    border: 0;
+    border-top: 3px solid var(--c);
+    box-shadow: var(--w95-sunken);
+}
+
+.stat:hover {
+    translate: none;
+    box-shadow: var(--w95-sunken);
+}
+
+/* every bar painted with --bar-bg is navy here, so its text goes white */
+.panel-header,
+.about-card-header,
+.image-modal-header,
+.guestbook-pagination-footer,
+.alert-header,
+.alert-footer,
+.payday-header,
+.card-header,
+.news-footer,
+.homelab-card-header,
+.vlan-table th,
+.pdfgen-card-header,
+.setup-card-header,
+.blog-sidebar-box h4,
+.blog-pagination-footer,
+.prose th,
+.theme-cal-table th,
+th {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+:is(.panel-header, .about-card-header, .image-modal-header, .guestbook-pagination-footer,
+    .alert-header, .alert-footer, .payday-header, .card-header, .news-footer,
+    .homelab-card-header, .pdfgen-card-header, .setup-card-header, .blog-sidebar-box h4,
+    .blog-pagination-footer, th) :is(a, span, button, h1, h2, h3, h4) {
+    color: #ffffff;
+}
+
+.menu-list li {
+    border-bottom-color: #dfdfdf;
+}
+
+footer {
+    background: #c0c0c0;
+    border-top: 0;
+    margin-top: 2px;
+    color: #000000;
+    box-shadow: var(--w95-sunken);
+}
+
+/* push-buttons */
+button,
+input[type="submit"],
+input[type="button"],
+.audio-btn {
+    border: 0;
+    box-shadow: var(--w95-raised);
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background: #c0c0c0;
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    background: #c0c0c0;
+    box-shadow: var(--w95-pressed);
+    transform: translate(1px, 1px);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="tel"],
+textarea,
+select {
+    border: 0;
+    padding: 6px 9px;
+    box-shadow: var(--w95-sunken);
+}
+
+/* chunky bevelled scrollbars where the browser lets us */
+html::-webkit-scrollbar-thumb {
+    box-shadow: var(--w95-raised);
+}
+
+html::-webkit-scrollbar-track {
+    background: repeating-conic-gradient(#c0c0c0 0 25%, #ffffff 0 50%) 0 0 / 2px 2px;
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        box-shadow: var(--w95-raised);
+    }
+}
+
+/* GitHub contribution chart: Paint's 16-colour blues */
+.gh-days::after {
+    content: none;
+}
+
+.gh-cal i {
+    border: 0;
+    background: #ffffff;
+    box-shadow: inset 1px 1px #808080;
+}
+
+.gh-cal i[data-l="1"] { background: #00ffff; box-shadow: none; }
+.gh-cal i[data-l="2"] { background: #008080; box-shadow: none; }
+.gh-cal i[data-l="3"] { background: #0000ff; box-shadow: none; }
+.gh-cal i[data-l="4"] { background: #000080; box-shadow: none; }

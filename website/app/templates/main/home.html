@@ -1,346 +1,237 @@
 {% extends "base/base.html" %}
 
 {% block title %}Home{% endblock %}
+{% block description %}Full-cycle software developer portfolio and blog — web, mobile, and desktop projects, technical
+articles, and dev experiments by AstronautMarkus.{% endblock %}
+{% block keywords %}AstronautMarkus, full-cycle developer, portfolio, blog, python, flask, react, linux{% endblock %}
 
-{% block description %}Marcos Reyes - Personal website and tech portfolio{% endblock %}
-{% block keywords %}Marcos Reyes, developer, portfolio, tech, software, personal website{% endblock %}
-
-{% block extra_css %}
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-{% endblock %}
-
-{% block extra_js %}
-<script>
-(function () {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var thumbs = document.querySelectorAll('.project-card-img');
-    if (!thumbs.length) return;
-
-    /* CRT power-on flicker, staggered, the first time each thumbnail enters view */
-    var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            var el = entry.target;
-            observer.unobserve(el);
-            var idx = Array.prototype.indexOf.call(thumbs, el);
-            setTimeout(function () { el.classList.add('crt-power-on'); }, Math.min(idx, 10) * 90);
-        });
-    }, { threshold: 0.2 });
-    thumbs.forEach(function (img) { observer.observe(img); });
-
-    /* occasional ambient glitch on a random thumbnail */
-    setInterval(function () {
-        if (Math.random() > 0.35) return;
-        var img = thumbs[Math.floor(Math.random() * thumbs.length)];
-        img.classList.remove('crt-glitch');
-        void img.offsetWidth;
-        img.classList.add('crt-glitch');
-    }, 2600);
-})();
-</script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/github.css') }}">
 {% endblock %}
 
 {% block content %}
 
-<div id="hero">
-    <div class="hero-content">
-        <h2>Hi, I'm <span>Marcos</span>.</h2>
-        <p>Welcome, seekers and bots alike to my personal website! This is where I share my projects, thoughts, and the
-            occasional rant about software development. If you're a human, feel free to explore and connect. If you're a
-            bot... well, enjoy the SEO juice.</p>
-        <a href="{{ url_for('main.portfolio_list') }}" class="glossy-btn">View My Work</a>
-        <a href="{{ url_for('contact.contact') }}" class="glossy-btn btn-outline">Contact Me</a>
+{% include "main/_home_welcome.html" %}
+
+{% include "main/_home_stats.html" %}
+
+<section class="welcome-card alert-card">
+    <div class="card-header alert-header">
+        <img src="{{ icon('arrow_refresh.png') }}" alt="" class="nav-icon">
+        AstronautMarkusDev 2.70 Update
     </div>
-    <div class="profile-cube-scene" role="img" aria-label="Website Art">
-        <div class="profile-cube">
-            <img style="background-color: white;" src="{{ url_for('static', filename='images/home/astronautmarkus-tux.png') }}" class="profile-cube-face profile-cube-face-front" aria-hidden="true">
-            <img src="https://github.com/AstronautMarkus.png" class="profile-cube-face profile-cube-face-right" aria-hidden="true">
-            <img src="https://github.com/MarcosKingsDuoc.png" class="profile-cube-face profile-cube-face-left" aria-hidden="true">
+    <div class="alert-stripe"></div>
+    <div class="alert-body">
+        <div class="alert-intro">
+            A third personality just jacked into the net. Wake up, samurai:
         </div>
+        <ul class="alert-list">
+            <li><span class="alert-tag new">NEW</span> The Cyberpunk theme: dark mode, red and cyan neon, clipped corners, scanlines and its own banner.</li>
+            <li><span class="alert-tag improved">IMPROVED</span> Zero HTML changes: the whole theme is a single CSS file. The design tokens kept their promise.</li>
+        </ul>
     </div>
-</div>
+    <div class="alert-footer">Update log maintained since 2026 <img
+            src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+</section>
 
-<div id="page-content">
-
-    <div id="primary">
-
-        <div class="about-text">
-            <h3 class="section-title">About Me</h3>
-            <p>I specialize in building high-performance web applications and scalable infrastructure. With over a years
-                of experience in the trenches of software development, I've honed my skills in <strong>Python,
-                    JavaScript, PHP</strong>, and a variety of frameworks and tools. I have a passion for late 2000s web
-                UIs, Networking, and all things distributed systems.</p>
-            <p>When I'm not shipping features, I'm experimenting with hardware, tinkering with home automation, taking
-                photos of my cats, or drinking way too much coffee. This site is a labor of love, built from scratch
-                with Flask and a custom-built blog engine. It's my digital playground hehe.</p>
-        </div>
-
-        <div class="skills">
-            <h3 class="section-title">Skills &amp; Stack</h3>
-            <div class="skill-group">
-                <span class="skill-group-label">Languages &amp; Scripting</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Python</span>
-                    <span class="tag-pill">PHP</span>
-                    <span class="tag-pill">HTML</span>
-                    <span class="tag-pill">CSS</span>
-                    <span class="tag-pill">JavaScript</span>
-                    <span class="tag-pill">TypeScript</span>
-                    <span class="tag-pill">SQL</span>
-                    <span class="tag-pill">Bash</span>
-                    <span class="tag-pill">Dockerfile</span>
-                    <span class="tag-pill">Arduino</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Frameworks &amp; Libraries</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">React</span>
-                    <span class="tag-pill">React Router</span>
-                    <span class="tag-pill">Laravel</span>
-                    <span class="tag-pill">Laravel Reverb</span>
-                    <span class="tag-pill">Livewire</span>
-                    <span class="tag-pill">Tailwind CSS</span>
-                    <span class="tag-pill">Vue.js</span>
-                    <span class="tag-pill">Node.js</span>
-                    <span class="tag-pill">Flask</span>
-                    <span class="tag-pill">Django</span>
-                    <span class="tag-pill">FastAPI</span>
-                    <span class="tag-pill">Alpine.js</span>
-                    <span class="tag-pill">Chart.js</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Artificial Intelligence</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Google Gemini API</span>
-                    <span class="tag-pill">Gemini Live API</span>
-                    <span class="tag-pill">Function Calling / Tool Use</span>
-                    <span class="tag-pill">RAG</span>
-                    <span class="tag-pill">OCR</span>
-                    <span class="tag-pill">TTS</span>
-                    <span class="tag-pill">Prompt Engineering</span>
-                    <span class="tag-pill">Strategy Pattern for AI Reports</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Methodologies &amp; Leadership</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Agile</span>
-                    <span class="tag-pill">Scrum</span>
-                    <span class="tag-pill">Kanban</span>
-                    <span class="tag-pill">Sprints</span>
-                    <span class="tag-pill">SDLC</span>
-                    <span class="tag-pill">Technical Leadership</span>
-                    <span class="tag-pill">Mentoring</span>
-                    <span class="tag-pill">Problem Solving</span>
-                    <span class="tag-pill">Troubleshooting</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Testing &amp; Quality</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Unit Testing</span>
-                    <span class="tag-pill">Integration Testing</span>
-                    <span class="tag-pill">TDD</span>
-                    <span class="tag-pill">Jest</span>
-                    <span class="tag-pill">PHPUnit</span>
-                    <span class="tag-pill">PyTest</span>
-                    <span class="tag-pill">Software Quality</span>
-                    <span class="tag-pill">Code Review</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Infrastructure &amp; Tools</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Apache</span>
-                    <span class="tag-pill">Nginx</span>
-                    <span class="tag-pill">Linux (Ubuntu/Debian/RHEL)</span>
-                    <span class="tag-pill">VPS</span>
-                    <span class="tag-pill">Cloudflare</span>
-                    <span class="tag-pill">SSL</span>
-                    <span class="tag-pill">DNS</span>
-                    <span class="tag-pill">Git</span>
-                    <span class="tag-pill">GitHub</span>
-                    <span class="tag-pill">GitHub Actions</span>
-                    <span class="tag-pill">CI/CD</span>
-                    <span class="tag-pill">RESTful APIs</span>
-                    <span class="tag-pill">Docker</span>
-                    <span class="tag-pill">System Administration</span>
-                    <span class="tag-pill">systemd</span>
-                    <span class="tag-pill">WebSockets</span>
-                    <span class="tag-pill">Queue Workers</span>
-                    <span class="tag-pill">Web Security</span>
-                    <span class="tag-pill">2FA/TOTP</span>
-                    <span class="tag-pill">SEO</span>
-                    <span class="tag-pill">Microservices Architecture</span>
-                    <span class="tag-pill">Multi-tenant SaaS Architecture</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Databases</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">MySQL</span>
-                    <span class="tag-pill">MariaDB</span>
-                    <span class="tag-pill">SQLite</span>
-                    <span class="tag-pill">Redis</span>
-                    <span class="tag-pill">Oracle Database</span>
-                    <span class="tag-pill">Cassandra</span>
-                    <span class="tag-pill">MongoDB</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Platforms &amp; Services</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">AWS S3</span>
-                    <span class="tag-pill">AWS EC2</span>
-                    <span class="tag-pill">AWS SES</span>
-                    <span class="tag-pill">Hostinger</span>
-                    <span class="tag-pill">WebPay</span>
-                    <span class="tag-pill">Stripe</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Networking &amp; Security</span>
-                <div class="tag-cloud">
-                    <span class="tag-pill">Fortinet</span>
-                    <span class="tag-pill">FortiGate</span>
-                    <span class="tag-pill">Firewalls</span>
-                    <span class="tag-pill">VPN</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="skills">
-            <h3 class="section-title">Full Stack</h3>
-            <ul class="skills-list">
-                <li>I have a lot of experience with various technologies and frameworks, but if I told you the truth, would you believe me?</li>
-            </ul>
-        </div>
-
-        <div class="projects">
-            <h3 class="section-title">Latest Projects</h3>
-            <div class="projects-grid">
-                {% if projects %}
-                    {% for p in projects %}
-                    <div class="project-card">
-                        <div class="project-card-img-wrap">
-                            {% if p.image_path %}
-                            <img src="{{ storage_url(p.image_path) }}"
-                                 class="project-card-img"
-                                 alt="{{ p.title }}">
-                            {% else %}
-                            <div class="project-card-img-placeholder">[ no image ]</div>
-                            {% endif %}
-                        </div>
-                        <h4><a href="{{ url_for('main.portfolio_detail', project_id=p.id) }}">{{ p.title }}</a></h4>
-                        {% if p.description %}
-                        <p>{{ p.description | truncate(110) }}</p>
-                        {% endif %}
-                        {% if p.project_url or p.github_repo_url %}
-                        <div class="project-card-links">
-                            {% if p.project_url %}
-                            <a href="{{ p.project_url }}" target="_blank" rel="noopener noreferrer"
-                               class="project-link">Visit</a>
-                            {% endif %}
-                            {% if p.github_repo_url %}
-                            <a href="{{ p.github_repo_url }}" target="_blank" rel="noopener noreferrer"
-                               class="project-link">GitHub</a>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                {% else %}
-                <p style="color:var(--text-faint);font-size:12px">No projects yet. Check back soon.</p>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="projects-view-all">
-            <a href="{{ url_for('main.portfolio_list') }}" class="view-all-link">View all projects »</a>
-        </div>
-
-        <div class="contact-cta">
-            <h3>Got a project in mind?</h3>
-            <p>I'm available for freelance work, consulting, and interesting collaborations. Let's build something
-                together.</p>
-            <a href="{{ url_for('contact.contact') }}" class="glossy-btn">Send a Message</a>
-        </div>
-
+<section class="welcome-card alert-card">
+    <div class="card-header alert-header">
+        <img src="{{ icon('arrow_refresh.png') }}" alt="" class="nav-icon">
+        AstronautMarkusDev 2.67 Update
     </div>
-
-    <div id="sidebar-column">
-
-    <div id="secondary">
-
-        <div class="sidebar-box">
-            <h4>Quick Links</h4>
-            <ul>
-                <li><a href="{{ url_for('main.blog_list') }}">Development Blog</a></li>
-                <li><a href="https://github.com/astronautmarkus" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
-                {% if cv_url %}
-                    <li><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">Download CV</a></li>
-                {% endif %}
-                <li><a href="{{ url_for('contact.contact') }}">Contact Form</a></li>
-            </ul>
+    <div class="alert-stripe"></div>
+    <div class="alert-body">
+        <div class="alert-intro">
+            The site now has two personalities. Pick one from the top bar; the changelog is below:
         </div>
-
-        <div class="sidebar-box">
-            <h4>Latest Posts</h4>
-            <ul>
-                {% for p in latest_posts %}
-                <li><a href="{{ url_for('main.blog_post_detail', slug=p.slug) }}">{{ p.title | truncate(38) }}</a></li>
-                {% else %}
-                <li style="list-style:none;color:var(--text-dim)">No posts yet.</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="sidebar-box">
-            <h4>Proyectadas (personal reflections)</h4>
-            {% if latest_proyectadas %}
-            <ul>
-                {% for item in latest_proyectadas %}
-                <li style="list-style:none;font-size:0.85rem;color:var(--text-body);margin-bottom:0.5rem"><a href="{{ url_for('main.proyectadas_list')}}">{{ item.text | truncate(67) }}</a></li>
-                {% endfor %}
-            </ul>
-            <a href="{{ url_for('main.proyectadas_list') }}" style="font-size:0.8rem">See all proyectadas »</a>
-            {% else %}
-            <p style="font-size:0.82rem;color:var(--text-faint)">No proyectadas yet.</p>
-            {% endif %}
-        </div>
-
-        <div class="sidebar-box">
-            <h4>Status</h4>
-            <p>Currently: <strong style="color: var(--accent);">Saturdays and Sundays only</strong><br>Open to new projects.</p>
-            <p>Location: Remote<br>Response time: &lt; 48h</p>
-        </div>
-
+        <ul class="alert-list">
+            <li><span class="alert-tag new">NEW</span> A theme switcher in the top bar: flip between System 7 and Mac OS X Aqua. Your choice is remembered.</li>
+            <li><span class="alert-tag new">NEW</span> The Mac OS X Aqua theme: gel buttons, traffic-light window controls, pinstripes and a brand-new banner.</li>
+            <li><span class="alert-tag new">NEW</span> Theme-aware icons. Aqua mode swaps in the glossy Crystal Clear set by Everaldo Coelho.</li>
+            <li><span class="alert-tag improved">IMPROVED</span> Every stylesheet rebuilt on design tokens. A new skin is now one CSS file, not a rewrite.</li>
+            <li><span class="alert-tag removed">REMOVED</span> The 404 bomb. It lasted exactly one version.</li>
+            <li><span class="alert-tag fixed">FIXED</span> An Aqua apple that kept escaping its own button.</li>
+            <li><span class="alert-tag security">SECURITY</span> The theme switcher only accepts known themes and only sends you back to this site.</li>
+        </ul>
     </div>
+    <div class="alert-footer">Update log maintained since 2026 <img
+            src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+</section>
 
+<section class="welcome-card alert-card">
+    <div class="card-header alert-header">
+        <img src="{{ icon('apple.png') }}" alt="" class="nav-icon">
+        AstronautMarkusDev 2.5 Update
+    </div>
+    <div class="alert-stripe"></div>
+    <div class="alert-body">
+        <div class="alert-intro">
+            The whole site just got a fresh coat of beige paint. Changelog below, for the record:
+        </div>
+        <ul class="alert-list">
+            <li><span class="alert-tag security">SECURITY</span> Eradicated the last pixel of Windows 98 blue. Contained. Incinerated.</li>
+            <li><span class="alert-tag new">NEW</span> The six-color rainbow stripe, back on duty on every title bar.</li>
+            <li><span class="alert-tag removed">REMOVED</span> Every soft, blurry drop-shadow on the site. This is a flat-shadow household now.</li>
+            <li><span class="alert-tag improved">IMPROVED</span> 404 pages now ship with an actual bomb icon. Very on-brand for "catastrophic failure."</li>
+            <li><span class="alert-tag fixed">FIXED</span> A border-image bug quietly repainting sidebar accents into "confused rainbow" instead of "on purpose rainbow."</li>
+            <li><span class="alert-tag new">NEW</span> Buttons that look like they might eject a floppy disk if you click them wrong.</li>
+        </ul>
+    </div>
+    <div class="alert-footer">Update log maintained since 2026 <img
+            src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+</section>
 
-    <div id="tertiary">
+<section class="welcome-card payday-card">
+    <div class="card-header payday-header">
+        <img src="{{ icon('ecommerce_server.png') }}" alt="" class="nav-icon">
+        Featured Project
+        <span class="payday-ribbon">PAYDAY BANK</span>
+    </div>
+    <div class="payday-stripe"></div>
+    <div class="payday-body">
+        <img src="{{ cdn_url('images/home/payday-bank-cover-en.webp') }}"
+             class="payday-cover modal-image" data-modal-group="payday-cover" data-title="PAYDAY BANK"
+             alt="PAYDAY BANK cover: a COBOL banking core behind a modern Flask web app">
+        <div class="payday-lead">
+            <p class="payday-intro">
+                <strong>PAYDAY BANK</strong> is a fictional bank where a compiled COBOL program owns every balance, customer, card and business rule, and a Flask app puts a modern web interface on top of it, with no database in between. Flask passes each operation to the core on the command line and reads back a single line. In November I redesigned the whole interface with Metro UI and gave a screen to every operation the core already knew how to do.
+            </p>
+            <div class="payday-tags">
+                <span class="payday-tag">Python</span>
+                <span class="payday-tag">Flask</span>
+                <span class="payday-tag">GnuCOBOL</span>
+                <span class="payday-tag">Metro UI</span>
+                <span class="payday-tag">Docker</span>
+                <span class="payday-tag">Security</span>
+            </div>
+        </div>
 
-        <div class="sidebar-box">
-            <h4>Tags</h4>
-            {% if all_tags %}
-            <div class="tag-cloud">
-                {% for tag in all_tags %}
-                <a href="{{ url_for('main.blog_list', tag=tag.id) }}" class="tag-pill">{{ tag.name }}</a>
+        <div class="payday-features">
+            <div class="payday-feature">
+                <img src="{{ icon('cobol.webp') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">COBOL Banking Core</div>
+                    <div class="payday-feature-desc">21 GnuCOBOL operations over indexed files, with packed-decimal balances and no database.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('tick_circle_frame.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">The Rules Live in the Core</div>
+                    <div class="payday-feature-desc">COBOL checks ownership, status and balance of every account; scrypt passwords and CSRF on every form.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('chart_line.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Accounts and Statements</div>
+                    <div class="payday-feature-desc">Checking and savings accounts you can freeze or close, with a statement of every movement.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('arrow_refresh.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Transfers</div>
+                    <div class="payday-feature-desc">Between your own accounts or to other customers, never revealing the recipient's balance.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('shop_network.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Cards and Payments</div>
+                    <div class="payday-feature-desc">Debit or credit cards with a per-purchase limit, a CVV shown only once and a simulated checkout.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('layer.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">New Interface, Same Core</div>
+                    <div class="payday-feature-desc">A full Metro UI redesign: 57 files changed and a single line of COBOL logic.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payday-gallery-wrap">
+            <div class="payday-gallery-title">
+                <img src="{{ icon('photos.png') }}" alt="" class="nav-icon"> Project
+                Screenshots
+            </div>
+            {% if payday_screenshots %}
+            <div class="payday-gallery-grid" id="payday-gallery-grid">
+                {% for shot in payday_screenshots %}
+                {# files are named payday-bank-NN-name: NN only sets the gallery order #}
+                {% set shot_name = shot.rsplit('.', 1)[0].replace('payday-bank-', '').lstrip('0123456789-').replace('-', ' ')|title %}
+                <button type="button" class="payday-gallery-item modal-image" data-modal-group="payday"
+                    data-full="{{ cdn_url(payday_screenshots_dir ~ '/' ~ shot) }}"
+                    data-title="PAYDAY BANK — {{ shot_name }}">
+                    <img src="{{ cdn_url(payday_screenshots_dir ~ '/' ~ shot) }}"
+                        class="payday-gallery-thumb" alt="PAYDAY BANK — {{ shot_name }} screenshot" loading="lazy">
+                </button>
                 {% endfor %}
             </div>
             {% else %}
-            <p style="font-size:0.82rem;color:var(--text-faint)">No tags yet.</p>
+            <div class="payday-gallery-empty">Screenshots coming soon.</div>
             {% endif %}
         </div>
 
+        <div class="payday-links">
+            <a href="https://payday-bank.astronautmarkus.dev" target="_blank" rel="noopener noreferrer"
+                class="payday-link-btn">
+                <img src="{{ icon('rocket.png') }}" alt="">
+                View Website
+            </a>
+            <a href="https://github.com/astronautmarkus/payday-bank" target="_blank" rel="noopener noreferrer"
+                class="payday-link-btn source">
+                <img src="{{ icon('open_source.png') }}" alt="">
+                View Repository
+            </a>
+        </div>
     </div>
+</section>
 
+<section class="welcome-card alert-card">
+    <div class="card-header alert-header">
+        <img src="{{ icon('warning.png') }}" alt="" class="nav-icon">
+        AstronautMarkusDev 2.0 Website Update
     </div>
+    <div class="alert-stripe"></div>
+    <div class="alert-body">
+        <div class="alert-intro">
+            The site just went through a full 2.0 pass under the hood. Changelog below, for the record:
+        </div>
+        <ul class="alert-list">
+            <li><span class="alert-tag security">SECURITY</span> Deleted hackers.</li>
+            <li><span class="alert-tag fixed">FIXED</span> Y2K bug. 26 years late, but it's done.</li>
+            <li><span class="alert-tag removed">REMOVED</span> Comic Sans from the entire codebase.</li>
+            <li><span class="alert-tag improved">IMPROVED</span> Coffee-to-code compile ratio, up 200%.</li>
+            <li><span class="alert-tag new">NEW</span> This very announcement box. Very meta.</li>
+            <li><span class="alert-tag fixed">PATCHED</span> Mainframe hardened against dial-up gremlins.</li>
+        </ul>
+    </div>
+    <div class="alert-footer">Update log maintained since 2026 <img
+            src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
+</section>
 
-
-</div>
-
+{% if latest_posts %}
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon">
+        Check the Latest Posts
+    </div>
+    <table class="news-table">
+        {% for post in latest_posts %}
+        <tr>
+            <td class="news-date">{{ post.created_at.strftime('%b %d, %Y') }}</td>
+            <td><a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ post.title }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="news-footer">
+        <a href="{{ url_for('main.blog_list') }}">More News <img
+                src="{{ icon('bullet_arrow_right.png') }}" alt=""
+                class="nav-icon"></a>
+    </div>
+</section>
+{% endif %}
 {% endblock %}

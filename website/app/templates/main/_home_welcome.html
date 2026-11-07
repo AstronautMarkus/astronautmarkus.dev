@@ -1,0 +1,58 @@
+{# Home welcome card, first thing on the page (above the System Monitor): bio + avatar on the left, SDLC ring on the
+   right, so both cards share the first screen. Ring colors follow the rainbow in stage order (home.css). #}
+{% set es = current_lang == 'es' %}
+{% if es %}
+{% set sdlc = [
+    ('Planificar', 'Requisitos y alcance, directo de quienes lo van a usar.'),
+    ('Diseñar', 'Arquitectura, modelos de datos e interfaz antes de programar.'),
+    ('Desarrollar', 'Principalmente Laravel, TailwindCSS, React y Python Flask, pero me adapto al stack que el proyecto necesite.'),
+    ('Probar', 'Tests automáticos y QA, para que los bugs no lleguen al usuario.'),
+    ('Desplegar', 'Gestiono mis propios servidores de punta a punta: desde armar la red hasta elegir la distro e instalar cada dependencia.'),
+    ('Mantener', 'Parcho CVEs, resuelvo issues del código y preparo el terreno para las próximas features.'),
+] %}
+{% else %}
+{% set sdlc = [
+    ('Plan', 'Requirements and scope, straight from the people who will use it.'),
+    ('Design', 'Architecture, data models and UI before a single line of code.'),
+    ('Build', 'Mainly Laravel, TailwindCSS, React and Python Flask, but I adapt to whatever stack the project needs.'),
+    ('Test', 'Automated tests and QA, so bugs die before users meet them.'),
+    ('Deploy', 'I run my own servers end to end: from wiring the network to choosing the distro and installing every dependency.'),
+    ('Maintain', "Patching CVEs, fixing code issues and laying the groundwork for the features coming next."),
+] %}
+{% endif %}
+
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon">
+        {{ 'Te damos la bienvenida al sitio web de AstronautMarkus.Dev' if es else 'Welcome to the AstronautMarkus.Dev Site' }}
+    </div>
+    <div class="welcome-body">
+        <div class="welcome-text">
+            <a class="feature-image" href="https://github.com/astronautmarkus" target="_blank" aria-label="GitHub"></a>
+            <div class="card-text">
+                {% if es %}
+                <p>Desarrollador de software de ciclo de vida completo (SDLC) con experiencia en la creación de aplicaciones
+                    web y móviles, así como en el desarrollo de software de escritorio. Con un enfoque en la calidad del código,
+                    la eficiencia y la experiencia del usuario, busco constantemente mejorar mis habilidades y mantenerme
+                    actualizado con las últimas tecnologías y tendencias en el desarrollo de software.</p>
+                <p>Desarrollar no es solo trabajo, es un estilo de vida. Me apasiona crear soluciones innovadoras y eficientes
+                    que resuelvan problemas del mundo real y mejoren la vida de las personas. Siempre me quedo con un poco de lo
+                    aprendido para mi uso personal y para compartirlo con la comunidad de desarrollo.</p>
+                {% else %}
+                <p>Full-cycle software developer (SDLC) with experience building web and mobile applications,
+                    as well as desktop software development. Focused on code quality, efficiency, and user
+                    experience, I'm constantly working to improve my skills and stay up to date with the latest
+                    technologies and trends in software development.</p>
+                <p>Development isn't just work, it's a lifestyle. I'm passionate about creating innovative and
+                    efficient solutions that solve real-world problems and improve people's lives. I always keep
+                    a bit of what I learn for personal use and to share with the development community.</p>
+                {% endif %}
+            </div>
+        </div>
+        <ol class="sdlc" aria-label="{{ 'Ciclo de vida del desarrollo de software' if es else 'Software development life cycle' }}">
+            {% for stage, desc in sdlc %}
+            <li><span class="sdlc-node">{{ stage }}</span><span class="sdlc-desc">{{ desc }}</span></li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>

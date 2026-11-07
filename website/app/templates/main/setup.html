@@ -1,0 +1,153 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/setup.css') }}">
+{% endblock %}
+
+{% block title %}Setup{% endblock %}
+{% block description %}The desk, not the rack — AstronautMarkus's daily-driver computers, monitor, and peripherals.{%
+endblock %}
+{% block keywords %}AstronautMarkus, setup, battlestation, Mac Mini M1, HP OMEN, mechanical keyboard, Logitech G502,
+Sony MDR-7506{% endblock %}
+
+{% block content %}
+
+<section class="setup-card">
+    <div class="setup-card-header">
+        <img src="{{ icon('apple.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon">
+        Setup
+    </div>
+    <div class="setup-card-body setup-hero">
+        <div class="setup-hero-photo-wrap">
+            <img src="{{ cdn_url('images/setup/the-setup.jpg') }}" class="setup-hero-photo modal-image" data-modal-group="setup"
+                alt="The setup">
+        </div>
+        <div class="setup-hero-text">
+            <p>
+                The <a href="{{ url_for('main.homelab') }}">Homelab</a> page is the server side of things — this one
+                is the desk. What I actually sit in front of every day: the desktop, the laptops, and the
+                keyboard/mouse/headphones I've landed on after way too many swaps.
+            </p>
+            <p>
+                No tech stack talk here — that's already covered on the <a href="{{ url_for('main.about_me') }}">About
+                    Me</a> page. This is just the hardware: what it is, what it's for, and why it's still on the desk.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="setup-card">
+    <div class="setup-card-header">
+        <img src="{{ icon('toolbox.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Setup List
+    </div>
+
+    <div class="setup-grid">
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/mac-mini-m1.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Mac Mini M1">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('apple.png') }}" class="icon" alt="">
+                    Mac Mini M1
+                </div>
+                <span class="setup-item-role">Desktop</span>
+                <div class="setup-item-desc">
+                    The main desk machine. Quiet, small, and still hasn't broken a sweat — daily driver for
+                    everything that isn't gaming or lab work.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Apple M1</span>
+                    <span class="setup-tag">Daily Driver</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/samsung-monitor.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Samsung ViewFinity S7 monitor">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('photos.png') }}" class="icon" alt="">
+                    Samsung ViewFinity S7
+                </div>
+                <span class="setup-item-role">Monitor</span>
+                <div class="setup-item-desc">
+                    4K, nice colors, but only 60Hz. But it gets the job done for my needs.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Samsung</span>
+                    <span class="setup-tag">4K</span>
+                    <span class="setup-tag">60Hz</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/macbook-neo.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="MacBook Neo work laptop">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('apple.png') }}" class="icon" alt="">
+                    MacBook Neo
+                </div>
+                <span class="setup-item-role">Work Laptop</span>
+                <div class="setup-item-desc">
+                    The "iPhone of laptops," as I put it on the About Me page — the one that travels, the one client
+                    work actually happens on.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Apple Silicon</span>
+                    <span class="setup-tag">Work</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/ajazz-keyboard.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Ajazz AK820 Pro mechanical keyboard">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('wrench.png') }}" class="icon" alt="">
+                    Ajazz AK820 Pro
+                </div>
+                <span class="setup-item-role">Keyboard</span>
+                <div class="setup-item-desc">
+                    My custom Mac-styled mechanical keyboard. I use it for working from home, gaming, and general typing tasks.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Mechanical</span>
+                    <span class="setup-tag">Hot-Swap</span>
+                    <span class="setup-tag">Mac-Styled</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-item">
+            <img src="{{ cdn_url('images/setup/g502.jpg') }}" class="setup-item-photo modal-image" data-modal-group="setup"
+                alt="Logitech G502 KDA Edition mouse">
+            <div class="setup-item-body">
+                <div class="setup-item-title">
+                    <img src="{{ icon('toolbox.png') }}" class="icon" alt="">
+                    Logitech G502 KDA Edition
+                </div>
+                <span class="setup-item-role">Mouse</span>
+                <div class="setup-item-desc">
+                    The K/DA edition of Logitech's most reliable shape. Been through more mice than I'd like to
+                    admit; this one stuck.
+                </div>
+                <div class="setup-item-specs">
+                    <span class="setup-tag">Logitech G502</span>
+                    <span class="setup-tag">K/DA Edition</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+{% endblock %}

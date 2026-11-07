@@ -1,0 +1,15 @@
+{% extends "emails/base.html" %}
+{% set lang = 'es' %}
+
+{% block subject_title %}¡Gracias por escribirme, {{ name }}!{% endblock %}
+
+{% block content %}
+<h1>¡Gracias por escribirme, {{ name }}!</h1>
+<p>Recibí tu mensaje y te responderé lo antes posible.</p>
+<h2>Tu mensaje</h2>
+<blockquote>
+    <strong>Asunto:</strong> {{ subject }}<br><br>
+    {{ message }}
+</blockquote>
+<p>Un saludo,<br>Marcos — AstronautMarkus.Dev</p>
+{% endblock %}

@@ -1,5 +1,7 @@
+import re
 import subprocess
 import tempfile
+from datetime import date
 from pathlib import Path
 
 RENDERCV_TIMEOUT_SECONDS = 25
@@ -10,7 +12,16 @@ class RenderCVError(Exception):
     """Raised when rendercv fails to produce a PDF from the given YAML."""
 
 
-def render_yaml_to_pdf(yaml_text: str) -> bytes:
+def with_current_date(yaml_text: str) -> str:
+    """Rewrite any `current_date:` value to today (YYYY-MM-DD) so an uploaded YAML never
+    pins a stale date. Without the key rendercv already defaults to today."""
+    return re.sub(r'^([ \t]*current_date:)[^\r\n]*', rf'\g<1> {date.today().isoformat()}',
+                  yaml_text, flags=re.MULTILINE)
+
+
+def render_yaml_to_pdf(yaml_text: str, assets: dict[str, bytes] | None = None) -> bytes:
+    """Render RenderCV YAML to PDF bytes. `assets` maps bare filenames to file
+    contents written next to the YAML, so relative paths like `photo: logo.png` resolve."""
     if not yaml_text or not yaml_text.strip():
         raise RenderCVError('The YAML content is empty.')
 
@@ -22,8 +33,10 @@ def render_yaml_to_pdf(yaml_text: str) -> bytes:
 
     with tempfile.TemporaryDirectory(prefix='rendercv_') as tmp:
         tmp_path = Path(tmp)
+        for name, content in (assets or {}).items():
+            (tmp_path / Path(name).name).write_bytes(content)
         yaml_path = tmp_path / 'cv.yaml'
-        yaml_path.write_bytes(encoded)
+        yaml_path.write_bytes(encoded)  # after assets, so no asset can replace it
         pdf_path = tmp_path / 'cv.pdf'
 
         cmd = [

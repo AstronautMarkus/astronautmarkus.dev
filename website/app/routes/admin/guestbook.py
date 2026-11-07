@@ -1,20 +1,39 @@
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from app import db
+from app.i18n import t
 from app.models.models import GuestbookEntry
 from app.routes.admin import admin_bp
+
+PER_PAGE = 50
 
 
 @admin_bp.get('/guestbook/')
 @login_required
 def guestbook_list():
-    entries = (
-        GuestbookEntry.query
-        .order_by(GuestbookEntry.created_at.desc())
-        .all()
+    page = max(request.args.get('page', 1, type=int), 1)
+    pagination = GuestbookEntry.query.order_by(GuestbookEntry.created_at.desc()).paginate(
+        page=page, per_page=PER_PAGE, error_out=False
     )
-    return render_template('admin/guestbook/list.html', entries=entries)
+    return render_template('admin/guestbook/list.html', pagination=pagination, entries=pagination.items)
+
+
+@admin_bp.post('/guestbook/bulk-delete')
+@login_required
+def guestbook_bulk_delete():
+    ids = request.form.getlist('entry_ids', type=int)
+    if ids:
+        deleted = (
+            GuestbookEntry.query
+            .filter(GuestbookEntry.id.in_(ids))
+            .delete(synchronize_session=False)
+        )
+        db.session.commit()
+        flash(t('flash.guestbook_bulk_deleted', n=deleted), 'success')
+    else:
+        flash(t('flash.no_entries_selected'), 'error')
+    return redirect(url_for('admin.guestbook_list'))
 
 
 @admin_bp.post('/guestbook/<int:entry_id>/approve')
@@ -22,12 +41,12 @@ def guestbook_list():
 def guestbook_approve(entry_id):
     entry = db.session.get(GuestbookEntry, entry_id)
     if entry is None:
-        flash('Entrada no encontrada.', 'error')
+        flash(t('flash.guestbook_not_found'), 'error')
         return redirect(url_for('admin.guestbook_list'))
 
     entry.approved = True
     db.session.commit()
-    flash('Entrada aprobada y publicada.', 'success')
+    flash(t('flash.guestbook_approved'), 'success')
     return redirect(url_for('admin.guestbook_list'))
 
 
@@ -36,12 +55,12 @@ def guestbook_approve(entry_id):
 def guestbook_unapprove(entry_id):
     entry = db.session.get(GuestbookEntry, entry_id)
     if entry is None:
-        flash('Entrada no encontrada.', 'error')
+        flash(t('flash.guestbook_not_found'), 'error')
         return redirect(url_for('admin.guestbook_list'))
 
     entry.approved = False
     db.session.commit()
-    flash('Entrada oculta del guestbook público.', 'success')
+    flash(t('flash.guestbook_hidden'), 'success')
     return redirect(url_for('admin.guestbook_list'))
 
 
@@ -50,10 +69,10 @@ def guestbook_unapprove(entry_id):
 def guestbook_delete(entry_id):
     entry = db.session.get(GuestbookEntry, entry_id)
     if entry is None:
-        flash('Entrada no encontrada.', 'error')
+        flash(t('flash.guestbook_not_found'), 'error')
         return redirect(url_for('admin.guestbook_list'))
 
     db.session.delete(entry)
     db.session.commit()
-    flash('Entrada eliminada.', 'success')
+    flash(t('flash.guestbook_deleted'), 'success')
     return redirect(url_for('admin.guestbook_list'))

@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, g, abort, send_file
+import os
+
+from flask import Flask, render_template, request, redirect, url_for, g, abort, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail
@@ -11,19 +13,34 @@ from app.i18n import (
     DEFAULT_LANGUAGE,
     get_current_language,
     render_localized_template,
+    t as translate,
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.routing import RequestRedirect as _WerkzeugRedirect
 from werkzeug.exceptions import NotFound as _WerkzeugNotFound
 
 from app.storage import storage
+from app.utils import safe_redirect_target, cdn_url
 from app.storage.url_cache import get_or_set as _cache_get_or_set
+from app import theme_schedule
 
 # S3-backed files are served via temporary presigned URLs, cached
 # server-side for almost as long as they remain valid so every visitor
 # reuses the same link instead of hitting S3 on every page view.
 PRESIGNED_URL_TTL = 60 * 60 * 24  # 1 day
 PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
+
+# Public site skins: name -> switcher label. Each theme owns
+# static/images/icons/<name>/ (its theme-logo.png plus any icon overrides) and,
+# except the default, static/css/themes/<name>.css loaded last over tokens.css.
+THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo', 'win95': '95'}
+# Header art per theme (under static/images/, or CDN_URL/images/ when set)
+THEME_BANNERS     = {'system7': 'banner.png', 'macosx': 'banner-aqua.png', 'cyberpunk': 'banner-cyberpunk.png', 'gensokyo': 'banner-gensokyo.png', 'win95': 'banner-95.png'}
+THEME_COOKIE_NAME = 'theme'
+DEFAULT_THEME     = 'system7'
+# A picked theme is remembered for a week, then the visitor goes back to the weekly rotation.
+THEME_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+THEME_AUTO        = 'auto'
 
 db             = SQLAlchemy()
 migrate        = Migrate()
@@ -41,13 +58,18 @@ def create_app():
 
 	login_manager.init_app(app)
 	login_manager.login_view = 'auth.login'
+	login_manager.login_message = 'login_required'
+	login_manager.login_message_category = 'info'
 
 	@login_manager.user_loader
 	def load_user(user_id):
 		from app.models.models import User
 		return db.session.get(User, int(user_id))
 
-	app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
+	# Two reverse-proxy hops in front of gunicorn: Caddy (edge, public-facing)
+	# -> Apache2 (lab-01). Each hop appends its own IP to X-Forwarded-For,
+	# so both must be trusted or the visitor's real IP gets discarded.
+	app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2, x_proto=2)
 	from app.middleware.register_visit import init_visit_middleware
 	init_visit_middleware(app)
 
@@ -66,7 +88,9 @@ def create_app():
 			# /es/<subpath> or /en/<subpath>
 			prefix = f'/{lang}/'
 			if path.startswith(prefix):
-				clean_path = path[len(f'/{lang}'):]
+				# Collapse leading slashes so '/es//host' can't become a
+				# protocol-relative '//host' redirect to another site.
+				clean_path = '/' + path[len(f'/{lang}'):].lstrip('/')
 
 				try:
 					app.url_map.bind('').match(clean_path, method=request.method)
@@ -96,15 +120,33 @@ def create_app():
 		if lang not in SUPPORTED_LANGUAGES:
 			lang = DEFAULT_LANGUAGE
 
-		next_url = request.args.get('next', '/')
-		if not next_url.startswith('/'):
-			next_url = '/'
-
-		response = redirect(next_url)
+		response = redirect(safe_redirect_target(request.args.get('next')))
 		response.set_cookie(
 			LANG_COOKIE_NAME,
 			lang,
 			max_age=60 * 60 * 24 * 365,
+			samesite='Lax',
+		)
+		return response
+
+	# ── Theme switcher route ──────────────────────────────────────
+	@app.get('/theme/<theme_name>')
+	def set_theme(theme_name):
+		theme = theme_name.lower()
+		response = redirect(safe_redirect_target(request.args.get('next')))
+
+		# "auto" drops the cookie so the weekly rotation applies again
+		if theme == THEME_AUTO:
+			response.delete_cookie(THEME_COOKIE_NAME, samesite='Lax')
+			return response
+
+		if theme not in THEMES:
+			theme = DEFAULT_THEME
+
+		response.set_cookie(
+			THEME_COOKIE_NAME,
+			theme,
+			max_age=THEME_COOKIE_MAX_AGE,
 			samesite='Lax',
 		)
 		return response
@@ -128,11 +170,8 @@ def create_app():
 	from app.routes.extras import extras_bp
 	app.register_blueprint(extras_bp)
 
-	from app.routes.junk import junk_bp
-	app.register_blueprint(junk_bp)
-
-	from app.routes.nerd import nerd_bp
-	app.register_blueprint(nerd_bp)
+	from app.routes.kanarianlintu import kanarianlintu_bp
+	app.register_blueprint(kanarianlintu_bp)
 
 	# ── Media proxy ───────────────────────────────────────────────
 	# All stored files are served through /media/<path> so the
@@ -153,13 +192,30 @@ def create_app():
 			as_attachment=False,
 		)
 
+	# ── Apache icons (kanarianlintu honeypot) ──────────────────────
+	# Real Apache's mod_autoindex serves its default icon set from /icons/ —
+	# reproducing that exact path keeps the fake directory listings pixel-for-pixel authentic.
+	@app.get('/icons/<path:filename>')
+	def serve_apache_icon(filename):
+		icons_dir = os.path.join(app.static_folder, 'apache_icons')
+		return send_from_directory(icons_dir, filename)
+
 	# ── Template filters ──────────────────────────────────────────
+	# Month/weekday names are spelled out here instead of relying on
+	# locale.setlocale(), which is process-global and not thread-safe
+	# under gunicorn workers serving both languages concurrently.
+	_MONTHS_ES_FULL = ('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+	                    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre')
+	_MONTHS_ES_ABBR = ('ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic')
+	_DAYS_ES_FULL   = ('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo')
+	_DAYS_ES_ABBR   = ('lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom')
+
 	def _dtfmt(value, fmt='%b %d, %Y'):
 		if isinstance(value, str):
 			# treat zero/null MySQL dates as missing
 			if not value or value.startswith('0000'):
 				return '—'
-			for pattern in ('%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M'):
+			for pattern in ('%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d'):
 				try:
 					value = datetime.strptime(value, pattern)
 					break
@@ -168,10 +224,18 @@ def create_app():
 			else:
 				return value
 		if hasattr(value, 'strftime'):
+			if get_current_language() == 'es':
+				fmt = (fmt
+				       .replace('%B', _MONTHS_ES_FULL[value.month - 1])
+				       .replace('%b', _MONTHS_ES_ABBR[value.month - 1])
+				       .replace('%A', _DAYS_ES_FULL[value.weekday()])
+				       .replace('%a', _DAYS_ES_ABBR[value.weekday()]))
 			return value.strftime(fmt)
 		return str(value)
 
 	app.jinja_env.filters['dtfmt'] = _dtfmt
+	app.jinja_env.globals['t'] = translate
+	app.jinja_env.globals['cdn_url'] = cdn_url
 
 	# ── Template globals ──────────────────────────────────────────
 	def _storage_url(path):
@@ -185,17 +249,58 @@ def create_app():
 			)
 		return url_for('serve_media', file_path=path)
 
+	def _cv_url():
+		from app.models.models import CvFile
+		cv = (
+			CvFile.query
+			.filter_by(language=get_current_language())
+			.order_by(CvFile.uploaded_at.desc())
+			.first()
+		)
+		return url_for('serve_media', file_path=cv.file_path) if cv else None
+
 	@app.context_processor
 	def inject_globals():
+		# No (or an unknown) cookie means the visitor never picked: follow the weekly rotation.
+		theme = request.cookies.get(THEME_COOKIE_NAME)
+		theme_is_auto = theme not in THEMES
+		if theme_is_auto:
+			theme = theme_schedule.theme_for_week(theme_schedule.today(), list(THEMES))
+
+		def icon(name):
+			# Themes only ship the icons they restyle; the rest come from the default set.
+			path = f'images/icons/{theme}/{name}'
+			if not os.path.isfile(os.path.join(app.static_folder, path)):
+				path = f'images/icons/{DEFAULT_THEME}/{name}'
+			return url_for('static', filename=path)
+
 		return {
 			'current_year': datetime.now().year,
 			'current_lang': get_current_language(),
+			'themes': THEMES,
+			'current_theme': theme,
+			'theme_is_auto': theme_is_auto,
+			'icon': icon,
+			'theme_stylesheet': None if theme == DEFAULT_THEME else f'css/themes/{theme}.css',
+			'theme_banner_url': cdn_url(f'images/{THEME_BANNERS[theme]}'),
 			'storage_url': _storage_url,
+			'cv_url': _cv_url(),
 		}
 
 	# ── Error handlers ────────────────────────────────────────────
 	@app.errorhandler(404)
 	def page_not_found(e):
 		return render_localized_template('errors/404.html'), 404
+
+	@app.errorhandler(500)
+	def internal_server_error(e):
+		# The failed request may have left the session mid-transaction; the 500 page queries the DB (cv_url).
+		db.session.rollback()
+		return render_localized_template('errors/500.html'), 500
+
+	# Scanner-bait paths (/wp-admin, /.git/config, etc.) — registered last so
+	# app.url_map already reflects every real route; conflicts are skipped.
+	from app.routes.kanarianlintu.decoys import register_decoy_routes
+	register_decoy_routes(app)
 
 	return app

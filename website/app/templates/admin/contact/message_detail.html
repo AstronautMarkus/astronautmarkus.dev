@@ -1,50 +1,50 @@
 {% extends "admin/base.html" %}
 
-{% block title %}Message #{{ entry.id }}{% endblock %}
-{% block page_title %}Message #{{ entry.id }}{% endblock %}
+{% block title %}{{ t('contact.message_hash', id=entry.id) }}{% endblock %}
+{% block page_title %}{{ t('contact.message_hash', id=entry.id) }}{% endblock %}
 
 {% block topbar_actions %}
-  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">← Back to inbox</a>
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">{{ t('contact.back_to_inbox') }}</a>
   <form method="POST" action="{{ url_for('admin.contact_message_block_sender', message_id=entry.id) }}"
-        onsubmit="return confirm('Block ' + '{{ entry.email }}' + ' and delete all their messages?');" style="display:inline">
-    <button type="submit" class="btn btn-danger btn-sm">Block sender</button>
+        onsubmit="return confirm('{{ t('contact.block_confirm', email=entry.email) }}');" style="display:inline">
+    <button type="submit" class="btn btn-danger btn-sm">{{ t('contact.block_sender') }}</button>
   </form>
   <form method="POST" action="{{ url_for('admin.contact_message_delete', message_id=entry.id) }}"
-        onsubmit="return confirm('Delete this message?');" style="display:inline">
-    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        onsubmit="return confirm('{{ t('contact.delete_message_confirm') }}');" style="display:inline">
+    <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
   </form>
 {% endblock %}
 
 {% block content %}
 <div class="card">
-  <table class="table-light" style="width:100%;border-collapse:collapse">
+  <table class="table-light">
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;width:110px;background:#f7f7f7;border-right:1px solid #e4e4e4">From</td>
-      <td style="padding:8px 12px;font-weight:700">{{ entry.name }}</td>
+      <td class="kv-label">{{ t('dashboard.from') }}</td>
+      <td style="font-weight:700">{{ entry.name }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Email</td>
-      <td style="padding:8px 12px"><a href="mailto:{{ entry.email }}">{{ entry.email }}</a></td>
+      <td class="kv-label">{{ t('contact.email') }}</td>
+      <td><a href="mailto:{{ entry.email }}">{{ entry.email }}</a></td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Subject</td>
-      <td style="padding:8px 12px">{{ entry.subject }}</td>
+      <td class="kv-label">{{ t('contact.subject') }}</td>
+      <td>{{ entry.subject }}</td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Language</td>
-      <td style="padding:8px 12px">
+      <td class="kv-label">{{ t('common.language') }}</td>
+      <td>
         <span class="lang-badge lang-badge-{{ entry.language }}">{{ entry.language | upper }}</span>
       </td>
     </tr>
     <tr>
-      <td style="padding:8px 12px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#f7f7f7;border-right:1px solid #e4e4e4">Received</td>
-      <td style="padding:8px 12px;color:#777">{{ entry.created_at | dtfmt('%B %d, %Y at %H:%M') }}</td>
+      <td class="kv-label">{{ t('contact.received_at') }}</td>
+      <td class="text-muted">{{ entry.created_at | dtfmt('%B %d, %Y at %H:%M') }}</td>
     </tr>
   </table>
 </div>
 
 <div class="card" style="margin-top:14px">
-  <div class="card-title">Message</div>
-  <div style="white-space:pre-wrap;line-height:1.7;color:#333">{{ entry.message }}</div>
+  <div class="card-title">{{ t('contact.message') }}</div>
+  <div style="white-space:pre-wrap;line-height:1.7;color:var(--c-ink-soft)">{{ entry.message }}</div>
 </div>
 {% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+
+{% block title %}Calendario de temas{% endblock %}
+{% block description %}Qué tema del sitio toca cada semana en AstronautMarkus.Dev.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme_calendar.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('calendar.png') }}" alt="" class="nav-icon"> Calendario de temas
+    </div>
+    <div class="theme-cal-body">
+        <p>El sitio cambia de look cada semana. Quien no ha elegido un tema ve el que toca esa semana; la rotación
+            recorre todos los temas en orden, de lunes a domingo.</p>
+        <p>Elegir un tema en el menú reemplaza el calendario por una semana. Pasado ese tiempo, o cuando elijas
+            <strong>Auto (semanal)</strong>, vuelves al calendario.</p>
+        <p class="theme-cal-status">
+            {% if theme_is_auto %}Estás siguiendo el calendario: <strong>{{ themes[current_theme] }}</strong> esta
+            semana.
+            {% else %}Elegiste <strong>{{ themes[current_theme] }}</strong>.
+            <a href="/theme/auto?next={{ request.path }}">Volver al tema semanal</a>.{% endif %}
+        </p>
+    </div>
+</section>
+
+<section class="welcome-card">
+    <div class="card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Próximas semanas
+    </div>
+    <table class="theme-cal-table">
+        <thead>
+            <tr>
+                <th>Semana</th>
+                <th>Tema</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week in weeks %}
+            <tr{% if week.current %} class="current"{% endif %}>
+                <td>{{ week.start.isoformat() }} &rarr; {{ week.end.isoformat() }}</td>
+                <td><img src="{{ url_for('static', filename='images/icons/' ~ week.theme ~ '/theme-logo.png') }}" alt=""
+                        class="icon">{{ themes[week.theme] }}{% if week.current %} <span class="theme-cal-now">Esta
+                        semana</span>{% endif %}</td>
+                <td><a href="/theme/{{ week.theme }}?next={{ request.path }}">Probar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

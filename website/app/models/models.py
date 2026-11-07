@@ -24,20 +24,37 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+PORTFOLIO_STATUSES = ('production', 'development', 'archived')
+PORTFOLIO_ROLES = ('solo', 'team', 'lead')
+
+
 class PortfolioProject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(200), nullable=False, unique=True)
     # English content (required)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    markdown_path = db.Column(db.String(200), nullable=True)
     # Spanish content (optional)
     title_es = db.Column(db.String(200), nullable=True)
     description_es = db.Column(db.Text, nullable=True)
+    markdown_path_es = db.Column(db.String(200), nullable=True)
     has_es = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
     # Shared fields
     image_path = db.Column(db.String(200), nullable=True)
     project_url = db.Column(db.String(200), nullable=True)
     github_repo_url = db.Column(db.String(200), nullable=True)
+    # Comma-separated tech names; known ones (tech_stack.py) get their color.
+    tech_stack = db.Column(db.Text, nullable=True)
+    # One of PORTFOLIO_STATUSES / PORTFOLIO_ROLES (below); NULL means "not shown".
+    status = db.Column(db.String(20), nullable=True)
+    role = db.Column(db.String(20), nullable=True)
+    featured = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    @property
+    def tech_list(self):
+        return [name.strip() for name in (self.tech_stack or '').split(',') if name.strip()]
 
     extra_images = db.relationship(
         'ExtraPortfolioImage',
@@ -48,12 +65,13 @@ class PortfolioProject(db.Model):
 
 class ExtraPortfolioImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('portfolio_project.id', ondelete='CASCADE'), nullable=False)
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 class GalleryPhoto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(200), nullable=False, unique=True)
     # English content (required)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
@@ -89,6 +107,7 @@ class Proyectada(db.Model):
 
 class BlogCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(120), nullable=False, unique=True)
     # English (required)
     name = db.Column(db.String(100), nullable=False, unique=True)
     # Spanish (optional)
@@ -102,8 +121,8 @@ class BlogCategory(db.Model):
 
 blog_post_tags = db.Table(
     'blog_post_tags',
-    db.Column('post_id', db.Integer, db.ForeignKey('blog_post.id'), primary_key=True),
-    db.Column('tag_id', db.Integer, db.ForeignKey('blog_tag.id'), primary_key=True),
+    db.Column('post_id', db.Integer, db.ForeignKey('blog_post.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('blog_tag.id', ondelete='CASCADE'), primary_key=True),
 )
 
 
@@ -136,6 +155,9 @@ class BlogPost(db.Model):
     # Cover image
     cover_image_path = db.Column(db.String(200), nullable=True)
 
+    # Views
+    view_count = db.Column(db.Integer, nullable=False, default=0, server_default='0')
+
     images = db.relationship(
         'BlogPostImage',
         backref='post',
@@ -153,9 +175,17 @@ class BlogPost(db.Model):
 
 class BlogPostImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id', ondelete='CASCADE'), nullable=False)
     image_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class BlogPostView(db.Model):
+    """Per-visitor view log for BlogPost, used to dedupe view_count increments by IP within a rolling window."""
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id', ondelete='CASCADE'), nullable=False, index=True)
+    ip_address = db.Column(db.String(45), nullable=False)
+    viewed_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
 class ContactMessage(db.Model):
@@ -167,25 +197,6 @@ class ContactMessage(db.Model):
     language = db.Column(db.String(10), nullable=False, default='en')
     is_read = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-
-
-class MailTemplate(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    slug = db.Column(db.String(50), nullable=False)
-    language = db.Column(db.String(10), nullable=False, default='en')
-    description = db.Column(db.String(200), nullable=True)
-    subject = db.Column(db.String(200), nullable=False)
-    body_html = db.Column(db.Text, nullable=False)
-    updated_at = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=db.func.current_timestamp(),
-        onupdate=db.func.current_timestamp(),
-    )
-
-    __table_args__ = (
-        db.UniqueConstraint('slug', 'language', name='uq_mail_template_slug_lang'),
-    )
 
 
 class BlockedSender(db.Model):
@@ -211,3 +222,58 @@ class GuestbookEntry(db.Model):
     ip_address = db.Column(db.String(45), nullable=True)
     approved = db.Column(db.Boolean, nullable=False, default=False, server_default='0')
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class Backup(db.Model):
+    """Metadata for a data-only SQL dump generated from the admin panel.
+    The dump file itself lives in the regular storage driver (local or S3,
+    whichever STORAGE_DRIVER selects) under file_path, same as any other
+    upload — see app/services/backup_service.py."""
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(200), nullable=False)
+    file_path = db.Column(db.String(200), nullable=False)
+    size_bytes = db.Column(db.Integer, nullable=False, default=0)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+
+class HoneypotHit(db.Model):
+    """Records every request that hits a kanarianlintu decoy route, for threat intel purposes."""
+    id = db.Column(db.Integer, primary_key=True)
+    ip_address = db.Column(db.String(45), nullable=False, index=True)
+    x_forwarded_for = db.Column(db.String(500), nullable=True)
+    user_agent = db.Column(db.String(500), nullable=True)
+    method = db.Column(db.String(10), nullable=False)
+    endpoint = db.Column(db.String(80), nullable=True)
+    path = db.Column(db.String(300), nullable=False)
+    query_string = db.Column(db.String(500), nullable=True)
+    resource = db.Column(db.String(200), nullable=True, index=True)
+    referrer = db.Column(db.String(500), nullable=True)
+    accept_language = db.Column(db.String(200), nullable=True)
+    headers = db.Column(db.Text, nullable=True)
+    body = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(), index=True)
+
+class YoutubeVideo(db.Model):
+    """Video from the YouTube channel RSS feed, kept after it drops out of the feed (15 latest only)."""
+    id = db.Column(db.Integer, primary_key=True)
+    video_id = db.Column(db.String(20), nullable=False, unique=True)
+    title = db.Column(db.String(300), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    published_at = db.Column(db.DateTime, nullable=False, index=True)
+    view_count = db.Column(db.Integer, nullable=False, default=0, server_default='0')
+    synced_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @property
+    def url(self):
+        return f'https://www.youtube.com/watch?v={self.video_id}'
+
+    @property
+    def thumbnail_url(self):
+        return f'https://i.ytimg.com/vi/{self.video_id}/hqdefault.jpg'
+
+
+class SyncedSnapshot(db.Model):
+    """Latest validated payload from an external source, one row per source (e.g. 'github'). Written by `app/scripts/sync.py`."""
+    source = db.Column(db.String(30), primary_key=True)
+    data = db.Column(db.JSON, nullable=False)
+    synced_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

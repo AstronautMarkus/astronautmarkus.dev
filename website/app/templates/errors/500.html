@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+
+{% block title %}500 - Internal Server Error{% endblock %}
+{% block description %}Internal server error — AstronautMarkus.dev{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/errors.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="welcome-card">
+    <div class="card-header error-banner-title">
+        <img src="{{ icon('computer_error.png') }}" class="icon" alt="">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Error 500
+    </div>
+    <div id="error-page">
+        <p class="error-code error-code-danger">500</p>
+        <h2 class="error-title">Internal Server Error</h2>
+        <p class="error-subtitle">
+            Houston, we have a bigger problem. Something broke on our end,
+            not yours — the crew has already been notified and is looking into it.
+        </p>
+
+        <div class="error-actions">
+            <a href="{{ url_for('main.home') }}" class="error-btn">Back to Home</a>
+            <a href="{{ url_for('contact.contact') }}" class="error-btn error-btn-outline">Contact Me</a>
+        </div>
+
+        <p class="error-hint">
+            Tried to reach: <code>{{ request.path }}</code>
+        </p>
+    </div>
+</section>
+{% endblock %}

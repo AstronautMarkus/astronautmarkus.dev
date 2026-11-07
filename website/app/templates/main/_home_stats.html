@@ -1,0 +1,66 @@
+{# Home metrics card. Values are edited by hand here; years_coding, coffee_cups and monster_cans come from the home route,
+   the GitHub tiles and chart from the hourly `app/scripts/sync.py` snapshot (hidden until the first sync). #}
+{% set es = current_lang == 'es' %}
+{# (value, decimals, suffix, label, note); colors follow the rainbow in tile order #}
+
+{% set stats = [
+    (8, 0, '', 'Proyectos en producción' if es else 'Projects in production', 'web, móvil y escritorio' if es else 'web, mobile and desktop'),
+    (537, 0, '+', 'Usuarios en mis proyectos' if es else 'Users on my projects', 'sumando todos' if es else 'across all of them'),
+    (years_coding, 0, '', 'Años programando' if es else 'Years writing code', 'y contando' if es else 'and counting'),
+    (6, 0, '', 'Servidores que administro' if es else 'Servers I run', 'homelab y nube' if es else 'homelab and cloud'),
+    (99.98, 2, '%', 'Uptime en producción' if es else 'Production uptime', 'últimos 90 días' if es else 'last 90 days'),
+    (coffee_cups, 0, '', 'Tazas de café' if es else 'Cups of coffee', '4-5 al día desde 2020' if es else '4-5 a day since 2020'),
+    (monster_cans, 0, '', 'Latas de Monster' if es else 'Cans of Monster', 'el corazón aguanta... ella me lastimó mucho más.' if es else 'heart still holding up... she hurt me much more.'),
+] %}
+{% if github %}
+{% set stats = stats[:3] + [
+    (github.data.contributions, 0, '', 'Contribuciones en GitHub' if es else 'GitHub contributions', 'último año, en vivo' if es else 'last year, live'),
+    (github.data.public_repos, 0, '', 'Repos públicos' if es else 'Public repos', 'código abierto en GitHub' if es else 'open source on GitHub'),
+] + stats[3:] %}
+{% endif %}
+{% set colors = ['green', 'yellow', 'orange', 'red', 'purple', 'blue'] %}
+
+<section class="welcome-card alert-card stats-card" data-locale="{{ 'es-CL' if es else 'en-US' }}">
+    <div class="card-header alert-header">
+        <img src="{{ icon('chart_line.png') }}" alt="" class="nav-icon">
+        {{ 'Monitor del sistema' if es else 'System Monitor' }}
+    </div>
+    <div class="alert-stripe"></div>
+    <div class="stats-body">
+        <div class="stats-grid">
+            {% for value, decimals, suffix, label, note in stats %}
+            <div class="stat" style="--c: var(--rainbow-{{ colors[loop.index0 % 6] }})">
+                <div class="stat-value"><span data-count="{{ value }}" data-decimals="{{ decimals }}">{{ value }}</span>{{ suffix }}</div>
+                <div class="stat-label">{{ label }}</div>
+                <div class="stat-note">{{ note }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if github %}{% include "main/_github_calendar.html" %}{% endif %}
+    </div>
+    <div class="alert-footer">{{ 'Los números no mienten. Casi nunca.' if es else "Numbers don't lie. Mostly." }}</div>
+</section>
+<script>
+    (() => {
+        const card = document.currentScript.previousElementSibling;
+        const fmt = (n, d) => n.toLocaleString(card.dataset.locale, { minimumFractionDigits: d, maximumFractionDigits: d });
+        const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const run = () => {
+            card.classList.add('in-view');
+            card.querySelectorAll('[data-count]').forEach(el => {
+                const end = parseFloat(el.dataset.count), d = +el.dataset.decimals, t0 = performance.now();
+                const tick = now => {
+                    const p = still ? 1 : Math.min((now - t0) / 1600, 1);
+                    el.textContent = fmt(end * (1 - (1 - p) ** 3), d); // ease-out cubic
+                    if (p < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+            });
+        };
+
+        new IntersectionObserver((entries, obs) => {
+            if (entries[0].isIntersecting) { obs.disconnect(); run(); }
+        }, { threshold: 0.3 }).observe(card);
+    })();
+</script>
