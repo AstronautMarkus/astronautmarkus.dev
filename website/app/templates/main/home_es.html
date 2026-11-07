@@ -79,7 +79,7 @@
     </div>
     <div class="payday-stripe"></div>
     <div class="payday-body">
-        <img src="{{ url_for('static', filename='images/home/payday-bank-cover-es.webp') }}"
+        <img src="{{ cdn_url('images/home/payday-bank-cover-es.webp') }}"
              class="payday-cover modal-image" data-modal-group="payday-cover" data-title="PAYDAY BANK"
              alt="Portada de PAYDAY BANK: un núcleo bancario en COBOL detrás de una app web moderna en Flask">
         <div class="payday-lead">
@@ -151,9 +151,9 @@
                 {# files are named payday-bank-NN-name: NN only sets the gallery order #}
                 {% set shot_name = shot.rsplit('.', 1)[0].replace('payday-bank-', '').lstrip('0123456789-').replace('-', ' ')|title %}
                 <button type="button" class="payday-gallery-item modal-image" data-modal-group="payday"
-                        data-full="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
+                        data-full="{{ cdn_url(payday_screenshots_dir ~ '/' ~ shot) }}"
                         data-title="PAYDAY BANK — {{ shot_name }}">
-                    <img src="{{ url_for('static', filename=payday_screenshots_dir ~ '/' ~ shot) }}"
+                    <img src="{{ cdn_url(payday_screenshots_dir ~ '/' ~ shot) }}"
                          class="payday-gallery-thumb" alt="PAYDAY BANK — {{ shot_name }} (captura)" loading="lazy">
                 </button>
                 {% endfor %}

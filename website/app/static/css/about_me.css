@@ -33,7 +33,7 @@
 .profile-photo {
     width: 150px;
     height: 180px;
-    background: url('/static/images/home/profile.jpg') no-repeat center center;
+    background: no-repeat center center;
     background-size: cover;
     border: var(--frame);
     box-shadow: var(--shadow-flat-2);
