@@ -61,7 +61,7 @@
 
     --desktop-bg: radial-gradient(ellipse at 50% 0%, #6db3f2 0%, #2f78c8 45%, #0f4689 100%) fixed;
     /* the gradient shows through until/unless the banner image loads */
-    --banner-image: url('/static/images/banner-aqua.png'), linear-gradient(#6fb6f5, #1a6fc4 55%, #0c4f9c);
+    --banner-image: var(--banner-art), linear-gradient(#6fb6f5, #1a6fc4 55%, #0c4f9c);
     /* Aqua gel, the material of every button and scroller of the era */
     --accent-stripe: var(--aqua-gel);
 }

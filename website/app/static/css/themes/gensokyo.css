@@ -92,7 +92,7 @@
         radial-gradient(rgba(255, 214, 102, 0.12) 1.5px, transparent 2px) 17px 17px / 34px 34px,
         radial-gradient(ellipse at 50% 0%, #e0352a 0%, #a30f14 45%, #4a0709 100%) fixed;
     /* the gradient shows through until/unless the banner image loads */
-    --banner-image: url('/static/images/banner-gensokyo.png'), radial-gradient(circle at 82% 50%, rgba(255, 227, 154, 0.95) 0 5%, transparent 26%), linear-gradient(100deg, #7a0d12 0%, #c8161d 55%, #f2b705 135%);
+    --banner-image: var(--banner-art), radial-gradient(circle at 82% 50%, rgba(255, 227, 154, 0.95) 0 5%, transparent 26%), linear-gradient(100deg, #7a0d12 0%, #c8161d 55%, #f2b705 135%);
     /* woven gold squares on orange, alternating horizontal and vertical
        lines; diagonals are System 7's */
     --accent-stripe: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='12' shape-rendering='crispEdges'><rect width='24' height='12' fill='%23ee8a12'/><path d='M1 2h10M1 6h10M1 10h10M14 1v10M18 1v10M22 1v10' stroke='%23ffe39a' stroke-width='2'/></svg>") 0 0 / 24px 12px;

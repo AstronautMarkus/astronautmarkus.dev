@@ -1,6 +1,15 @@
 import re
 from markupsafe import Markup
-from flask import url_for
+from flask import current_app, url_for
+
+
+
+def cdn_url(filename: str, external: bool = False) -> str:
+    """URL of a static/ file: from CDN_URL (same relative path) when set, else /static."""
+    base = current_app.config.get('CDN_URL')
+    if base:
+        return f'{base}/{filename}'
+    return url_for('static', filename=filename, _external=external)
 
 
 # ── Markdown renderer ─────────────────────────────────────────────────────────

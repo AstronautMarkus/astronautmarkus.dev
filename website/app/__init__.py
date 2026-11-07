@@ -20,7 +20,7 @@ from werkzeug.routing import RequestRedirect as _WerkzeugRedirect
 from werkzeug.exceptions import NotFound as _WerkzeugNotFound
 
 from app.storage import storage
-from app.utils import safe_redirect_target
+from app.utils import safe_redirect_target, cdn_url
 from app.storage.url_cache import get_or_set as _cache_get_or_set
 from app import theme_schedule
 
@@ -34,6 +34,8 @@ PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
 # static/images/icons/<name>/ (its theme-logo.png plus any icon overrides) and,
 # except the default, static/css/themes/<name>.css loaded last over tokens.css.
 THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo'}
+# Header art per theme (under static/images/, or CDN_URL/images/ when set)
+THEME_BANNERS     = {'system7': 'banner.png', 'macosx': 'banner-aqua.png', 'cyberpunk': 'banner-cyberpunk.png', 'gensokyo': 'banner-gensokyo.png'}
 THEME_COOKIE_NAME = 'theme'
 DEFAULT_THEME     = 'system7'
 # A picked theme is remembered for a week, then the visitor goes back to the weekly rotation.
@@ -258,6 +260,7 @@ def create_app():
 
 	app.jinja_env.filters['dtfmt'] = _dtfmt
 	app.jinja_env.globals['t'] = translate
+	app.jinja_env.globals['cdn_url'] = cdn_url
 
 	# ── Template globals ──────────────────────────────────────────
 	def _storage_url(path):
@@ -304,6 +307,7 @@ def create_app():
 			'theme_is_auto': theme_is_auto,
 			'icon': icon,
 			'theme_stylesheet': None if theme == DEFAULT_THEME else f'css/themes/{theme}.css',
+			'theme_banner_url': cdn_url(f'images/{THEME_BANNERS[theme]}'),
 			'storage_url': _storage_url,
 			'cv_url': _cv_url(),
 		}

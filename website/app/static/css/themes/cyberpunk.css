@@ -79,7 +79,7 @@
         linear-gradient(90deg, rgba(255, 0, 60, 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
         radial-gradient(ellipse at 50% 0%, #3a0010 0%, #0a0005 55%, #000000 100%) fixed;
     /* the gradient shows through until/unless the banner image loads */
-    --banner-image: url('/static/images/banner-cyberpunk.png'), linear-gradient(120deg, #000000 0%, #2b0010 50%, #ff003c 140%);
+    --banner-image: var(--banner-art), linear-gradient(120deg, #000000 0%, #2b0010 50%, #ff003c 140%);
     /* cyan HUD segments under the red rule; no rainbow, no diagonals */
     --accent-stripe: repeating-linear-gradient(90deg, var(--cp-cyan) 0 16px, #000000 16px 20px);
 }

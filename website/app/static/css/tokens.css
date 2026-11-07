@@ -75,7 +75,7 @@
 
     /* surfaces and art */
     --desktop-bg: radial-gradient(var(--mac-grey-5) 1px, transparent 0) 0 0 / 4px 4px var(--mac-grey-3);
-    --banner-image: url('/static/images/banner.png');
+    --banner-image: var(--banner-art);
     --accent-stripe: repeating-linear-gradient(45deg,
             var(--rainbow-green) 0 8px, var(--rainbow-yellow) 8px 16px,
             var(--rainbow-orange) 16px 24px, var(--rainbow-red) 24px 32px,
