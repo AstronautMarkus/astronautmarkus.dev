@@ -1,0 +1,52 @@
+{# "System Properties" card on About me: the active theme's logo, joke specs and resource meters that fill on scroll
+   (reveal.js). Edit the lists below; meter values are percentages, colors follow the rainbow in order. #}
+{% set es = current_lang == 'es' %}
+{% if es %}
+{% set specs = [
+    ('Sistema', 'AstronautMarkus.Dev 2.0'),
+    ('Registrado a', 'Markus'),
+    ('Procesador', 'A café, 4-5 tazas al día'),
+    ('Uptime', years_coding ~ ' años programando'),
+    ('Kernel', 'Darwin de día, Linux de corazón'),
+    ('Ubicación', 'Chile'),
+] %}
+{% set meters = [('Café en la sangre', 87), ('Curiosidad', 100), ('Sueño', 23), ('Paciencia con Windows', 4)] %}
+{% else %}
+{% set specs = [
+    ('System', 'AstronautMarkus.Dev 2.0'),
+    ('Registered to', 'Markus'),
+    ('Processor', 'Coffee-powered, 4-5 cups a day'),
+    ('Uptime', years_coding ~ ' years writing code'),
+    ('Kernel', 'Darwin by day, Linux at heart'),
+    ('Location', 'Chile'),
+] %}
+{% set meters = [('Coffee in bloodstream', 87), ('Curiosity', 100), ('Sleep', 23), ('Patience for Windows', 4)] %}
+{% endif %}
+{% set colors = ['green', 'yellow', 'orange', 'red', 'purple', 'blue'] %}
+
+<section class="about-card" data-reveal>
+    <div class="about-card-header">
+        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon">
+        {{ 'Propiedades del sistema' if es else 'System Properties' }}
+    </div>
+    <div class="about-card-body sys-body">
+        <img src="{{ icon('theme-logo.png') }}" alt="" class="sys-logo">
+        <dl class="sys-specs">
+            {% for label, value in specs %}
+            <dt>{{ label }}</dt>
+            <dd>{{ value }}</dd>
+            {% endfor %}
+        </dl>
+        <div class="sys-meters">
+            <div class="stack-group-title">{{ 'Recursos' if es else 'Resources' }}</div>
+            {% for label, value in meters %}
+            <div class="sys-meter" style="--c: var(--rainbow-{{ colors[loop.index0 % 6] }}); --v: {{ value }}%">
+                <span>{{ label }}</span>
+                <span class="sys-meter-bar" role="meter" aria-label="{{ label }}" aria-valuenow="{{ value }}"
+                    aria-valuemin="0" aria-valuemax="100"></span>
+                <span class="sys-meter-value">{{ value }}%</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

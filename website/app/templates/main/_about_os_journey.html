@@ -1,0 +1,18 @@
+{# OS journey strip at the top of Fun Facts: a packet runs Windows -> Ubuntu -> Linux -> Darwin and lights each stop
+   (about_me.css). Captions summarize the facts below it. #}
+{% set es = current_lang == 'es' %}
+{% set stops = [
+    ('Windows', 'computer_error.png', 'Donde empezó: un .vbs y un baneo' if es else 'Where it started: one .vbs and a ban'),
+    ('Ubuntu', 'ubuntu.png', 'Primer intento, 2024. Falló.' if es else 'First attempt, 2024. It failed.'),
+    ('Linux', 'pc_linux_os.png', 'Segundo intento: ahí todo cuadró' if es else 'Second try: it all clicked'),
+    ('Darwin', 'apple.png', 'Air 2017, Mac Mini M1, MacBook Neo'),
+] %}
+
+<ol class="os-journey" aria-label="{{ 'Mi camino por los sistemas operativos' if es else 'My operating system journey' }}">
+    {% for name, icon_file, note in stops %}
+    <li>
+        <span class="os-node"><img src="{{ icon(icon_file) }}" alt="" class="icon">{{ name }}</span>
+        <span class="os-note">{{ note }}</span>
+    </li>
+    {% endfor %}
+</ol>

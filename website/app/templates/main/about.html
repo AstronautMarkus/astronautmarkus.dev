@@ -40,19 +40,24 @@
     </div>
 </section>
 
+{% include "main/_about_system.html" %}
+
 {% if github %}{% include "main/_github_card.html" %}{% endif %}
 
-<section class="about-card">
+<section class="about-card" data-reveal>
     <div class="about-card-header">
         <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Tech Stack
     </div>
+    {% set max_tags = tech_stack | map(attribute='tags') | map('length') | max %}
+    {% set colors = ['green', 'yellow', 'orange', 'red', 'purple', 'blue'] %}
     <div class="about-card-body stack-grid">
         {% for group in tech_stack %}
         <div>
-            <div class="stack-group-title">{{ group.title }}</div>
+            <div class="stack-group-title">{{ group.title }} <span class="stack-count">{{ group.tags | length }}</span></div>
+            <div class="stack-bar" style="--c: var(--rainbow-{{ colors[loop.index0 % 6] }}); --v: {{ (group.tags | length * 100 / max_tags) | round(1) }}%"></div>
             <div class="tag-list">
                 {% for tag in group.tags %}
-                <span class="tag" style="--tag-bg: {{ tag.bg }}; --tag-fg: {{ tag.fg }}">{{ tag.name }}</span>
+                <span class="tag" style="--tag-bg: {{ tag.bg }}; --tag-fg: {{ tag.fg }}; --n: {{ loop.index0 }}">{{ tag.name }}</span>
                 {% endfor %}
             </div>
         </div>
@@ -60,7 +65,7 @@
     </div>
 </section>
 
-<section class="about-card">
+<section class="about-card" data-reveal>
     <div class="about-card-header">
         <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Timeline
     </div>
@@ -119,7 +124,9 @@
     <div class="about-card-header">
         <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Fun Facts
     </div>
-    <div class="about-card-body facts-grid">
+    <div class="about-card-body">
+        {% include "main/_about_os_journey.html" %}
+        <div class="facts-grid">
         <div class="fact-item">
             <span class="fact-label">Banned from School Computers... then admin</span>
             In primary school, I was banned from using the school computers for writing a simple .vbs script that shut them down. Now I'm the <strong>admin</strong> of the school's network and servers <img src="{{ icon('administrator.png') }}" alt="Administrator" class="icon"> — and I'm the one banning students who try to hack the school computers. <img src="{{ icon('prohibition_button.png') }}" alt="Prohibition Button" class="icon">
@@ -136,7 +143,12 @@
             <span class="fact-label">Always Learning</span>
             "There is knowledge that is not power" - Ralph Waldo Emerson. I am always learning, always exploring, always tinkering. I am a lifelong learner, and I will never stop learning. I am a hacker, a tinkerer, a sysadmin, a developer, a student, a teacher, a mentor, a friend, a human being. I am <strong>Markus</strong>. <strong>AstronautMarkusDev</strong>. <img src="{{ icon('brain.png') }}" alt="Always Learning" class="icon"> <br><br>Life is hard, but it is beautiful. Be strong, be kind, be humble, be honest, be brave, be curious, be creative, be passionate, be patient, be persistent, be resilient, be resourceful, be respectful, be responsible, be self-aware, be self-disciplined, be self-motivated, be self-reliant, be self-sufficient, be selfless, be empathetic, be compassionate, be generous, be grateful, be happy, be healthy, be humble, be kind, be loving, be mindful, be optimistic, be positive, be proactive, be productive, be purposeful, be resilient, be resourceful, be respectful, be responsible, and most importantly... be yourself.
         </div>
+        </div>
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/reveal.js') }}"></script>
 {% endblock %}
