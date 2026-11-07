@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block content %}
+{% include "main/_home_welcome.html" %}
+
 {% include "main/_home_stats.html" %}
 
 <section class="welcome-card alert-card">
@@ -195,35 +197,6 @@
         </ul>
     </div>
     <div class="alert-footer">Registro de actualizaciones desde 2026 <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
-</section>
-
-<section class="welcome-card">
-    <div class="card-header">
-        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Te damos la bienvenida al sitio web de AstronautMarkus.Dev
-    </div>
-    <div class="card-body">
-        <div class="card-text">
-            Desarrollador de software de ciclo de vida completo (SDLC) con experiencia en la creación de aplicaciones
-            web y móviles, así como en el desarrollo de software de escritorio. Con un enfoque en la calidad del código,
-            la eficiencia y la experiencia del usuario, busco constantemente mejorar mis habilidades y mantenerme
-            actualizado con las últimas tecnologías y tendencias en el desarrollo de software.
-
-            <ol class="sdlc" aria-label="Ciclo de vida del desarrollo de software">
-                <li><span class="sdlc-node">Planificar</span><span class="sdlc-desc">Requisitos y alcance, directo de quienes lo van a usar.</span></li>
-                <li><span class="sdlc-node">Diseñar</span><span class="sdlc-desc">Arquitectura, modelos de datos e interfaz antes de programar.</span></li>
-                <li><span class="sdlc-node">Desarrollar</span><span class="sdlc-desc">Principalmente Laravel, TailwindCSS, React y Python Flask, pero me adapto al stack que el proyecto necesite.</span></li>
-                <li><span class="sdlc-node">Probar</span><span class="sdlc-desc">Tests automáticos y QA, para que los bugs no lleguen al usuario.</span></li>
-                <li><span class="sdlc-node">Desplegar</span><span class="sdlc-desc">Gestiono mis propios servidores de punta a punta: desde armar la red hasta elegir la distro e instalar cada dependencia.</span></li>
-                <li><span class="sdlc-node">Mantener</span><span class="sdlc-desc">Parcho CVEs, resuelvo issues del código y preparo el terreno para las próximas features.</span></li>
-            </ol>
-
-            <br><br>
-            Desarrollar no es solo trabajo, es un estilo de vida. Me apasiona crear soluciones innovadoras y eficientes
-            que resuelvan problemas del mundo real y mejoren la vida de las personas. Siempre me quedo con un poco de lo
-            aprendido para mi uso personal y para compartirlo con la comunidad de desarrollo.
-        </div>
-        <a class="feature-image" href="https://github.com/astronautmarkus" target="_blank"></a>
-    </div>
 </section>
 
 {% if latest_posts %}

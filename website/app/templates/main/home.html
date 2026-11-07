@@ -12,6 +12,8 @@ articles, and dev experiments by AstronautMarkus.{% endblock %}
 
 {% block content %}
 
+{% include "main/_home_welcome.html" %}
+
 {% include "main/_home_stats.html" %}
 
 <section class="welcome-card alert-card">
@@ -209,36 +211,6 @@ articles, and dev experiments by AstronautMarkus.{% endblock %}
     </div>
     <div class="alert-footer">Update log maintained since 2026 <img
             src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"></div>
-</section>
-
-<section class="welcome-card">
-    <div class="card-header">
-        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon">
-        Welcome to the AstronautMarkus.Dev Site
-    </div>
-    <div class="card-body">
-        <div class="card-text">
-            Full-cycle software developer (SDLC) with experience building web and mobile applications,
-            as well as desktop software development. Focused on code quality, efficiency, and user
-            experience, I'm constantly working to improve my skills and stay up to date with the latest
-            technologies and trends in software development.
-
-            <ol class="sdlc" aria-label="Software development life cycle">
-                <li><span class="sdlc-node">Plan</span><span class="sdlc-desc">Requirements and scope, straight from the people who will use it.</span></li>
-                <li><span class="sdlc-node">Design</span><span class="sdlc-desc">Architecture, data models and UI before a single line of code.</span></li>
-                <li><span class="sdlc-node">Build</span><span class="sdlc-desc">Mainly Laravel, TailwindCSS, React and Python Flask, but I adapt to whatever stack the project needs.</span></li>
-                <li><span class="sdlc-node">Test</span><span class="sdlc-desc">Automated tests and QA, so bugs die before users meet them.</span></li>
-                <li><span class="sdlc-node">Deploy</span><span class="sdlc-desc">I run my own servers end to end: from wiring the network to choosing the distro and installing every dependency.</span></li>
-                <li><span class="sdlc-node">Maintain</span><span class="sdlc-desc">Patching CVEs, fixing code issues and laying the groundwork for the features coming next.</span></li>
-            </ol>
-
-            <br><br>
-            Development isn't just work, it's a lifestyle. I'm passionate about creating innovative and
-            efficient solutions that solve real-world problems and improve people's lives. I always keep
-            a bit of what I learn for personal use and to share with the development community.
-        </div>
-        <a class="feature-image" href="https://github.com/astronautmarkus" target="_blank"></a>
-    </div>
 </section>
 
 {% if latest_posts %}
