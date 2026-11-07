@@ -33,9 +33,9 @@ PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
 # Public site skins: name -> switcher label. Each theme owns
 # static/images/icons/<name>/ (its theme-logo.png plus any icon overrides) and,
 # except the default, static/css/themes/<name>.css loaded last over tokens.css.
-THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo'}
+THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo', 'win95': '95'}
 # Header art per theme (under static/images/, or CDN_URL/images/ when set)
-THEME_BANNERS     = {'system7': 'banner.png', 'macosx': 'banner-aqua.png', 'cyberpunk': 'banner-cyberpunk.png', 'gensokyo': 'banner-gensokyo.png'}
+THEME_BANNERS     = {'system7': 'banner.png', 'macosx': 'banner-aqua.png', 'cyberpunk': 'banner-cyberpunk.png', 'gensokyo': 'banner-gensokyo.png', 'win95': 'banner-95.png'}
 THEME_COOKIE_NAME = 'theme'
 DEFAULT_THEME     = 'system7'
 # A picked theme is remembered for a week, then the visitor goes back to the weekly rotation.
@@ -172,31 +172,6 @@ def create_app():
 
 	from app.routes.kanarianlintu import kanarianlintu_bp
 	app.register_blueprint(kanarianlintu_bp)
-
-	# ── CLI ───────────────────────────────────────────────────────
-	import click
-
-	@app.cli.command('sync')
-	@click.argument('sources', nargs=-1)
-	def sync_command(sources):
-		"""Pull external data into the database: `sync` runs every source, `sync github` just one."""
-		from app.services.github_service import sync_github
-		from app.services.youtube_service import sync_videos
-		jobs = {'youtube': sync_videos, 'github': sync_github}
-		unknown = set(sources) - jobs.keys()
-		if unknown:
-			raise click.BadParameter(f"unknown source(s) {', '.join(sorted(unknown))}; pick from {', '.join(jobs)}")
-
-		failed = []
-		for name in sources or jobs:
-			try:
-				click.echo(f'[{name}] ok: {jobs[name]()}')
-			except Exception as exc:  # one broken source must not stop the others; exit code still reports it
-				db.session.rollback()
-				failed.append(name)
-				click.echo(f'[{name}] failed: {exc}', err=True)
-		if failed:
-			raise click.ClickException(f"sync failed for: {', '.join(failed)}")
 
 	# ── Media proxy ───────────────────────────────────────────────
 	# All stored files are served through /media/<path> so the

@@ -157,6 +157,8 @@ def fetch_user(login: str, token: str) -> dict:
             headers={'Authorization': f'Bearer {token}', 'User-Agent': 'astronautmarkus.dev github-sync'},
             timeout=REQUEST_TIMEOUT,
         )
+        if response.status_code == 401:
+            raise GithubSyncError('GITHUB_TOKEN was rejected (401): expired or revoked, generate a new one')
         response.raise_for_status()
         payload = response.json()
     except (requests.RequestException, ValueError) as exc:
