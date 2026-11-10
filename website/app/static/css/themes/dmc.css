@@ -1,0 +1,344 @@
+/* Devil May Cry: gothic demon-hunter. Black stone, blood red and a hellfire
+   glow from below; bone-white text, inscription capitals for the chrome, a
+   blackletter wordmark and lead-lattice stained glass behind the page.
+   Gold is kept for small antique ornaments only.
+   Loaded after every other stylesheet when the theme cookie is "dmc".
+   Like cyberpunk and socom, the grey ramp is inverted so every page goes dark
+   at once: page CSS paints surfaces with --mac-white and text with --mac-black.
+   The rules at the bottom cover the places where those tokens mean a literal
+   white (text over photos). */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Pirata+One&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+    /* inverted ramp: "white" is the darkest stone, "black" the bone-white text */
+    --mac-white: #0a0506;
+    --mac-grey-1: #120809;
+    --mac-grey-2: #1a0c0e;
+    --mac-grey-3: #2a1215;
+    --mac-grey-4: #4a1c20;
+    --mac-grey-5: #7a5a52;
+    --mac-grey-6: #a8968a;
+    --mac-black: #e6dccb;
+
+    /* muted gothic set: dark text stays readable on every one of them */
+    --rainbow-green: #6f9a4a;
+    --rainbow-yellow: #d4a83a;
+    --rainbow-orange: #d9702b;
+    --rainbow-red: #d0283a;
+    --rainbow-purple: #9a5cc0;
+    --rainbow-blue: #5a86c8;
+
+    --dmc-blood: #b0101f;
+    --dmc-crimson: #e0243a;
+    --dmc-ember: #ff5a4a;
+    --dmc-wine: #4a070e;
+    --dmc-gold: #b8964a;
+    --dmc-steel: #c4c8ce;
+
+    --radius-button: 0px;
+    --shadow-flat-1: 0 0 0 1px var(--dmc-wine);
+    --shadow-flat-2: 0 0 12px rgba(176, 16, 31, 0.35);
+    --shadow-flat-3: 0 0 0 1px #000000, 0 0 48px rgba(120, 0, 12, 0.5);
+
+    --font-chrome: 'Cinzel', 'Times New Roman', serif;
+    --font-body: 'Spectral', Georgia, serif;
+    --font-wordmark: 'Pirata One', 'Times New Roman', serif;
+
+    /* theme layer */
+    --line: var(--mac-grey-4);
+    --frame: 3px double var(--dmc-blood);
+    --radius-card: 0px;
+    --radius-tag: 0px;
+    --radius-field: 0px;
+    --card-inset: 0px;
+    --divider: 1px solid var(--mac-grey-4);
+
+    --chrome-case: uppercase;
+    --chrome-size: 11px;
+    --chrome-weight: 700;
+    --bar-bg: #1a0709;
+    --bar-rule: 2px solid;
+    /* a blood line that runs hot in the middle */
+    --bar-rule-image: linear-gradient(90deg, var(--dmc-wine), var(--dmc-ember) 50%, var(--dmc-wine)) 1;
+    --titlebar-bg: #000000;
+    --toolbar-bg: linear-gradient(#1a0709, #070203);
+    --sidebar-bg: var(--mac-grey-1);
+
+    --button-bg: #1a0709;
+    --button-accent: 2px solid var(--dmc-crimson);
+    --select-bg: var(--dmc-blood);
+    --select-text: #fff1e6;
+    --badge-bg: var(--dmc-wine);
+    --link: #f0605a;
+    --accent: var(--dmc-crimson);
+    --icon-rendering: auto;
+    --focus-ring: 2px solid var(--dmc-crimson);
+    --focus-offset: 2px;
+    --scroll-thumb: var(--dmc-blood);
+    --scroll-thumb-hover: var(--dmc-crimson);
+    --scroll-track: #000000;
+
+    /* the fixed backdrop: stained-glass lead lattice over a hellfire glow from below */
+    --desktop-bg:
+        repeating-linear-gradient(45deg, rgba(176, 16, 31, 0.08) 0 1px, transparent 1px 26px) fixed,
+        repeating-linear-gradient(-45deg, rgba(176, 16, 31, 0.08) 0 1px, transparent 1px 26px) fixed,
+        radial-gradient(ellipse at 50% 115%, #6a0b14 0%, #1c0307 45%, #050102 100%) fixed;
+    /* the gradient shows through until/unless the banner image loads */
+    --banner-image: var(--banner-art), linear-gradient(120deg, #050102 0%, #3a0509 55%, #7a0a14 100%);
+    /* blood and black, with a thin gold inlay */
+    --accent-stripe: repeating-linear-gradient(90deg, var(--dmc-blood) 0 14px, #000000 14px 17px, var(--dmc-gold) 17px 19px, #000000 19px 22px);
+}
+
+/* candle-lit vignette over the whole viewport; purely decorative */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+::selection {
+    background: var(--dmc-blood);
+    color: #ffffff;
+}
+
+.rainbow-bar {
+    height: 3px;
+    background: linear-gradient(90deg, #000000, var(--dmc-blood) 15%, var(--dmc-ember) 50%, var(--dmc-blood) 85%, #000000);
+}
+
+/* ── Chrome ─────────────────────────────────────────────────────────────── */
+.header-top-nav {
+    color: var(--mac-grey-6);
+    letter-spacing: 2px;
+}
+
+.header-top-nav a {
+    color: var(--mac-grey-6);
+}
+
+.header-top-nav a.active {
+    color: var(--dmc-crimson);
+    text-decoration: none;
+    box-shadow: inset 0 -2px 0 var(--dmc-crimson);
+}
+
+/* blackletter in a molten red, outlined in black and glowing. The outline is
+   hard drop-shadows, not text-stroke: with a transparent fill a stroke shows
+   inside the glyphs */
+.logo-title {
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 1px;
+    color: var(--dmc-crimson);
+    background: linear-gradient(#ff7a5a 10%, var(--dmc-crimson) 45%, #5a0710 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+    filter:
+        drop-shadow(1px 0 0 #000000) drop-shadow(-1px 0 0 #000000)
+        drop-shadow(0 1px 0 #000000) drop-shadow(0 -1px 0 #000000)
+        drop-shadow(0 0 10px rgba(224, 36, 58, 0.55));
+}
+
+/* engraved silver line between two thin blood rules */
+.logo-subtitle {
+    margin-top: 4px;
+    color: var(--dmc-steel);
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-shadow: 0 1px 0 #000000, 0 0 6px rgba(0, 0, 0, 0.9);
+}
+
+.logo-subtitle::before,
+.logo-subtitle::after {
+    content: "";
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    margin: 0 10px;
+    vertical-align: middle;
+    background: linear-gradient(90deg, transparent, var(--dmc-crimson));
+}
+
+.logo-subtitle::after {
+    background: linear-gradient(90deg, var(--dmc-crimson), transparent);
+}
+
+.main-nav a {
+    color: var(--mac-black);
+    letter-spacing: 2px;
+    border-right-color: var(--mac-grey-4);
+}
+
+/* the selected entry: a red ember under the text, lit from the floor */
+.main-nav a:hover,
+.header-top-nav a:hover,
+.nav-dropdown-menu a:hover,
+.menu-list a:hover {
+    background: linear-gradient(#3a060c, var(--dmc-blood));
+    color: #ffffff;
+    text-shadow: 0 0 6px var(--dmc-ember);
+    box-shadow: inset 0 -2px 0 var(--dmc-ember);
+}
+
+.nav-dropdown-menu {
+    border-color: var(--dmc-blood);
+}
+
+.nav-dropdown-menu a {
+    border-bottom-color: var(--mac-grey-3);
+}
+
+.content-container {
+    background: var(--mac-grey-1);
+}
+
+/* ── Panels: dark stone, an inner blood hairline, a cross on every title ─ */
+.panel-box {
+    border-color: var(--mac-grey-4);
+    box-shadow: inset 0 0 0 1px #000000, inset 0 0 0 2px rgba(176, 16, 31, 0.3);
+}
+
+.panel-header {
+    color: #f2e6d0;
+    letter-spacing: 2.5px;
+    background: linear-gradient(90deg, #3a060c 0%, #1a0709 70%, var(--mac-white) 100%);
+}
+
+.panel-header::before {
+    content: "✠" / "";
+    margin-right: 7px;
+    color: var(--dmc-crimson);
+    text-shadow: 0 0 4px var(--dmc-blood);
+}
+
+.menu-list li {
+    border-bottom-color: var(--mac-grey-3);
+}
+
+.menu-list a {
+    letter-spacing: 1px;
+}
+
+footer {
+    color: var(--mac-grey-6);
+    letter-spacing: 1.5px;
+    background: linear-gradient(#1a0709, #000000);
+}
+
+/* ── Controls: black iron, blood red when touched ──────────────────────── */
+button,
+input[type="submit"],
+input[type="button"] {
+    color: var(--mac-black);
+    border: 1px solid var(--dmc-blood);
+    font-family: var(--font-chrome);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background: var(--dmc-blood);
+    border-color: var(--dmc-ember);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(224, 36, 58, 0.6);
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    background: var(--dmc-crimson);
+    color: #ffffff;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="tel"],
+textarea,
+select {
+    background: #050102;
+    border-color: var(--mac-grey-4);
+    border-bottom: 2px solid var(--dmc-blood);
+    color-scheme: dark;
+}
+
+a:hover {
+    color: var(--dmc-ember);
+    text-decoration: underline;
+    text-shadow: 0 0 6px rgba(255, 90, 74, 0.5);
+}
+
+/* ── Code ──────────────────────────────────────────────────────────────── */
+code {
+    color: #f0a08a;
+    border-color: var(--mac-grey-3);
+}
+
+/* inversion would make pre light; keep the terminal dark */
+pre {
+    background: #000000;
+    color: var(--mac-black);
+    border-color: var(--mac-grey-3);
+    border-left: 3px solid var(--dmc-blood);
+}
+
+/* --mac-black is light here, and light-on-gold vanishes */
+.payday-ribbon {
+    color: #000000;
+    border-color: #000000;
+}
+
+th {
+    color: var(--dmc-crimson);
+    letter-spacing: 1px;
+}
+
+/* ── Text over photos and fixed dark overlays: these mean literal white ─ */
+.beercat-hero-title,
+.beercat-hero-external,
+.gallery-item-title,
+.post-cover-title,
+.image-modal-nav,
+.feature-image {
+    color: #ffffff;
+}
+
+.beercat-hero-external {
+    border-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        border-left: 0;
+        border-right: 0;
+    }
+}
+
+/* GitHub contribution chart: a style meter. Quiet days smoulder, the busiest burn */
+.gh-days::after {
+    content: none;
+}
+
+.gh-cal i {
+    border: 1px solid var(--mac-grey-3);
+    background: var(--mac-grey-1);
+}
+
+.gh-cal i[data-l="1"] { background: #3a060c; border-color: var(--dmc-wine); }
+.gh-cal i[data-l="2"] { background: #6e0b16; border-color: var(--dmc-blood); }
+.gh-cal i[data-l="3"] { background: var(--dmc-blood); border-color: var(--dmc-crimson); box-shadow: 0 0 4px rgba(224, 36, 58, 0.6); }
+.gh-cal i[data-l="4"] { background: var(--dmc-ember); border-color: #ffb08a; box-shadow: 0 0 6px var(--dmc-ember); }

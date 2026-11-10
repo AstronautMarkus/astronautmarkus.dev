@@ -109,12 +109,6 @@
     color: var(--gs-red-dark);
 }
 
-/* the same woven squares as --accent-stripe, in shrine red and gold */
-.rainbow-bar {
-    height: 12px;
-    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='12' shape-rendering='crispEdges'><rect width='24' height='12' fill='%23c8161d'/><path d='M1 2h10M1 6h10M1 10h10M14 1v10M18 1v10M22 1v10' stroke='%23f2b705' stroke-width='2'/></svg>") 0 0 / 24px 12px;
-}
-
 /* ── Chrome ─────────────────────────────────────────────────────────────── */
 .header-top-nav {
     color: var(--gs-gold-soft);
