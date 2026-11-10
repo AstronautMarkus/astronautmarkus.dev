@@ -1,0 +1,362 @@
+/* SOCOM: U.S. Navy SEALs (PS2) — the OCN (Operations Control Network) menus:
+   near-black green screens, olive text, green chamfered frames, slate-blue
+   buttons and a gold highlight on whatever is selected. The logo colors
+   (teal fill, gold outline) come from the game's title screen and the
+   SOCOM II Unzipped menu.
+   Loaded after every other stylesheet when the theme cookie is "socom".
+   Like cyberpunk, the grey ramp is inverted so every page goes dark at once:
+   page CSS paints surfaces with --mac-white and text with --mac-black. The
+   rules at the bottom cover the places where those tokens mean a literal
+   white (text over photos). */
+/* Anton stands in for Compacta Black, the OCN menu face (commercial, Monotype); Anton is OFL */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Share+Tech+Mono&display=swap');
+
+:root {
+    /* inverted ramp: "white" is the darkest surface, "black" the lit olive text */
+    --mac-white: #060a07;
+    --mac-grey-1: #0b110c;
+    --mac-grey-2: #121b14;
+    --mac-grey-3: #1c2a1e;
+    --mac-grey-4: #365236;
+    --mac-grey-5: #5f7c4c;
+    --mac-grey-6: #8fa56c;
+    --mac-black: #c2cf94;
+
+    /* muted tactical set: dark text stays readable on every one of them */
+    --rainbow-green: #7fb046;
+    --rainbow-yellow: #d9b23a;
+    --rainbow-orange: #d98a2b;
+    --rainbow-red: #d0513a;
+    --rainbow-purple: #9b82c4;
+    --rainbow-blue: #5f9fd8;
+
+    --sc-frame: #4f8a34;
+    --sc-frame-dim: #26401f;
+    --sc-gold: #e2bd3c;
+    --sc-gold-dim: #5c4b10;
+    --sc-slate: #1a3558;
+    --sc-slate-lit: #2c5486;
+    --sc-data: #7fa8d8;
+    --sc-teal: #1c6d72;
+    --sc-cut: 9px;
+
+    --radius-button: 0px;
+    --shadow-flat-1: 0 0 0 1px var(--sc-frame-dim);
+    --shadow-flat-2: 0 0 10px rgba(79, 138, 52, 0.3);
+    --shadow-flat-3: 0 0 0 1px var(--sc-frame-dim), 0 0 36px rgba(0, 0, 0, 0.8);
+
+    --font-chrome: 'Anton', 'Arial Narrow', sans-serif;
+    --font-body: 'Exo 2', 'Arial Narrow', sans-serif;
+    --font-mono: 'Share Tech Mono', ui-monospace, Menlo, monospace;
+    --font-wordmark: 'Exo 2', 'Arial Narrow', sans-serif;
+
+    /* theme layer */
+    --line: var(--sc-frame-dim);
+    --frame: 2px solid var(--sc-frame);
+    --radius-card: 0px;
+    --radius-tag: 0px;
+    --radius-field: 0px;
+    --card-inset: 0px;
+    --divider: 1px solid var(--sc-frame-dim);
+
+    --chrome-case: uppercase;
+    --chrome-size: 11px;
+    --chrome-weight: 400;
+    --bar-bg: #0d1a0f;
+    --bar-rule: 2px solid var(--sc-frame);
+    --bar-rule-image: none;
+    --titlebar-bg: #000000;
+    --toolbar-bg: linear-gradient(#0f1d11, #070d08);
+    --sidebar-bg: var(--mac-grey-1);
+
+    --button-bg: var(--sc-slate);
+    --button-accent: 2px solid var(--sc-gold);
+    --select-bg: var(--sc-gold-dim);
+    --select-text: #f4dc7a;
+    --badge-bg: var(--sc-slate-lit);
+    --link: var(--sc-data);
+    --accent: var(--sc-gold);
+    --icon-rendering: auto;
+    --focus-ring: 2px solid var(--sc-gold);
+    --focus-offset: 2px;
+    --scroll-thumb: var(--sc-frame);
+    --scroll-thumb-hover: var(--sc-gold);
+    --scroll-track: #000000;
+
+    /* the fixed backdrop: dark jungle, lit from above like the menu video */
+    --desktop-bg:
+        radial-gradient(ellipse at 50% 0%, #17301a 0%, #07110a 55%, #000000 100%) fixed;
+    /* the gradient shows through until/unless the banner image loads */
+    --banner-image: var(--banner-art), linear-gradient(120deg, #020503 0%, #0f2412 55%, #1c3a1f 100%);
+    /* alternating green/gold segments, like the OCN header rules */
+    --accent-stripe: repeating-linear-gradient(90deg, var(--sc-frame) 0 18px, #000000 18px 22px, var(--sc-gold) 22px 26px, #000000 26px 30px);
+}
+
+/* Anton ships a single weight: page CSS asks for bold chrome, and a faux-bold Anton smears */
+html {
+    font-synthesis-weight: none;
+}
+
+/* CRT scanlines over the whole viewport; purely decorative */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(transparent 0 2px, rgba(0, 0, 0, 0.16) 2px 3px);
+}
+
+::selection {
+    background: var(--sc-gold);
+    color: #000000;
+}
+
+.rainbow-bar {
+    height: 3px;
+    background: linear-gradient(to right, var(--sc-frame) 0 78%, var(--sc-gold) 78% 84%, var(--sc-frame) 84%);
+}
+
+/* ── Chrome ─────────────────────────────────────────────────────────────── */
+.header-top-nav {
+    color: var(--mac-grey-6);
+    letter-spacing: 2px;
+}
+
+.header-top-nav a {
+    color: var(--mac-grey-6);
+}
+
+/* the OCN mark at the left end of the top bar, as on every menu screen */
+@media (min-width: 769px) {
+    .header-top-nav::before {
+        content: "OCN" / "";
+        float: left;
+        color: var(--sc-frame);
+        font-size: 14px;
+        line-height: 1.1;
+        letter-spacing: 3px;
+        text-shadow: 0 0 6px rgba(79, 138, 52, 0.6);
+    }
+}
+
+.header-top-nav a.active {
+    color: var(--sc-gold);
+    text-decoration: none;
+    box-shadow: inset 0 -2px 0 var(--sc-gold);
+}
+
+.header-main {
+    border-bottom: 2px solid var(--sc-frame);
+}
+
+/* the title-screen logo: teal fill, gold outline */
+.logo-title {
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #2a9aa0;
+    background: linear-gradient(#35b1b6 20%, #0b4a50 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    /* outline from hard drop-shadows, not text-stroke: with a transparent fill the
+       stroke shows inside the glyphs, plus the overlapping contours of variable Exo 2 */
+    -webkit-text-stroke: 0;
+    filter:
+        drop-shadow(1.5px 0 0 var(--sc-gold)) drop-shadow(-1.5px 0 0 var(--sc-gold))
+        drop-shadow(0 1.5px 0 var(--sc-gold)) drop-shadow(0 -1.5px 0 var(--sc-gold))
+        drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+}
+
+/* the "U.S. NAVY SEALs" line under the logo: light metal on a dark plate */
+.logo-subtitle {
+    width: fit-content;
+    margin: 6px auto 0;
+    padding: 2px 14px;
+    color: #e8ebe6;
+    background: rgba(0, 0, 0, 0.7);
+    border-left: 3px solid var(--sc-gold);
+    border-right: 3px solid var(--sc-gold);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-shadow: 0 1px 0 #000000;
+}
+
+.main-nav a {
+    color: var(--mac-black);
+    letter-spacing: 2px;
+    border-right-color: var(--sc-frame-dim);
+}
+
+/* the selected entry: gold outline over a dark-gold fill, as in the OCN lists */
+.main-nav a:hover,
+.header-top-nav a:hover,
+.nav-dropdown-menu a:hover,
+.menu-list a:hover {
+    color: var(--select-text);
+    box-shadow: inset 0 0 0 2px var(--sc-gold);
+}
+
+.nav-dropdown-menu {
+    border-color: var(--sc-frame);
+}
+
+.nav-dropdown-menu a {
+    border-bottom-color: var(--mac-grey-3);
+}
+
+.content-container {
+    background: var(--mac-grey-1);
+}
+
+/* ── OCN panels: chamfered frame, section title in lit green ───────────── */
+.panel-box {
+    border-color: var(--sc-frame-dim);
+    clip-path: polygon(var(--sc-cut) 0, 100% 0, 100% calc(100% - var(--sc-cut)), calc(100% - var(--sc-cut)) 100%, 0 100%, 0 var(--sc-cut));
+}
+
+.panel-header {
+    color: #d6e2a8;
+    letter-spacing: 1.5px;
+    /* lit section bar fading out to the right, like OVERVIEW BRIEFING / MISSION DATA */
+    background: linear-gradient(90deg, #1f3d1c 0%, #10200f 65%, var(--mac-white) 100%);
+}
+
+.panel-header::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 7px;
+    background: var(--sc-gold);
+    transform: rotate(45deg);
+}
+
+.menu-list li {
+    border-bottom-color: var(--mac-grey-3);
+}
+
+.menu-list a {
+    letter-spacing: 1.5px;
+}
+
+footer {
+    color: var(--mac-grey-6);
+    font-size: 11px;
+    letter-spacing: 1px;
+    border-top-color: var(--sc-frame);
+}
+
+/* ── Controls: slate-blue buttons, gold when focused ───────────────────── */
+button,
+input[type="submit"],
+input[type="button"] {
+    color: #dbe6f4;
+    border: 1px solid var(--sc-slate-lit);
+    font-family: var(--font-chrome);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background: var(--sc-gold-dim);
+    border-color: var(--sc-gold);
+    color: var(--select-text);
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    background: var(--sc-gold);
+    color: #000000;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="tel"],
+textarea,
+select {
+    background: #02060a;
+    border-color: var(--sc-slate-lit);
+    border-left: 3px solid var(--sc-frame);
+    color-scheme: dark;
+}
+
+a:hover {
+    color: var(--sc-gold);
+    text-decoration: underline;
+}
+
+/* ── Code ──────────────────────────────────────────────────────────────── */
+code {
+    color: var(--sc-data);
+    border-color: var(--mac-grey-3);
+}
+
+/* inversion would make pre light; keep the terminal dark */
+pre {
+    background: #000000;
+    color: var(--mac-black);
+    border-color: var(--sc-frame-dim);
+    border-left: 3px solid var(--sc-frame);
+}
+
+/* --mac-black is light here, and light-on-gold vanishes */
+.payday-ribbon {
+    color: #000000;
+    border-color: #000000;
+}
+
+th {
+    color: var(--sc-gold);
+    letter-spacing: 1px;
+}
+
+/* ── Text over photos and fixed dark overlays: these mean literal white ─ */
+.beercat-hero-title,
+.beercat-hero-external,
+.gallery-item-title,
+.post-cover-title,
+.image-modal-nav,
+.feature-image {
+    color: #ffffff;
+}
+
+.beercat-hero-external {
+    border-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        border-left: 0;
+        border-right: 0;
+    }
+}
+
+/* GitHub contribution chart: OCN signal meter. Cells light up green, the busiest days turn gold */
+.gh-days::after {
+    content: none;
+}
+
+.gh-cal i {
+    border: 1px solid var(--mac-grey-3);
+    background: var(--mac-grey-1);
+}
+
+.gh-cal i[data-l="1"] { background: #17301a; border-color: var(--sc-frame-dim); }
+.gh-cal i[data-l="2"] { background: #2d5a26; border-color: var(--sc-frame); }
+.gh-cal i[data-l="3"] { background: var(--sc-frame); border-color: #6fb04a; box-shadow: 0 0 4px rgba(111, 176, 74, 0.6); }
+.gh-cal i[data-l="4"] { background: var(--sc-gold); border-color: var(--sc-gold); box-shadow: 0 0 6px var(--sc-gold); }

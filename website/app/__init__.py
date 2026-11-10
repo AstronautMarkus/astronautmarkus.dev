@@ -33,9 +33,9 @@ PRESIGNED_URL_CACHE_TTL = PRESIGNED_URL_TTL - 60 * 10
 # Public site skins: name -> switcher label. Each theme owns
 # static/images/icons/<name>/ (its theme-logo.png plus any icon overrides) and,
 # except the default, static/css/themes/<name>.css loaded last over tokens.css.
-THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo', 'win95': '95'}
+THEMES            = {'system7': 'System 7', 'macosx': 'Mac OS X', 'cyberpunk': 'Cyberpunk', 'gensokyo': 'Gensokyo', 'win95': '95', 'socom': 'SOCOM'}
 # Header art per theme (under static/images/, or CDN_URL/images/ when set)
-THEME_BANNERS     = {'system7': 'banner.png', 'macosx': 'banner-aqua.png', 'cyberpunk': 'banner-cyberpunk.png', 'gensokyo': 'banner-gensokyo.png', 'win95': 'banner-95.png'}
+THEME_BANNERS     = {'system7': 'banner.png', 'macosx': 'banner-aqua.png', 'cyberpunk': 'banner-cyberpunk.png', 'gensokyo': 'banner-gensokyo.png', 'win95': 'banner-95.png', 'socom': 'banner-socom.png'}
 THEME_COOKIE_NAME = 'theme'
 DEFAULT_THEME     = 'system7'
 # A picked theme is remembered for a week, then the visitor goes back to the weekly rotation.
