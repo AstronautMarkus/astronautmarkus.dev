@@ -1,0 +1,794 @@
+/* ── Reading layout (templates/base/reader.html): blog + portfolio ─────────
+   Replaces the 920px window on these pages with a sticky bar and a centered
+   sheet sized for reading. Every colour, line, radius and font comes from
+   the theme tokens (tokens.css), so each theme reshapes it on its own.
+   Theme stylesheets load after this file: selectors that must beat a
+   theme's rule of the same specificity are doubled up (.main-nav.reader-bar). */
+
+.reader-body {
+    display: block;
+    padding: 0;
+}
+
+/* ── Bar ───────────────────────────────────────────────────────────────── */
+
+.main-nav.reader-bar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    /* lines the bar's contents up with the 760px sheet below it */
+    padding: 6px max(16px, calc((100% - 760px) / 2));
+    /* the theme's header rule (rainbow on System 7), as under every panel header */
+    border-bottom: var(--bar-rule);
+    border-image: var(--bar-rule-image);
+}
+
+.reader-bar-group {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.main-nav.reader-bar a {
+    white-space: nowrap;
+}
+
+.main-nav.reader-bar .reader-brand {
+    font-family: var(--font-wordmark);
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reader-brand-icon {
+    display: none;
+}
+
+.main-nav.reader-bar a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+}
+
+/* on the bar's top edge, so it never covers the rule along the bottom */
+.read-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    pointer-events: none;
+}
+
+/* ── Sheet ─────────────────────────────────────────────────────────────── */
+
+.reader-sheet {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: 760px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 48px 40px 24px;
+    background: var(--mac-white);
+    border-inline: var(--frame);
+    box-shadow: var(--shadow-flat-3);
+    color: var(--mac-black);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.reader-main {
+    flex: 1;
+    padding-bottom: 56px;
+}
+
+.reader-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: var(--divider);
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
+    text-transform: var(--chrome-case);
+    color: var(--mac-grey-6);
+}
+
+.reader-foot a {
+    color: var(--link);
+}
+
+/* ── Shared pieces ─────────────────────────────────────────────────────── */
+
+.reader-kicker,
+.reader-meta,
+.reader-section-title {
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
+    text-transform: var(--chrome-case);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    color: var(--mac-grey-6);
+}
+
+.reader-kicker {
+    margin-bottom: 12px;
+}
+
+.reader-kicker a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.reader-kicker a:hover {
+    color: var(--link);
+    text-decoration: underline;
+}
+
+.reader-title {
+    font-size: clamp(30px, 6vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--mac-black);
+}
+
+/* a swatch of the theme's accent stripe, like the bands on the home cards */
+.reader-title::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 5px;
+    margin-top: 16px;
+    background: var(--accent-stripe);
+}
+
+.reader-lede {
+    margin-top: 12px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--mac-grey-6);
+}
+
+.reader-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* inline-block keeps a link's underline off the separator */
+.reader-meta > * + *::before {
+    content: "·";
+    display: inline-block;
+    margin: 0 0.6em;
+}
+
+.reader-meta a {
+    color: var(--link);
+}
+
+/* category chips, pager buttons, share links */
+.reader-chip {
+    display: inline-block;
+    min-width: 32px;
+    padding: 5px 10px;
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
+    text-transform: var(--chrome-case);
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    color: var(--mac-black);
+    background: var(--button-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-button);
+}
+
+.reader-chip:hover,
+.reader-chip[aria-current] {
+    background: var(--select-bg);
+    color: var(--select-text);
+    text-decoration: none;
+}
+
+/* underlined too: on themes where --button-bg equals --select-bg (Cyberpunk)
+   the fill alone doesn't show which chip is selected */
+.reader-chip[aria-current] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.reader-chip.is-disabled {
+    opacity: 0.45;
+}
+
+.reader-chip--primary {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+.reader-chip-count {
+    opacity: 0.7;
+}
+
+.reader-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ── List ──────────────────────────────────────────────────────────────── */
+
+.reader-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.reader-list {
+    list-style: none;
+    margin-top: 16px;
+}
+
+.reader-item + .reader-item {
+    border-top: var(--divider);
+}
+
+/* The whole card is clickable: on the blog .reader-item-body is the link
+   itself; on the portfolio the title link stretches over the card, so the
+   Visit/Source buttons can be links of their own (links can't nest).
+   row-reverse puts the thumbnail on the right. */
+.reader-item-body {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 28px 0;
+    color: inherit;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.reader-item-body:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+}
+
+.reader-item-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.reader-item-cover {
+    flex: none;
+    display: block;
+    width: 168px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+}
+
+.reader-item-title {
+    margin-top: 6px;
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--mac-black);
+}
+
+.reader-item-title a {
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: inherit;
+}
+
+.reader-item-title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.reader-item-text .reader-actions {
+    position: relative;
+    margin-top: 14px;
+}
+
+.reader-item-body:hover .reader-item-title {
+    color: var(--link);
+    text-decoration: underline;
+}
+
+.reader-item-excerpt {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--mac-grey-6);
+}
+
+.reader-item--lead .reader-item-body {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.reader-item--lead .reader-item-cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-flat-2);
+}
+
+.reader-item--lead .reader-item-title {
+    font-size: clamp(24px, 4vw, 30px);
+}
+
+.reader-item--lead .reader-item-excerpt {
+    font-size: 17px;
+}
+
+.reader-pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding-top: 24px;
+    border-top: var(--divider);
+}
+
+.reader-empty {
+    margin-top: 32px;
+    font-style: italic;
+    color: var(--mac-grey-6);
+}
+
+/* ── Portfolio: badges and tech tags (markup in main/_portfolio_macros.html) */
+
+.portfolio-badges,
+.portfolio-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.portfolio-badges + .reader-item-title {
+    margin-top: 10px;
+}
+
+.portfolio-tags {
+    margin-top: 12px;
+}
+
+.portfolio-badge {
+    padding: 2px 8px;
+    font-family: var(--font-chrome);
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
+    text-transform: var(--chrome-case);
+    line-height: 1.5;
+    color: var(--mac-black);
+    background: var(--mac-grey-1);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+}
+
+.portfolio-badge.featured {
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+/* status dots keep fixed traffic-light colours: they carry meaning */
+.portfolio-badge[class*="status-"]::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background: var(--mac-grey-6);
+}
+
+.portfolio-badge.status-production::before {
+    background: #43A047;
+}
+
+.portfolio-badge.status-development::before {
+    background: #F9A825;
+}
+
+/* each technology's own brand colours, from app/tech_stack.py */
+.portfolio-tag {
+    padding: 2px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.5;
+    color: var(--tag-fg, var(--mac-black));
+    background: var(--tag-bg, var(--mac-grey-1));
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+}
+
+.article-head .portfolio-badges {
+    margin-top: 20px;
+}
+
+.article-head .reader-actions {
+    margin-top: 20px;
+}
+
+/* ── Article ───────────────────────────────────────────────────────────── */
+
+.article-head {
+    margin-bottom: 32px;
+}
+
+.article-head .reader-meta {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: var(--divider);
+}
+
+.article-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-bottom: 36px;
+    border: var(--frame);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-flat-2);
+}
+
+.modal-image {
+    cursor: zoom-in;
+}
+
+/* Table of contents: a collapsible panel above the text; on wide screens
+   it hangs in the margin right of the sheet and follows the reader. */
+.article-toc {
+    margin-bottom: 32px;
+}
+
+.article-toc .panel-box {
+    margin: 0;
+}
+
+.article-toc summary {
+    cursor: pointer;
+}
+
+#toc-list {
+    list-style: none;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 6px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    scrollbar-width: thin;
+}
+
+#toc-list a {
+    display: block;
+    padding: 4px 12px;
+    border-left: 3px solid transparent;
+    color: var(--mac-grey-6);
+    font-weight: normal;
+    text-decoration: none;
+}
+
+#toc-list [data-depth="1"] a {
+    padding-left: 24px;
+}
+
+#toc-list [data-depth="2"] a {
+    padding-left: 36px;
+}
+
+#toc-list a:hover,
+#toc-list a.is-active {
+    color: var(--mac-black);
+    background: var(--mac-grey-1);
+}
+
+#toc-list a.is-active {
+    border-left-color: var(--accent);
+    font-weight: bold;
+}
+
+/* 760px sheet + 24px gap + 220px panel on each side, plus a scrollbar */
+@media (min-width: 1300px) {
+    .article-toc {
+        position: absolute;
+        top: 48px;
+        bottom: 24px;
+        left: calc(100% + 24px);
+        width: 220px;
+        margin: 0;
+    }
+
+    .article-toc .panel-box {
+        position: sticky;
+        top: 64px;
+    }
+
+    #toc-list {
+        max-height: calc(100vh - 140px);
+    }
+}
+
+/* ── Prose (rendered markdown) ─────────────────────────────────────────── */
+
+.prose {
+    font-family: var(--font-body);
+    overflow-wrap: break-word;
+}
+
+.prose > * + * {
+    margin-top: 1.15em;
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.25;
+    color: var(--mac-black);
+    /* clears the sticky bar when jumped to from the table of contents */
+    scroll-margin-top: 72px;
+}
+
+.prose > :is(h1, h2) {
+    margin-top: 1.9em;
+}
+
+.prose > :is(h3, h4, h5, h6) {
+    margin-top: 1.6em;
+}
+
+.prose h1 {
+    font-size: 1.65em;
+}
+
+.prose h2 {
+    font-size: 1.4em;
+    padding-bottom: 0.3em;
+    border-bottom: var(--divider);
+}
+
+.prose h3 {
+    font-size: 1.18em;
+}
+
+.prose :is(h4, h5, h6) {
+    font-size: 1em;
+}
+
+.prose a {
+    color: var(--link);
+    font-weight: inherit;
+    text-underline-offset: 2px;
+}
+
+.prose :is(ul, ol) {
+    padding-left: 1.5em;
+}
+
+.prose li + li,
+.prose li > :is(ul, ol) {
+    margin-top: 0.35em;
+}
+
+.prose blockquote {
+    margin: 0;
+    padding: 0.8em 1.2em;
+    border-left: 4px solid var(--accent);
+    background: var(--mac-grey-1);
+    color: var(--mac-black);
+}
+
+.prose blockquote > * + * {
+    margin-top: 0.6em;
+}
+
+.prose hr {
+    border: 0;
+    border-top: var(--divider);
+    margin: 2.2em 0;
+}
+
+.prose :is(img, video, iframe) {
+    display: block;
+    max-width: 100%;
+    margin-inline: auto;
+    border: var(--frame);
+    border-radius: var(--radius-card);
+}
+
+.prose :is(img, video) {
+    width: auto;
+    height: auto;
+    max-height: 75vh;
+}
+
+.prose iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+}
+
+.prose figure {
+    margin-inline: 0;
+    margin-bottom: 0;
+}
+
+.prose figcaption {
+    margin-top: 0.6em;
+    text-align: center;
+    font-size: 0.85em;
+    color: var(--mac-grey-6);
+}
+
+.prose code {
+    font-size: 0.86em;
+}
+
+.prose pre {
+    padding: 16px 18px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.prose pre code {
+    font-size: inherit;
+}
+
+.prose table {
+    display: block;
+    overflow-x: auto;
+    font-size: 0.9em;
+}
+
+.code-block-wrap {
+    position: relative;
+}
+
+/* look comes from the themed tag-level button styles in styles.css */
+.code-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 3px 8px;
+    font-size: var(--chrome-size);
+    font-weight: var(--chrome-weight);
+    text-transform: var(--chrome-case);
+    opacity: 0.85;
+}
+
+.code-copy-btn:hover,
+.code-copy-btn.copied {
+    opacity: 1;
+}
+
+/* ── Gallery + article footer ──────────────────────────────────────────── */
+
+.article-gallery {
+    margin-top: 48px;
+}
+
+.reader-section-title {
+    margin-bottom: 12px;
+}
+
+.article-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+.article-gallery-grid img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+}
+
+.article-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: var(--divider);
+}
+
+.article-share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.article-share .reader-section-title {
+    margin: 0 4px 0 0;
+}
+
+/* ── Small screens ─────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .reader-sheet {
+        padding: 28px 16px 20px;
+        border-inline: 0;
+        box-shadow: none;
+    }
+
+    /* styles.css turns .main-nav dropdowns into in-flow rows on mobile;
+       in this one-line bar the theme menu keeps floating instead */
+    .main-nav.reader-bar .nav-dropdown.open {
+        width: auto;
+    }
+
+    .main-nav.reader-bar .nav-dropdown-menu {
+        position: absolute;
+        width: auto;
+        min-width: 190px;
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-flat-2);
+    }
+}
+
+@media (max-width: 640px) {
+    .reader-bar .theme-label,
+    .reader-bar-text {
+        display: none;
+    }
+
+    /* a house icon stands in for the wordmark so Portfolio/Blog keep their labels */
+    .reader-brand-text {
+        display: none;
+    }
+
+    .reader-brand-icon {
+        display: inline;
+    }
+
+    .reader-lede {
+        font-size: 16px;
+    }
+
+    .reader-item-body {
+        gap: 16px;
+        padding: 22px 0;
+    }
+
+    .reader-item-cover {
+        width: 96px;
+    }
+
+    .reader-item-title {
+        font-size: 19px;
+    }
+
+    .reader-item-excerpt {
+        font-size: 15px;
+    }
+}

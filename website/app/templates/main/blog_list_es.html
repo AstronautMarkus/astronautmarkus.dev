@@ -1,166 +1,79 @@
-{% extends "base/base.html" %}
+{% extends "base/reader.html" %}
 
-{% block title %}Blog{% endblock %}
+{% set cat_name = (current_category.name_es if current_category.has_es and current_category.name_es else current_category.name) if current_category else None %}
+
+{% block title %}Blog{% if cat_name %} · {{ cat_name }}{% endif %}{% endblock %}
 {% block description %}Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja — AstronautMarkus.dev{% endblock %}
 {% block keywords %}blog, desarrollo, tecnología, python, flask, devops, linux, redes{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
-{% endblock %}
-
 {% block content %}
 
-<section class="welcome-card">
-    <div class="card-header blog-banner-title">
-        <img src="{{ icon('newspaper.png') }}" class="pixel-icon" alt="">
-        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Blog{% if current_category %} · {{ current_category.name_es if current_category.has_es and current_category.name_es else current_category.name }}{% endif %}
-    </div>
-    <div class="card-body">
-        <div class="blog-banner-intro">
-            Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja.
-        </div>
-    </div>
-</section>
+<header>
+    {% if current_category %}
+    <p class="reader-kicker"><a href="{{ url_for('main.blog_list') }}">Blog</a></p>
+    {% endif %}
+    <h1 class="reader-title">{{ cat_name or 'Blog' }}</h1>
+    <p class="reader-lede">Notas de desarrollo, análisis profundos de sistemas y alguna que otra queja.</p>
+</header>
 
-<div id="blog-content">
+{% if categories %}
+<nav class="reader-chips" aria-label="Categorías">
+    <a href="{{ url_for('main.blog_list') }}" class="reader-chip" {% if not current_cat %}aria-current="page"{% endif %}>Todas</a>
+    {% for cat in categories %}
+    <a href="{{ url_for('main.blog_category_detail', slug=cat.slug) }}" class="reader-chip"
+       {% if current_cat == cat.id %}aria-current="page"{% endif %}>{{ cat.name_es if cat.has_es and cat.name_es else cat.name }}</a>
+    {% endfor %}
+</nav>
+{% endif %}
 
-    <div id="blog-main">
-
-        {% if posts %}
-        <section class="welcome-card">
-            <div class="card-header">
-                <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Publicaciones
-            </div>
-
-            {% for post in posts %}
-            {% set p_title = post.title_es if post.has_es and post.title_es else post.title %}
-            {% set p_desc  = post.description_es if post.has_es and post.description_es else post.description %}
-            <div class="blog-post-row">
-                {% if post.cover_image_path %}
-                <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-post-thumb-link">
-                    <img src="{{ storage_url(post.cover_image_path) }}"
-                         class="blog-post-thumb" alt="{{ p_title }}">
-                </a>
-                {% else %}
-                <div class="blog-post-thumb-placeholder"></div>
-                {% endif %}
-
-                <div class="blog-post-body">
-                    <div class="blog-post-meta">
-                        {{ post.created_at | dtfmt('%B %d, %Y') }}
-                        {% if post.category %}
-                        &nbsp;·&nbsp;
-                        <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}">
-                            {% if post.category.has_es and post.category.name_es %}
-                                {{ post.category.name_es }}
-                            {% else %}
-                                {{ post.category.name }}
-                            {% endif %}
-                        </a>
-                        {% endif %}
-                    </div>
-
-                    <h3>
-                        <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ p_title }}</a>
-                    </h3>
-
-                    {% if p_desc %}
-                    <p class="blog-post-excerpt">{{ p_desc | truncate(160) }}</p>
-                    {% endif %}
-
-                    <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="blog-read-more">
-                        Leer más
-                    </a>
-                </div>
-            </div>
-
-            {% endfor %}
-
-            {% if pagination.pages > 1 %}
-            <div class="blog-pagination-footer">
-                <div class="blog-pagination">
-                    <a href="{{ url_for(pagination_endpoint, page=pagination.prev_num, **pagination_kwargs) }}"
-                       class="blog-page-btn{% if not pagination.has_prev %} disabled{% endif %}">Anterior</a>
-
-                    {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
-                        {% if p %}
-                        <a href="{{ url_for(pagination_endpoint, page=p, **pagination_kwargs) }}"
-                           class="blog-page-btn{% if p == pagination.page %} current{% endif %}">{{ p }}</a>
-                        {% else %}
-                        <span class="blog-page-btn disabled">&hellip;</span>
-                        {% endif %}
-                    {% endfor %}
-
-                    <a href="{{ url_for(pagination_endpoint, page=pagination.next_num, **pagination_kwargs) }}"
-                       class="blog-page-btn{% if not pagination.has_next %} disabled{% endif %}">Siguiente</a>
-                </div>
-            </div>
+{% if posts %}
+<ol class="reader-list">
+    {% for post in posts %}
+    {% set lead = loop.first and pagination.page == 1 %}
+    {% set p_title = post.title_es if post.has_es and post.title_es else post.title %}
+    {% set p_desc  = post.description_es if post.has_es and post.description_es else post.description %}
+    <li class="reader-item{% if lead %} reader-item--lead{% endif %}">
+        <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}" class="reader-item-body">
+            {% if post.cover_image_path %}
+            <img src="{{ storage_url(post.cover_image_path) }}" class="reader-item-cover" alt=""
+                 {% if not lead %}loading="lazy"{% endif %}>
             {% endif %}
-        </section>
+            <div class="reader-item-text">
+                <p class="reader-meta">
+                    <time datetime="{{ post.created_at.strftime('%Y-%m-%d') }}">{{ post.created_at | dtfmt('%B %d, %Y') }}</time>
+                    {% if post.category %}<span>{{ post.category.name_es if post.category.has_es and post.category.name_es else post.category.name }}</span>{% endif %}
+                </p>
+                <h2 class="reader-item-title">{{ p_title }}</h2>
+                {% if p_desc %}
+                <p class="reader-item-excerpt">{{ p_desc | truncate(260 if lead else 160) }}</p>
+                {% endif %}
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ol>
 
+{% if pagination.pages > 1 %}
+<nav class="reader-pager" aria-label="Paginación">
+    {% if pagination.has_prev %}
+    <a href="{{ url_for(pagination_endpoint, page=pagination.prev_num, **pagination_kwargs) }}" class="reader-chip" rel="prev">&larr; Más recientes</a>
+    {% endif %}
+    {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+        {% if p %}
+        <a href="{{ url_for(pagination_endpoint, page=p, **pagination_kwargs) }}" class="reader-chip"
+           {% if p == pagination.page %}aria-current="page"{% endif %}>{{ p }}</a>
         {% else %}
-        <section class="welcome-card">
-            <div class="card-header">
-                <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Publicaciones
-            </div>
-            <div class="card-body">
-                <div class="card-text">No hay publicaciones todavía. Vuelve pronto.</div>
-            </div>
-        </section>
+        <span class="reader-chip is-disabled">&hellip;</span>
         {% endif %}
+    {% endfor %}
+    {% if pagination.has_next %}
+    <a href="{{ url_for(pagination_endpoint, page=pagination.next_num, **pagination_kwargs) }}" class="reader-chip" rel="next">Anteriores &rarr;</a>
+    {% endif %}
+</nav>
+{% endif %}
 
-    </div>
-
-    <div id="blog-sidebar">
-
-        <div class="blog-sidebar-box">
-            <h4><img src="{{ icon('category.png') }}" class="pixel-icon-inline" alt="">Categorías</h4>
-            <ul>
-                <li>
-                    <a href="{{ url_for('main.blog_list') }}"
-                       {% if not current_cat %}class="blog-cat-active"{% endif %}>
-                        Todas las publicaciones
-                    </a>
-                </li>
-                {% for cat in categories %}
-                <li>
-                    <a href="{{ url_for('main.blog_category_detail', slug=cat.slug) }}"
-                       {% if current_cat == cat.id %}class="blog-cat-active"{% endif %}>
-                        {% if cat.has_es and cat.name_es %}
-                            {{ cat.name_es }}
-                        {% else %}
-                            {{ cat.name }}
-                        {% endif %}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="blog-sidebar-box">
-            <h4><img src="{{ icon('bell.png') }}" class="pixel-icon-inline" alt="">Suscríbete</h4>
-            <ul>
-                <li>
-                    <a href="{{ url_for('main.blog_rss', lang='es') }}" type="application/rss+xml">Feed RSS</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="blog-sidebar-box">
-            <h4><img src="{{ icon('note.png') }}" class="pixel-icon-inline" alt="">Publicaciones recientes</h4>
-            <ul>
-                {% for post in posts[:5] %}
-                {% set p_title = post.title_es if post.has_es and post.title_es else post.title %}
-                <li>
-                    <a href="{{ url_for('main.blog_post_detail', slug=post.slug) }}">{{ p_title | truncate(42) }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-    </div>
-
-</div>
+{% else %}
+<p class="reader-empty">No hay publicaciones todavía. Vuelve pronto.</p>
+{% endif %}
 
 {% endblock %}

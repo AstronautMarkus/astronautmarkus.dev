@@ -43,3 +43,41 @@
     font-size: 11px;
     font-weight: bold;
 }
+
+/* copy button on the snippets (static/js/widgets.js) */
+.code-block-wrap {
+    position: relative;
+}
+
+.code-copy-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--button-bg);
+    color: var(--mac-black);
+    font-family: var(--font-chrome);
+    font-size: 9px;
+    font-weight: bold;
+    text-transform: var(--chrome-case);
+    letter-spacing: 0.3px;
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.code-copy-btn:hover {
+    opacity: 1;
+    background: var(--select-bg);
+    color: var(--select-text);
+}
+
+.code-copy-btn.copied {
+    opacity: 1;
+    background: var(--rainbow-green);
+    color: var(--mac-black);
+    border-color: var(--line);
+}
+

@@ -1,0 +1,59 @@
+{% extends "base/base.html" %}
+{#
+    Reading layout for the blog and the portfolio: no window chrome, sidebar
+    or banner, just a slim bar and a centered sheet. Same head, tokens and
+    theme stylesheet as base.html, so every theme still applies. Pages fill
+    {% block content %}.
+#}
+
+{% block body_class %}reader-body{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reader.css') }}">
+{% endblock %}
+
+{% block page %}
+{% set en = current_lang == 'en' %}
+{% set section = 'portfolio' if request.endpoint.startswith('main.portfolio') else 'blog' %}
+{# .main-nav on purpose: themes already restyle its links, hovers and dropdown #}
+<nav class="main-nav reader-bar" aria-label="{{ 'Site' if en else 'Sitio' }}">
+    <div class="reader-bar-group reader-bar-start">
+        <a href="{{ url_for('main.home') }}" class="reader-brand" aria-label="AstronautMarkus.Dev"><img
+                src="{{ icon('house.png') }}" alt="" class="nav-icon reader-brand-icon"><span
+                class="reader-brand-text">AstronautMarkus.Dev</span></a>
+        <a href="{{ url_for('main.portfolio_list') }}" {% if section == 'portfolio' %}aria-current="page"{% endif %}><img
+                src="{{ icon('briefcase.png') }}" alt="" class="nav-icon">{{ 'Portfolio' if en else 'Portafolio' }}</a>
+        <a href="{{ url_for('main.blog_list') }}" {% if section == 'blog' %}aria-current="page"{% endif %}><img
+                src="{{ icon('newspaper.png') }}" alt="" class="nav-icon">Blog</a>
+    </div>
+    <div class="reader-bar-group">
+        {% if cv_url %}
+        <a href="{{ cv_url }}" aria-label="{{ 'Download CV' if en else 'Descargar CV' }}"><img
+                src="{{ icon('page_white_acrobat.png') }}" alt="" class="nav-icon"><span class="reader-bar-text">CV</span></a>
+        {% endif %}
+        {% include "base/_theme_picker.html" %}
+        {% if en %}
+        <a href="/lang/es?next={{ request.path }}" lang="es" aria-label="Español"><img
+                src="{{ icon('flag_chile.png') }}" alt="" class="nav-icon"><span class="reader-bar-text">Español</span></a>
+        {% else %}
+        <a href="/lang/en?next={{ request.path }}" lang="en" aria-label="English"><img
+                src="{{ icon('flag_usa.png') }}" alt="" class="nav-icon"><span class="reader-bar-text">English</span></a>
+        {% endif %}
+    </div>
+    {% block bar_extra %}{% endblock %}
+</nav>
+
+<main class="reader-sheet" id="main">
+    <div class="reader-main">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="reader-foot" role="contentinfo">
+        <span>&copy;2024 &ndash; {{ current_year }} AstronautMarkus.Dev</span>
+        <span>
+            <a href="{{ url_for('main.blog_rss', lang=None if en else 'es') }}" type="application/rss+xml">RSS</a>
+            &middot;
+            <a href="{{ url_for('main.home') }}">{{ 'Back to the site' if en else 'Volver al sitio' }}</a>
+        </span>
+    </div>
+</main>
+{% endblock %}

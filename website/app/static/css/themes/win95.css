@@ -194,8 +194,7 @@
 .profile-photo,
 .beercat-hero-wrap,
 .homelab-hero-photo,
-.setup-hero-photo,
-.post-cover-wrap {
+.setup-hero-photo {
     border: 2px solid;
     border-color: #808080 #ffffff #ffffff #808080;
 }
@@ -227,8 +226,6 @@
 .vlan-table th,
 .pdfgen-card-header,
 .setup-card-header,
-.blog-sidebar-box h4,
-.blog-pagination-footer,
 .prose th,
 .theme-cal-table th,
 th {
@@ -238,8 +235,7 @@ th {
 
 :is(.panel-header, .about-card-header, .image-modal-header, .guestbook-pagination-footer,
     .alert-header, .alert-footer, .payday-header, .card-header, .news-footer,
-    .homelab-card-header, .pdfgen-card-header, .setup-card-header, .blog-sidebar-box h4,
-    .blog-pagination-footer, th) :is(a, span, button, h1, h2, h3, h4) {
+    .homelab-card-header, .pdfgen-card-header, .setup-card-header, th) :is(a, span, button, h1, h2, h3, h4) {
     color: #ffffff;
 }
 

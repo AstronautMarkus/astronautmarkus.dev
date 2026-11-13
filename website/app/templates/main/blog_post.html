@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+{% extends "base/reader.html" %}
 
 {% block title %}{{ title }}{% endblock %}
 {% block description %}{{ description or title }}{% endblock %}
@@ -16,346 +16,79 @@
 {% endif %}
 {% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
-<script>try { if (localStorage.getItem('post-sidebar') === 'hidden') document.documentElement.classList.add('post-sidebar-hidden'); } catch (e) {}</script>
-{% endblock %}
+{% block bar_extra %}<div class="read-progress" id="read-progress" aria-hidden="true"></div>{% endblock %}
 
 {% block content %}
+{% set words = content_html | striptags | wordcount if content_html else 0 %}
 
-{% if post.cover_image_path %}
-<div class="post-cover-wrap">
-    <img src="{{ storage_url(post.cover_image_path) }}" class="post-cover-img modal-image"
+<article class="article" data-copy="Copy" data-copied="Copied!">
+
+    <header class="article-head">
+        <p class="reader-kicker">
+            <a href="{{ url_for('main.blog_list') }}">Blog</a>
+            {% if post.category %}
+            / <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}">{{ post.category.name }}</a>
+            {% endif %}
+        </p>
+        <h1 class="reader-title">{{ title }}</h1>
+        {% if description %}<p class="reader-lede">{{ description }}</p>{% endif %}
+        <p class="reader-meta">
+            <time datetime="{{ post.created_at.strftime('%Y-%m-%d') }}">{{ post.created_at.strftime('%B %d, %Y') }}</time>
+            {% if words %}<span>{{ (words / 220) | round(0, 'ceil') | int }} min read</span>{% endif %}
+            <span>{{ post.view_count }} views</span>
+            {% if post.has_es %}<a href="/lang/es?next={{ request.path }}" lang="es">Leer en español</a>{% endif %}
+        </p>
+    </header>
+
+    {% if post.cover_image_path %}
+    <img src="{{ storage_url(post.cover_image_path) }}" class="article-cover modal-image"
          data-modal-group="post-images" alt="{{ title }}">
-    <div class="post-cover-overlay">
-        <div class="post-cover-title">{{ title }}</div>
-    </div>
-</div>
-{% endif %}
+    {% endif %}
 
-<div id="post-content">
+    <nav class="article-toc" id="toc" aria-label="Contents" hidden>
+        <details class="panel-box">
+            <summary class="panel-header">Contents</summary>
+            <ol id="toc-list"></ol>
+        </details>
+    </nav>
 
-    <div id="post-main">
-
-        <div class="post-header">
-            {% if not post.cover_image_path %}
-            <h1>{{ title }}</h1>
-            {% endif %}
-            <div class="post-meta-row">
-                <span>{{ post.created_at.strftime('%B %d, %Y') }}</span>
-                {% if post.category %}
-                <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}" class="post-meta-cat">
-                    {{ post.category.name }}
-                </a>
-                {% endif %}
-                {% if post.has_es %}
-                <span class="post-meta-lang">
-                    <a href="/lang/es?next={{ request.path }}">ES</a>
-                </span>
-                {% endif %}
-                <button type="button" id="post-sidebar-toggle" class="post-sidebar-toggle"
-                        aria-controls="post-sidebar" aria-expanded="true">Hide sidebar</button>
-            </div>
-        </div>
-
-        <div class="prose">
-            {% if content_html %}
-                {{ content_html }}
-            {% else %}
-            <p style="color:#7a8a9a;font-style:italic">No content available for this post yet.</p>
-            {% endif %}
-        </div>
-
-        {% if post.images %}
-        <div class="post-gallery">
-            <h4><img src="{{ icon('photos.png') }}" class="pixel-icon-inline" alt="">Post Images</h4>
-            <div class="post-gallery-grid">
-                {% for img in post.images %}
-                <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}" class="modal-image"
-                     data-modal-group="post-images">
-                {% endfor %}
-            </div>
-        </div>
+    <div class="prose">
+        {% if content_html %}
+        {{ content_html }}
+        {% else %}
+        <p class="reader-empty">No content available for this post yet.</p>
         {% endif %}
-
-        <a href="{{ url_for('main.blog_list') }}" class="post-back">Back to Blog</a>
-
     </div>
 
-    <div id="post-sidebar">
-
-        <div class="blog-sidebar-box">
-            <h4><img src="{{ icon('information.png') }}" class="pixel-icon-inline" alt="">Post Info</h4>
-            <ul class="sidebar-info-list">
-                <li>Published: {{ post.created_at.strftime('%d %b %Y') }}</li>
-                <li>Views: {{ post.view_count }}</li>
-                {% if post.category %}
-                <li>
-                    Category:
-                    <a href="{{ url_for('main.blog_category_detail', slug=post.category.slug) }}">
-                        {{ post.category.name }}
-                    </a>
-                </li>
-                {% endif %}
-                {% if post.has_es %}
-                <li>
-                    <a href="/lang/es?next={{ request.path }}">Leer en Español</a>
-                </li>
-                {% endif %}
-            </ul>
+    {% if post.images %}
+    <section class="article-gallery">
+        <h2 class="reader-section-title">Post images</h2>
+        <div class="article-gallery-grid">
+            {% for img in post.images %}
+            <img src="{{ storage_url(img.image_path) }}" alt="Image {{ loop.index }}" class="modal-image"
+                 data-modal-group="post-images" loading="lazy">
+            {% endfor %}
         </div>
+    </section>
+    {% endif %}
 
-        <div class="blog-sidebar-box" id="toc-box">
-            <h4><img src="{{ icon('application_view_list.png') }}" class="pixel-icon-inline" alt="">Contents</h4>
-            <ul id="toc-list">
-                <li class="toc-empty">No headings found.</li>
-            </ul>
+    <div class="article-foot">
+        <div class="article-share">
+            <span class="reader-section-title">Share</span>
+            <a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
+               class="reader-chip" target="_blank" rel="noopener noreferrer">X</a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
+               class="reader-chip" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
+               class="reader-chip" target="_blank" rel="noopener noreferrer">Facebook</a>
         </div>
-
-        <div class="blog-sidebar-box">
-            <h4><img src="{{ icon('share.png') }}" class="pixel-icon-inline" alt="">Share</h4>
-            <ul>
-                <li><a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ title | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">Share on Twitter/X</a></li>
-                <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">Share on LinkedIn</a></li>
-                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
-                       target="_blank" rel="noopener noreferrer">Share on Facebook</a></li>
-            </ul>
-        </div>
-
+        <a href="{{ url_for('main.blog_list') }}" class="reader-chip">&larr; All posts</a>
     </div>
 
-</div>
+</article>
 
 {% endblock %}
 
 {% block extra_js %}
-<script>
-(function () {
-    var btn  = document.getElementById('post-sidebar-toggle');
-    var root = document.documentElement;
-    function sync() {
-        var hidden = root.classList.contains('post-sidebar-hidden');
-        btn.textContent = hidden ? 'Show sidebar' : 'Hide sidebar';
-        btn.setAttribute('aria-expanded', String(!hidden));
-    }
-    btn.addEventListener('click', function () {
-        var hidden = root.classList.toggle('post-sidebar-hidden');
-        try { localStorage.setItem('post-sidebar', hidden ? 'hidden' : 'shown'); } catch (e) {}
-        sync();
-    });
-    sync();
-})();
-</script>
-<script>
-(function () {
-    var prose = document.querySelector('.prose');
-    var tocList = document.getElementById('toc-list');
-    var tocBox  = document.getElementById('toc-box');
-
-    /* the actual scrolling viewport is .main-content (see base.html), not
-       the window — headings must be brought into view inside it, and its
-       scroll position (not window.scrollY) drives the active-heading state */
-    var scroller = document.querySelector('.main-content') || window;
-
-    if (!prose || !tocList || !tocBox) return;
-
-    var headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    if (!headings.length) return;
-
-    /* slugify heading text to create unique IDs */
-    var usedIds = {};
-    function slugify(text) {
-        var base = text.toLowerCase()
-            .replace(/[^\w\s\-áéíóúüñàèìòùâêîôûäëïöü]/g, '')
-            .trim()
-            .replace(/[\s_]+/g, '-')
-            .replace(/-+/g, '-');
-        if (!base) base = 'heading';
-        var id = base;
-        var n = 1;
-        while (usedIds[id]) { id = base + '-' + (++n); }
-        usedIds[id] = true;
-        return id;
-    }
-
-    /* scroll a heading to the top of .main-content without touching
-       window scroll or the URL hash (#id) */
-    function scrollToHeading(h) {
-        if (scroller === window) {
-            h.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            return;
-        }
-        var headingTop   = h.getBoundingClientRect().top;
-        var containerTop = scroller.getBoundingClientRect().top;
-        var offset = 15; /* matches .prose heading scroll-margin-top */
-        scroller.scrollTo({
-            top: scroller.scrollTop + (headingTop - containerTop) - offset,
-            behavior: 'smooth'
-        });
-    }
-
-    /* assign IDs and build TOC items */
-    var items = [];
-    headings.forEach(function (h) {
-        var level = parseInt(h.tagName.charAt(1), 10);
-        var text  = h.textContent.trim();
-        var id    = h.id || slugify(text);
-        h.id = id;
-
-        var li = document.createElement('li');
-        li.setAttribute('data-level', level);
-
-        var a = document.createElement('a');
-        a.href = '#' + id;
-        a.textContent = text;
-        a.addEventListener('click', function (e) {
-            /* let modified/middle clicks behave natively (open in new tab, etc.) */
-            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-            e.preventDefault();
-            scrollToHeading(h);
-        });
-        li.appendChild(a);
-        items.push({ el: h, link: a });
-        tocList.appendChild(li);
-    });
-
-    /* remove placeholder */
-    var empty = tocList.querySelector('.toc-empty');
-    if (empty) tocList.removeChild(empty);
-
-    /* show the TOC box */
-    tocBox.style.display = 'flex';
-
-    /* .main-content's scrollable range is capped at scrollHeight - clientHeight,
-       so a heading near the very end of a post can run out of room to reach
-       the top offset before the click even starts (nothing trails it to
-       "push" it up). Pad the bottom with just enough blank space for the
-       last heading specifically — recomputed on load too, since images
-       finishing can change scrollHeight. */
-    var scrollSpacer = null;
-    function ensureScrollRoom() {
-        if (scroller === window) return;
-        var last = items[items.length - 1].el;
-        var maxScrollTop = scroller.scrollHeight - scroller.clientHeight - (scrollSpacer ? parseFloat(scrollSpacer.style.height) : 0);
-        var desiredScrollTop = last.offsetTop - 15;
-        var shortfall = Math.ceil(desiredScrollTop - maxScrollTop);
-        if (shortfall > 0) {
-            if (!scrollSpacer) {
-                scrollSpacer = document.createElement('div');
-                scrollSpacer.setAttribute('aria-hidden', 'true');
-                (document.getElementById('post-main') || prose.parentNode).appendChild(scrollSpacer);
-            }
-            scrollSpacer.style.height = shortfall + 'px';
-        }
-    }
-    ensureScrollRoom();
-    window.addEventListener('load', ensureScrollRoom);
-
-    /* deep link support: if the page was opened with #some-heading, jump to
-       it, then strip the hash so the URL stays clean (matches the
-       no-visible-# behavior of TOC clicks). The browser's own native
-       fragment-scroll keeps retrying as late-loading images resize the
-       page, racing our own positioning — so strip the hash first (removing
-       the target it retries against) and re-assert our own instant jump on
-       'load' as the final, authoritative correction. */
-    if (location.hash.length > 1) {
-        var target = null;
-        for (var j = 0; j < items.length; j++) {
-            if ('#' + items[j].el.id === location.hash) { target = items[j].el; break; }
-        }
-        if (target) {
-            history.replaceState(null, '', location.pathname + location.search);
-            var jumpToTarget = function () {
-                ensureScrollRoom();
-                var headingTop   = target.getBoundingClientRect().top;
-                var containerTop = scroller === window ? 0 : scroller.getBoundingClientRect().top;
-                if (scroller === window) {
-                    window.scrollTo(0, headingTop + window.scrollY - 15);
-                } else {
-                    scroller.scrollTop = scroller.scrollTop + (headingTop - containerTop) - 15;
-                }
-            };
-            jumpToTarget();
-            window.addEventListener('load', jumpToTarget);
-        }
-    }
-
-    /* active-heading tracking on scroll */
-    function onScroll() {
-        var containerTop = scroller === window ? 0 : scroller.getBoundingClientRect().top;
-        var active = null;
-        for (var i = 0; i < items.length; i++) {
-            var top = items[i].el.getBoundingClientRect().top - containerTop;
-            if (top <= 80) {
-                active = items[i];
-            }
-        }
-        items.forEach(function (it) {
-            it.link.classList.toggle('toc-active', it === active);
-        });
-    }
-
-    scroller.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-})();
-</script>
-<script>
-(function () {
-    var blocks = document.querySelectorAll('.prose pre');
-    if (!blocks.length) return;
-
-    var copyLabel   = 'Copy';
-    var copiedLabel = 'Copied!';
-
-    function fallbackCopy(text) {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); } catch (e) {}
-        document.body.removeChild(ta);
-    }
-
-    blocks.forEach(function (pre) {
-        var code = pre.querySelector('code');
-        if (!code) return;
-
-        var wrap = document.createElement('div');
-        wrap.className = 'code-block-wrap';
-        pre.parentNode.insertBefore(wrap, pre);
-        wrap.appendChild(pre);
-
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'code-copy-btn';
-        btn.textContent = copyLabel;
-        wrap.appendChild(btn);
-
-        btn.addEventListener('click', function () {
-            var text = code.textContent;
-            var done = function () {
-                btn.textContent = copiedLabel;
-                btn.classList.add('copied');
-                setTimeout(function () {
-                    btn.textContent = copyLabel;
-                    btn.classList.remove('copied');
-                }, 1500);
-            };
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text).then(done, function () {
-                    fallbackCopy(text);
-                    done();
-                });
-            } else {
-                fallbackCopy(text);
-                done();
-            }
-        });
-    });
-})();
-</script>
+<script src="{{ url_for('static', filename='js/reader.js') }}"></script>
 {% endblock %}

@@ -143,8 +143,7 @@
     color: var(--aqua-ink);
 }
 
-.menu-list li,
-.blog-sidebar-box li {
+.menu-list li {
     border-bottom-color: var(--mac-grey-2);
 }
 

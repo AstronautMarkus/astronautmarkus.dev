@@ -51,7 +51,7 @@
     padding: 12px;
 }
 
-/* ── Pagination (matches .blog-pagination-footer) ───────────────────────── */
+/* ── Pagination ───────────────────────── */
 
 .guestbook-pagination-footer {
     background: var(--bar-bg);

@@ -1,95 +1,65 @@
-{% extends "base/base.html" %}
+{% extends "base/reader.html" %}
 
 {% block title %}Portafolio{% endblock %}
 {% block description %}Páginas web, aplicaciones y proyectos personales construidos por AstronautMarkus.dev.{% endblock %}
 {% block keywords %}portafolio, proyectos, desarrollo web, python, flask, react{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
-{% endblock %}
-
 {% block content %}
 {% from "main/_portfolio_macros.html" import badges, tag_list %}
 
-<section class="welcome-card">
-    <div class="card-header portfolio-banner-title">
-        <img src="{{ icon('briefcase.png') }}" class="icon" alt="">
-        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Portafolio
-    </div>
-    <div class="card-body">
-        <div class="portfolio-banner-intro">
-            Páginas web, aplicaciones y proyectos personales que he construido a lo largo del tiempo.
-        </div>
-    </div>
-</section>
+<header>
+    <h1 class="reader-title">Portafolio</h1>
+    <p class="reader-lede">Páginas web, aplicaciones y proyectos personales que he construido a lo largo del tiempo.</p>
+</header>
 
-<section class="welcome-card">
-    <div class="card-header">
-        <img src="{{ icon('bullet_arrow_right.png') }}" alt="" class="nav-icon"> Proyectos
-    </div>
+{% if tech_filters %}
+<nav class="reader-chips" aria-label="{{ t('portfolio.filter_label') }}">
+    <span class="reader-section-title">{{ t('portfolio.filter_label') }}</span>
+    <a href="{{ url_for('main.portfolio_list') }}" class="reader-chip" {% if not active_tech %}aria-current="page"{% endif %}>{{ t('portfolio.filter_all') }}</a>
+    {% for tag in tech_filters %}
+    <a href="{{ url_for('main.portfolio_list', tech=tag.key) }}" class="reader-chip"
+       {% if active_tech == tag.key|lower %}aria-current="page"{% endif %}>{{ tag.name }} <span class="reader-chip-count">{{ tag.count }}</span></a>
+    {% endfor %}
+</nav>
+{% endif %}
 
-    {% if tech_filters %}
-    <div class="portfolio-filter">
-        <span class="portfolio-filter-label">{{ t('portfolio.filter_label') }}</span>
-        <a href="{{ url_for('main.portfolio_list') }}" class="portfolio-filter-chip{{ ' active' if not active_tech else '' }}">{{ t('portfolio.filter_all') }}</a>
-        {% for tag in tech_filters %}
-        <a href="{{ url_for('main.portfolio_list', tech=tag.key) }}" class="portfolio-filter-chip{{ ' active' if active_tech == tag.key|lower else '' }}">{{ tag.name }} <span class="portfolio-filter-count">{{ tag.count }}</span></a>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    {% if projects %}
-    <div class="portfolio-grid">
-        {% for project in projects %}
-        {% set p_title = project.title_es if project.has_es and project.title_es else project.title %}
-        {% set p_desc  = project.description_es if project.has_es and project.description_es else project.description %}
-        <div class="portfolio-card{{ ' featured' if project.featured else '' }}">
+{% if projects %}
+<ol class="reader-list">
+    {% for project in projects %}
+    {% set p_title = project.title_es if project.has_es and project.title_es else project.title %}
+    {% set p_desc  = project.description_es if project.has_es and project.description_es else project.description %}
+    <li class="reader-item{% if project.featured %} reader-item--lead{% endif %}">
+        <div class="reader-item-body">
             {% if project.image_path %}
-            <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}" class="portfolio-card-thumb-link">
-                <img src="{{ storage_url(project.image_path) }}" class="portfolio-card-thumb" alt="{{ p_title }}">
-            </a>
-            {% else %}
-            <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}" class="portfolio-card-thumb-link">
-                <div class="portfolio-card-thumb-placeholder"></div>
-            </a>
+            <img src="{{ storage_url(project.image_path) }}" class="reader-item-cover" alt=""
+                 {% if not project.featured %}loading="lazy"{% endif %}>
             {% endif %}
-
-            <div class="portfolio-card-body">
-                <h3 class="portfolio-card-title">
-                    <a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}">{{ p_title }}</a>
-                </h3>
+            <div class="reader-item-text">
                 {{ badges(project) }}
-
+                <h2 class="reader-item-title"><a href="{{ url_for('main.portfolio_detail', slug=project.slug) }}">{{ p_title }}</a></h2>
                 {% if p_desc %}
-                <p class="portfolio-card-desc">{{ p_desc | truncate(120) }}</p>
+                <p class="reader-item-excerpt">{{ p_desc | truncate(260 if project.featured else 160) }}</p>
                 {% endif %}
-
                 {{ tag_list(tags_by_project[project.id]) }}
-
-                <div class="portfolio-card-links">
+                {% if project.project_url or project.github_repo_url %}
+                <div class="reader-actions">
                     {% if project.project_url %}
-                    <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn">
-                        <img src="{{ icon('rocket.png') }}" alt="">
-                        Ver Proyecto
-                    </a>
+                    <a href="{{ project.project_url }}" class="reader-chip reader-chip--primary" target="_blank" rel="noopener noreferrer"><img
+                            src="{{ icon('rocket.png') }}" alt="" class="nav-icon">Ver proyecto</a>
                     {% endif %}
                     {% if project.github_repo_url %}
-                    <a href="{{ project.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn source">
-                        <img src="{{ icon('open_source.png') }}" alt="">
-                        Código
-                    </a>
+                    <a href="{{ project.github_repo_url }}" class="reader-chip" target="_blank" rel="noopener noreferrer"><img
+                            src="{{ icon('open_source.png') }}" alt="" class="nav-icon">Código</a>
                     {% endif %}
                 </div>
+                {% endif %}
             </div>
         </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="portfolio-empty">
-        <div class="card-text">No hay proyectos todavía. Vuelve pronto.</div>
-    </div>
-    {% endif %}
-</section>
+    </li>
+    {% endfor %}
+</ol>
+{% else %}
+<p class="reader-empty">No hay proyectos todavía. Vuelve pronto.</p>
+{% endif %}
 
 {% endblock %}
