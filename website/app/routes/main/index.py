@@ -20,6 +20,16 @@ PAYDAY_SCREENSHOTS = (
     'payday-bank-09-login.webp',
     'payday-bank-10-sign-up.webp',
 )
+SHIRO_SCREENSHOTS_DIR = 'images/home/shiro-lq'
+# (CDN filename, English label, Spanish label), in gallery order
+SHIRO_SCREENSHOTS = (
+    ('index.png', 'Home', 'Inicio'),
+    ('videos.png', 'Videos', 'Videos'),
+    ('list_videos.png', 'Video Library', 'Videoteca'),
+    ('end_videos.png', 'Video Library (cont.)', 'Videoteca (cont.)'),
+    ('mods.png', 'Mods', 'Mods'),
+    ('allies.png', 'Channel Alliance', 'Alianza de canales'),
+)
 CODING_SINCE = 2022
 CAFFEINE_SINCE = date(2020, 1, 1)
 COFFEE_PER_DAY = 4.5  # 4-5 cups a day
@@ -68,4 +78,6 @@ def home():
         payday_screenshots=PAYDAY_SCREENSHOTS,
         github=db.session.get(SyncedSnapshot, 'github'),
         payday_screenshots_dir=PAYDAY_SCREENSHOTS_DIR,
+        shiro_screenshots=SHIRO_SCREENSHOTS,
+        shiro_screenshots_dir=SHIRO_SCREENSHOTS_DIR,
     )

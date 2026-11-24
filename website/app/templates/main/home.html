@@ -16,6 +16,94 @@ articles, and dev experiments by AstronautMarkus.{% endblock %}
 
 {% include "main/_home_stats.html" %}
 
+<section class="welcome-card payday-card">
+    <div class="card-header payday-header">
+        <img src="{{ icon('medal_award_gold.png') }}" alt="" class="nav-icon">
+        Featured Project
+        <span class="payday-ribbon">SHIRO LQ</span>
+    </div>
+    <div class="payday-stripe"></div>
+    <div class="payday-body">
+        <img src="{{ cdn_url(shiro_screenshots_dir ~ '/index.png') }}"
+             class="payday-cover modal-image" data-modal-group="shiro-cover" data-title="Shiro LQ"
+             alt="Shiro LQ home page: dark blue header, the latest video and the YouTube channel card">
+        <div class="payday-lead">
+            <p class="payday-intro">
+                <strong>Shiro LQ</strong> is the home of my GTA San Andreas Loquendo channel: a website where you'll find the videos, plus the mods, skins, maps and objects I use to make them. It's built with Blazor on .NET, pulls the channel's latest uploads on its own, keeps a video library shared with allied channels, and has a downloads section split by category. Made to be viewed at 1024 × 768, like it's 2008.
+            </p>
+            <div class="payday-tags">
+                <span class="payday-tag">C#</span>
+                <span class="payday-tag">.NET</span>
+                <span class="payday-tag">Blazor</span>
+                <span class="payday-tag">YouTube</span>
+                <span class="payday-tag">GTA:SA</span>
+                <span class="payday-tag">Loquendo</span>
+            </div>
+        </div>
+
+        <div class="payday-features">
+            <div class="payday-feature">
+                <img src="{{ icon('newspaper.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Latest Video, Front and Center</div>
+                    <div class="payday-feature-desc">The home page shows the newest upload, with a breaking-news ticker linking to it.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('application_view_list.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Video Library</div>
+                    <div class="payday-feature-desc">Every video from the channel and its allies in one place, filterable by channel.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('toolbox.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Downloads Arsenal</div>
+                    <div class="payday-feature-desc">Mods, skins, maps, objects and more: everything you see in the videos, by category.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('share.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Channel Alliance</div>
+                    <div class="payday-feature-desc">Cards for allied channels with live subscriber and video counts.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payday-gallery-wrap">
+            <div class="payday-gallery-title">
+                <img src="{{ icon('photos.png') }}" alt="" class="nav-icon"> Project
+                Screenshots
+            </div>
+            <div class="payday-gallery-grid">
+                {% for shot, label, _ in shiro_screenshots %}
+                <button type="button" class="payday-gallery-item modal-image" data-modal-group="shiro"
+                    data-full="{{ cdn_url(shiro_screenshots_dir ~ '/' ~ shot) }}"
+                    data-title="Shiro LQ — {{ label }}">
+                    <img src="{{ cdn_url(shiro_screenshots_dir ~ '/' ~ shot) }}"
+                        class="payday-gallery-thumb" alt="Shiro LQ — {{ label }} screenshot" loading="lazy">
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="payday-links">
+            <a href="https://shiro.astronautmarkus.dev" target="_blank" rel="noopener noreferrer"
+                class="payday-link-btn">
+                <img src="{{ icon('rocket.png') }}" alt="">
+                View Website
+            </a>
+            <a href="https://www.youtube.com/@shirolq" target="_blank" rel="noopener noreferrer"
+                class="payday-link-btn source">
+                <img src="{{ icon('external.png') }}" alt="">
+                YouTube Channel
+            </a>
+        </div>
+    </div>
+</section>
+
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
         <img src="{{ icon('arrow_refresh.png') }}" alt="" class="nav-icon">

@@ -14,6 +14,90 @@
 
 {% include "main/_home_stats.html" %}
 
+<section class="welcome-card payday-card">
+    <div class="card-header payday-header">
+        <img src="{{ icon('medal_award_gold.png') }}" alt="" class="nav-icon"> Proyecto Destacado
+        <span class="payday-ribbon">SHIRO LQ</span>
+    </div>
+    <div class="payday-stripe"></div>
+    <div class="payday-body">
+        <img src="{{ cdn_url(shiro_screenshots_dir ~ '/index.png') }}"
+             class="payday-cover modal-image" data-modal-group="shiro-cover" data-title="Shiro LQ"
+             alt="Inicio de Shiro LQ: cabecera azul oscuro, el último video y la tarjeta del canal de YouTube">
+        <div class="payday-lead">
+            <p class="payday-intro">
+                <strong>Shiro LQ</strong> es la casa de mi canal de GTA San Andreas Loquendo: un sitio donde están los videos y los mods, skins, mapas y objetos que uso para hacerlos. Está hecho con Blazor sobre .NET, trae solo los últimos videos del canal, arma una videoteca compartida con los canales aliados y tiene una sección de descargas por categoría. Hecho para verse a 1024 × 768, como si fuera 2008.
+            </p>
+            <div class="payday-tags">
+                <span class="payday-tag">C#</span>
+                <span class="payday-tag">.NET</span>
+                <span class="payday-tag">Blazor</span>
+                <span class="payday-tag">YouTube</span>
+                <span class="payday-tag">GTA:SA</span>
+                <span class="payday-tag">Loquendo</span>
+            </div>
+        </div>
+
+        <div class="payday-features">
+            <div class="payday-feature">
+                <img src="{{ icon('newspaper.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">El último video, al frente</div>
+                    <div class="payday-feature-desc">El inicio muestra el video más reciente, con una cinta de "última hora" que lleva a él.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('application_view_list.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Videoteca</div>
+                    <div class="payday-feature-desc">Todos los videos del canal y sus aliados en un solo lugar, filtrables por canal.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('toolbox.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Arsenal de descargas</div>
+                    <div class="payday-feature-desc">Mods, skins, mapas, objetos y más: todo lo que ves en los videos, por categoría.</div>
+                </div>
+            </div>
+            <div class="payday-feature">
+                <img src="{{ icon('share.png') }}" alt="" class="payday-feature-icon">
+                <div>
+                    <div class="payday-feature-title">Alianza de canales</div>
+                    <div class="payday-feature-desc">Tarjetas de los canales aliados con suscriptores y videos al día.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payday-gallery-wrap">
+            <div class="payday-gallery-title">
+                <img src="{{ icon('photos.png') }}" alt="" class="nav-icon"> Capturas del Proyecto
+            </div>
+            <div class="payday-gallery-grid">
+                {% for shot, _, label in shiro_screenshots %}
+                <button type="button" class="payday-gallery-item modal-image" data-modal-group="shiro"
+                        data-full="{{ cdn_url(shiro_screenshots_dir ~ '/' ~ shot) }}"
+                        data-title="Shiro LQ — {{ label }}">
+                    <img src="{{ cdn_url(shiro_screenshots_dir ~ '/' ~ shot) }}"
+                         class="payday-gallery-thumb" alt="Shiro LQ — {{ label }} (captura)" loading="lazy">
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="payday-links">
+            <a href="https://shiro.astronautmarkus.dev" target="_blank" rel="noopener noreferrer" class="payday-link-btn">
+                <img src="{{ icon('rocket.png') }}" alt="">
+                Ver Sitio Web
+            </a>
+            <a href="https://www.youtube.com/@shirolq" target="_blank" rel="noopener noreferrer" class="payday-link-btn source">
+                <img src="{{ icon('external.png') }}" alt="">
+                Canal de YouTube
+            </a>
+        </div>
+    </div>
+</section>
+
 <section class="welcome-card alert-card">
     <div class="card-header alert-header">
         <img src="{{ icon('arrow_refresh.png') }}" alt="" class="nav-icon"> Actualización de AstronautMarkusDev 2.70

@@ -364,6 +364,10 @@ a:hover {
     object-fit: cover;
 }
 
+.spotlight-img--shiro {
+    background-image: url('/static/images/announces/shiro-lq-banner.png');
+}
+
 .main-content {
     position: absolute;
     top: 0;
