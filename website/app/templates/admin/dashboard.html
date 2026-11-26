@@ -43,7 +43,7 @@
         <p>{{ t('nav.blog_posts') }}</p>
       </div>
       <div class="icon-bg"><i class="fa-solid fa-feather"></i></div>
-      <span class="small-box-footer">{{ total_categories }} {{ t('dashboard.category_one' if total_categories == 1 else 'dashboard.category_other') }}</span>
+      <a href="{{ url_for('admin.blog_posts_list') }}" class="small-box-footer">{{ t('dashboard.view_all') }} <i class="fa-solid fa-circle-arrow-right"></i></a>
     </div>
   </div>
   <div class="col-lg-3 col-md-6 col-12">
