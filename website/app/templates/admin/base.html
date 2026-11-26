@@ -35,7 +35,9 @@
   {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body data-i18n-choose-file="{{ t('common.choose_file') }}"
+      data-i18n-choose-files="{{ t('common.choose_files') }}"
+      data-i18n-no-file="{{ t('common.no_file') }}">
 
   <!-- ── Top bar ── -->
   <header class="main-header">

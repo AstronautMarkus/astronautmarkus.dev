@@ -32,6 +32,20 @@ def _post_files(post) -> list[str]:
     return [p for p in paths if p] + [img.image_path for img in post.images]
 
 
+def _upload_ok(file, allowed: set, max_bytes: int) -> bool:
+    """True when no file was sent, or it has an allowed extension and fits max_bytes."""
+    if not file or not file.filename:
+        return True
+    file.seek(0, 2)
+    size = file.tell()
+    file.seek(0)
+    return '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in allowed and size <= max_bytes
+
+
+def _wants_json() -> bool:
+    return request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+
 def _store_md(file, dest_path: str) -> bool:
     """Validate and persist an uploaded Markdown file. Returns True on success."""
     if not file or not file.filename:
@@ -191,14 +205,33 @@ def blog_posts_list():
 def blog_post_create():
     categories = BlogCategory.query.order_by(BlogCategory.name).all()
 
+    def failed(errors):
+        # The wizard (XHR) keeps its state and gallery queue; it only uploads photos after a clean create.
+        if _wants_json():
+            return jsonify({'error': ' '.join(errors)}), 400
+        for msg in errors:
+            flash(msg, 'error')
+        return render_template('admin/blog/post_form.html', post=None, categories=categories,
+                               now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'), ai_enabled=is_enabled())
+
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         if not title:
-            flash(t('flash.title_required'), 'error')
-            return render_template('admin/blog/post_form.html', post=None, categories=categories,
-                                   now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'), ai_enabled=is_enabled())
+            return failed([t('flash.title_required')])
 
         has_es      = request.form.get('has_es') == '1'
+
+        # Reject bad files before anything is created, so a post never exists half-uploaded.
+        errors = []
+        if not _upload_ok(request.files.get('cover_image'), ALLOWED_IMG, MAX_IMG_BYTES):
+            errors.append(t('flash.cover_rejected'))
+        if not _upload_ok(request.files.get('markdown_file'), ALLOWED_MD, MAX_MD_BYTES):
+            errors.append(t('flash.en_md_rejected'))
+        if has_es and not _upload_ok(request.files.get('markdown_file_es'), ALLOWED_MD, MAX_MD_BYTES):
+            errors.append(t('flash.es_md_rejected'))
+        if errors:
+            return failed(errors)
+
         published   = request.form.get('published') == '1'
         category_id = request.form.get('category_id') or None
         slug_input  = request.form.get('slug', '').strip()
@@ -259,7 +292,10 @@ def blog_post_create():
 
         db.session.commit()
         flash(t('flash.post_created', title=post.title), 'success')
-        return redirect(url_for('admin.blog_post_edit', post_id=post.id))
+        edit_url = url_for('admin.blog_post_edit', post_id=post.id)
+        if _wants_json():
+            return jsonify({'redirect': edit_url, 'images_url': url_for('admin.blog_post_add_image', post_id=post.id)})
+        return redirect(edit_url)
 
     return render_template('admin/blog/post_form.html', post=None, categories=categories,
                            now_dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M'), ai_enabled=is_enabled())

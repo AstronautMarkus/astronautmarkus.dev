@@ -65,6 +65,8 @@
           <button type="button"
                   class="publish-toggle {{ 'is-published' if p.published else '' }}"
                   data-toggle-url="{{ url_for('admin.blog_post_toggle_publish', post_id=p.id) }}"
+                  data-label-on="{{ t('blog.published_col') }}" data-label-off="{{ t('dashboard.draft') }}"
+                  data-title-on="{{ t('blog.click_to_unpublish') }}" data-title-off="{{ t('blog.click_to_publish') }}"
                   title="{{ t('blog.click_to_unpublish') if p.published else t('blog.click_to_publish') }}">
             <span class="toggle-track"><span class="toggle-thumb"></span></span>
             <span class="toggle-label">{{ t('blog.published_col') if p.published else t('dashboard.draft') }}</span>

@@ -29,6 +29,36 @@
         });
     }
 
+    /* ── File inputs: themed, translated picker ───────────────────────────────
+       Wraps every native file input outside a drop zone. The input stays in the
+       DOM (transparent, covering the picker), so clicks, drag-drop, `required`
+       and every script reading .files keep working unchanged. */
+    function initFilePickers() {
+        var i18n = document.body.dataset;
+        document.querySelectorAll('input[type="file"]').forEach(function (input) {
+            if (input.closest('.upload-zone, .file-picker')) return;
+            var wrap = document.createElement('div');
+            wrap.className = 'file-picker';
+            var btn = document.createElement('span');
+            btn.className = 'file-picker-btn';
+            btn.setAttribute('aria-hidden', 'true');
+            btn.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i>';
+            btn.append(' ' + (input.multiple ? i18n.i18nChooseFiles : i18n.i18nChooseFile));
+            var name = document.createElement('span');
+            name.className = 'file-picker-name';
+            input.parentNode.insertBefore(wrap, input);
+            wrap.append(input, btn, name);
+
+            function sync() {
+                var names = Array.prototype.map.call(input.files, function (f) { return f.name; });
+                name.textContent = names.length ? names.join(', ') : i18n.i18nNoFile;
+                wrap.classList.toggle('has-file', names.length > 0);
+            }
+            input.addEventListener('change', sync);
+            sync();
+        });
+    }
+
     /* ── Spanish enable/disable toggle ────────────────────────────────────── */
     function initEsToggle() {
         var enableEs = document.getElementById('enable_es');
@@ -87,9 +117,11 @@
                     .then(function (data) {
                         if (data.error) { toggle.disabled = false; return; }
                         toggle.classList.toggle('is-published', !!data.published);
-                        toggle.title = data.published ? 'Click to unpublish' : 'Click to publish';
+                        // Translated texts come from the template's data-* attributes
+                        var d = toggle.dataset;
+                        toggle.title = data.published ? d.titleOn : d.titleOff;
                         var label = toggle.querySelector('.toggle-label');
-                        if (label) label.textContent = data.published ? 'Published' : 'Draft';
+                        if (label) label.textContent = data.published ? d.labelOn : d.labelOff;
                         toggle.disabled = false;
                         document.dispatchEvent(new CustomEvent('admin:publishtoggle', {
                             detail: { published: data.published, toggle: toggle }
@@ -289,6 +321,7 @@
 
     ready(function () {
         initLangTabs();
+        initFilePickers();
         initEsToggle();
         initImagePreview();
         initAutoSlug();

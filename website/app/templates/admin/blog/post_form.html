@@ -12,9 +12,12 @@
           class="publish-toggle {{ 'is-published' if post.published else '' }}"
           id="topbar-publish-toggle"
           data-toggle-url="{{ url_for('admin.blog_post_toggle_publish', post_id=post.id) }}"
+          data-label-on="{{ t('common.yes') }}" data-label-off="{{ t('common.no') }}"
+          data-title-on="{{ t('blog.click_to_unpublish') }}" data-title-off="{{ t('blog.click_to_publish') }}"
           title="{{ t('blog.click_to_unpublish') if post.published else t('blog.click_to_publish') }}">
+    <span class="toggle-caption">{{ t('blog.show_immediately') }}</span>
     <span class="toggle-track"><span class="toggle-thumb"></span></span>
-    <span class="toggle-label">{{ t('blog.published_col') if post.published else t('dashboard.draft') }}</span>
+    <span class="toggle-label">{{ t('common.yes') if post.published else t('common.no') }}</span>
   </button>
   {% endif %}
 {% endblock %}
@@ -23,37 +26,46 @@
 
 {% set action_url = url_for('admin.blog_post_edit', post_id=post.id) if is_edit else url_for('admin.blog_post_create') %}
 
-<!-- ── Main form ────────────────────────────────────────────── -->
-<div class="card">
-  <div class="card-title">{{ t('blog.post_content') }}</div>
-  <form method="POST" action="{{ action_url }}" enctype="multipart/form-data">
+<!-- ── Wizard: 4 steps, all inside one form; post_wizard.js only switches visibility ── -->
+<div class="card wizard" id="post-wizard"
+     data-msg-creating="{{ t('blog.wizard_creating') }}"
+     data-msg-uploading="{{ t('blog.wizard_uploading') }}"
+     data-msg-not-created="{{ t('blog.wizard_not_created') }}"
+     data-msg-partial="{{ t('blog.wizard_partial') }}"
+     data-msg-open-post="{{ t('blog.wizard_open_post') }}"
+     data-msg-rejected="{{ t('blog.wizard_rejected') }}"
+     data-msg-remove="{{ t('blog.remove') }}">
 
-    <!-- language tabs -->
-    <div class="lang-tabs">
-      <button type="button" class="lang-tab active" data-target="panel-en">
-        English <span class="lang-req">*</span>
+  <ol class="wizard-steps">
+    {% for label in [t('blog.step_content'), t('blog.step_cover'), t('blog.step_details'), t('blog.step_gallery')] %}
+    <li>
+      <button type="button" class="wizard-step{{ ' active' if loop.first else '' }}" data-step="{{ loop.index0 }}">
+        <span class="wizard-num">{{ loop.index }}</span>{{ label }}
       </button>
-      <button type="button" class="lang-tab" data-target="panel-es">
-        Español <span class="lang-opt">{{ t('common.optional') }}</span>
-      </button>
-    </div>
+    </li>
+    {% endfor %}
+  </ol>
 
-    <div class="form-grid">
+  <form method="POST" action="{{ action_url }}" enctype="multipart/form-data" id="post-form"
+        data-mode="{{ 'edit' if is_edit else 'create' }}">
 
-      <!-- ── English panel ──────────────────────────────────── -->
+    <!-- ── 1. Content (per language) ───────────────────────── -->
+    <section class="wizard-panel active" data-step="0">
+      <div class="lang-tabs">
+        <button type="button" class="lang-tab active" data-target="panel-en">
+          English <span class="lang-req">*</span>
+        </button>
+        <button type="button" class="lang-tab" data-target="panel-es">
+          Español <span class="lang-opt">{{ t('common.optional') }}</span>
+        </button>
+      </div>
+
       <div class="lang-panel active" id="panel-en">
-
         <div class="form-group">
           <label for="title">{{ t('common.title') }} <span class="text-required">*</span></label>
           <input type="text" id="title" name="title"
                  value="{{ post.title if is_edit else '' }}"
                  placeholder="My Post Title" required>
-        </div>
-
-        <div class="form-group">
-          <label for="description">{{ t('blog.excerpt') }}</label>
-          <textarea id="description" name="description" rows="3"
-                    placeholder="A brief summary shown in listings and meta tags…">{{ post.description if is_edit and post.description else '' }}</textarea>
         </div>
 
         <div class="form-group">
@@ -70,9 +82,34 @@
           <span class="form-hint">.md or .markdown — max 2 MB</span>
         </div>
 
+        <div class="form-group">
+          <label for="description">{{ t('blog.excerpt') }}</label>
+          <textarea id="description" name="description" rows="3"
+                    placeholder="A brief summary shown in listings and meta tags…">{{ post.description if is_edit and post.description else '' }}</textarea>
+        </div>
+
+        {% if ai_enabled %}
+        <div class="form-group" id="ai-suggest-row">
+          <button type="button" class="btn btn-ghost btn-sm ai-suggest-btn"
+                  data-url="{{ url_for('admin.blog_ai_suggest_metadata') }}"
+                  data-post-id="{{ post.id if is_edit else '' }}"
+                  data-language="en"
+                  data-title-input="title"
+                  data-markdown-input="markdown_file"
+                  data-description-input="description"
+                  data-tags-input="tags"
+                  data-label="{{ t('blog.ai_generate') }}"
+                  data-label-busy="{{ t('blog.ai_generating') }}"
+                  data-error-target="ai-suggest-error-en">
+            {{ t('blog.ai_generate') }}
+          </button>
+          <span class="form-hint">{{ t('blog.ai_hint') }}</span>
+          <span class="form-hint" id="ai-suggest-error-en" style="color:#c0392b;display:none"
+                data-title-required="{{ t('flash.ai_title_required') }}"></span>
+        </div>
+        {% endif %}
       </div>
 
-      <!-- ── Spanish panel ─────────────────────────────────── -->
       <div class="lang-panel" id="panel-es">
         <div class="es-enable-row">
           <input type="checkbox" id="enable_es" name="has_es" value="1"
@@ -89,6 +126,20 @@
             <input type="text" id="title_es" name="title_es"
                    value="{{ post.title_es if is_edit and post.title_es else '' }}"
                    placeholder="El título de mi artículo">
+          </div>
+
+          <div class="form-group">
+            <label for="markdown_file_es">{{ t('blog.markdown_es') }}</label>
+            {% if is_edit and post.markdown_path_es %}
+            <div class="file-current-row">
+              <span>Archivo actual:</span>
+              <a href="{{ storage_url(post.markdown_path_es) }}" target="_blank"
+                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">{{ t('blog.download_md_es') }}</a>
+              <span class="form-hint">Sube un archivo nuevo para reemplazarlo.</span>
+            </div>
+            {% endif %}
+            <input type="file" id="markdown_file_es" name="markdown_file_es" accept=".md,.markdown">
+            <span class="form-hint">.md o .markdown — máx. 2 MB</span>
           </div>
 
           <div class="form-group">
@@ -117,46 +168,31 @@
                   data-title-required="{{ t('flash.ai_title_required') }}"></span>
           </div>
           {% endif %}
-
-          <div class="form-group">
-            <label for="markdown_file_es">{{ t('blog.markdown_es') }}</label>
-            {% if is_edit and post.markdown_path_es %}
-            <div class="file-current-row">
-              <span>Archivo actual:</span>
-              <a href="{{ storage_url(post.markdown_path_es) }}" target="_blank"
-                 rel="noopener noreferrer" class="btn btn-ghost btn-sm">{{ t('blog.download_md_es') }}</a>
-              <span class="form-hint">Sube un archivo nuevo para reemplazarlo.</span>
-            </div>
-            {% endif %}
-            <input type="file" id="markdown_file_es" name="markdown_file_es" accept=".md,.markdown">
-            <span class="form-hint">.md o .markdown — máx. 2 MB</span>
-          </div>
-
         </div>
       </div>
+    </section>
 
-      <!-- ── Cover image ────────────────────────────────────── -->
+    <!-- ── 2. Cover ─────────────────────────────────────────── -->
+    <section class="wizard-panel" data-step="1">
       <div class="form-group">
         <label for="cover_image">{{ t('blog.header_cover_image') }}</label>
         {% if is_edit and post.cover_image_path %}
-        <div id="cover-current-wrap"
-             style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
-          <img id="cover-current-img" src="{{ storage_url(post.cover_image_path) }}"
-               style="height:72px;width:128px;object-fit:cover;border:1px solid #cccccc">
+        <div id="cover-current-wrap" class="cover-preview-row">
+          <img id="cover-current-img" src="{{ storage_url(post.cover_image_path) }}" alt="" class="cover-preview-lg">
           <span class="form-hint">{{ t('blog.upload_replace_header') }}</span>
         </div>
         {% endif %}
-        <div id="cover-preview-wrap"
-             style="display:none;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
-          <img id="cover-preview-img" src="" alt="New cover preview"
-               style="height:72px;width:128px;object-fit:cover;border:2px dashed #2b5797">
-          <span class="form-hint" style="color:#2b5797">{{ t('blog.new_cover_not_saved') }}</span>
+        <div id="cover-preview-wrap" class="cover-preview-row" style="display:none">
+          <img id="cover-preview-img" src="" alt="" class="cover-preview-lg is-new">
+          <span class="form-hint">{{ t('blog.new_cover_not_saved') }}</span>
         </div>
         <input type="file" id="cover_image" name="cover_image" accept="image/*">
         <span class="form-hint">JPG, PNG, WebP, GIF — max 5 MB</span>
       </div>
+    </section>
 
-      <!-- ── Shared metadata ────────────────────────────────── -->
+    <!-- ── 3. Details ───────────────────────────────────────── -->
+    <section class="wizard-panel" data-step="2">
       <div class="form-row">
         <div class="form-group">
           <label for="category_id">{{ t('blog.category') }}</label>
@@ -192,27 +228,6 @@
         <span class="form-hint">{{ t('blog.tags_hint') }}</span>
       </div>
 
-      {% if ai_enabled %}
-      <div class="form-group" id="ai-suggest-row">
-        <button type="button" class="btn btn-ghost btn-sm ai-suggest-btn"
-                data-url="{{ url_for('admin.blog_ai_suggest_metadata') }}"
-                data-post-id="{{ post.id if is_edit else '' }}"
-                data-language="en"
-                data-title-input="title"
-                data-markdown-input="markdown_file"
-                data-description-input="description"
-                data-tags-input="tags"
-                data-label="{{ t('blog.ai_generate') }}"
-                data-label-busy="{{ t('blog.ai_generating') }}"
-                data-error-target="ai-suggest-error-en">
-          {{ t('blog.ai_generate') }}
-        </button>
-        <span class="form-hint">{{ t('blog.ai_hint') }}</span>
-        <span class="form-hint" id="ai-suggest-error-en" style="color:#c0392b;display:none"
-              data-title-required="{{ t('flash.ai_title_required') }}"></span>
-      </div>
-      {% endif %}
-
       <div class="form-row">
         <div class="form-group">
           <label for="created_at">{{ t('blog.publication_date') }}</label>
@@ -228,68 +243,59 @@
                {{ 'checked' if is_edit and post.published else '' }}
                style="width:auto">
         <label for="published"
-               style="text-transform:none;letter-spacing:0;font-size:12px;cursor:pointer;color:#333333">
+               style="text-transform:none;letter-spacing:0;font-size:12px;cursor:pointer;color:var(--c-ink-soft)">
           {{ t('blog.publish_checkbox') }}
         </label>
       </div>
+    </section>
 
-      <div>
-        <button type="submit" class="btn btn-primary">
-          {{ t('common.save_changes') if is_edit else t('blog.create_post') }}
-        </button>
+    <!-- ── 4. Gallery ───────────────────────────────────────── -->
+    <section class="wizard-panel" data-step="3">
+      <div id="ajax-flash-container"></div>
+      {% if is_edit %}
+      <span class="form-hint">{{ t('blog.gallery_edit_hint') }}</span>
+      <div class="img-grid" id="post-img-grid">
+        {% for img in post.images %}
+        <div class="img-item blog-img-item" id="bimg-{{ img.id }}">
+          <img src="{{ storage_url(img.image_path) }}" alt="Image {{ img.id }}">
+          <div class="blog-img-actions">
+            <button type="button" class="copy-url-btn"
+                    data-url="{{ storage_url(img.image_path) }}"
+                    title="Copy URL to clipboard">{{ t('blog.copy_url') }}</button>
+            <button type="button" class="del-img"
+                    title="{{ t('blog.remove') }}"
+                    data-delete-url="{{ url_for('admin.blog_post_delete_image', post_id=post.id, image_id=img.id) }}">×</button>
+          </div>
+        </div>
+        {% endfor %}
+        {% if not post.images %}
+        <p id="no-images-hint" class="form-hint">{{ t('blog.no_images_yet') }}</p>
+        {% endif %}
       </div>
+      <div class="upload-zone" data-upload-url="{{ url_for('admin.blog_post_add_image', post_id=post.id) }}">
+      {% else %}
+      <span class="form-hint">{{ t('blog.gallery_queue_hint') }}</span>
+      <div class="img-grid" id="gallery-queue-grid"></div>
+      <div class="upload-zone" id="gallery-queue-zone">
+      {% endif %}
+        <input type="file" accept="image/*" multiple>
+        <i class="fa-solid fa-cloud-arrow-up upload-zone-icon"></i>
+        <div>{{ t('blog.click_to_upload') }}</div>
+        <div class="form-hint">JPG, PNG, WebP, GIF — max 5 MB each — multiple files supported</div>
+      </div>
+    </section>
 
+    <div class="ajax-flash" id="wizard-status" role="status" aria-live="polite" hidden></div>
+
+    <div class="wizard-nav">
+      <button type="button" class="btn btn-ghost" data-wizard-prev>{{ t('common.prev') }}</button>
+      <button type="button" class="btn btn-ghost" data-wizard-next>{{ t('common.next') }}</button>
+      <button type="submit" class="btn btn-primary">
+        {{ t('common.save_changes') if is_edit else t('blog.create_post') }}
+      </button>
     </div>
   </form>
 </div>
-
-<!-- ── Post Images (edit mode only) ────────────────────────── -->
-{% if is_edit %}
-<div class="card">
-  <div class="card-title">
-    {{ t('blog.post_images') }}
-    <span style="font-size:10px;font-weight:normal;color:#888888;text-transform:none;letter-spacing:0;margin-left:8px">
-      {{ t('blog.post_images_hint') }}
-    </span>
-  </div>
-
-  <div id="ajax-flash-container"></div>
-
-  <div class="img-grid" id="post-img-grid">
-    {% for img in post.images %}
-    <div class="img-item blog-img-item" id="bimg-{{ img.id }}">
-      <img src="{{ storage_url(img.image_path) }}" alt="Image {{ img.id }}">
-      <div class="blog-img-actions">
-        <button type="button" class="copy-url-btn"
-                data-url="{{ storage_url(img.image_path) }}"
-                title="Copy URL to clipboard">{{ t('blog.copy_url') }}</button>
-        <button type="button" class="del-img"
-                title="{{ t('blog.remove') }}"
-                data-delete-url="{{ url_for('admin.blog_post_delete_image', post_id=post.id, image_id=img.id) }}">×</button>
-      </div>
-    </div>
-    {% endfor %}
-    {% if not post.images %}
-    <p id="no-images-hint"
-       style="color:#888888;font-size:0.83rem;margin:0 0 4px">{{ t('blog.no_images_yet') }}</p>
-    {% endif %}
-  </div>
-
-  <div class="upload-zone" id="upload-zone" data-upload-url="{{ url_for('admin.blog_post_add_image', post_id=post.id) }}">
-    <input type="file" id="img-file-input" accept="image/*" multiple>
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="1.5" style="margin-bottom:6px;opacity:0.55">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-      <polyline points="17 8 12 3 7 8"/>
-      <line x1="12" y1="3" x2="12" y2="15"/>
-    </svg>
-    <div style="font-weight:bold">{{ t('blog.click_to_upload') }}</div>
-    <div style="margin-top:3px;font-size:10px;color:#aaaaaa">
-      JPG, PNG, WebP, GIF — max 5 MB each — multiple files supported
-    </div>
-  </div>
-</div>
-{% endif %}
 
 {% endblock %}
 
@@ -297,6 +303,7 @@
 {% if ai_enabled %}
 <script src="{{ url_for('static', filename='js/blog_ai.js') }}"></script>
 {% endif %}
+<script src="{{ url_for('static', filename='js/post_wizard.js') }}"></script>
 {% if is_edit %}
 <script>
 (function () {
