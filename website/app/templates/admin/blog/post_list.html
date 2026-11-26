@@ -77,7 +77,7 @@
             <a class="btn btn-ghost btn-sm"
                href="{{ url_for('admin.blog_post_edit', post_id=p.id) }}">{{ t('common.edit') }}</a>
             <button type="submit" formaction="{{ url_for('admin.blog_post_delete', post_id=p.id) }}"
-                    formnovalidate onclick="return confirm('{{ t('blog.confirm_delete_post', title=p.title) }}')"
+                    formnovalidate data-confirm="{{ t('blog.confirm_delete_post', title=p.title) }}"
                     class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </div>
         </td>

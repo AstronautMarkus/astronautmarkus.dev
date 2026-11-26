@@ -42,7 +42,7 @@
              href="{{ url_for('admin.blog_category_edit', cat_id=cat.id) }}">{{ t('common.edit') }}</a>
           <form method="POST"
                 action="{{ url_for('admin.blog_category_delete', cat_id=cat.id) }}"
-                onsubmit="return confirm('{{ t('blog.confirm_delete_category', name=cat.name) }}')">
+                data-confirm="{{ t('blog.confirm_delete_category', name=cat.name) }}">
             <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </form>
         </div>

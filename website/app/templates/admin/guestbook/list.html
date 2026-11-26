@@ -51,7 +51,7 @@
                     formnovalidate class="btn btn-primary btn-sm">{{ t('guestbook.approve') }}</button>
             {% endif %}
             <button type="submit" formaction="{{ url_for('admin.guestbook_delete', entry_id=entry.id) }}"
-                    formnovalidate onclick="return confirm('{{ t('guestbook.confirm_delete') }}')"
+                    formnovalidate data-confirm="{{ t('guestbook.confirm_delete') }}"
                     class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </div>
         </td>

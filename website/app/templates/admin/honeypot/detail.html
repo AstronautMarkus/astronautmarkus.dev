@@ -7,7 +7,7 @@
 {% block topbar_actions %}
   <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.honeypot_list') }}">{{ t('honeypot.back_to_log') }}</a>
   <form method="POST" action="{{ url_for('admin.honeypot_delete', hit_id=hit.id) }}"
-        onsubmit="return confirm('{{ t('honeypot.confirm_delete') }}');" style="display:inline">
+        data-confirm="{{ t('honeypot.confirm_delete') }}" style="display:inline">
     <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
   </form>
 {% endblock %}

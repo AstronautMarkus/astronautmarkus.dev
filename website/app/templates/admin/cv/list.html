@@ -44,7 +44,7 @@
              href="{{ url_for('admin.cv_edit', cv_id=cv.id) }}">{{ t('common.edit') }}</a>
           <form method="POST"
                 action="{{ url_for('admin.cv_delete', cv_id=cv.id) }}"
-                onsubmit="return confirm('{{ t('cv.confirm_delete', lang=cv.language.upper()) }}')">
+                data-confirm="{{ t('cv.confirm_delete', lang=cv.language.upper()) }}">
             <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </form>
         </div>

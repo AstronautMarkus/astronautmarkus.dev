@@ -125,11 +125,50 @@
         bulkForm.addEventListener('change', function (e) {
             if (e.target.classList.contains('row-checkbox')) updateState();
         });
-        bulkBtn.addEventListener('click', function (e) {
+        // Message is read by initConfirmModal on submit
+        var modalEl = document.getElementById('confirmModal');
+        var bulkMsg = (modalEl && modalEl.dataset.bulkMessage) || 'Delete {n} selected item(s)?';
+        bulkBtn.addEventListener('click', function () {
             var count = rowCheckboxes().filter(function (cb) { return cb.checked; }).length;
-            if (!confirm('Delete ' + count + ' selected item(s)?')) e.preventDefault();
+            bulkBtn.dataset.confirm = bulkMsg.replace('{n}', count);
         });
         updateState();
+    }
+
+    /* ── Confirm modal (replaces window.confirm) ──────────────────────────────
+       Any <form data-confirm="..."> or submit button with data-confirm="..."
+       asks through #confirmModal before submitting. The original submitter is
+       replayed so formaction / formnovalidate still apply. */
+    function initConfirmModal() {
+        var el = document.getElementById('confirmModal');
+        if (!el || !window.bootstrap) return;
+        var modal = bootstrap.Modal.getOrCreateInstance(el);
+        var msgEl = document.getElementById('confirmModalMessage');
+        var pending = null;
+
+        document.getElementById('confirmModalOk').addEventListener('click', function () {
+            var fn = pending;
+            pending = null;
+            modal.hide();
+            if (fn) fn();
+        });
+        el.addEventListener('hidden.bs.modal', function () { pending = null; });
+
+        document.addEventListener('submit', function (e) {
+            var form = e.target;
+            var submitter = e.submitter || null;
+            var msg = (submitter && submitter.dataset.confirm) || form.dataset.confirm;
+            if (!msg) return;
+            if (form.dataset.confirmed) return;
+            e.preventDefault();
+            msgEl.textContent = msg;
+            pending = function () {
+                form.dataset.confirmed = '1';
+                form.requestSubmit(submitter); // dispatches submit synchronously
+                delete form.dataset.confirmed;
+            };
+            modal.show();
+        });
     }
 
     /* ── Image manager: drag-drop multi-upload + AJAX delete + copy-URL ────── */
@@ -255,6 +294,7 @@
         initAutoSlug();
         initPublishToggle();
         initBulkSelect();
+        initConfirmModal();
         initImageManager();
     });
 }());

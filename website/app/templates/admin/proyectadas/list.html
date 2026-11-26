@@ -51,7 +51,7 @@
             <a class="btn btn-ghost btn-sm"
                href="{{ url_for('admin.proyectadas_edit', item_id=item.id) }}">{{ t('common.edit') }}</a>
             <button type="submit" formaction="{{ url_for('admin.proyectadas_delete', item_id=item.id) }}"
-                    formnovalidate onclick="return confirm('{{ t('proyectadas.confirm_delete') }}')"
+                    formnovalidate data-confirm="{{ t('proyectadas.confirm_delete') }}"
                     class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
           </div>
         </td>

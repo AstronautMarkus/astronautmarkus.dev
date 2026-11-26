@@ -6,11 +6,11 @@
 {% block topbar_actions %}
   <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.contact_inbox') }}">{{ t('contact.back_to_inbox') }}</a>
   <form method="POST" action="{{ url_for('admin.contact_message_block_sender', message_id=entry.id) }}"
-        onsubmit="return confirm('{{ t('contact.block_confirm', email=entry.email) }}');" style="display:inline">
+        data-confirm="{{ t('contact.block_confirm', email=entry.email) }}" style="display:inline">
     <button type="submit" class="btn btn-danger btn-sm">{{ t('contact.block_sender') }}</button>
   </form>
   <form method="POST" action="{{ url_for('admin.contact_message_delete', message_id=entry.id) }}"
-        onsubmit="return confirm('{{ t('contact.delete_message_confirm') }}');" style="display:inline">
+        data-confirm="{{ t('contact.delete_message_confirm') }}" style="display:inline">
     <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
   </form>
 {% endblock %}

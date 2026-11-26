@@ -54,7 +54,7 @@
       <td data-label="{{ t('common.actions') }}">
         <div class="td-actions">
           <form method="POST" action="{{ url_for('admin.blocked_sender_delete', blocked_id=b.id) }}"
-                onsubmit="return confirm('{{ t('contact.unblock_confirm') }}');">
+                data-confirm="{{ t('contact.unblock_confirm') }}">
             <button type="submit" class="btn btn-ghost btn-sm">{{ t('contact.unblock') }}</button>
           </form>
         </div>

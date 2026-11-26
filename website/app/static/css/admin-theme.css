@@ -876,3 +876,8 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
     .btn, .sidebar-menu > li > a, .lang-tab, .copy-url-btn { min-height: 40px; }
     .row-checkbox { width: 20px; height: 20px; }
 }
+
+/* ── Confirm modal (Bootstrap .modal re-skinned with admin tokens) ── */
+.modal-content { background: var(--c-surface); color: var(--c-ink); border: 1px solid var(--c-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+.modal-header, .modal-footer { border-color: var(--c-border); }
+.modal-title { font-size: 1rem; font-weight: 600; }

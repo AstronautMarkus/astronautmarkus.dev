@@ -35,7 +35,7 @@
           <div class="td-actions">
             <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.backups_download', backup_id=b.id) }}">{{ t('common.download') }}</a>
             <form method="POST" action="{{ url_for('admin.backups_delete', backup_id=b.id) }}"
-              onsubmit="return confirm('{{ t('backups.confirm_delete', filename=b.filename) }}')">
+              data-confirm="{{ t('backups.confirm_delete', filename=b.filename) }}">
               <button type="submit" class="btn btn-danger btn-sm">{{ t('common.delete') }}</button>
             </form>
           </div>
